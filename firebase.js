@@ -18,7 +18,6 @@ const firebaseConfig = {
   messagingSenderId: '247060132443',
   appId: '1:247060132443:web:34804218276493e396c57e',
   measurementId: 'G-X9J01FH514',
-  databaseURL: "https://combiete-lantey-default-rtdb.firebaseio.com/",
 };
 
 // Initialize Firebase
@@ -26,3 +25,18 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const perf = getPerformance(app);
 const auth = getAuth(app);
+const database = getDatabase(app);
+
+function signUp(email, password) {
+  createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    console.log(user.uid);
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
+}
