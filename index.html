@@ -1,116 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Home</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    />
-    <link rel="stylesheet" href="/styles.css" />
-    <script type="module" src="/material.js"></script>
-    <script type="module" src="/firebase.js"></script>
-    <script src="/includeHTML.js"></script>
-  </head>
-  <body>
-    <!-- The drawer is always open in large screens. The header is always shown,
+
+<head>
+  <title>Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/extraStyles.css" />
+  <script type="module" src="/material.js"></script>
+  <script type="module" src="/firebase.js"></script>
+  <script src="/includeHTML.js"></script>
+</head>
+
+<body>
+  <!-- The drawer is always open in large screens. The header is always shown,
   even in small screens. -->
-    <div
-      class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header"
-    >
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
         <span class="mdl-layout-title">Title</span>
         <div class="mdl-layout-spacer"></div>
         <div
-          class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right"
-        >
-          <label
-            class="mdl-button mdl-js-button mdl-button--icon"
-            for="fixed-header-drawer-exp"
-          >
+          class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
             <i class="material-icons">search</i>
           </label>
           <div class="mdl-textfield__expandable-holder">
-            <input
-              class="mdl-textfield__input"
-              type="text"
-              name="sample"
-              id="fixed-header-drawer-exp"
-            />
+            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" />
           </div>
         </div>
         <button class="mdl-button mdl-js-button mdl-button--icon" id="btnSignIn">
           <i class="material-icons">account_circle</i>
         </button>
       </div>
-      </header>
-      <div class="mdl-layout__drawer">
-      <img src="original_logo.png"  style="scale:0.7;padding-top:15px;">
+    </header>
+    <div class="mdl-layout__drawer">
+      <img src="original_logo.png" style="scale:0.7;padding-top:15px;">
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link" href="">Home</a>
         <a class="mdl-navigation__link" href="">Videos</a>
         <a class="mdl-navigation__link" href="">Games</a>
         <a class="mdl-navigation__link" href="">Chat</a>
       </nav>
-      </div>
-      <main class="mdl-layout__content">
-        <div class="page-content">
-          
-        </div>
-      </main>
-      <dialog class="mdl-dialog">
-        <h4 class="mdl-dialog__title">Sign up</h4>
-        <div class="mdl-dialog__content">
-          <form action="#">
-            <div
-              class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
-            >
-              <input class="mdl-textfield__input" type="email" id="signUpEmail" />
-              <label class="mdl-textfield__label" for="signUpEmail">Email</label>
-            </div>
-            <form action="#">
-              <div
-                class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
-              >
-                <input
-                  class="mdl-textfield__input"
-                  type="password"
-                  id="signUpPassword"
-                />
-                <label class="mdl-textfield__label" for="signUpPassword"
-                  >Password</label
-                >
-              </div>
-            </form>
-          </form>
-        </div>
-        <div class="mdl-dialog__actions">
-          <button type="button" class="mdl-button close" onclick="signUp(document.getElementById('signUpEmail').value,document.getElementById('signUpPassword').value);">Sign up</button>
-          <button type="button" class="mdl-button close" onclick="dialog.close()">
-            Log In Instead
-          </button>
-          <button type="button" class="mdl-button close" onclick="dialog.close()">
-            Close
-          </button>
-        </div>
-      </dialog>
-      <script>
-        var dialog = document.querySelector('.mdl-dialog');
-        var btnSignIn = document.querySelector('#btnSignIn');
-        if (!dialog.showModal) {
-          dialogPolyfill.registerDialog(dialog);
-        }
-        btnSignIn.addEventListener('click', function () {
-          dialog.showModal();
-        });
-        dialog
-          .querySelector('.mdl-dialog__actions .close')
-          .addEventListener('click', function () {
-            dialog.close();
-          });
-      </script>
     </div>
-  </body>
+    <main class="mdl-layout__content">
+      <div class="page-content">
+        <!-- Wide card with share menu button -->
+        <style>
+          .demo-card-wide.mdl-card {
+            width: 512px;
+          }
+
+          .demo-card-wide>.mdl-card__title {
+            color: #fff;
+            height: 176px;
+            background: url('/welcome_card.jpg') center / cover;
+          }
+
+          .demo-card-wide>.mdl-card__menu {
+            color: #fff;
+          }
+        </style>
+
+        <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+          <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Welcome</h2>
+          </div>
+          <div class="mdl-card__supporting-text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Mauris sagittis pellentesque lacus eleifend lacinia...
+          </div>
+          <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              Get Started
+            </a>
+          </div>
+          <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              <i class="material-icons">share</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <dialog class="mdl-dialog">
+      <h4 class="mdl-dialog__title">Sign up</h4>
+      <div class="mdl-dialog__content">
+        <form action="#">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="email" id="signUpEmail" />
+            <label class="mdl-textfield__label" for="signUpEmail">Email</label>
+          </div>
+          <form action="#">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="password" id="signUpPassword" />
+              <label class="mdl-textfield__label" for="signUpPassword">Password</label>
+            </div>
+          </form>
+        </form>
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button close"
+          onclick="signUp(document.getElementById('signUpEmail').value,document.getElementById('signUpPassword').value);">Sign
+          up</button>
+        <button type="button" class="mdl-button close" onclick="dialog.close()">
+          Log In Instead
+        </button>
+        <button type="button" class="mdl-button close" onclick="dialog.close()">
+          Close
+        </button>
+      </div>
+    </dialog>
+    <script>
+      var dialog = document.querySelector('.mdl-dialog');
+      var btnSignIn = document.querySelector('#btnSignIn');
+      if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+      }
+      btnSignIn.addEventListener('click', function () {
+        dialog.showModal();
+      });
+      dialog
+        .querySelector('.mdl-dialog__actions .close')
+        .addEventListener('click', function () {
+          dialog.close();
+        });
+    </script>
+  </div>
+</body>
+
 </html>
