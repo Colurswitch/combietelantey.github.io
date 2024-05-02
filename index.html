@@ -57,59 +57,60 @@
       </div>
       <main class="mdl-layout__content">
         <div class="page-content">
-          <dialog class="mdl-dialog">
-            <h4 class="mdl-dialog__title">Sign up</h4>
-            <div class="mdl-dialog__content">
-              <form action="#">
-                <div
-                  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
-                >
-                  <input class="mdl-textfield__input" type="email" id="signUpEmail" />
-                  <label class="mdl-textfield__label" for="signUpEmail">Email</label>
-                </div>
-                <form action="#">
-                  <div
-                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
-                  >
-                    <input
-                      class="mdl-textfield__input"
-                      type="password"
-                      id="signUpPassword"
-                    />
-                    <label class="mdl-textfield__label" for="signUpPassword"
-                      >Password</label
-                    >
-                  </div>
-                </form>
-              </form>
-            </div>
-            <div class="mdl-dialog__actions">
-              <button type="button" class="mdl-button close" onclick="signUp(document.getElementById('signUpEmail').value,document.getElementById('signUpPassword').value);">Sign up</button>
-              <button type="button" class="mdl-button close" onclick="dialog.close()">
-                Log In Instead
-              </button>
-              <button type="button" class="mdl-button close" onclick="dialog.close()">
-                Close
-              </button>
-            </div>
-          </dialog>
-          <script>
-            var dialog = document.querySelector('.mdl-dialog');
-            var btnSignIn = document.querySelector('#btnSignIn');
-            if (!dialog.showModal) {
-              dialogPolyfill.registerDialog(dialog);
-            }
-            btnSignIn.addEventListener('click', function () {
-              dialog.showModal();
-            });
-            dialog
-              .querySelector('.mdl-dialog__actions .close')
-              .addEventListener('click', function () {
-                dialog.close();
-              });
-          </script>
+          
         </div>
       </main>
+      <dialog class="mdl-dialog">
+        <h4 class="mdl-dialog__title">Sign up</h4>
+        <div class="mdl-dialog__content">
+          <form action="#">
+            <div
+              class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+            >
+              <input class="mdl-textfield__input" type="email" id="signUpEmail" />
+              <label class="mdl-textfield__label" for="signUpEmail">Email</label>
+            </div>
+            <form action="#">
+              <div
+                class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+              >
+                <input
+                  class="mdl-textfield__input"
+                  type="password"
+                  id="signUpPassword"
+                />
+                <label class="mdl-textfield__label" for="signUpPassword"
+                  >Password</label
+                >
+              </div>
+            </form>
+          </form>
+        </div>
+        <div class="mdl-dialog__actions">
+          <button type="button" class="mdl-button close" onclick="signUp(document.getElementById('signUpEmail').value,document.getElementById('signUpPassword').value);">Sign up</button>
+          <button type="button" class="mdl-button close" onclick="dialog.close()">
+            Log In Instead
+          </button>
+          <button type="button" class="mdl-button close" onclick="dialog.close()">
+            Close
+          </button>
+        </div>
+      </dialog>
+      <script>
+        var dialog = document.querySelector('.mdl-dialog');
+        var btnSignIn = document.querySelector('#btnSignIn');
+        if (!dialog.showModal) {
+          dialogPolyfill.registerDialog(dialog);
+        }
+        btnSignIn.addEventListener('click', function () {
+          dialog.showModal();
+        });
+        dialog
+          .querySelector('.mdl-dialog__actions .close')
+          .addEventListener('click', function () {
+            dialog.close();
+          });
+      </script>
     </div>
   </body>
 </html>
