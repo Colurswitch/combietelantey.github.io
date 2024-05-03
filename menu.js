@@ -7,7 +7,12 @@ const menuItems = [
 ]
 console.log(menuItems);
 
-menu.innerHTML = menuItems.map((item) => {
-    `<a class="mdl-navigation__link" href="${item.link}">${item.title}</a>`
-    console.log(`<a class="mdl-navigation__link" href="${item.link}">${item.title}</a>`)
+menu.innerHTML = "";
+menuItems.map((item) => {
+    var temp = document.createElement("a");
+    temp.setAttribute("href",item.link);
+    temp.classList.add("mdl-navigation__link");
+    temp.innerText = item.title;
+    menu.appendChild(temp);
+    console.log(temp.outerHTML);
 })
