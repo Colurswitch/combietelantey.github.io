@@ -1,3 +1,28 @@
 .page-content {
     padding: 10px;
 }
+
+.demo-card-wide.mdl-card {
+    width: calc(100% / 3);
+}
+
+@media (max-width :750px) {
+    .demo-card-wide.mdl-card {
+        width: 100%;
+    }
+}
+
+.demo-card-wide>.mdl-card__title {
+    color: #fff;
+    height: 176px;
+    background: url('/welcome_card.jpg') center / cover;
+}
+
+.demo-card-wide>.mdl-card__menu {
+    color: #fff;
+}
+
+.mdl-navigation__link {
+    font: 500;
+    font-family: "Roboto";
+}
