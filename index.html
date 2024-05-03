@@ -8,7 +8,13 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/extraStyles.css" />
-  <script type="importmap" src="/import.json"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "firebase/": "./node-modules/firebase/"
+      }
+    }
+  </script>
   <script type="module" src="/material.js"></script>
   <script type="module" src="/firebase.js"></script>
   <script type="module" src="/menu.js"></script>
