@@ -1,4 +1,4 @@
-const menu = document.querySelector("body > div > div > div.mdl-layout__drawer > nav");
+const menu = document.querySelector(".mdl-layout__drawer .mdl-navigation");
 const menuItems = [
     {
         "title": "Home",
