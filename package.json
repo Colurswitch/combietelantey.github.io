@@ -3,9 +3,11 @@
     "start": "servor --reload"
   },
   "dependencies": {
-    "servor": "^4.0.2",
-    "firebase": "^10.11.0",
+    "@firebase/analytics": "0.10.2",
+    "@firebase/analytics-compat": "0.2.8",
     "@firebase/app": "0.10.2",
+    "@firebase/app-check": "0.8.3",
+    "@firebase/app-check-compat": "0.3.10",
     "@firebase/app-compat": "0.2.32",
     "@firebase/app-types": "0.9.1",
     "@firebase/auth": "1.7.2",
@@ -20,16 +22,14 @@
     "@firebase/installations-compat": "0.2.6",
     "@firebase/messaging": "0.12.8",
     "@firebase/messaging-compat": "0.2.8",
-    "@firebase/storage": "0.12.4",
-    "@firebase/storage-compat": "0.3.7",
     "@firebase/performance": "0.6.6",
     "@firebase/performance-compat": "0.2.6",
     "@firebase/remote-config": "0.4.6",
     "@firebase/remote-config-compat": "0.2.6",
-    "@firebase/analytics": "0.10.2",
-    "@firebase/analytics-compat": "0.2.8",
-    "@firebase/app-check": "0.8.3",
-    "@firebase/app-check-compat": "0.3.10",
-    "@firebase/util": "1.9.5"
+    "@firebase/storage": "0.12.4",
+    "@firebase/storage-compat": "0.3.7",
+    "@firebase/util": "1.9.5",
+    "firebase": "^10.11.1",
+    "servor": "^4.0.2"
   }
 }
