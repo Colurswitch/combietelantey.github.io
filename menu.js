@@ -6,3 +6,7 @@ const menuItems = [
     }
 ]
 console.log(menuItems);
+
+menu.innerHTML = menuItems.map((item) => {
+    `<a class="mdl-navigation__link" href="${item.link}">${item.title}</a>`
+})
