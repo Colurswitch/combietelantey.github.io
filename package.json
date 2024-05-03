@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "servor --reload",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo 'Error: no test specified' && exit 1"
   },
   "dependencies": {
     "@firebase/analytics": "0.10.2",
@@ -30,7 +30,7 @@
     "@firebase/storage": "0.12.4",
     "@firebase/storage-compat": "0.3.7",
     "@firebase/util": "1.9.5",
-    "@firebase": "^10.11.1",
-    "servor": "^4.0.2"
+    "@firebase": "10.11.1",
+    "servor": "4.0.2"
   }
 }
