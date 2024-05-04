@@ -1,6 +1,6 @@
-var requirejs = require("requirejs");
+var requirejs = require(["requirejs"]);
 
-var firebase = requirejs("firebase/compat/app");
+var firebase = requirejs(["firebase/compat/app"]);
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
