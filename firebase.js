@@ -1,4 +1,4 @@
-import firebase from "firebase/compat/app";
+import firebase from "/home/Colurswitch/combietelantey.github.io/node_modules/firebase/compat/app";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
