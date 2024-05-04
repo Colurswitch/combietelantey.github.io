@@ -5,6 +5,8 @@
   },
   "dependencies": {
     "firebase": "^10.11.1",
+    "fs": "^0.0.1-security",
+    "require": "^2.4.20",
     "servor": "4.0.2"
   }
 }
