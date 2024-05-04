@@ -4,6 +4,7 @@
     "test": "echo 'test'"
   },
   "dependencies": {
+    "firebase": "^10.11.1",
     "servor": "4.0.2"
   }
 }
