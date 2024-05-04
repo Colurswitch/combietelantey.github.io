@@ -4,6 +4,7 @@
     "test": "echo 'test'"
   },
   "dependencies": {
+    "browserify": "^17.0.0",
     "firebase": "^10.11.1",
     "fs": "^0.0.1-security",
     "require": "^2.4.20",
