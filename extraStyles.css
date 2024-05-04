@@ -3,6 +3,8 @@
 }
 
 .demo-card-wide.mdl-card {
+    float: left;
+    margin: 2px;
     width: calc(100% / 3);
 }
 
@@ -15,7 +17,7 @@
 .demo-card-wide>.mdl-card__title {
     color: #fff;
     height: 176px;
-    background: url('/welcome_card.jpg') center / cover;
+    
 }
 
 .demo-card-wide>.mdl-card__menu {
@@ -28,7 +30,7 @@
 }
 
 #p2 {
-    width:100%;
+    width: 100%;
 }
 
 .mdl-cell {
