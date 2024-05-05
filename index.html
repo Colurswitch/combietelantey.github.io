@@ -15,6 +15,7 @@
   <script type="module" src="/material.js"></script>
   <script type="module" src="/menu.js"></script>
   <script src="/preload.js"></script>
+  <script src="/masonry.js"></script>
   <script src="/includeHTML.js"></script>
 </head>
 
@@ -48,54 +49,57 @@
     </div>
     <main class="mdl-layout__content">
       <div class="page-content">
-        <div class="demo-card-wide mdl-card mdl-shadow--2dp">
-          <div class="mdl-card__title" style="background: url('/assets/thumbnail/welcome_card.jpg') center / cover;">
-            <h2 class="mdl-card__title-text">Welcome</h2>
+        <div class="masonry">
+          <div class="demo-card-wide mdl-card mdl-shadow--2dp masonry-item">
+            <div class="mdl-card__title" style="background: url('/assets/thumbnail/welcome_card.jpg') center / cover;">
+              <h2 class="mdl-card__title-text">Welcome</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+              Welcome to my new website.
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Get Started
+              </a>
+            </div>
+            <div class="mdl-card__menu">
+
+            </div>
           </div>
-          <div class="mdl-card__supporting-text">
-            Welcome to my new website.
+          <div class="demo-card-wide mdl-card mdl-shadow--2dp masonry-item">
+            <div class="mdl-card__title" style="background: url('/assets/thumbnail/games.png') center / cover;">
+              <h2 class="mdl-card__title-text">Games</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+              A vast collection of games! 1v1.lol, 2048, Drive Mad, and more!
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Play
+              </a>
+            </div>
+            <div class="mdl-card__menu">
+
+            </div>
           </div>
-          <div class="mdl-card__actions mdl-card--border">
-            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-              Get Started
-            </a>
-          </div>
-          <div class="mdl-card__menu">
-            
+          <div class="demo-card-wide mdl-card mdl-shadow--2dp masonry-item">
+            <div class="mdl-card__title" style="background: url('/assets/thumbnail/unblocker.jpg') center / cover;">
+              <h2 class="mdl-card__title-text">The Ultimate Bookmarks</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+              A collection of bookmarks of unblockers, games, Piped links and more!
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Download
+              </a>
+            </div>
+            <div class="mdl-card__menu">
+
+            </div>
           </div>
         </div>
-        <div class="demo-card-wide mdl-card mdl-shadow--2dp">
-          <div class="mdl-card__title" style="background: url('/assets/thumbnail/games.png') center / cover;">
-            <h2 class="mdl-card__title-text">Games</h2>
-          </div>
-          <div class="mdl-card__supporting-text">
-            A vast collection of games! 1v1.lol, 2048, Drive Mad, and more!
-          </div>
-          <div class="mdl-card__actions mdl-card--border">
-            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-              Play
-            </a>
-          </div>
-          <div class="mdl-card__menu">
-            
-          </div>
-        </div>
-        <div class="demo-card-wide mdl-card mdl-shadow--2dp">
-          <div class="mdl-card__title" style="background: url('/assets/thumbnail/unblocker.jpg') center / cover;">
-            <h2 class="mdl-card__title-text">The Ultimate Bookmarks</h2>
-          </div>
-          <div class="mdl-card__supporting-text">
-            A collection of bookmarks of unblockers, games, Piped links and more!
-          </div>
-          <div class="mdl-card__actions mdl-card--border">
-            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-              Download
-            </a>
-          </div>
-          <div class="mdl-card__menu">
-            
-          </div>
-        </div>
+
       </div>
     </main>
     <dialog class="mdl-dialog">
