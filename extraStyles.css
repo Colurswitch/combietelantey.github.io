@@ -3,9 +3,10 @@
 }
 
 .demo-card-wide.mdl-card {
-    float: left;
-    margin: 2px;
-    width: calc((100% / 3) - 2px);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: masonry;
+    masonry-auto-flow: next;
 }
 
 @media (max-width :750px) {
@@ -17,7 +18,7 @@
 .demo-card-wide>.mdl-card__title {
     color: #fff;
     height: 176px;
-    
+
 }
 
 .demo-card-wide>.mdl-card__menu {
