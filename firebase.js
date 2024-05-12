@@ -1,4 +1,9 @@
-import firebase from "./node_modules/firebase/compat/app";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js';
+import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-analytics.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js';
+import { getPerformance } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-performance.js';
+import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -14,11 +19,11 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const analytics = firebase.analytics(app);
-const perf = firebase.performance(app);
-const auth = firebase.auth(app);
-const database = firebase.database(app);
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const perf = getPerformance(app);
+const auth = getAuth(app);
+const database = getDatabase(app);
 
 function signUp(email, password) {
   auth.createUserWithEmailAndPassword(auth, email, password)

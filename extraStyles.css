@@ -5,15 +5,11 @@
 .demo-card-wide.mdl-card {
     float: left;
     margin: 2px;
-    width: calc((100% / 3) - 2px);
+    width: calc((100% / 3) - 4px);
 }
 
 .masonry {
-    display: flex;
-}
-
-.masonry-col {
-    flex-grow: 1;
+    
 }
 
 @media (max-width :750px) {
