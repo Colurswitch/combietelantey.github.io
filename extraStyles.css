@@ -9,7 +9,30 @@
 }
 
 .masonry {
-    
+    display: flex;
+    flex-flow: column wrap;
+    align-content: space-between;
+    /* Your container needs a fixed height, and it 
+    * needs to be taller than your tallest column.
+    height: 600px;  */
+}
+
+.masonry-item:nth-child(3n+1) { order: 1; }
+.masonry-item:nth-child(3n+2) { order: 2; }
+.masonry-item:nth-child(3n)   { order: 3; }
+
+.masonry-item {
+    float: left;
+    margin: 2px;
+    width: calc(100% / 3);
+}
+
+.masonry::before,
+.masonry::after {
+  content: "";
+  flex-basis: 100%;
+  width: 0;
+  order: 2;
 }
 
 @media (max-width :750px) {
