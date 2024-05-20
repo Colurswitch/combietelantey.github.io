@@ -10,7 +10,7 @@
 .masonry {
     display: grid;
     grid-gap: 1em;
-    grid-template-columns: repeat(auto-fill, minmax(calc(750px / 3), calc(100% / 3)));
+    grid-template-columns: repeat(auto-fill, minmax(calc((750px / 3) - 1em), calc((100% / 3) - 1em)));
     grid-auto-rows: 1;
 }
 
