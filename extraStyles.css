@@ -5,6 +5,7 @@
 .demo-card-wide.mdl-card {
     margin: 2px;
     width: 100%;
+    height: 100%;
 }
 
 .masonry {
@@ -14,10 +15,11 @@
     grid-auto-rows: 1;
 }
 
+.masonry > .demo-card-wide.mdl-card:first-child {
+    grid-area: 1 1 2 2;
+}
+
 @media (max-width :750px) {
-    .demo-card-wide.mdl-card {
-        width: 100%;
-    }
 
     .masonry {
         grid-template-columns: none;
