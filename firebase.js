@@ -26,7 +26,7 @@ const auth = getAuth(app);
 const database = getDatabase(app);
 
 function signUp(email, password) {
-  auth.createUserWithEmailAndPassword(auth, email, password)
+  createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed up 
     const user = userCredential.user;
