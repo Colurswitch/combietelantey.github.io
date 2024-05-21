@@ -24,6 +24,7 @@ const analytics = getAnalytics(app);
 const perf = getPerformance(app);
 const auth = getAuth(app);
 const database = getDatabase(app);
+console.log(app);
 
 function signUp(email, password) {
   createUserWithEmailAndPassword(auth, email, password)

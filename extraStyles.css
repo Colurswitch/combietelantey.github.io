@@ -17,6 +17,11 @@
 
 .masonry > .demo-card-wide.mdl-card:first-child {
     grid-area: 1 / 1 / span 2 / span 2;
+
+}
+
+.masonry > .demo-card-wide.mdl-card:first-child > .mdl-card__title {
+    height: 100%;
 }
 
 .masonry > .demo-card-wide.mdl-card > .mdl-card__supporting-text {
@@ -27,10 +32,6 @@
 
     .masonry {
         grid-template-columns: none;
-    }
-
-    .masonry > .demo-card-wide.mdl-card:first-child {
-        grid-area: 1 1 2 2;
     }
 }
 

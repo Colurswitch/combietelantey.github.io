@@ -1,7 +1,7 @@
 // Set the date we're counting down to
 var countDownDate = new Date("May 25, 2024 16:00:00").getTime();
 // Set the HTML element the timer will display in
-var element = document.getElementById("countdown")
+var element = document.querySelector("#countdown");
 
 // Update the count down every 1 second
 var x = setInterval(function() {
