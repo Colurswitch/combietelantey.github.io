@@ -16,7 +16,11 @@
 }
 
 .masonry > .demo-card-wide.mdl-card:first-child {
-    grid-area: 1 1 2 2;
+    grid-area: 1 / 1 / span 2 / span 2;
+}
+
+.masonry > .demo-card-wide.mdl-card > .mdl-card__supporting-text {
+    height: 13.4%;
 }
 
 @media (max-width :750px) {
