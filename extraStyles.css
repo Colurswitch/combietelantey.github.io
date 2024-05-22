@@ -33,6 +33,10 @@
     .masonry {
         grid-template-columns: none;
     }
+    .masonry > .demo-card-wide.mdl-card:first-child {
+        grid-area: 1 / 1 / span 1 / span 1;
+    
+    }
 }
 
 .demo-card-wide>.mdl-card__title {
