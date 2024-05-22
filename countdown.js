@@ -1,7 +1,7 @@
 // Set the date we're counting down to
 var countDownDate = new Date("May 25, 2024 16:00:00").getTime();
 // Set the HTML element the timer will display in
-var element = document.getElementsByClassName(".mdl-card__title-text").item(0);
+var element = document.getElementsByClassName("mdl-card__title-text").item(0);
 
 // Update the count down every 1 second
 window.onload = function () {
