@@ -20,8 +20,8 @@ window.onload = function () {
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Display the result in the element with id="demo"
-        element.innerHTML = days + "days, " + hours + "hours, "
-            + minutes + "minutes and " + seconds + "seconds left";
+        element.innerHTML = days + " days, " + hours + " hours, "
+            + minutes + " minutes and " + seconds + " seconds left";
 
         // If the count down is finished, write some text
         if (distance < 0) {

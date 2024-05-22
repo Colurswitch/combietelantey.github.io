@@ -42,7 +42,7 @@
 .demo-card-wide>.mdl-card__title {
     color: #fff;
     height: 176px;
-
+    text-shadow: 0 0 5px black;
 }
 
 .demo-card-wide>.mdl-card__menu {
