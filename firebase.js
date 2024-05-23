@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js';
 import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-analytics.js';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserSessionPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js';
 import { getPerformance } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-performance.js';
 import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js';
 
@@ -24,9 +24,19 @@ const analytics = getAnalytics(app);
 const perf = getPerformance(app);
 const auth = getAuth(app);
 const database = getDatabase(app);
+const user = auth.currentUser;
 console.log(app);
+console.log(analytics);
+console.log(perf);
+console.log(auth);
+console.log(database);
 
-function signUp(email, password) {
+function signUp(email, password, stay) {
+	if(stay){
+		setPersistence(auth, browserLocalPersistence)
+	} else {
+		setPersistence(auth, browserSessionPersistence)
+	}
   createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed up 
@@ -36,11 +46,16 @@ function signUp(email, password) {
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
-    // ..
+    console.error(`${errorCode}: ${errorMessage}`);
   });
 }
 
-function signIn(email, password){
+function signIn(email, password, stay){
+	if(stay){
+		setPersistence(auth, browserLocalPersistence)
+	} else {
+		setPersistence(auth, browserSessionPersistence)
+	}
 	signInWithEmailAndPassword(auth,email,password)
   .then((userCredential) => {
     // Signed in 
@@ -51,6 +66,6 @@ function signIn(email, password){
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
-	console.log(`${errorCode}: ${errorMessage}`);
+	console.error(`${errorCode}: ${errorMessage}`);
   });
 }
