@@ -11,9 +11,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/extraStyles.css" />
-  <script>
-    var dialog = document.querySelector("dialog[open]");
-  </script>
+  <script type="module" src="./firebase.js"></script>
+  <script type="module" src="./material.js"></script>
+  <script type="module" src="./menu.js"></script>
 </head>
 
 <body>
@@ -138,10 +138,10 @@
         <button type="button" class="mdl-button close"
           onclick="signUp(document.getElementById('signUpEmail').value,document.getElementById('signUpPassword').value,document.getElementById('chkStayS').value);dialog.close();">Sign
           up</button>
-        <button type="button" class="mdl-button close" onclick="dialog.close();document.getElementById('dlgLogIn').showModal()">
+        <button type="button" class="mdl-button close" onclick="document.querySelector('dialog[open]').close();document.getElementById('dlgLogIn').showModal()">
           Log In Instead
         </button>
-        <button type="button" class="mdl-button close" onclick="dialog.close();">
+        <button type="button" class="mdl-button close" onclick="document.querySelector('dialog[open]').close();">
           Close
         </button>
       </div>
@@ -168,10 +168,10 @@
         <button type="button" class="mdl-button close"
           onclick="signIn(document.getElementById('logInEmail').value,document.getElementById('logInPassword').value,document.getElementById('chkStayL').value);dialog.close()">Sign
           up</button>
-        <button type="button" class="mdl-button close" onclick="dialog.close();document.getElementById('dlgSignUp').showModal()">
+        <button type="button" class="mdl-button close" onclick="document.querySelector('dialog[open]').close();document.getElementById('dlgSignUp').showModal()">
           Sign Up Instead
         </button>
-        <button type="button" class="mdl-button close" onclick="dialog.close()">
+        <button type="button" class="mdl-button close" onclick="document.querySelector('dialog[open]').close()">
           Close
         </button>
       </div>
@@ -180,9 +180,6 @@
     </script>
   </div>
   <script src="./countdown.js"></script>
-  <script type="module" src="./firebase.js"></script>
-  <script type="module" src="./material.js"></script>
-  <script type="module" src="./menu.js"></script>
   <script src="./preload.js"></script>
   <script src="./masonry.js"></script>
   <script src="./includeHTML.js"></script>
