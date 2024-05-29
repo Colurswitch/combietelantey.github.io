@@ -175,10 +175,19 @@
         </button>
       </div>
     </dialog>
+    <dialog class="mdl-dialog" open>
+      <h4 class="mdl-dialog__title">I moved</h4>
+      <div class="mdl-dialog__content">
+        <p>
+          I have moved to another website. You will be teleported there in 5 seconds.
+        </p>
+      </div>
+    </dialog>
     <script>
+      setTimeout(() => {
+        window.location.href = "https://combiete-lantey.flutterflow.app";
+      }, 5000);
     </script>
-  </div>
-  <script src="./countdown.js"></script>
   <script src="./preload.js"></script>
   <script src="./masonry.js"></script>
   <script src="./includeHTML.js"></script>
