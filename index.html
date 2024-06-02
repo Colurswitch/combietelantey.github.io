@@ -10,172 +10,11 @@
   <meta name="viewport" content="width=device-width" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <link rel="stylesheet" href="/styles.css" />
-  <link rel="stylesheet" href="/extraStyles.css" />
 </head>
 
 <body>
-  <script type="module" src="./firebase.js"></script>
   <script type="module" src="./material.js"></script>
-  <script type="module" src="./menu.js"></script>
-  <!-- The drawer is always open in large screens. The header is always shown,
-  even in small screens. -->
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-    <header class="mdl-layout__header">
-      <div class="mdl-layout__header-row">
-        <span class="mdl-layout-title">Home</span>
-        <div class="mdl-layout-spacer"></div>
-        <div
-          class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
-          <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
-            <i class="material-icons">search</i>
-          </label>
-          <div class="mdl-textfield__expandable-holder">
-            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" />
-          </div>
-        </div>
-        <button class="mdl-button mdl-js-button mdl-button--icon" id="btnSignIn" onclick="document.getElementById('dlgSignUp').showModal();">
-          <i class="material-icons">account_circle</i>
-        </button>
-      </div>
-    </header>
-    <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
-    <div class="mdl-layout__drawer">
-      <img src="/assets/logo/original_logo.png" style="scale:0.7;padding-top:15px;">
-      <nav class="mdl-navigation">
-      </nav>
-    </div>
-    <main class="mdl-layout__content">
-      <div class="page-content">
-        <div class="masonry">
-          <div class="demo-card-wide mdl-card mdl-shadow--2dp masonry-item">
-            <div class="mdl-card__title" style="background: url('/assets/thumbnail/summer.jpg') center / cover;">
-              <h2 class="mdl-card__title-text" id="countdown">Welcome</h2>
-              
-            </div>
-            <div class="mdl-card__supporting-text">
-              until summer break!
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                Get Started
-              </a>
-            </div>
-            <div class="mdl-card__menu">
-
-            </div>
-          </div>
-          <div class="demo-card-wide mdl-card mdl-shadow--2dp masonry-item">
-            <div class="mdl-card__title" style="background: url('/assets/thumbnail/welcome_card.jpg') center / cover;">
-              <h2 class="mdl-card__title-text">Welcome</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-              Welcome to my new website.
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                Get Started
-              </a>
-            </div>
-            <div class="mdl-card__menu">
-
-            </div>
-          </div>
-          <div class="demo-card-wide mdl-card mdl-shadow--2dp masonry-item">
-            <div class="mdl-card__title" style="background: url('/assets/thumbnail/games.png') center / cover;">
-              <h2 class="mdl-card__title-text">Games</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-              A vast collection of games! 1v1.lol, 2048, Drive Mad, and more!
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                Play
-              </a>
-            </div>
-            <div class="mdl-card__menu">
-
-            </div>
-          </div>
-          <div class="demo-card-wide mdl-card mdl-shadow--2dp masonry-item">
-            <div class="mdl-card__title" style="background: url('/assets/thumbnail/unblocker.jpg') center / cover;">
-              <h2 class="mdl-card__title-text">The Ultimate Bookmarks</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-              A collection of bookmarks of unblockers, games, Piped links and more!
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                Download
-              </a>
-            </div>
-            <div class="mdl-card__menu">
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </main>
-    <dialog class="mdl-dialog" id="dlgSignUp">
-      <h4 class="mdl-dialog__title">Sign up</h4>
-      <div class="mdl-dialog__content">
-        <form action="#">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="email" id="signUpEmail" />
-            <label class="mdl-textfield__label" for="signUpEmail">Email</label>
-          </div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="password" id="signUpPassword" />
-            <label class="mdl-textfield__label" for="signUpPassword">Password</label>
-          </div>
-          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="chkStayS">
-            <input type="checkbox" id="chkStayS" class="mdl-checkbox__input" checked>
-            <span class="mdl-checkbox__label">Keep me signed in</span>
-          </label>
-        </form>
-      </div>
-      <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button close"
-          onclick="signUp(document.getElementById('signUpEmail').value,document.getElementById('signUpPassword').value,document.getElementById('chkStayS').value);dialog.close();">Sign
-          up</button>
-        <button type="button" class="mdl-button close" onclick="document.querySelector('dialog[open]').close();document.getElementById('dlgLogIn').showModal()">
-          Log In Instead
-        </button>
-        <button type="button" class="mdl-button close" onclick="document.querySelector('dialog[open]').close();">
-          Close
-        </button>
-      </div>
-    </dialog>
-    <dialog class="mdl-dialog" id="dlgLogIn">
-      <h4 class="mdl-dialog__title">Log In</h4>
-      <div class="mdl-dialog__content">
-        <form action="#">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="email" id="logInEmail" />
-            <label class="mdl-textfield__label" for="signUpEmail">Email</label>
-          </div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="password" id="logInPassword" />
-            <label class="mdl-textfield__label" for="signUpPassword">Password</label>
-          </div>
-          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="chkStayL">
-            <input type="checkbox" id="chkStayL" class="mdl-checkbox__input" checked>
-            <span class="mdl-checkbox__label">Keep me signed in</span>
-          </label>
-        </form>
-      </div>
-      <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button close"
-          onclick="signIn(document.getElementById('logInEmail').value,document.getElementById('logInPassword').value,document.getElementById('chkStayL').value);dialog.close()">Log In</button>
-        <button type="button" class="mdl-button close" onclick="document.querySelector('dialog[open]').close();document.getElementById('dlgSignUp').showModal()">
-          Sign Up Instead
-        </button>
-        <button type="button" class="mdl-button close" onclick="document.querySelector('dialog[open]').close()">
-          Close
-        </button>
-      </div>
-    </dialog>
-    <dialog class="mdl-dialog" open>
+  <dialog class="mdl-dialog" open>
       <h4 class="mdl-dialog__title">I moved</h4>
       <div class="mdl-dialog__content">
         <p>
@@ -188,9 +27,6 @@
         window.location.href = "https://combiete-lantey.flutterflow.app";
       }, 5000);
     </script>
-  <script src="./preload.js"></script>
-  <script src="./masonry.js"></script>
-  <script src="./includeHTML.js"></script>
 </body>
 
 </html>
