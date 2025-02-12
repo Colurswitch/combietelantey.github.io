@@ -14,7 +14,7 @@
     @import "https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css";
 
     #pages-grid {
-      display: flex !important;
+      display: grid !important;
       flex-wrap: wrap;
       overflow-x: auto;
       padding: 10px;
@@ -30,6 +30,84 @@
       /* Same width as height? */
       width: 300px;
       height: 300px;
+    }
+
+    @media only screen and (max-width: 200px) {
+      #pages-grid {
+        grid-template-columns: auto;
+      }
+    }
+
+    @media only screen and (max-width: 300px) {
+      #pages-grid {
+        grid-template-columns: auto auto;
+      }
+    }
+
+    @media only screen and (max-width: 400px) {
+      #pages-grid {
+        grid-template-columns: auto auto auto;
+      }
+    }
+
+    @media only screen and (max-width: 500px) {
+      #pages-grid {
+        grid-template-columns: auto auto auto auto;
+      }
+    }
+
+    @media only screen and (max-width: 600px) {
+      #pages-grid {
+        grid-template-columns: auto auto auto auto auto;
+      }
+    }
+
+    @media only screen and (max-width: 700px) {
+      #pages-grid {
+        grid-template-columns: auto auto auto auto auto auto;
+      }
+    }
+
+    @media only screen and (max-width: 800px) {
+      #pages-grid {
+        grid-template-columns: auto auto auto auto auto auto auto;
+      }
+    }
+
+    @media only screen and (max-width: 900px) {
+      #pages-grid {
+        grid-template-columns: auto auto auto auto auto auto auto auto;
+      }
+    }
+
+    @media only screen and (max-width: 1000px) {
+      #pages-grid {
+        grid-template-columns: auto auto auto auto auto auto auto auto auto;
+      }
+    }
+    
+    @media only screen and (max-width: 1100px) {
+      #pages-grid {
+        grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+      }
+    }
+    
+    @media only screen and (max-width: 1200px) {
+      #pages-grid {
+        grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto;
+      }
+    }
+    
+    @media only screen and (max-width: 1300px) {
+      #pages-grid {
+        grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
+      }
+    }
+    
+    @media only screen and (max-width: 1400px) {
+      #pages-grid {
+        grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto;
+      }
     }
 
     .page-icon {
