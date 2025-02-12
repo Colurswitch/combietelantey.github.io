@@ -13,7 +13,36 @@
   <style>
     @import "https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css";
 
+    #pages-grid {
+      display: flex !important;
+      flex-wrap: wrap;
+      overflow-x: auto;
+      padding: 10px;
+    }
+
+    #pages-grid .box {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center;
+      text-align: center;
+      flex-direction: column;
+      padding: 55px;
+      /* Same width as height? */
+      width: 300px;
+      height: 300px;
+    }
+
+    .page-icon {
+      font-size: 80px;
+      margin-bottom: 10px;
+    }
+
+    .page-title {
+      font-size: 30px;
+    }
   </style>
+  <script src="firebase.js" type="module" async defer></script>
+  <script src="qod.js"></script>
 </head>
 
 <body>
@@ -60,6 +89,11 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
+            <a href="#" class="button is-light"><span class="material-icons">settings</span></a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <div class="buttons">
             <a class="button is-primary">
               <strong>Sign up</strong>
             </a>
@@ -71,7 +105,26 @@
       </div>
     </div>
   </nav>
-  
+  <h1 id="lblQod"></h1>
+  <div id="pages-grid">
+    <div class="box">
+      <h1 class="page-icon material-icons">video_library</h1>
+      <h3 class="page-title">Example</h3>
+    </div>
+  </div>
+  <script>
+    window.onload = () => {
+      qod.create("lblQod");
+      pageList.create("pages-grid",[
+        {icon:"video_library",title:"Video Library",url:"/videos"},
+        {icon:"book",title:"Books",url:"/books"},
+        {icon:"movie",title:"Movies",url:"/movies"},
+        {icon:"music_note",title:"Music",url:"/music"},
+        {icon:"speaker_notes",title:"Notes",url:"/notes"},
+        {icon:"image",title:"Images",url:"/images"},
+      ]);
+    }
+  </script>
 </body>
 
 </html>
