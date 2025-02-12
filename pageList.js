@@ -7,5 +7,9 @@ const pageList = {
                 <h3 class="page-title">${page.title}</h3>
             </div>`;
         });
+    },
+    navigate: function(destination) {
+        // Navigate to the specified destination page
+        console.log(`Navigating to ${destination}`);
     }
 }

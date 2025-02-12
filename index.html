@@ -13,12 +13,36 @@
   <style>
     @import "https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css";
 
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgb(158, 24, 24);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: -1000;
+    }
+
+    .navbar {
+      background-color: rgba(0,0,0,.2);
+      color: white !important;
+    }
+
+    .navbar-item {
+      color: white !important;
+    }
+    
     #pages-grid {
       display: grid !important;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       flex-wrap: wrap;
       overflow-x: auto;
       padding: 10px;
+      justify-items: center;
     }
 
     #pages-grid .box {
@@ -31,6 +55,9 @@
       /* Same width as height? */
       width: 300px;
       height: 300px;
+      box-shadow: none !important;
+      background-color: rgba(0, 0, 0, .2);
+      color: white;
     }
 
     .page-icon {
@@ -51,7 +78,7 @@
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="#">
-        <img src="./assets/logo/original_logo.png" />
+        <img src="./assets/logo/original_logo.png" alt="Combiete Lantey" />
       </a>
     </div>
   
