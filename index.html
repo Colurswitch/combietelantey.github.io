@@ -60,6 +60,22 @@
       color: white;
     }
 
+    #page-view {
+      display: flex;
+      height: 100vh;
+    }
+
+    .page-view-left {
+      height: 100% !important;
+      border: 1px solid red;
+    }
+
+    .page-view-left .bottom img {
+      transform: rotate(-90deg);
+      bottom: 0 !important;
+
+    }
+
     .page-icon {
       font-size: 80px;
       margin-bottom: 10px;
@@ -143,7 +159,7 @@
       </div>
     </div>
   </div>
-  <div class="dashboard" id="page-view" style="display: none;">
+  <div class="dashboard" id="page-view" hidden="true">
     <div class="page-view-left">
       <section class="top">
         <p class="buttons">

@@ -14,6 +14,6 @@ const pageList = {
         
         document.getElementById("inner-page-view").src = destination;
         document.getElementById("main-view").style.display = "none";
-        document.getElementById("page-view").style.display = "block";
+        document.getElementById("page-view").style.display = "flex";
     }
 }
