@@ -60,6 +60,10 @@
       color: white;
     }
 
+    #dashboard-transition {
+      animation: main-to-page 1s ease-in-out;
+    }
+
     .page-icon {
       font-size: 80px;
       margin-bottom: 10px;
@@ -68,6 +72,12 @@
     .page-title {
       font-size: 30px;
     }
+
+    @keyframes main-to-page {
+      75% {
+        width: 100px;
+      }
+    }
   </style>
   <script src="firebase.js" type="module" async defer></script>
   <script src="qod.js"></script>
@@ -75,70 +85,72 @@
 </head>
 
 <body>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="#">
-        <img src="./assets/logo/original_logo.png" alt="Combiete Lantey" />
-      </a>
-    </div>
-  
-    <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start">
-        <a class="navbar-item">
-          Home
+  <div class="dashboard" id="dashboard-transition">
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+          <img src="./assets/logo/original_logo.png" alt="Combiete Lantey" />
         </a>
-  
-        <a class="navbar-item">
-          Documentation
-        </a>
-  
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            More
+      </div>
+    
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item">
+            Home
           </a>
-  
-          <div class="navbar-dropdown">
-            <a class="navbar-item">
-              About
+    
+          <a class="navbar-item">
+            Documentation
+          </a>
+    
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              More
             </a>
-            <a class="navbar-item is-selected">
-              Jobs
-            </a>
-            <a class="navbar-item">
-              Contact
-            </a>
-            <hr class="navbar-divider">
-            <a class="navbar-item">
-              Report an issue
-            </a>
+    
+            <div class="navbar-dropdown">
+              <a class="navbar-item">
+                About
+              </a>
+              <a class="navbar-item is-selected">
+                Jobs
+              </a>
+              <a class="navbar-item">
+                Contact
+              </a>
+              <hr class="navbar-divider">
+              <a class="navbar-item">
+                Report an issue
+              </a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <a href="#" class="button is-light"><span class="material-icons">settings</span></a>
+            </div>
+          </div>
+          <div class="navbar-item">
+            <div class="buttons">
+              <a class="button is-primary">
+                <strong>Sign up</strong>
+              </a>
+              <a class="button is-light">
+                Log in
+              </a>
+            </div>
           </div>
         </div>
       </div>
-  
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
-            <a href="#" class="button is-light"><span class="material-icons">settings</span></a>
-          </div>
-        </div>
-        <div class="navbar-item">
-          <div class="buttons">
-            <a class="button is-primary">
-              <strong>Sign up</strong>
-            </a>
-            <a class="button is-light">
-              Log in
-            </a>
-          </div>
-        </div>
+    </nav>
+    <h1 id="lblQod"></h1>
+    <div id="pages-grid">
+      <div class="box">
+        <h1 class="page-icon material-icons">video_library</h1>
+        <h3 class="page-title">Example</h3>
       </div>
-    </div>
-  </nav>
-  <h1 id="lblQod"></h1>
-  <div id="pages-grid">
-    <div class="box">
-      <h1 class="page-icon material-icons">video_library</h1>
-      <h3 class="page-title">Example</h3>
     </div>
   </div>
   <script>
