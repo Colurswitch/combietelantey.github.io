@@ -1,9 +1,9 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
+import { initializeApp } from '/firebase/app';
+import { getAnalytics } from '/firebase/analytics';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserSessionPersistence, browserLocalPersistence } from ' firebase/auth';
-import { getPerformance } from 'firebase/performance';
-import { getDatabase } from 'firebase/database';
+import { getPerformance } from '/firebase/performance';
+import { getDatabase } from '/firebase/database';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -32,11 +32,7 @@ console.log(auth);
 console.log(database);
 
 function signUp(email, password, stay) {
-	if(stay){
-		setPersistence(auth, browserLocalPersistence)
-	} else {
-		setPersistence(auth, browserSessionPersistence)
-	}
+	setPersistence(auth, stay? browserLocalPersistence : browserSessionPersistence);
   createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed up 

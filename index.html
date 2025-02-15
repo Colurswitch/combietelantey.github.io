@@ -60,10 +60,6 @@
       color: white;
     }
 
-    #dashboard-transition {
-      animation: main-to-page 1s ease-in-out;
-    }
-
     .page-icon {
       font-size: 80px;
       margin-bottom: 10px;
@@ -72,12 +68,6 @@
     .page-title {
       font-size: 30px;
     }
-
-    @keyframes main-to-page {
-      75% {
-        width: 100px;
-      }
-    }
   </style>
   <script src="firebase.js" type="module" async defer></script>
   <script src="qod.js"></script>
@@ -85,7 +75,7 @@
 </head>
 
 <body>
-  <div class="dashboard" id="dashboard-transition">
+  <div class="dashboard" id="main-view">
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="#">
@@ -151,6 +141,25 @@
         <h1 class="page-icon material-icons">video_library</h1>
         <h3 class="page-title">Example</h3>
       </div>
+    </div>
+  </div>
+  <div class="dashboard" id="page-view" style="display: none;">
+    <div class="page-view-left">
+      <section class="top">
+        <p class="buttons">
+          <button class="button" onclick="document.getElementById('main-view').style.display = 'block';document.getElementById('page-view').style.display = 'none';">
+            <span class="icon">
+              <i class="material-icons">menu</i>
+            </span>
+          </button>
+        </p>
+      </section>
+      <section class="bottom">
+        <img src="assets/logo/original_logo.png" alt="Combiete Lantey" height="90px" />
+      </section>
+    </div>
+    <div class="page-view-right">
+      <iframe src="#" width="100%" height="100%" id="inner-page-view"></iframe>
     </div>
   </div>
   <script>
