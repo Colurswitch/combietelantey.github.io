@@ -19,7 +19,7 @@ const app = {
         document.addEventListener('keydown', function(event) {
             const key = event.key;
             const keyNum = parseInt(key);
-            if (!isNaN(keyNum) && keyNum >= 1 && keyNum <= panicLinks.length) {
+            if (!isNaN(keyNum) && keyNum >= 1 && keyNum <= panicLinks.length && event.ctrlKey && event.altKey && event.shiftKey) {
                 app.panic(keyNum - 1);
             }
             // Prevent default browser action for number keys
