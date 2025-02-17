@@ -4,6 +4,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Videos</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <style>
+        #videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto, minmax(30px, 1fr));
+        }
+
+        .videos-grid-item {
+            width: 300px;
+            min-height: 200px;
+            padding: 0 !important;
+
+        }
+    </style>
     <script src="firebase.js"></script>
 </head>
 <body>
