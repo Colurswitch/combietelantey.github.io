@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="/styles.css" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-EFKP3BE1B3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -194,11 +195,7 @@
         <p class="modal-card-title">Settings</p>
       </header>
       <section class="modal-card-body">
-        <label class="checkbox">
-          <input type="checkbox" name="chkTVMode" id="chkTVMode" />
-          TV Mode
-        </label>
-
+        <div id="settings-container"></div>
       </section>
       <footer class="modal-card-foot">
         <div class="buttons">
@@ -221,6 +218,19 @@
         {icon:"image",title:"Images",url:"/images"}
       ]);
       app.setup();
+      const editor = new JSONEditor(document.getElementById('settings-container'), {
+        theme: "html",
+        showErrors: "change",
+        schema: {
+          type: "object",
+          properties: {
+            "test": {
+              title: "Test",
+              type: "string"
+            }
+          }
+        }
+      });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
