@@ -74,6 +74,14 @@
       height: 100vh;
     }
 
+    #news {
+      background-color: rgba(0, 0, 0, .2);
+      color: white;
+      padding: 10px;
+      text-align: center;
+      width: calc(100%-100px);
+    }
+
     .page-view-left {
       height: 100% !important;
       padding: 5px;
@@ -93,7 +101,7 @@
     }
 
     .page-view-right iframe {
-      width: calc(100vw - 62px) !important;
+      width: calc(100vw - 48px) !important;
     }
 
     .page-icon {
@@ -155,7 +163,7 @@
   <div class="dashboard" id="page-view" style="display: none;">
     <div class="page-view-left">
       <section class="top">
-        <p class="buttons">
+        <p class="buttons" style="width: 38px;">
           <button class="button" onclick="document.getElementById('main-view').style.display = 'block';document.getElementById('page-view').style.display = 'none';">
             <span class="icon">
               <i class="material-icons">menu</i>
