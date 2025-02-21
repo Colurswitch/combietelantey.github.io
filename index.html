@@ -187,7 +187,7 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <button class="js-modal-trigger" data-target="dlgSettings"><span class="material-icons">settings</span></button>
+              <button class="js-modal-trigger button" data-target="dlgSettings"><span class="material-icons">settings</span></button>
             </div>
           </div>
           <div class="navbar-item">
@@ -233,7 +233,7 @@
               <i class="material-icons">error</i>
             </span>
           </button>
-          <button class="js-modal-trigger" data-target="dlgSettings">
+          <button class="js-modal-trigger button" data-target="dlgSettings">
             <span class="icon">
               <i class="material-icons">settings</i>
             </span>
@@ -287,12 +287,14 @@
         disable_properties: true,
         disable_edit_json: true,
         disable_collapse: true,
+        compact: true,
         schema: {
           type: "object",
           properties: {
             "tvmode": {
               title: "TV Mode",
-              type: "boolean"
+              type: "boolean",
+              format: "checkbox"
             },
             "panicLinks": {
               title: "Panic Links",
@@ -306,7 +308,7 @@
         }
       });
       editor.on("change", () => {
-        app.saveSettings(editor.get());
+        appValues = editor.getValue();
       })
     }
 
