@@ -47,11 +47,7 @@ function signUp(email, password, stay) {
 }
 
 function signIn(email, password, stay){
-	if(stay){
-		setPersistence(auth, browserLocalPersistence)
-	} else {
-		setPersistence(auth, browserSessionPersistence)
-	}
+  setPersistence(auth, stay? browserLocalPersistence : browserSessionPersistence);
 	signInWithEmailAndPassword(auth,email,password)
   .then((userCredential) => {
     // Signed in 

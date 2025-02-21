@@ -175,6 +175,11 @@
               <i class="material-icons">error</i>
             </span>
           </button>
+          <button class="js-modal-trigger" data-target="dlgSettings">
+            <span class="icon">
+              <i class="material-icons">settings</i>
+            </span>
+          </button>
         </p>
       </section>
     </div>
@@ -189,7 +194,11 @@
         <p class="modal-card-title">Settings</p>
       </header>
       <section class="modal-card-body">
-        <!-- Content ... -->
+        <label class="checkbox">
+          <input type="checkbox" name="chkTVMode" id="chkTVMode" />
+          TV Mode
+        </label>
+
       </section>
       <footer class="modal-card-foot">
         <div class="buttons">
@@ -209,8 +218,7 @@
         {icon:"movie",title:"Movies",url:"/movies"},
         {icon:"music_note",title:"Music",url:"/music"},
         {icon:"speaker_notes",title:"Notes",url:"/notes"},
-        {icon:"image",title:"Images",url:"/images"},
-        {icon:"settings",title:"Settings",url:"/settings"}
+        {icon:"image",title:"Images",url:"/images"}
       ]);
       app.setup();
     }
