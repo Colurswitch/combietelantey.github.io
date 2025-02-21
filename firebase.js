@@ -1,9 +1,9 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from '/firebase/app';
-import { getAnalytics } from '/firebase/analytics';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserSessionPersistence, browserLocalPersistence } from ' firebase/auth';
-import { getPerformance } from '/firebase/performance';
-import { getDatabase } from '/firebase/database';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js';
+import { getAnalytics } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserSessionPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js';
+import { getPerformance } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-performance.js';
+import { getDatabase } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -62,6 +62,6 @@ function signIn(email, password, stay){
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
-	console.error(`${errorCode}: ${errorMessage}`);
+	  console.error(`${errorCode}: ${errorMessage}`);
   });
 }

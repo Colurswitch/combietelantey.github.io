@@ -29,7 +29,13 @@
             <h1>404</h1>
             <h2>Page not found</h2>
             <p>The page you are looking for has moved, or does not exist.</p>
-            <a href="index.html" class="button">Home</a>
+            <a href="index.html" class="button" id="home">Home</a>
         </div>
+        <script>
+            // Is the page running in an iframe?
+            if (window.self !== window.top) {
+                document.getElementById("home").style.display = "none";
+            }
+        </script>
     </body>
 </html>
