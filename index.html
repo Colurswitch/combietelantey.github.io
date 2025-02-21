@@ -13,6 +13,7 @@
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-EFKP3BE1B3"></script>
   <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -81,6 +82,10 @@
       padding: 10px;
       text-align: center;
       width: calc(100%-100px);
+    }
+
+    .json-editor-btn-delete.delete::after , .json-editor-btn-delete.delete::before {
+      display: none !important;
     }
 
     .page-view-left {
@@ -219,14 +224,25 @@
       ]);
       app.setup();
       const editor = new JSONEditor(document.getElementById('settings-container'), {
-        theme: "html",
+        theme: "spectre",
         showErrors: "change",
+        disable_properties: true,
+        disable_edit_json: true,
+        disable_collapse: true,
         schema: {
           type: "object",
           properties: {
-            "test": {
-              title: "Test",
-              type: "string"
+            "tvmode": {
+              title: "TV Mode",
+              type: "boolean"
+            },
+            "panicLinks": {
+              title: "Panic Links",
+              type: "array",
+              format: "table",
+              items: {
+                type: "string"
+              }
             }
           }
         }
