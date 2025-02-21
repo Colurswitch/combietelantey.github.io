@@ -8,13 +8,25 @@
         #videos-grid {
             display: grid;
             grid-template-columns: repeat(auto, minmax(30px, 1fr));
+            
         }
 
         .videos-grid-item {
             width: 300px;
             min-height: 200px;
             padding: 0 !important;
+            margin: 10px;
+        }
 
+        .video-bottom-row {
+            display: flex;
+            flex-direction: row;
+            margin: 10px;
+        }
+
+        .video-author-img {
+            border-radius: 50%;
+            margin: 5px;
         }
     </style>
     <script src="firebase.js"></script>
@@ -35,10 +47,12 @@
         <div class="videos-grid-item box">
             <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail" class="video-thumbnail">
             <div class="video-bottom-row">
-                <img src="https://placehold.co/64x64.png?font=roboto" alt="User" class="video-author">
-                <p class="video-title">Video title</p>
-                <p class="video-author">Author</p>
-                <p class="video-description"></p>
+                <img src="https://placehold.co/64x64.png?font=roboto" alt="User" class="video-author-img">
+                <div class="video-bottom-right">
+                    <p class="video-title">Video title</p>
+                    <p class="video-author">Author</p>
+                    <p class="video-description"></p>
+                </div>
             </div>
         </div>
     </div>
