@@ -46,6 +46,24 @@
     .navbar-item {
       color: white !important;
     }
+
+    .timeanddate {
+      color: white !important;
+      padding: 10px;
+    }
+
+    #currentTime {
+      font-size: 50px;
+    }
+
+    #currentDate {
+      font-size: 30px;
+    }
+
+    #lblQod {
+      color: white !important;
+      padding: 10px;
+    }
     
     #pages-grid {
       display: grid !important;
@@ -149,6 +167,7 @@
   <script src="qod.js"></script>
   <script src="pageList.js"></script>
   <script src="index.js"></script>
+  <script src="timeAndDate.js"></script>
 </head>
 
 <body>
@@ -184,7 +203,11 @@
         </div>
       </div>
     </nav>
-    <h1 id="lblQod"></h1>
+    <h1 id="lblQod">None</h1>
+    <div class="timeanddate">
+      <h1 id="currentTime">Time</h1>
+      <h3 id="currentDate">Date</h3>
+    </div>
     <div id="pages-grid">
       <div class="box">
         <h1 class="page-icon material-icons spinner">refresh</h1>
@@ -256,6 +279,8 @@
         document.getElementById("pages-error").style.display = "block";
       }
       app.setup();
+      tad.createTime("currentTime", true);
+      tad.createDate("currentDate", true);
       const editor = new JSONEditor(document.getElementById('settings-container'), {
         theme: "spectre",
         showErrors: "change",
