@@ -1,18 +1,20 @@
-const panicLinks = [
-    'https://classroom.google.com',
-    'https://ixl.com',
-    'http://www.skyward.com/',
-    'http://launchpad.classlink.com'
-];
+const appValues = {
+    panicLinks : [
+        'https://classroom.google.com',
+        'https://ixl.com',
+        'http://www.skyward.com/',
+        'http://launchpad.classlink.com'
+    ]
+}
 
 const app = {
     panic: function (idx) {
-        if (idx >= panicLinks.length) {
+        if (idx >= appValues.panicLinks.length) {
             console.log("CANNOT PANIC. Index out of bounds.");
             return;
         }
-        console.log("PANIC: " + panicLinks[idx]);
-        window.location.href = panicLinks[idx];
+        console.log("PANIC: " + appValues.panicLinks[idx]);
+        window.location.href = appValues.panicLinks[idx];
     },
     setup: function () {
         // When key combo is pressed, trigger panic function, based on pressed number key

@@ -84,8 +84,34 @@
       width: calc(100%-100px);
     }
 
+    @keyframes spinner {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .spinner {
+      animation: spinner 1s linear infinite;
+      border: 4px solid rgba(0, 0, 0, 0);
+      border-radius: 50%;
+      border-top: 4px solid #fff !important;
+      border-bottom: 4px solid #fff !important;
+      height: 60px;
+      width: 60px;
+      color: transparent;
+    }
+
     .json-editor-btn-delete.delete::after , .json-editor-btn-delete.delete::before {
       display: none !important;
+    }
+
+    .json-editor-btn-delete.delete {
+      max-width: none !important;
+      width: auto !important;
+      background-color: transparent !important;
     }
 
     .page-view-left {
@@ -161,9 +187,12 @@
     <h1 id="lblQod"></h1>
     <div id="pages-grid">
       <div class="box">
-        <h1 class="page-icon material-icons">video_library</h1>
-        <h3 class="page-title">Example</h3>
+        <h1 class="page-icon material-icons spinner">refresh</h1>
+        <h3 class="page-title">Loading...</h3>
       </div>
+      <p id="pages-error" style="display: none;">
+        No pages found or an error occurred.
+      </p>
     </div>
   </div>
   <div class="dashboard" id="page-view" style="display: none;">
@@ -213,15 +242,19 @@
   <script>
     window.onload = () => {
       qod.create("lblQod");
-      pageList.generate("pages-grid",[
-        {icon:"video_library",title:"Video Library",url:"/videos"},
-        {icon:"sports_esports",title:"Games",url:"/games"},
-        {icon:"book",title:"Books",url:"/books"},
-        {icon:"movie",title:"Movies",url:"/movies"},
-        {icon:"music_note",title:"Music",url:"/music"},
-        {icon:"speaker_notes",title:"Notes",url:"/notes"},
-        {icon:"image",title:"Images",url:"/images"}
-      ]);
+      try {
+        pageList.generate("pages-grid",[
+          {icon:"video_library",title:"Video Library",url:"/videos"},
+          {icon:"sports_esports",title:"Games",url:"/games"},
+          {icon:"book",title:"Books",url:"/books"},
+          {icon:"movie",title:"Movies",url:"/movies"},
+          {icon:"music_note",title:"Music",url:"/music"},
+          {icon:"speaker_notes",title:"Notes",url:"/notes"},
+          {icon:"image",title:"Images",url:"/images"}
+        ]);
+      } catch (error) {
+        document.getElementById("pages-error").style.display = "block";
+      }
       app.setup();
       const editor = new JSONEditor(document.getElementById('settings-container'), {
         theme: "spectre",
@@ -247,6 +280,9 @@
           }
         }
       });
+      editor.on("change", () => {
+        app.saveSettings(editor.get());
+      })
     }
 
     document.addEventListener('DOMContentLoaded', () => {
