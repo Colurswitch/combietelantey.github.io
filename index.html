@@ -297,7 +297,7 @@
       } catch (error) {
         document.getElementById("pages-error").style.display = "block";
       }
-      app.setup();
+      wapp.setup();
       tad.createTime("currentTime", true);
       tad.createDate("currentDate", true);
       const editor = new JSONEditor(document.getElementById('settings-container'), {
@@ -307,6 +307,7 @@
         disable_edit_json: true,
         disable_collapse: true,
         compact: true,
+        startval: appValues,
         schema: {
           type: "object",
           properties: {

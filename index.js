@@ -1,4 +1,5 @@
 var appValues = {
+    tvmode: false,
     panicLinks : [
         'https://classroom.google.com',
         'https://ixl.com',
@@ -7,7 +8,7 @@ var appValues = {
     ]
 }
 
-const app = {
+const wapp = {
     panic: function (idx) {
         if (idx >= appValues.panicLinks.length) {
             console.log("CANNOT PANIC. Index out of bounds.");

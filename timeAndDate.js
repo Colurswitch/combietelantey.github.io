@@ -2,7 +2,12 @@ const tad = {
     time: new Date(),
     createTime: function(id, am_pm) {
         setInterval(() => {
-            let time = am_pm ? (this.time.getHours()+1)%12 + ":" + this.time.getMinutes() + ":" + this.time.getSeconds() + " " + ((this.time.getHours()+1)>12?"PM":"AM") : (this.time.getHours()+1) + ":" + this.time.getMinutes() + ":" + this.time.getSeconds();
+            let time = am_pm ? 
+                (this.time.getHours())%12 + ":"
+                + this.time.getMinutes() + ":"
+                + (this.time.getSeconds()<10?"0"+this.time.getSeconds():this.time.getSeconds()) + " "
+                + ((this.time.getHours())>12?"PM":"AM") :
+                (this.time.getHours()) + ":" + this.time.getMinutes() + ":" + this.time.getSeconds();
             document.getElementById(id).innerHTML = time;
         }, 100);
     },
