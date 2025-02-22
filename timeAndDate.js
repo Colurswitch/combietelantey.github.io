@@ -18,3 +18,7 @@ const tad = {
         }, 1000);
     }
 }
+
+setInterval(() => {
+    tad.time = new Date();
+}, 100);

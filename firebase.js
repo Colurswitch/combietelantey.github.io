@@ -4,6 +4,8 @@ import { getAnalytics } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserSessionPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js';
 import { getPerformance } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-performance.js';
 import { getDatabase } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js';
+//Import firebase-compat
+import * as firebase from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-compat.js';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional

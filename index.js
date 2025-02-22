@@ -1,4 +1,4 @@
-const appValues = {
+var appValues = {
     panicLinks : [
         'https://classroom.google.com',
         'https://ixl.com',
