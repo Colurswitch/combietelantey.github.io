@@ -33,7 +33,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgb(158, 24, 24);
+      background: rgb(158, 24, 24);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -230,7 +230,7 @@
             </span>
           </button>
           <!-- Panic button -->
-          <button class="button" onclick="app.panic(0);">
+          <button class="button" onclick="wapp.panic(0);">
             <span class="icon">
               <i class="material-icons">error</i>
             </span>
@@ -258,8 +258,7 @@
       </section>
       <footer class="modal-card-foot">
         <div class="buttons">
-          <button class="button is-success">Save changes</button>
-          <button class="button">Cancel</button>
+          <button class="button">Close</button>
         </div>
       </footer>
     </div>
@@ -283,6 +282,7 @@
   </div>
   <script>
     window.onload = () => {
+      wapp.setup();
       qod.create("lblQod");
       try {
         pageList.generate("pages-grid",[
@@ -297,7 +297,6 @@
       } catch (error) {
         document.getElementById("pages-error").style.display = "block";
       }
-      wapp.setup();
       tad.createTime("currentTime", true);
       tad.createDate("currentDate", true);
       const editor = new JSONEditor(document.getElementById('settings-container'), {
@@ -316,6 +315,11 @@
               type: "boolean",
               format: "checkbox"
             },
+            "am_pm": {
+              title: "12-Hour Format",
+              type: "boolean",
+              format: "checkbox"
+            },
             "panicLinks": {
               title: "Panic Links",
               type: "array",
@@ -323,13 +327,20 @@
               items: {
                 type: "string"
               }
+            },
+            "background": {
+              title: "Background",
+              type: "string"
+              //format: "image"
             }
           }
         }
       });
       editor.on("change", () => {
         appValues = editor.getValue();
+        wapp.save();
       })
+      
     }
 
     document.addEventListener('DOMContentLoaded', () => {
