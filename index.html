@@ -341,7 +341,7 @@
       });
       editor.on("change", () => {
         appValues = editor.getValue();
-        wapp.save();
+        wapp.save(); wapp.setup();
       })
       
     }
