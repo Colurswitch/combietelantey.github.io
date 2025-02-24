@@ -303,12 +303,14 @@
         theme: "spectre",
         showErrors: "change",
         disable_properties: true,
-        disable_edit_json: true,
         disable_collapse: true,
+        enable_array_copy: true,
+        require_by_default: true,
         compact: true,
         startval: appValues,
         schema: {
           type: "object",
+          format: "table",
           properties: {
             "tvmode": {
               title: "TV Mode",
