@@ -39,7 +39,7 @@ const wapp = {
     },
     setup: function () {
         // When key combo is pressed, trigger panic function, based on pressed number key
-        document.addEventListener('keydown', function(event) {
+        /*document.addEventListener('keydown', function(event) {
             const key = event.key;
             const keyNum = parseInt(key);
             if (!isNaN(keyNum) && keyNum >= 1 && keyNum <= panicLinks.length && event.ctrlKey && event.altKey && event.shiftKey) {
@@ -47,7 +47,7 @@ const wapp = {
             }
             // Prevent default browser action for number keys
             event.preventDefault();
-        });
+        });*/
 
         // Can we use localStorage?
         if (wapp.storageAvailable('localStorage')) {
@@ -63,9 +63,8 @@ const wapp = {
         }
 
         // Style body::before
-        var newStyle = document.createElement('style');
-        newStyle.type = 'text/css'; newStyle.innerHTML = "body::before{background:"+appValues.background+";}";
-        document.head.appendChild(newStyle);
+        var newStyle = document.getElementById('settingStyle');
+        newStyle.type = 'text/css'; newStyle.innerHTML = "body::before{background:"+appValues.background+"!important;}";
     },
     save: function() {
         if (wapp.storageAvailable('localStorage')) {
