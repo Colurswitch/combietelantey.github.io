@@ -74,9 +74,10 @@
       display: grid !important;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       flex-wrap: wrap;
-      overflow-x: auto;
+      overflow-y: auto;
       padding: 10px;
       justify-items: center;
+      max-height: calc(100vh - (52px + 44px + 140px));
     }
 
     #pages-grid .box {
