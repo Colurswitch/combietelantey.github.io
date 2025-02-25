@@ -33,6 +33,8 @@ console.log(analytics);
 console.log(perf);
 console.log(auth);
 console.log(database);
+console.log(user);
+console.log(ui);
 
 // Use FirebaseUI to handle the sign-in and sign-up.
 
@@ -58,7 +60,7 @@ function signIn(email, password, stay){
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
-	console.log(user)
+	  console.log(user)
     // ...
   })
   .catch((error) => {
@@ -101,3 +103,5 @@ function initFirebaseUI(){
     //privacyPolicyUrl: '<your-privacy-policy-url>'
   });
 }
+
+initFirebaseUI();

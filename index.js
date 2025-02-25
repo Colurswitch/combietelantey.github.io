@@ -48,6 +48,22 @@ const wapp = {
             // Prevent default browser action for number keys
             event.preventDefault();
         });*/
+        // Initialize error handling
+        window.onerror = function(message, url, lineNo, columnNo, error) {
+            console.error('Error: ', message);
+            console.error('URL: ', url);
+            console.error('Line No: ', lineNo);
+            console.error('Column No: ', columnNo);
+            console.error('Error object: ', error);
+            // Use toastr.js to display error message
+            toastr.error('An error occurred: '+ message + '\n'
+                + 'URL: '+ url + '\n'
+                + 'Line No: '+ lineNo + '\n'
+                + 'Column No: '+ columnNo + '\n'
+                + 'Error: '+ error
+                //,"Error"
+            );
+        }
 
         // Can we use localStorage?
         if (wapp.storageAvailable('localStorage')) {
@@ -65,6 +81,24 @@ const wapp = {
         // Style body::before
         var newStyle = document.getElementById('settingStyle');
         newStyle.type = 'text/css'; newStyle.innerHTML = "body::before{background:"+appValues.background+"!important;}";
+
+        // Initialize toastr.js
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "2000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+          }
     },
     save: function() {
         if (wapp.storageAvailable('localStorage')) {
