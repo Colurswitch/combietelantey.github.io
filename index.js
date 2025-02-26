@@ -76,6 +76,7 @@ const wapp = {
             }
         } else {
             console.log("localStorage NOT available.");
+            toastr.info("Local storage not available.");
         }
 
         // Style body::before
