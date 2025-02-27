@@ -66,14 +66,41 @@
 
         .vp-overlay {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: stretch;
+            align-items: flex-end;
+            flex-direction: column;
             position: absolute;
             top: 20px;
             left: 20px;
             z-index: 1000;
             height: inherit;
             width: inherit !important;
+        }
+
+        #vp-slider {
+            width: 100% !important;
+            height: 5px;
+            background: red;
+            color: red;
+            border: 5px solid red;
+        }
+
+        #vp-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #ff0000;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        #vp-slider::-moz-range-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #ff0000;
+            cursor: pointer;
+            border-radius: 50%;
         }
 
         #video {
