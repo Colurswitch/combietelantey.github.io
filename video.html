@@ -31,8 +31,7 @@
 
         .video-bottom-row {
             display: flex;
-            flex-direction: row;
-            margin: 10px;
+            flex-direction: column;
         }
 
         .video-author-img {
@@ -54,14 +53,16 @@
 
         .video-container {
             width: 100%;
+            display: flex;
         }
 
         .video-player {
             display: flex;
-            margin: 20px;
-            border-radius: 15px;
+            /*margin: 20px;
+            border-radius: 15px;*/
             height: calc((100vw / 16) * 9);
             overflow: hidden;
+            background-color: black;
         }
 
         .vp-main-video {
@@ -134,14 +135,62 @@
             border-radius: 50%;
         }
 
+        .content {
+            padding: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .tabs .tabBtn {
+            color: #495057;
+            border: none;
+            padding: 15px;
+            width: 100vw;
+            cursor: pointer;
+        }
+
+        .tabs .tabBtn:hover {
+            background-color: #cfcfcf;
+        }
+
+        .tabs .tabBtn.active {
+            color: red;
+            border-bottom: 3px solid red;
+        }
+
+        .tab-content-wrapper {
+            margin: 20px;
+            border: 1px solid red;
+        }
+
         #video {
             height: 100%;
         }
 
         /* On desktop, move recommended videos to the right side */
-        @media only screen and (min-width: 768px) {
-            
+        @media only screen and (max-width: 800px) {
+            .video-player {
+                margin: 0;
+                border-radius: 0;
+            }
         }
+
+        @media only screen and (min-width: 800px) {
+            .video-container {
+                flex-direction: row;
+                margin: 10px;
+            }
+
+            .video-player {
+                margin: 0;
+                border-radius: 0;
+            }
+        }
+
 
     </style>
     <script src="firebase.js"></script>
@@ -153,8 +202,19 @@
                 <source id="video-source" src="https://media.istockphoto.com/id/1392471162/video/circles-in-rhythm-four-corners.mp4?s=mp4-640x640-is&k=20&c=IuLstb-CSuP0jqWW6NyCMMNLRu7enZkuue_DwsPzhzk=">
             </video>
         </div>
-        <div class="content">
-            <h1 class="video-title">Name</h1>
+        <!-- Tabs for video description, comments, and related videos-->
+        <div class="video-bottom-row">
+            <div class="tabs">
+                <button class="tabBtn active" onclick="openTab('vidDesc');">Description</button>
+                <button class="tabBtn" onclick="openTab('vidComments')">Comments</button>
+                <button class="tabBtn" onclick="openTab('vidRelated')">Related Videos</button>
+            </div>
+            <div class="tab-content-wrapper">
+                <div id="vidDesc" class="tab-content">
+                    <!-- Video description content -->
+                     1
+                </div>
+            </div>
         </div>
     </section>
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
@@ -184,6 +244,19 @@
                 }
                 this.player = new Plyr("#video");
             }, player: null
+        }
+
+        function openTab(evt, tabId) {
+            const tabcontent = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            const tablinks = document.getElementsByClassName("tabBtn");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabId).style.display = "block";
+            evt.currentTarget.className += " active";
         }
     </script>
 </body>
