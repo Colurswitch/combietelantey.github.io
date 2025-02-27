@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
     <!--Material icons-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link rel="stylesheet" href="globalStyles.css">
     <style>
         #videos-grid {
@@ -148,7 +149,7 @@
 <body>
     <section class="video-container">
         <div class="video-player">
-            <video id="video" preload="auto" playsinline controls data-poster="/path/to/poster.jpg">
+            <video id="video" preload="auto" playsinline controls data-poster="">
                 <source id="video-source" src="https://media.istockphoto.com/id/1392471162/video/circles-in-rhythm-four-corners.mp4?s=mp4-640x640-is&k=20&c=IuLstb-CSuP0jqWW6NyCMMNLRu7enZkuue_DwsPzhzk=">
             </video>
         </div>
@@ -156,6 +157,7 @@
             <h1 class="video-title">Name</h1>
         </div>
     </section>
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script>
         // Video player object
         const vp = {
@@ -166,19 +168,22 @@
                 videoSrc.src = src;
                 if (subtitlesSrc) {
                     subtitlesSrc.forEach(subtitle => {
-                        const subtitle = document.createElement("track");
-                        subtitle.kind = "subtitles";
-                        subtitle.default = subtitle.srclang = "en";
-                        subtitle.label = "English";
-                        subtitle.src = subtitle.srcLang = subtitle.src;
-                        videoSub.appendChild(subtitle);
+                        // subtitle is an object:
+                        // Example: { langName: "English", src: "/path/to/subtitle.vtt", srclang: "en" }
+                        // Create a new track element for each subtitle and append it to the video's subtitles source.
+                        const subtitleTrk = document.createElement("track");
+                        subtitleTrk.kind = "subtitles";
+                        subtitleTrk.default = subtitle.srclang = subtitle.locale;
+                        subtitleTrk.label = subtitle.langName;
+                        subtitleTrk.src = subtitle.srcLang = subtitle.src;
+                        videoSub.appendChild(subtitleTrk);
                     })
                 }
                 if (posterSrc) {
                     video.dataset.poster = posterSrc;
                 }
-                const player = new Plyr("#video")
-            },
+                this.player = new Plyr("#video");
+            }, player: null
         }
     </script>
 </body>
