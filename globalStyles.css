@@ -1,0 +1,25 @@
+.loader-intermediate {
+    min-width: 10px;
+    min-height: 100px;
+}
+
+.loader-intermediate::before {
+    content: "";
+    transform: translate(-50%, -50%);
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: load_intermediate 1s infinite linear;
+}
+
+@keyframes load_intermediate {
+    0% {
+        width: 0px;
+    }
+    50% {
+        width: inherit;
+    }
+    100% {
+        width: 0px;
+    }
+}

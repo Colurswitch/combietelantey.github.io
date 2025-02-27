@@ -4,6 +4,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <!--Material icons-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="globalStyles.css">
     <style>
         #videos-grid {
             display: grid !important;
@@ -66,15 +69,37 @@
 
         .vp-overlay {
             display: flex;
-            justify-content: stretch;
-            align-items: flex-end;
+            justify-content: flex-end;
+            align-items: center;
             flex-direction: column;
             position: absolute;
             top: 20px;
             left: 20px;
             z-index: 1000;
             height: inherit;
-            width: inherit !important;
+            width: calc(100vw - 56px);
+            padding: 10px;
+            border: 1px solid red;
+        }
+
+        .vp-bar-btn {
+            color: white !important;
+        }
+
+        .vp-controls {
+            display: flex;
+            flex-wrap: nowrap;
+            align-content: space-between;
+            margin-top: 10px;
+            color: white;
+        }
+
+        .vp-controls .left {
+            display: inherit;
+        }
+
+        .vp-controls .right {
+            display: inherit;
         }
 
         #vp-slider {
@@ -83,6 +108,7 @@
             background: red;
             color: red;
             border: 5px solid red;
+            padding: 5px;
         }
 
         #vp-slider::-webkit-slider-thumb {
@@ -116,6 +142,7 @@
     <script src="firebase.js"></script>
 </head>
 <body>
+    <div class="loader-intermediate"></div>
     <section class="video-container">
         <div class="video-player">
             <div class="vp-main-video">
@@ -129,6 +156,16 @@
                 <!-- Video controls go here -->
                 <!-- Slider to indicate and change video progress -->
                 <input id="vp-slider" type="range" value="0" min="0" max="100" />
+                <div class="vp-controls">
+                    <div class="left">
+                        <button class="vp-bar-btn" id="vp-play-pause"><span class="material-icons">play_arrow</span></button>
+                        <button class="vp-bar-btn" id="vp-mute"><span class="material-icons">volume_up</span></button>
+                        <span id="vp-time">0:00 / 0:00</span>
+                    </div>
+                    <div class="right">
+                        <button class="vp-bar-btn" id="vp-full-screen"><span class="material-icons">fullscreen</span></button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="content">
