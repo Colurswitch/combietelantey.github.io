@@ -56,6 +56,7 @@
         }
 
         .video-player {
+            display: flex;
             margin: 20px;
             border-radius: 15px;
             height: calc((100vw / 16) * 9);
@@ -73,45 +74,48 @@
             align-items: center;
             flex-direction: column;
             position: absolute;
-            top: 20px;
-            left: 20px;
             z-index: 1000;
             height: inherit;
-            width: calc(100vw - 56px);
+            width: calc(100vw - 54px);
             padding: 10px;
-            border: 1px solid red;
         }
 
         .vp-bar-btn {
             color: white !important;
+            padding: 7px;
         }
 
         .vp-controls {
             display: flex;
             flex-wrap: nowrap;
-            align-content: space-between;
+            width: 100%;
+            justify-content: space-between;
             margin-top: 10px;
             color: white;
         }
 
         .vp-controls .left {
             display: inherit;
+            align-items: center;
+        }
+
+        #vp-time {
+            padding: 7px;
         }
 
         .vp-controls .right {
             display: inherit;
         }
 
-        #vp-slider {
-            width: 100% !important;
+        .vp-slider {
             height: 5px;
             background: red;
             color: red;
-            border: 5px solid red;
             padding: 5px;
         }
 
-        #vp-slider::-webkit-slider-thumb {
+        .vp-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
             appearance: none;
             width: 20px;
             height: 20px;
@@ -120,7 +124,7 @@
             border-radius: 50%;
         }
 
-        #vp-slider::-moz-range-thumb {
+        .vp-slider::-moz-range-thumb {
             appearance: none;
             width: 20px;
             height: 20px;
@@ -142,35 +146,40 @@
     <script src="firebase.js"></script>
 </head>
 <body>
-    <div class="loader-intermediate"></div>
     <section class="video-container">
         <div class="video-player">
-            <div class="vp-main-video">
-                <!-- Video element goes here -->
-                <video id="video">
-                    <source id="video-source" src="https://media.istockphoto.com/id/1392471162/video/circles-in-rhythm-four-corners.mp4?s=mp4-640x640-is&k=20&c=IuLstb-CSuP0jqWW6NyCMMNLRu7enZkuue_DwsPzhzk=">
-                    <track id="video-subtitles" kind="subtitles" srclang="en">
-                </video>
-            </div>
-            <div class="vp-overlay">
-                <!-- Video controls go here -->
-                <!-- Slider to indicate and change video progress -->
-                <input id="vp-slider" type="range" value="0" min="0" max="100" />
-                <div class="vp-controls">
-                    <div class="left">
-                        <button class="vp-bar-btn" id="vp-play-pause"><span class="material-icons">play_arrow</span></button>
-                        <button class="vp-bar-btn" id="vp-mute"><span class="material-icons">volume_up</span></button>
-                        <span id="vp-time">0:00 / 0:00</span>
-                    </div>
-                    <div class="right">
-                        <button class="vp-bar-btn" id="vp-full-screen"><span class="material-icons">fullscreen</span></button>
-                    </div>
-                </div>
-            </div>
+            <video id="video" preload="auto" playsinline controls data-poster="/path/to/poster.jpg">
+                <source id="video-source" src="https://media.istockphoto.com/id/1392471162/video/circles-in-rhythm-four-corners.mp4?s=mp4-640x640-is&k=20&c=IuLstb-CSuP0jqWW6NyCMMNLRu7enZkuue_DwsPzhzk=">
+            </video>
         </div>
         <div class="content">
             <h1 class="video-title">Name</h1>
         </div>
     </section>
+    <script>
+        // Video player object
+        const vp = {
+            create: function(src, posterSrc = "", subtitlesSrc = []) {
+                const video = document.getElementById("video");
+                const videoSrc = document.getElementById("video-source");
+                const videoSub = document.getElementById("video-subtitles");
+                videoSrc.src = src;
+                if (subtitlesSrc) {
+                    subtitlesSrc.forEach(subtitle => {
+                        const subtitle = document.createElement("track");
+                        subtitle.kind = "subtitles";
+                        subtitle.default = subtitle.srclang = "en";
+                        subtitle.label = "English";
+                        subtitle.src = subtitle.srcLang = subtitle.src;
+                        videoSub.appendChild(subtitle);
+                    })
+                }
+                if (posterSrc) {
+                    video.dataset.poster = posterSrc;
+                }
+                const player = new Plyr("#video")
+            },
+        }
+    </script>
 </body>
 </html>
