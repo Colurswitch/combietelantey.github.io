@@ -9,6 +9,39 @@
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link rel="stylesheet" href="globalStyles.css">
     <style>
+        #videos-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            flex-wrap: wrap;
+            overflow-x: auto;
+            padding: 10px;
+            justify-items: center;
+        }
+
+        #videos-grid .videos-grid-item {
+            width: 300px !important;
+            min-height: 200px;
+            padding: 0 !important;
+            margin: 10px;
+        }
+
+        #videos-grid .video-thumbnail {
+            border-radius: 0.75rem;
+        }
+
+        #videos-grid .video-bottom-row {
+            display: flex;
+            flex-direction: row;
+            margin: 10px;
+        }
+
+        #videos-grid .video-author-img {
+            border-radius: 50%;
+            margin: 5px;
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
 
         body {
             margin: 0 !important;
@@ -139,8 +172,8 @@
             display: none;
         }*/
 
-        #video {
-            height: 100%;
+        .content-wrapper {
+            height: inherit !important;
         }
 
         /* On desktop, move recommended videos to the right side */
@@ -168,8 +201,8 @@
                 height: 100vh;
             }
 
-            .tabs, .tabs .tab-panel {
-                height: 100vh !important;
+            .tabs2, .tabs2 .tab-panel, .tabs .tab-panel .content-wrapper {
+                height: calc(100vh - 47px) !important;
             }
         }
 
@@ -182,7 +215,7 @@
             }
         }
 
-        .tabs {
+        .tabs2 {
             list-style: none;
             position: relative;
             margin: 0;
@@ -193,21 +226,21 @@
             height: calc(100vh - ((100vw / 16) * 9));
         }
 
-        .tabs li {
+        .tabs2 li {
             display: inline-block;
         }
 
-        .tabs input[type="radio"] {
+        .tabs2 input[type="radio"] {
             display: none;
         }
 
-        .tabs label {
+        .tabs2 label {
             display: block;
             cursor: pointer;
             padding: 10px 15px;
         }
 
-        .tabs .tab-panel {
+        .tabs2 .tab-panel {
             display: none;
             width: 100%;
             position: absolute;
@@ -217,12 +250,12 @@
             height: calc(100vh - (((100vw / 16) * 9) + 47px));
         }
 
-        .tabs [id^="tab"]:checked + label {
+        .tabs2 [id^="tab"]:checked + label {
             color: red;
             border-bottom: 3px solid red;
         }
 
-        .tabs [id^="tab"]:checked ~ [id^="tab-panel"] {
+        .tabs2 [id^="tab"]:checked ~ [id^="tab-panel"] {
             display: block;
         }
 
@@ -243,7 +276,7 @@
         </div>
         <!-- Tabs for video description, comments, and related videos-->
         <div class="video-bottom-row">
-            <ul class="tabs">
+            <ul class="tabs2">
                 <li>
                   <input id="tab1" type="radio" name="tabs" checked />
                   <label for="tab1">Description</label>
@@ -281,35 +314,55 @@
                   <label for="tab2">Comments</label>
                   <div id="tab-panel2" class="tab-panel">
                     <div class="content-wrapper content">
-                        <div class="box">
-                            <article class="media">
-                                <div class="media-left">
-                                  <figure class="image is-32x32">
-                                    <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image"/>
-                                  </figure>
-                                </div>
-                                <div class="media-content">
-                                  <div class="content" style="padding: 0;">
-                                    <p>
-                                      <strong>John Smith</strong> <small>@johnsmith</small><br/>
-                                      This is a comment.
-                                    </p>
-                                  </div>
-                                    <nav class="level is-mobile">
-                                        <div class="level-left">
-                                            <a class="level-item" href="#" aria-hidden="true">
-                                                <span class="icon is-small"><span class="material-icons">reply</span></span>
-                                            </a>
-                                            <a class="level-item" href="#">
-                                                <span class="icon is-small"><span class="material-icons">reply</span></span>
-                                            </a>
-                                            <a class="level-item" href="#">
-                                                <span class="icon is-small"><i class="fas fa-share-alt"></i></span>
-                                            </a>
+                        <div id="comments-container">
+                            <!-- Comments will be loaded here -->
+                            <h3>0 comment(s)</h3>
+                            <div class="box">
+                                <article class="media">
+                                    <div class="media-left">
+                                      <figure class="image is-32x32">
+                                        <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image"/>
+                                      </figure>
+                                    </div>
+                                    <div class="media-content">
+                                      <div class="content" style="padding: 0;">
+                                        <p>
+                                          <strong>John Smith</strong> <small>@johnsmith</small><br/>
+                                          This is a comment.
+                                        </p>
+                                        <a href="#" aria-label="like" class="icon-text"><span class="material-icons">thumb_up</span>0</a>
+                                        <a href="#" aria-label="dislike" class="icon-text"><span class="material-icons">thumb_down</span>0</a>
+                                        <a href="#" aria-label="reply" class="icon-text"><span class="material-icons">reply</span></a>
+                                        <a href="#" aria-label="edit" class="icon-text"><span class="material-icons">edit</span></a>
+                                        <a href="#" aria-label="delete" class="icon-text"><span class="material-icons">delete</span></a>
+                                      </div>
+                                      <div class="box content">
+                                        <h3>0 replie(s)</h3>
+                                        <div class="box">
+                                            <article class="media">
+                                                <div class="media-left">
+                                                  <figure class="image is-32x32">
+                                                    <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image"/>
+                                                  </figure>
+                                                </div>
+                                                <div class="media-content">
+                                                  <div class="content" style="padding: 0;">
+                                                    <p>
+                                                      <strong>John Smith</strong> <small>@johnsmith</small><br/>
+                                                      This is a reply.
+                                                    </p>
+                                                    <a href="#" aria-label="like" class="icon-text"><span class="material-icons">thumb_up</span>0</a>
+                                                    <a href="#" aria-label="dislike" class="icon-text"><span class="material-icons">thumb_down</span>0</a>
+                                                    <a href="#" aria-label="edit" class="icon-text"><span class="material-icons">edit</span></a>
+                                                    <a href="#" aria-label="delete" class="icon-text"><span class="material-icons">delete</span></a>
+                                                  </div>
+                                                </div>
+                                            </article>
                                         </div>
-                                    </nav>
-                                </div>
-                            </article>
+                                      </div>
+                                    </div>
+                                </article>
+                            </div>
                         </div>
                     </div>
                   </div>
@@ -318,7 +371,20 @@
                   <input id="tab3" type="radio" name="tabs" />
                   <label for="tab3">Related Videos</label>
                   <div id="tab-panel3" class="tab-panel">
-                    <p>Here we can display some reviews from our customers.</p>
+                    <div id="videosGrid" class="content-wrapper content">
+                        <!-- Related videos will be loaded here -->
+                        <div class="videos-grid-item box">
+                            <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail" class="video-thumbnail">
+                            <div class="video-bottom-row">
+                                <img src="https://placehold.co/64x64.png?font=roboto" alt="User" class="video-author-img">
+                                <div class="video-bottom-right">
+                                    <p class="video-title"><strong>Video title</strong></p>
+                                    <p class="video-author">Author</p>
+                                    <p class="video-description"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                   </div>
                 </li>     
               </ul>
