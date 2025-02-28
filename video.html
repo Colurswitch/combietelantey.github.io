@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link rel="stylesheet" href="globalStyles.css">
     <style>
+
+        body {
+            margin: 0 !important;
+            padding: 0;
+        }
         section {
             display: flex;
             flex-direction: column;
@@ -102,10 +107,11 @@
             padding: 20px;
         }
 
-        .tabs {
+        /*.tabs {
             display: flex;
-            justify-content: center;
+            justify-content: space-around;
             margin-bottom: 10px;
+            height: calc(100vh - ((100vw / 16) * 9));
         }
 
         .tabs .tabBtn {
@@ -131,35 +137,96 @@
 
         .tab-content {
             display: none;
-        }
+        }*/
 
         #video {
             height: 100%;
         }
 
         /* On desktop, move recommended videos to the right side */
-        @media only screen and (max-width: 800px) {
+        @media only screen and (max-width: 1000px) {
             .video-player {
                 margin: 0;
                 border-radius: 0;
             }
         }
 
-        @media only screen and (min-width: 800px) {
+        @media only screen and (min-width: 1000px) {
             .video-container {
                 flex-direction: row;
-                margin: 10px;
             }
 
             .video-player {
                 margin: 0;
                 border-radius: 0;
-                width: 75%;
+                width: 66.6%;
+                height: 100vh;
             }
 
             .video-bottom-row {
+                width: 33.3%;
+                height: 100vh;
+            }
+
+            .tabs, .tabs .tab-panel {
+                height: 100vh;
+            }
+        }
+
+        @media only screen and (min-width: 1400px) {
+            .video-player {
+                width: 75%;
+            }
+            .video-bottom-row {
                 width: 25%;
             }
+        }
+
+        .tabs {
+            list-style: none;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            height: calc(100vh - ((100vw / 16) * 9));
+        }
+
+        .tabs li {
+            display: inline-block;
+        }
+
+        .tabs input[type="radio"] {
+            display: none;
+        }
+
+        .tabs label {
+            display: block;
+            cursor: pointer;
+            padding: 10px 15px;
+        }
+
+        .tabs .tab-panel {
+            display: none;
+            width: 100%;
+            position: absolute;
+            left: 0;
+            border-top: 1px solid gainsboro;
+            
+        }
+
+        .tabs [id^="tab"]:checked + label {
+            color: red;
+            border-bottom: 3px solid red;
+        }
+
+        .tabs [id^="tab"]:checked ~ [id^="tab-panel"] {
+            display: block;
+        }
+
+        #vidDescContent {
+            border-bottom: 1px solid gainsboro;
         }
 
 
@@ -175,26 +242,40 @@
         </div>
         <!-- Tabs for video description, comments, and related videos-->
         <div class="video-bottom-row">
-            <div class="tabs">
-                <button class="tabBtn active" onclick="openTab('vidDesc');">Description</button>
-                <button class="tabBtn" onclick="openTab('vidComments')">Comments</button>
-                <button class="tabBtn" onclick="openTab('vidRelated')">Related Videos</button>
-            </div>
-            <div class="tab-content-wrapper">
-                <div id="vidDesc" class="tab-content">
-                    <!-- Video description content -->
-                     1
-                </div>
-                <div id="vidComments" class="tab-content">
-                    <!-- Video comments content -->
-                     2
-                </div>
-                <div id="vidRelated" class="tab-content">
-                    <!-- Video related videos content -->
-                     3
-                </div>
-
-            </div>
+            <ul class="tabs">
+                <li>
+                  <input id="tab1" type="radio" name="tabs" checked />
+                  <label for="tab1">Description</label>
+                  <div id="tab-panel1" class="tab-panel">
+                    <article class="content" id="vidDescContent">
+                        <h2>Video Title</h2>
+                        <p>By: <span>Author Name</span></p>
+                        <p>Date: <span>October 12, 2022</span></p>
+                        <p>Duration: <span>3:45</span></p>
+                        <p>Views: <span>12,345</span></p>
+                        <p>Likes: <span>5,678</span></p>
+                        <p>Comments: <span>234</span></p>
+                        <p>Shares: <span>1,000</span></p>
+                        <p>Category: <span>Music</span></p>
+                    </article>
+                    <p>This video is about circles in rhythm, with four corners.</p>
+                  </div>
+                </li>
+                <li>
+                  <input id="tab2" type="radio" name="tabs" />
+                  <label for="tab2">Comments</label>
+                  <div id="tab-panel2" class="tab-panel">
+                    <p>Specifications content can go here.</p>
+                  </div>
+                </li>  
+                <li>
+                  <input id="tab3" type="radio" name="tabs" />
+                  <label for="tab3">Related Videos</label>
+                  <div id="tab-panel3" class="tab-panel">
+                    <p>Here we can display some reviews from our customers.</p>
+                  </div>
+                </li>     
+              </ul>
         </div>
     </section>
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
@@ -224,19 +305,6 @@
                 }
                 this.player = new Plyr("#video");
             }, player: null
-        }
-
-        function openTab(evt, tabId) {
-            const tabcontent = document.getElementsByClassName("tab-content");
-            for (let i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            const tablinks = document.getElementsByClassName("tabBtn");
-            for (let i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(tabId).style.display = "block";
-            evt.currentTarget.className += " active";
         }
     </script>
 </body>
