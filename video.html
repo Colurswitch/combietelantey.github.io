@@ -169,7 +169,7 @@
             }
 
             .tabs, .tabs .tab-panel {
-                height: 100vh;
+                height: 100vh !important;
             }
         }
 
@@ -213,7 +213,8 @@
             position: absolute;
             left: 0;
             border-top: 1px solid gainsboro;
-            
+            overflow-y: auto !important;
+            height: calc(100vh - (((100vw / 16) * 9) + 47px));
         }
 
         .tabs [id^="tab"]:checked + label {
@@ -247,18 +248,38 @@
                   <input id="tab1" type="radio" name="tabs" checked />
                   <label for="tab1">Description</label>
                   <div id="tab-panel1" class="tab-panel">
-                    <article class="content" id="vidDescContent">
-                        <h2>Video Title</h2>
-                        <p>By: <span>Author Name</span></p>
-                        <p>Date: <span>October 12, 2022</span></p>
-                        <p>Duration: <span>3:45</span></p>
-                        <p>Views: <span>12,345</span></p>
-                        <p>Likes: <span>5,678</span></p>
-                        <p>Comments: <span>234</span></p>
-                        <p>Shares: <span>1,000</span></p>
-                        <p>Category: <span>Music</span></p>
-                    </article>
-                    <p>This video is about circles in rhythm, with four corners.</p>
+                    <div class="content-wrapper content">
+                        <article class="content" id="vidDescContent">
+                            <h2>Video Title</h2>
+                            <p>By: <span>Author Name</span></p>
+                            <p>Date: <span>October 12, 2022</span></p>
+                            <p>Duration: <span>3:45</span></p>
+                            <p>Views: <span>12,345</span></p>
+                            <p>Likes: <span>5,678</span></p>
+                            <p>Comments: <span>234</span></p>
+                            <p>Shares: <span>1,000</span></p>
+                            <p>Category: <span>Music</span></p>
+                        </article>
+                        <div class="box">
+                            <article class="media">
+                              <div class="media-left">
+                                <figure class="image is-64x64">
+                                  <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image" />
+                                </figure>
+                              </div>
+                              <div class="media-content">
+                                <div class="content">
+                                  <p>
+                                    <strong>John Smith</strong> <small>@johnsmith</small>
+                                    <small>31m</small>
+                                    <br />
+                                    Lorem ipsum
+                                  </p>
+                                </div>
+                              </div>
+                            </article>
+                        </div>
+                    </div>
                   </div>
                 </li>
                 <li>
