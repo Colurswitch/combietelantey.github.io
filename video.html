@@ -9,43 +9,6 @@
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link rel="stylesheet" href="globalStyles.css">
     <style>
-        #videos-grid {
-            display: grid !important;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            flex-wrap: wrap;
-            overflow-x: auto;
-            padding: 10px;
-            justify-items: center;
-        }
-
-        .videos-grid-item {
-            width: 300px;
-            min-height: 200px;
-            padding: 0 !important;
-            margin: 10px;
-        }
-
-        .video-thumbnail {
-            border-radius: 0.75rem;
-        }
-
-        .video-bottom-row {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .video-author-img {
-            border-radius: 50%;
-            margin: 5px;
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
-        }
-
-        .video-author-name {
-            font-weight: bold;
-        }
-
         section {
             display: flex;
             flex-direction: column;
@@ -188,6 +151,11 @@
             .video-player {
                 margin: 0;
                 border-radius: 0;
+                width: 75%;
+            }
+
+            .video-bottom-row {
+                width: 25%;
             }
         }
 
