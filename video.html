@@ -232,7 +232,7 @@
 
 
     </style>
-    <script src="firebase.js"></script>
+    <script src="firebase.js" defer></script>
 </head>
 <body>
     <section class="video-container">
@@ -249,6 +249,10 @@
                   <label for="tab1">Description</label>
                   <div id="tab-panel1" class="tab-panel">
                     <div class="content-wrapper content">
+                        <h1 id="vidTitle">Title</h1>
+                        <p>
+                            <span id="vidPubDate">Jan 1, 2025</span> | 
+                        </p>
                         <article class="content" id="vidDescContent">
                             <h2>Video Title</h2>
                             <p>By: <span>Author Name</span></p>
@@ -300,7 +304,9 @@
         </div>
     </section>
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-    <script>
+    <script type="module">
+        // Initialize Firebase
+        import firebase from "https://www.gstatic.com/firebasejs/11.3.1/firebase-compat.js";
         // Video player object
         const vp = {
             create: function(src, posterSrc = "", subtitlesSrc = []) {
