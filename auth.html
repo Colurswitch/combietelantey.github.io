@@ -40,7 +40,7 @@
             padding: 0;
             min-width: 400px;
             display: flex;
-            justify-content: space-around;
+            justify-content: stretch;
             height: calc(100vh - ((100vw / 16) * 9));
         }
 
@@ -56,6 +56,7 @@
             display: block;
             cursor: pointer;
             padding: 10px 15px;
+            width: 100%;
         }
 
         .tabs2 .tab-panel {
@@ -75,6 +76,10 @@
         .tabs2 [id^="tab"]:checked ~ [id^="tab-panel"] {
             display: block;
         }
+
+        button {
+            width: 100%;
+        }
     </style>
 
     <!--Firebase-->
@@ -84,6 +89,7 @@
 
 <body>
     <div class="box">
+        <img src="./assets/logo/original_logo.png" alt="Combiete Lantey">
         <ul class="tabs2">
             <li>
               <input id="tab1" type="radio" name="tabs" checked />
