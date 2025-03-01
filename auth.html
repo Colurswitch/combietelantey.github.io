@@ -183,18 +183,7 @@
             return re.test(email);
         }
         window.onload = function() {
-            /* Is the current browser supported?
-            If current browser is not:
-            Chromium-based
-            Firefox
-            Safari
-            Android WebView
-            iOS WebView
-            Then show an error message. */
-            if (!window.supabase) {
-                alert("Your browser is not supported. Please use a Chromium-based, Firefox, Safari, Android WebView, or iOS WebView.");
-                return;
-            }
+            
             // Link buttons to perform Supabase actions
             document.getElementById("btnSI").disabled = false;
             document.getElementById("btnSIGoogle").disabled = false;
