@@ -113,7 +113,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-function signIn(email, password) {
+async function signIn(email, password) {
   const { data, error } = await supabase.signInWithPassword({
     "email": email,
     "password": password,
@@ -121,14 +121,14 @@ function signIn(email, password) {
   return { data, error }
 }
 
-function signInWithOAuth(provider) {
+async function signInWithOAuth(provider) {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: provider,
   });
   return { data, error }
 }
 
-function signUp(email, password) {
+async function signUp(email, password) {
   const { data, error } = await supabase.auth.signUp({
     "email": email,
     "password": password,

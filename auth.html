@@ -177,22 +177,24 @@
             document.getElementById("btnSI").onclick = function() {
                 const email = document.getElementById("txtSIEmail").value;
                 const password = document.getElementById("txtSIPasswd").value;
-                const res = signIn(email, password);
-                if (res.error) {
-                    alert(res.error);
-                } else {
-                    alert("Signed in successfully!");
-                    window.location.href = "/";
-                }
+                signIn(email, password).then(res => {
+                    if (res.error) {
+                        alert(res.error);
+                    } else {
+                        alert("Signed in successfully!");
+                        window.location.href = "/";
+                    }
+                });
             }
             document.getElementById("btnSIGoogle").onclick = function() {
-                const res = signInWithOAuth("google");
-                if (res.error) {
-                    alert(res.error);
-                } else {
-                    alert("Signed in with Google successfully!");
-                    window.location.href = "/";
-                }
+                signInWithOAuth("google").then(res => {
+                    if (res.error) {
+                        alert(res.error);
+                    } else {
+                        alert("Signed in with Google successfully!");
+                        window.location.href = "/";
+                    }
+                });
             }
             document.getElementById("btnSU").onclick = function() {
                 const email = document.getElementById("txtSUEmail").value;
@@ -202,22 +204,24 @@
                     alert("Passwords do not match!");
                     return;
                 }
-                const res = signUp(email, password);
-                if (res.error) {
-                    alert(res.error);
-                } else {
-                    alert("Signed up successfully!");
-                    window.location.href = "/";
-                }
+                signUp(email, password).then(res => {
+                    if (res.error) {
+                        alert(res.error);
+                    } else {
+                        alert("Signed up successfully!");
+                        window.location.href = "/";
+                    }
+                });
             }
             document.getElementById("btnSUGoogle").onclick = function() {
-                const res = signUpWithOAuth("google");
-                if (res.error) {
-                    alert(res.error);
-                } else {
-                    alert("Signed up with Google successfully!");
-                    window.location.href = "/";
-                }
+                signUpWithOAuth("google").then(res => {
+                    if (res.error) {
+                        alert(res.error);
+                    } else {
+                        alert("Signed up with Google successfully!");
+                        window.location.href = "/";
+                    }
+                });
             }
     
         }
