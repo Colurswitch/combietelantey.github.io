@@ -107,17 +107,14 @@ function initFirebaseUI(){
 initFirebaseUI();*/
 
 // Initialize Supabase
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+// Replace these with your own values
 const SUPABASE_URL = 'https://kpmsztuxrlrtbnxxrhpj.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwbXN6dHV4cmxydGJueHhyaHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3OTA1MzYsImV4cCI6MjA1NjM2NjUzNn0.wxYd_XO12CKjUeQZ1_MRPnD5o_S8KBK9XDKL0jh1I1I';
-const { createClient, _supabase } = null;
 
-var newScript = document.createElement('script');
-newScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-newScript.onload = () => {
-  // Initialize Supabase
-  createClient = supabase;
-  _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-};
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+console.log("Supabase Instance:", supabase)
 //document.head.appendChild(newScript);
 
 async function signIn(email, password) {
