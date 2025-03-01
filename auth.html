@@ -92,6 +92,8 @@
 
     <!--Firebase-->
     <script src="firebase.js" type="module" defer></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+
 </head>
 
 <body>
@@ -130,6 +132,24 @@
                     <span class="material-icons">open_in_new</span>
                     Sign in with Google
                 </span></button>
+                <div id="g_id_onload"
+                    data-client_id="246418859788-dffrngouj4ep8pkv55eu5jas46qhcr49.apps.googleusercontent.com"
+                    data-context="signin"
+                    data-ux_mode="popup"
+                    data-callback="handleSignInWithGoogle"
+                    data-auto_prompt="false"
+                    data-use_fedcm_for_prompt="true">
+                </div>
+
+                <div class="g_id_signin"
+                    data-type="standard"
+                    data-shape="rectangular"
+                    data-theme="outline"
+                    data-text="continue_with"
+                    data-size="large"
+                    data-logo_alignment="left"
+                    data-width="250px">
+                </div>
               </div>
             </li>
             <li>
@@ -181,9 +201,23 @@
     </div>
     <script type="module">
         import * as sbApp from './firebase.js';
+        // Initialize Supabase
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+        // Replace these with your own values
+        const SUPABASE_URL = 'https://kpmsztuxrlrtbnxxrhpj.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwbXN6dHV4cmxydGJueHhyaHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3OTA1MzYsImV4cCI6MjA1NjM2NjUzNn0.wxYd_XO12CKjUeQZ1_MRPnD5o_S8KBK9XDKL0jh1I1I';
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
         function validateEmail(email) {
             const re = /\S+@\S+\.\S+/;
             return re.test(email);
+        }
+        async function handleSignInWithGoogle(res) {
+            const { data, error } = await supabase.auth.signInWithIdToken({
+            provider: 'google',
+            token: res.credential,
+            })
         }
         window.onload = function() {
             console.log(sbApp);
