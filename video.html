@@ -15,6 +15,7 @@
             width: 100%;
             flex-wrap: wrap;
             justify-items: center;
+            justify-content: center;
         }
 
         .videos-grid-item {
@@ -262,13 +263,28 @@
             display: block;
         }
 
+        .comments-item-picture {
+            border-radius: 50%;
+        }
+
         #vidDescContent {
             border-bottom: 1px solid gainsboro;
         }
 
+        #vidAuthorPicture {
+            border-radius: 50%;
+        }
 
     </style>
-    <script src="firebase.js" defer></script>
+    
+    <!--Firebase-->
+    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-storage-compat.js"></script>
+    <script src="firebase.js" type="module" defer></script>
 </head>
 <body>
     <section class="video-container">
@@ -287,12 +303,12 @@
                     <div class="content-wrapper content">
                         <h1 id="vidTitle">Title</h1>
                         <p>
-                            <span id="vidPubDate">Jan 1, 2025</span> | 
+                            <span id="vidPubDate">Jan 1, 2025</span> | <span id="vidHashtags">None</span>
                         </p>
                         <article class="content" id="vidDescContent">
                             This video has no description.
                         </article>
-                        <div class="box">
+                        <a id="vidAuthorLink" class="box" href="#">
                             <article class="media">
                               <div class="media-left">
                                 <figure class="image is-64x64">
@@ -308,7 +324,7 @@
                                 </div>
                               </div>
                             </article>
-                        </div>
+                        </a>
                     </div>
                   </div>
                 </li>
@@ -324,7 +340,7 @@
                                 <article class="media">
                                     <div class="media-left">
                                       <figure class="image is-32x32">
-                                        <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image"/>
+                                        <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image" class="comments-item-picture"/>
                                       </figure>
                                     </div>
                                     <div class="media-content">
@@ -345,7 +361,7 @@
                                             <article class="media">
                                                 <div class="media-left">
                                                   <figure class="image is-32x32">
-                                                    <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image"/>
+                                                    <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image" class="comments-item-picture"/>
                                                   </figure>
                                                 </div>
                                                 <div class="media-content">
@@ -389,40 +405,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Related videos will be loaded here -->
-                        <div class="videos-grid-item box">
-                            <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail" class="video-grid-item-thumbnail">
-                            <div class="video-grid-item-bottom-row">
-                                <img src="https://placehold.co/64x64.png?font=roboto" width="50" height="50" alt="User" class="video-grid-item-author-img">
-                                <div class="video-grid-item-bottom-right">
-                                    <p class="video-grid-item-title"><strong>Video title</strong></p>
-                                    <p class="video-grid-item-author icon-text">Author <span class="material-icons">verified</span></p>
-                                    <p class="video-grid-item-description">desc.</p>
-                                </div>
-                            </div>
-                        </div><!-- Related videos will be loaded here -->
-                        <div class="videos-grid-item box">
-                            <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail" class="video-grid-item-thumbnail">
-                            <div class="video-grid-item-bottom-row">
-                                <img src="https://placehold.co/64x64.png?font=roboto" width="50" height="50" alt="User" class="video-grid-item-author-img">
-                                <div class="video-grid-item-bottom-right">
-                                    <p class="video-grid-item-title"><strong>Video title</strong></p>
-                                    <p class="video-grid-item-author icon-text">Author <span class="material-icons">verified</span></p>
-                                    <p class="video-grid-item-description">desc.</p>
-                                </div>
-                            </div>
-                        </div><!-- Related videos will be loaded here -->
-                        <div class="videos-grid-item box">
-                            <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail" class="video-grid-item-thumbnail">
-                            <div class="video-grid-item-bottom-row">
-                                <img src="https://placehold.co/64x64.png?font=roboto" width="50" height="50" alt="User" class="video-grid-item-author-img">
-                                <div class="video-grid-item-bottom-right">
-                                    <p class="video-grid-item-title"><strong>Video title</strong></p>
-                                    <p class="video-grid-item-author icon-text">Author <span class="material-icons">verified</span></p>
-                                    <p class="video-grid-item-description">desc.</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                   </div>
                 </li>     
@@ -458,6 +440,12 @@
                 }
                 this.player = new Plyr("#video");
             }, player: null
+        }
+
+        window.onload = () => {
+            // Get value of "id" url parameter
+            const id = new URLSearchParams(window.location.search).get("id");
+
         }
     </script>
 </body>
