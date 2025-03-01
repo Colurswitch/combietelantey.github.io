@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
@@ -177,7 +179,8 @@
             </li>    
           </ul>
     </div>
-    <script>
+    <script type="module">
+        import { sbApp } from './firebase.js';
         function validateEmail(email) {
             const re = /\S+@\S+\.\S+/;
             return re.test(email);

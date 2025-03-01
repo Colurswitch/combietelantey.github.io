@@ -141,3 +141,7 @@ const sbApp = {
     return { data, error };
   }
 };
+
+// Export sbApp when used as a module
+
+export default sbApp;
