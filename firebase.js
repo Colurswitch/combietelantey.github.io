@@ -107,16 +107,16 @@ function initFirebaseUI(){
 initFirebaseUI();*/
 
 // Initialize Supabase
-import { createClient } from "@supabase/client";
-
 const SUPABASE_URL = 'https://kpmsztuxrlrtbnxxrhpj.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwbXN6dHV4cmxydGJueHhyaHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3OTA1MzYsImV4cCI6MjA1NjM2NjUzNn0.wxYd_XO12CKjUeQZ1_MRPnD5o_S8KBK9XDKL0jh1I1I';
-const supabase = null;
+const { createClient, _supabase } = null;
 
 var newScript = document.createElement('script');
 newScript.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
 newScript.onload = () => {
-  supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  // Initialize Supabase
+  createClient = supabase;
+  _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 };
 //document.head.appendChild(newScript);
 
