@@ -5,7 +5,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, on
 import { getPerformance } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-performance.js';
 import { getDatabase } from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js';
 Import firebase-compat
-import * as firebase from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-compat.js';*/
+import * as firebase from 'https://www.gstatic.com/firebasejs/11.3.1/firebase-compat.js';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -104,4 +104,34 @@ function initFirebaseUI(){
   });
 }
 
-initFirebaseUI();
+initFirebaseUI();*/
+
+// Initialize Supabase
+
+const SUPABASE_URL = 'https://kpmsztuxrlrtbnxxrhpj.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwbXN6dHV4cmxydGJueHhyaHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3OTA1MzYsImV4cCI6MjA1NjM2NjUzNn0.wxYd_XO12CKjUeQZ1_MRPnD5o_S8KBK9XDKL0jh1I1I';
+
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function signIn(email, password) {
+  const { data, error } = await supabase.signInWithPassword({
+    "email": email,
+    "password": password,
+  });
+  return { data, error }
+}
+
+function signInWithOAuth(provider) {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: provider,
+  });
+  return { data, error }
+}
+
+function signUp(email, password) {
+  const { data, error } = await supabase.auth.signUp({
+    "email": email,
+    "password": password,
+  });
+  return { data, error }
+}

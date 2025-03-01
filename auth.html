@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body::before {
+            content: "";
+            background-image: url("./assets/banner/banner_darkened.jpg");
+            width: 100%;
+            height: 100vh;
+            background-size: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            margin: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .tabs2 {
+            list-style: none;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            min-width: 400px;
+            display: flex;
+            justify-content: space-around;
+            height: calc(100vh - ((100vw / 16) * 9));
+        }
+
+        .tabs2 li {
+            display: block;
+        }
+
+        .tabs2 input[type="radio"] {
+            display: none;
+        }
+
+        .tabs2 label {
+            display: block;
+            cursor: pointer;
+            padding: 10px 15px;
+        }
+
+        .tabs2 .tab-panel {
+            display: none;
+            width: 100%;
+            position: absolute;
+            left: 0;
+            border-top: 1px solid gainsboro;
+            padding-top: 20px;
+        }
+
+        .tabs2 [id^="tab"]:checked + label {
+            color: red;
+            border-bottom: 3px solid red;
+        }
+
+        .tabs2 [id^="tab"]:checked ~ [id^="tab-panel"] {
+            display: block;
+        }
+    </style>
+
+    <!--Firebase-->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/dist/umd/supabase.min.js"></script>
+    <script src="firebase.js" type="module" defer></script>
+</head>
+
+<body>
+    <div class="box">
+        <ul class="tabs2">
+            <li>
+              <input id="tab1" type="radio" name="tabs" checked />
+              <label for="tab1">Sign in</label>
+              <div id="tab-panel1" class="tab-panel">
+                <div class="field">
+                    <p class="control has-icons-left has-icons-right">
+                      <input class="input" type="email" placeholder="Email" id="txtSIEmail">
+                      <span class="icon is-small is-left">
+                        <span class="material-icons">email</span>
+                      </span>
+                      <span class="icon is-small is-right">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="field">
+                    <p class="control has-icons-left">
+                      <input class="input" type="password" placeholder="Password" id="txtSIPasswd">
+                      <span class="icon is-small is-left">
+                        <span class="material-icons">password</span>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="field">
+                    <p class="control">
+                      <button class="button is-success" id="btnSI" disabled>
+                        Login
+                      </button>
+                    </p>
+                </div>
+                <button class="button" id="btnSIGoogle" disabled><span class="icon-text">
+                    <span class="material-icons">open_in_new</span>
+                    Sign in with Google
+                </span></button>
+              </div>
+            </li>
+            <li>
+              <input id="tab2" type="radio" name="tabs" />
+              <label for="tab2">Sign up</label>
+              <div id="tab-panel2" class="tab-panel">
+                <div class="field">
+                    <p class="control has-icons-left has-icons-right">
+                      <input class="input" type="email" placeholder="Email" id="txtSUEmail">
+                      <span class="icon is-small is-left">
+                        <span class="material-icons">email</span>
+                      </span>
+                      <span class="icon is-small is-right">
+                        <i class="fas fa-check"></i>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="field">
+                    <p class="control has-icons-left">
+                      <input class="input" type="password" placeholder="Password" id="txtSUPasswd">
+                      <span class="icon is-small is-left">
+                        <span class="material-icons">password</span>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="field">
+                    <p class="control has-icons-left">
+                      <input class="input" type="password" placeholder="Confirm password" id="txtSUConfPasswd">
+                      <span class="icon is-small is-left">
+                        <span class="material-icons">password</span>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="field">
+                    <p class="control">
+                      <button class="button is-success" id="btnSU" disabled>
+                        Sign up
+                      </button>
+                    </p>
+                </div>
+                <button class="button" id="btnSUGoogle" disabled><span class="icon-text">
+                    <span class="material-icons">open_in_new</span>
+                    Sign up with Google
+                </span></button>
+              </div>
+            </li>    
+          </ul>
+    </div>
+    <script>
+        window.onload = function() {
+            // Link buttons to perform Supabase actions
+            document.getElementById("btnSI").disabled = false;
+            document.getElementById("btnSIGoogle").disabled = false;
+            document.getElementById("btnSU").disabled = false;
+            document.getElementById("btnSUGoogle").disabled = false;
+            document.getElementById("btnSI").onclick = function() {
+                const email = document.getElementById("txtSIEmail").value;
+                const password = document.getElementById("txtSIPasswd").value;
+                const res = signIn(email, password);
+                if (res.error) {
+                    alert(res.error);
+                } else {
+                    alert("Signed in successfully!");
+                    window.location.href = "/";
+                }
+            }
+            document.getElementById("btnSIGoogle").onclick = function() {
+                const res = signInWithOAuth("google");
+                if (res.error) {
+                    alert(res.error);
+                } else {
+                    alert("Signed in with Google successfully!");
+                    window.location.href = "/";
+                }
+            }
+            document.getElementById("btnSU").onclick = function() {
+                const email = document.getElementById("txtSUEmail").value;
+                const password = document.getElementById("txtSUPasswd").value;
+                const confirmPassword = document.getElementById("txtSUConfPasswd").value;
+                if (password !== confirmPassword) {
+                    alert("Passwords do not match!");
+                    return;
+                }
+                const res = signUp(email, password);
+                if (res.error) {
+                    alert(res.error);
+                } else {
+                    alert("Signed up successfully!");
+                    window.location.href = "/";
+                }
+            }
+            document.getElementById("btnSUGoogle").onclick = function() {
+                const res = signUpWithOAuth("google");
+                if (res.error) {
+                    alert(res.error);
+                } else {
+                    alert("Signed up with Google successfully!");
+                    window.location.href = "/";
+                }
+            }
+    
+        }
+    </script>
+</body>
+
+</html>
