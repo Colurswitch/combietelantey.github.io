@@ -10,11 +10,10 @@
     <link rel="stylesheet" href="globalStyles.css">
     <style>
         #videos-grid {
-            display: grid !important;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            display: flex !important;
+            grid-template-columns: repeat(auto, minmax(300px, 1fr));
+            width: 100%;
             flex-wrap: wrap;
-            overflow-x: auto;
-            padding: 10px;
             justify-items: center;
         }
 
@@ -35,8 +34,8 @@
             margin: 10px;
         }
 
-        .video-grid-item-bottom-right {
-            line-height: 1.5;
+        .video-grid-item-bottom-right p {
+            margin: 0 !important;
         }
 
         .video-grid-item-author-img {
@@ -375,7 +374,21 @@
                   <input id="tab3" type="radio" name="tabs" />
                   <label for="tab3">Related Videos</label>
                   <div id="tab-panel3" class="tab-panel">
-                    <div id="videosGrid" class="content-wrapper content">
+                    <div class="content-wrapper content">
+                        <div id="videos-grid">
+                            <!-- Related videos will be loaded here -->
+                            <div class="videos-grid-item box">
+                                <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail" class="video-grid-item-thumbnail">
+                                <div class="video-grid-item-bottom-row">
+                                    <img src="https://placehold.co/64x64.png?font=roboto" width="50" height="50" alt="User" class="video-grid-item-author-img">
+                                    <div class="video-grid-item-bottom-right">
+                                        <p class="video-grid-item-title"><strong>Video title</strong></p>
+                                        <p class="video-grid-item-author icon-text">Author <span class="material-icons">verified</span></p>
+                                        <p class="video-grid-item-description">desc.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Related videos will be loaded here -->
                         <div class="videos-grid-item box">
                             <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail" class="video-grid-item-thumbnail">
@@ -383,7 +396,29 @@
                                 <img src="https://placehold.co/64x64.png?font=roboto" width="50" height="50" alt="User" class="video-grid-item-author-img">
                                 <div class="video-grid-item-bottom-right">
                                     <p class="video-grid-item-title"><strong>Video title</strong></p>
-                                    <p class="video-grid-item-author">Author</p>
+                                    <p class="video-grid-item-author icon-text">Author <span class="material-icons">verified</span></p>
+                                    <p class="video-grid-item-description">desc.</p>
+                                </div>
+                            </div>
+                        </div><!-- Related videos will be loaded here -->
+                        <div class="videos-grid-item box">
+                            <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail" class="video-grid-item-thumbnail">
+                            <div class="video-grid-item-bottom-row">
+                                <img src="https://placehold.co/64x64.png?font=roboto" width="50" height="50" alt="User" class="video-grid-item-author-img">
+                                <div class="video-grid-item-bottom-right">
+                                    <p class="video-grid-item-title"><strong>Video title</strong></p>
+                                    <p class="video-grid-item-author icon-text">Author <span class="material-icons">verified</span></p>
+                                    <p class="video-grid-item-description">desc.</p>
+                                </div>
+                            </div>
+                        </div><!-- Related videos will be loaded here -->
+                        <div class="videos-grid-item box">
+                            <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail" class="video-grid-item-thumbnail">
+                            <div class="video-grid-item-bottom-row">
+                                <img src="https://placehold.co/64x64.png?font=roboto" width="50" height="50" alt="User" class="video-grid-item-author-img">
+                                <div class="video-grid-item-bottom-right">
+                                    <p class="video-grid-item-title"><strong>Video title</strong></p>
+                                    <p class="video-grid-item-author icon-text">Author <span class="material-icons">verified</span></p>
                                     <p class="video-grid-item-description">desc.</p>
                                 </div>
                             </div>
