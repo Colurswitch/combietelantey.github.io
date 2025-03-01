@@ -119,7 +119,7 @@ console.log("Supabase Instance:", supabase);
 
 const sbApp = {
   async signIn(email, password) {
-    const { data, error } = await supabase.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       "email": email,
       "password": password,
     });
@@ -129,6 +129,9 @@ const sbApp = {
   async signInWithOAuth(provider) {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: provider,
+      options: {
+        redirectTo: '/account'
+      }
     });
     return { data, error };
   },
@@ -139,7 +142,24 @@ const sbApp = {
       "password": password,
     });
     return { data, error };
-  }
+  },
+
+  async signOut(scope) {
+    const { data, error } = await supabase.auth.signOut({
+      options: {
+        scope: scope,
+      }
+    });
+    return { data, error };
+  },
+
+  async updateUser(user_id, updated_fields) {
+    const { data, error } = await supabase.from('users').update({
+      id: user_id,
+     ...updated_fields
+    });
+    return { data, error };
+  },
 };
 
 // Export sbApp when used as a module
