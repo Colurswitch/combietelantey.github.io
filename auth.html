@@ -23,6 +23,7 @@
             height: 100vh;
             color: white;
             margin: 20px;
+            overflow:visible;
         }
 
         .container {
@@ -41,7 +42,7 @@
             min-width: 400px;
             display: flex;
             justify-content: stretch;
-            height: calc(100vh - ((100vw / 16) * 9));
+            height: 260px;
         }
 
         .tabs2 li {
@@ -77,6 +78,12 @@
             display: block;
         }
 
+        .error {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
         button {
             width: 100%;
         }
@@ -88,7 +95,7 @@
 </head>
 
 <body>
-    <div class="box">
+    <div class="box" style="display: flex;flex-direction: column;align-items: center;">
         <img src="./assets/logo/original_logo.png" alt="Combiete Lantey">
         <ul class="tabs2">
             <li>
@@ -100,9 +107,6 @@
                       <input class="input" type="email" placeholder="Email" id="txtSIEmail">
                       <span class="icon is-small is-left">
                         <span class="material-icons">email</span>
-                      </span>
-                      <span class="icon is-small is-right">
-                        <i class="fas fa-check"></i>
                       </span>
                     </p>
                   </div>
@@ -116,6 +120,7 @@
                   </div>
                   <div class="field">
                     <p class="control">
+                        <span class="error" id="SIError"></span>
                       <button class="button is-success" id="btnSI" disabled>
                         Login
                       </button>
@@ -160,9 +165,10 @@
                   </div>
                   <div class="field">
                     <p class="control">
-                      <button class="button is-success" id="btnSU" disabled>
-                        Sign up
-                      </button>
+                        <span class="error" id="SUError"></span>
+                        <button class="button is-success" id="btnSU" disabled>
+                            Sign up
+                        </button>
                     </p>
                 </div>
                 <button class="button" id="btnSUGoogle" disabled><span class="icon-text">
@@ -174,7 +180,23 @@
           </ul>
     </div>
     <script>
+        function validateEmail(email) {
+            const re = /\S+@\S+\.\S+/;
+            return re.test(email);
+        }
         window.onload = function() {
+            /* Is the current browser supported?
+            If current browser is not:
+            Chromium-based
+            Firefox
+            Safari
+            Android WebView
+            iOS WebView
+            Then show an error message. */
+            if (!window.supabase) {
+                alert("Your browser is not supported. Please use a Chromium-based, Firefox, Safari, Android WebView, or iOS WebView.");
+                return;
+            }
             // Link buttons to perform Supabase actions
             document.getElementById("btnSI").disabled = false;
             document.getElementById("btnSIGoogle").disabled = false;
@@ -183,9 +205,18 @@
             document.getElementById("btnSI").onclick = function() {
                 const email = document.getElementById("txtSIEmail").value;
                 const password = document.getElementById("txtSIPasswd").value;
+                // Is email valid?
+                if (!validateEmail(email)) {
+                    document.getElementById("SIError").textContent = "Invalid email address.";
+                    return;
+                } else if (password == "") {
+                    document.getElementById("SIError").textContent = "Password is required.";
+                    return;
+                }
+                document.getElementById("SIError").textContent = "";
                 signIn(email, password).then(res => {
                     if (res.error) {
-                        alert(res.error);
+                        document.getElementById("SIError").textContent = res.error
                     } else {
                         alert("Signed in successfully!");
                         window.location.href = "/";
@@ -207,7 +238,13 @@
                 const password = document.getElementById("txtSUPasswd").value;
                 const confirmPassword = document.getElementById("txtSUConfPasswd").value;
                 if (password !== confirmPassword) {
-                    alert("Passwords do not match!");
+                    document.getElementById("SUError").textContent = "Passwords do not match!";
+                    return;
+                } else if (!validateEmail(email)) {
+                    document.getElementById("SUError").textContent = "Invalid email address.";
+                    return;
+                } else if (password == "") {
+                    document.getElementById("SUError").textContent = "Password is required.";
                     return;
                 }
                 signUp(email, password).then(res => {
