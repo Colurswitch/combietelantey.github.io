@@ -40,7 +40,7 @@
             padding: 0;
             min-width: 400px;
             display: flex;
-            justify-content: stretch;
+            justify-content:space-evenly;
             height: 320px;
         }
 
@@ -213,7 +213,7 @@
             document.getElementById("btnSIGoogle").onclick = function() {
                 signInWithOAuth("google").then(res => {
                     if (res.error) {
-                        alert(res.error);
+                        document.getElementById("SIError").textContent = res.error
                     } else {
                         alert("Signed in with Google successfully!");
                         window.location.href = "/";
@@ -236,7 +236,7 @@
                 }
                 signUp(email, password).then(res => {
                     if (res.error) {
-                        alert(res.error);
+                        document.getElementById("SUError").textContent = res.error
                     } else {
                         alert("Signed up successfully!");
                         window.location.href = "/";
@@ -246,7 +246,7 @@
             document.getElementById("btnSUGoogle").onclick = function() {
                 signUpWithOAuth("google").then(res => {
                     if (res.error) {
-                        alert(res.error);
+                        document.getElementById("SUError").textContent = res.error
                     } else {
                         alert("Signed up with Google successfully!");
                         window.location.href = "/";
