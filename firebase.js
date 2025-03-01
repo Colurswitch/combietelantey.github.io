@@ -21,11 +21,11 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const perf = getPerformance(app);
-const auth = getAuth(app);
-const database = getDatabase(app);
+const app = firebase.initializeApp(firebaseConfig);
+const analytics = app.analytics(app);
+const perf = app.performance(app);
+const auth = app.auth(app);
+const database = app.database(app);
 const user = auth.currentUser;
 var ui = new firebaseui.auth.AuthUI(auth);
 console.log(app);
