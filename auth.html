@@ -201,7 +201,7 @@
                     return;
                 }
                 document.getElementById("SIError").textContent = "";
-                signIn(email, password).then(res => {
+                sbApp.signIn(email, password).then(res => {
                     if (res.error) {
                         document.getElementById("SIError").textContent = res.error
                     } else {
@@ -211,7 +211,7 @@
                 });
             }
             document.getElementById("btnSIGoogle").onclick = function() {
-                signInWithOAuth("google").then(res => {
+                sbApp.signInWithOAuth("google").then(res => {
                     if (res.error) {
                         document.getElementById("SIError").textContent = res.error
                     } else {
@@ -234,7 +234,7 @@
                     document.getElementById("SUError").textContent = "Password is required.";
                     return;
                 }
-                signUp(email, password).then(res => {
+                sbApp.signUp(email, password).then(res => {
                     if (res.error) {
                         document.getElementById("SUError").textContent = res.error
                     } else {
@@ -244,7 +244,7 @@
                 });
             }
             document.getElementById("btnSUGoogle").onclick = function() {
-                signUpWithOAuth("google").then(res => {
+                sbApp.signUpWithOAuth("google").then(res => {
                     if (res.error) {
                         document.getElementById("SUError").textContent = res.error
                     } else {
