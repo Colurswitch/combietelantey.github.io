@@ -118,6 +118,7 @@ console.log("Supabase Instance:", supabase);
 //document.head.appendChild(newScript);
 
 const sbApp = {
+  supabase: supabase,
   async signIn(email, password) {
     const { data, error } = await supabase.auth.signInWithPassword({
       "email": email,
@@ -164,6 +165,11 @@ const sbApp = {
   async isSignedIn() {
     const { data, error } = await supabase.auth.getSession();
     return!!data.session.expires_at;
+  },
+
+  async fetchVideos() {
+    const { data, error } = await supabase.from('videos').select();
+    return { data, error };
   }
 };
 
