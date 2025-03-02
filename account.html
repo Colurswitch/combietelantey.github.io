@@ -44,6 +44,16 @@
         .menu {
             padding: 10px;
         }
+
+        .json-editor-btn-delete.delete::after , .json-editor-btn-delete.delete::before {
+            display: none !important;
+        }
+
+        .json-editor-btn-delete.delete {
+            max-width: none !important;
+            width: auto !important;
+            background-color: transparent !important;
+        }
     </style>
 
     <!--Firebase-->
@@ -164,8 +174,7 @@
             </section>
             <footer class="modal-card-foot">
                 <div class="buttons">
-                    <button class="button is-success">Save changes</button>
-                    <button class="button is-danger">Discard</button>
+                    <button class="button is-success" id="btnUploadNewVid">Upload!</button>
                     <button class="button">Close</button>
                 </div>
             </footer>
@@ -284,7 +293,7 @@
                             format: "file",
                             media: {
                                 binaryEncoding: "base64",
-                                type: "mp4",
+                                type: "video/*",
                             }
                         },
                         thumbnail: {
@@ -292,7 +301,7 @@
                             format: "file",
                             media: {
                                 binaryEncoding: "base64",
-                                type: "img/png/jpg/jpeg",
+                                type: "image/*",
                             }
                         },
                         tracks: {
@@ -305,7 +314,11 @@
                                     },
                                     src: {
                                         type: "string",
-                                        format: "file"
+                                        format: "file",
+                                        media: {
+                                            binaryEncoding: "base64",
+                                            type: "vtt",
+                                        }
                                     },
                                     srclang: {
                                         type: "string"
@@ -316,6 +329,15 @@
                     }
                 }
             });
+            document.getElementById("btnUploadNewVid").onclick = function () {
+                this.classList.add("is-loading"); // Show loading
+                const videoData = newVidEditor.getValue();
+                sbApp.default.createVideo(videoData.title, videoData.description, videoData.video, videoData.thumbnail, videoData.tracks).then(res => {
+                    if (res.error) {
+                        alert("Error creating video: " + res.error.message);
+                    }
+                });
+            };
         };
     </script>
 </body>

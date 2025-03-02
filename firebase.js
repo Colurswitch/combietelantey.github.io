@@ -200,9 +200,24 @@ const sbApp = {
       "creator", (await this.getCurrentUser()).data.user.id
     )
     return { data, error };
+  },
+
+  async createVideo(title, description, vidSrc, thumbnailUrl, tracks = []) {
+    if (!(await this.isSignedIn())) {
+      // User is not signed in.
+      return;
+    }
+    const { data, error } = await supabase.from('videos').insert({
+      title: title,
+      description: description,
+      video: vidSrc,
+      thumbnail: thumbnailUrl,
+      creator: (await this.getCurrentUser()).data.user.id,
+      tracks: tracks,
+    });
+    return { data, error };
   }
 };
 
 // Export sbApp when used as a module
-
 export default sbApp;
