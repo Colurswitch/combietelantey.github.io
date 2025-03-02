@@ -45,6 +45,14 @@
             padding: 10px;
         }
 
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
         .json-editor-btn-delete.delete::after , .json-editor-btn-delete.delete::before {
             display: none !important;
         }
@@ -137,7 +145,7 @@
             </div>
         </div>
         <div class="column" style="padding: 20px;">
-            <div class="box page">
+            <div class="box page" id="videos">
                 <h1 class="title">Videos</h1>
                 <button class="button is-primary icon-text js-modal-trigger" data-target="dlgNewVideo">
                     <span class="icon">
@@ -161,6 +169,11 @@
                     <!-- Add more video items here -->
                 </div>
             </div>
+            <div class="box page active" id="video">
+                <h1 class="title" id="currentVideoName">Title</h1>
+                <article class="content" id="currentVideoDesc">Description</article>
+                <a href="#" class="button" id="currentVideoLink">Open vi</a>
+            </div>
         </div>
     </div>
     <div class="modal" id="dlgNewVideo">
@@ -173,6 +186,7 @@
                 <div id="newVidSettingsContainer"></div>
             </section>
             <footer class="modal-card-foot">
+                <span class="error" id="newVidError"></span>
                 <div class="buttons">
                     <button class="button is-success" id="btnUploadNewVid">Upload!</button>
                     <button class="button">Close</button>
@@ -180,13 +194,15 @@
             </footer>
         </div>
     </div>
-    <script type="module">
-        import * as sbApp from "./firebase.js";
+    <script>
         function openPage(id) {
             const pages = document.querySelectorAll('.page');
             pages.forEach(page => page.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
+    </script>
+    <script type="module">
+        import * as sbApp from "./firebase.js";
         // Function to truncate strings
         function truncateString(str, length, ending) {
             if (str.length > length) {
@@ -195,6 +211,39 @@
                 return str;
             }
         }
+        // Function to load video items
+        function loadVideos() {
+            sbApp.default.fetchVideosByCurrentUser().then(videos => {
+                const videosGrid = document.getElementById('videos-grid');
+                videos.data.forEach(video => {
+                    const videoItem = document.createElement('div');
+                    videoItem.classList.add('videos-grid-item');
+                    videoItem.classList.add('box');
+                    videoItem.innerHTML = `
+                        <img src="${video.thumbnail.length > 0 ? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto"}" alt="Video thumbnail" class="video-thumbnail" width="1600" height="900">
+                        <div class="video-bottom-row">
+                            <div class="video-bottom-right">
+                                <p class="video-title"><strong>${video.title}</strong></p>
+                                <p class="video-description">${truncateString(video.description, 75, "...")}</p>
+                            </div>
+                        </div>
+                    `;
+                    videosGrid.appendChild(videoItem);
+                });
+                if (videos.data.length == 0) {
+                    const noVideos = document.createElement("p");
+                    noVideos.textContent = "You have not created any videos. Click 'New Video' to create a new video.";
+                    videosGrid.appendChild(noVideos);
+                }
+            });
+        }
+        // Function to load single video
+        function loadSingleVideo(videoId) {
+            sbApp.default.fetchVideoById(videoId).then(video => {
+                
+            });
+        }
+        // Function to upload a new video
         document.addEventListener('DOMContentLoaded', () => {
             // Functions to open and close a modal
             function openModal($el) {
@@ -242,29 +291,7 @@
             // Supabase client can be retrieved from sbApp.default.supabase
             console.log("Videos:", sbApp.default.fetchVideos());
             if (!sbApp.default.isSignedIn()) window.location.href = "/auth";
-            sbApp.default.fetchVideosByCurrentUser().then(videos => {
-                const videosGrid = document.getElementById('videos-grid');
-                videos.data.forEach(video => {
-                    const videoItem = document.createElement('div');
-                    videoItem.classList.add('videos-grid-item');
-                    videoItem.classList.add('box');
-                    videoItem.innerHTML = `
-                        <img src="${video.thumbnail.length > 0 ? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto"}" alt="Video thumbnail" class="video-thumbnail" width="1600" height="900">
-                        <div class="video-bottom-row">
-                            <div class="video-bottom-right">
-                                <p class="video-title"><strong>${video.title}</strong></p>
-                                <p class="video-description">${truncateString(video.description, 75, "...")}</p>
-                            </div>
-                        </div>
-                    `;
-                    videosGrid.appendChild(videoItem);
-                });
-                if (videos.data.length == 0) {
-                    const noVideos = document.createElement("p");
-                    noVideos.textContent = "You have not created any videos. Click 'New Video' to create a new video.";
-                    videosGrid.appendChild(noVideos);
-                }
-            });
+            loadVideos();
             // JSONEditor for new video
             const newVidEditor = new JSONEditor(document.getElementById("newVidSettingsContainer"), {
                 theme: "spectre",
@@ -331,12 +358,40 @@
             });
             document.getElementById("btnUploadNewVid").onclick = function () {
                 this.classList.add("is-loading"); // Show loading
+                this.disabled = true; // Avoid creating multiple instances
                 const videoData = newVidEditor.getValue();
+                // Validate video 
+                if (!videoData.video) {
+                    alert("Please upload a video.");
+                    this.classList.remove("is-loading"); // Hide loading
+                    this.disabled = false; // Enable creating again
+                    return;
+                }
+                // Validate tracks
+                if (videoData.tracks.length > 0 &&!videoData.tracks.every(track => track.langName && track.src && track.srclang)) {
+                    alert("Please provide all language information for all tracks.");
+                    this.classList.remove("is-loading"); // Hide loading
+                    this.disabled = false; // Enable creating again
+                    return;
+                }
                 sbApp.default.createVideo(videoData.title, videoData.description, videoData.video, videoData.thumbnail, videoData.tracks).then(res => {
                     if (res.error) {
                         alert("Error creating video: " + res.error.message);
+                    } else {
+                        alert("Video created successfully!");
+                        loadVideos(); // Reload videos
+                        closeModal(document.getElementById("dlgNewVideo"));
+                        newVidEditor.setValue({
+                            title: "",
+                            description: "",
+                            video: "",
+                            thumbnail: "",
+                            tracks: []
+                        }); // Reset JSONEditor
                     }
                 });
+                this.classList.remove("is-loading"); // Hide loading
+                this.disabled = false; // Enable creating again
             };
         };
     </script>
