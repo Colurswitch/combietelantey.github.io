@@ -144,14 +144,15 @@ const sbApp = {
     });
     if (!error) {
       // Create a new User record in the database, and link it to the current user.
-      this.getCurrentUser().then(res => {
-        supabase.from('users').insert({
-          id: res.user.id,
-          email: res.user.email,
-          display_name: res.user.email,
-          enabled: true, // If false, the user is restricted from logging in.
-        });
-      })
+      const { data2, error2 } = await supabase.from('users').insert({
+        id: data.user.id,
+        email: data.user.email,
+        display_name: data.user.email,
+        enabled: true, // If false, the user is restricted from logging in.
+      });
+      if (!error2) {
+        console.log('User created and linked to current session:', data2);
+      }
     }
     return { data, error };
   },
