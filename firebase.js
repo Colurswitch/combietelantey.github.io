@@ -142,6 +142,17 @@ const sbApp = {
       "email": email,
       "password": password,
     });
+    if (!error) {
+      // Create a new User record in the database, and link it to the current user.
+      this.getCurrentUser().then(res => {
+        supabase.from('users').insert({
+          id: res.user.id,
+          email: res.user.email,
+          display_name: res.user.email,
+          enabled: true, // If false, the user is restricted from logging in.
+        });
+      })
+    }
     return { data, error };
   },
 
@@ -165,6 +176,11 @@ const sbApp = {
   async isSignedIn() {
     const { data, error } = await supabase.auth.getSession();
     return!!data.session.expires_at;
+  },
+
+  async getCurrentUser() {
+    const { data, error } = await supabase.auth.getUser();
+    return { data, error };
   },
 
   async fetchVideos() {
