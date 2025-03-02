@@ -121,7 +121,7 @@
                   <div class="field">
                     <p class="control">
                         <span class="error" id="SIError"></span>
-                      <button class="button is-success" id="btnSI" disabled>
+                      <button class="button is-success is-loading" id="btnSI" disabled>
                         Login
                       </button>
                     </p>
@@ -166,7 +166,7 @@
                   <div class="field">
                     <p class="control">
                         <span class="error" id="SUError"></span>
-                        <button class="button is-success" id="btnSU" disabled>
+                        <button class="button is-success is-loading" id="btnSU" disabled>
                             Sign up
                         </button>
                     </p>
@@ -191,8 +191,10 @@
             const continueUrl = new URLSearchParams(window.location.search).get("continue");
             // Link buttons to perform Supabase actions
             document.getElementById("btnSI").disabled = false;
+            document.getElementById("btnSI").classList.remove("is-loading");
             //document.getElementById("btnSIGoogle").disabled = false;
             document.getElementById("btnSU").disabled = false;
+            document.getElementById("btnSU").classList.remove("is-loading");
             //document.getElementById("btnSUGoogle").disabled = false;
 
             document.getElementById("btnSI").onclick = function() {
