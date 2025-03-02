@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,14 +45,22 @@
             padding: 10px;
         }
     </style>
-    
+
     <!--Firebase-->
     <script src="firebase.js" type="module" defer></script>
+
+    <!--JSON Editor-->
+    <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+
+    <!--WYSIWYG Editor-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/default.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sceditor@3/minified/sceditor.min.js"></script>
 </head>
+
 <body>
     <div class="columns">
-        <div class="column is-one-quarter">
-            <img src="./assets/logo/original_logo.png" alt="Combiete Lantey" width="175" style="padding: 10px;"/>
+        <div class="column is-one-quarter-tablet is-one-fifth-widescreen">
+            <img src="./assets/logo/original_logo.png" alt="Combiete Lantey" width="175" style="padding: 10px;" />
             <div class="menu">
                 <p class="menu-label">Content</p>
                 <ul class="menu-list">
@@ -98,6 +107,16 @@
                         <button href="#">
                             <span class="icon-text">
                                 <span class="icon">
+                                    <span class="material-icons">settings</span>
+                                </span>
+                                <span>Settings</span>
+                            </span>
+                        </button>
+                    </li>
+                    <li>
+                        <button href="#">
+                            <span class="icon-text">
+                                <span class="icon">
                                     <span class="material-icons">logout</span>
                                 </span>
                                 <span>Logout</span>
@@ -110,7 +129,7 @@
         <div class="column" style="padding: 20px;">
             <div class="box page">
                 <h1 class="title">Videos</h1>
-                <button class="button is-primary icon-text">
+                <button class="button is-primary icon-text js-modal-trigger" data-target="dlgNewVideo">
                     <span class="icon">
                         <span class="material-icons">add</span>
                     </span>
@@ -118,20 +137,38 @@
                 </button>
                 <div id="videos-grid">
                     <!-- Video items will be dynamically loaded here -->
-                    <!-- Example video item -->
+                    <!-- Example video item --
                     <div class="videos-grid-item box">
                         <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail" class="video-thumbnail">
                         <div class="video-bottom-row">
-                            <!--<img src="https://placehold.co/64x64.png?font=roboto" alt="User" class="video-author-img">-->
+                            <!--<img src="https://placehold.co/64x64.png?font=roboto" alt="User" class="video-author-img">--
                             <div class="video-bottom-right">
                                 <p class="video-title"><strong>Video title</strong></p>
                                 <p class="video-description"></p>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <!-- Add more video items here -->
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="modal" id="dlgNewVideo">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">New Video</p>
+            </header>
+            <section class="modal-card-body">
+                <div id="newVidSettingsContainer"></div>
+            </section>
+            <footer class="modal-card-foot">
+                <div class="buttons">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button is-danger">Discard</button>
+                    <button class="button">Close</button>
+                </div>
+            </footer>
         </div>
     </div>
     <script type="module">
@@ -149,10 +186,53 @@
                 return str;
             }
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            // Functions to open and close a modal
+            function openModal($el) {
+                $el.classList.add('is-active');
+            }
+
+            function closeModal($el) {
+                $el.classList.remove('is-active');
+            }
+
+            function closeAllModals() {
+                (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+                    closeModal($modal);
+                });
+            }
+
+            // Add a click event on buttons to open a specific modal
+            (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+                const modal = $trigger.dataset.target;
+                const $target = document.getElementById(modal);
+
+                $trigger.addEventListener('click', () => {
+                    openModal($target);
+                });
+            });
+
+            // Add a click event on various child elements to close the parent modal
+            (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+                const $target = $close.closest('.modal');
+
+                $close.addEventListener('click', () => {
+                    closeModal($target);
+                });
+            });
+
+            // Add a keyboard event to close all modals
+            document.addEventListener('keydown', (event) => {
+                if (event.key === "Escape") {
+                    closeAllModals();
+                }
+            });
+        });
         window.onload = () => {
             // Fetch and display videos from Supabase
             // Supabase client can be retrieved from sbApp.default.supabase
-            console.log("Videos:",sbApp.default.fetchVideos());
+            console.log("Videos:", sbApp.default.fetchVideos());
+            if (!sbApp.default.isSignedIn()) window.location.href = "/auth";
             sbApp.default.fetchVideosByCurrentUser().then(videos => {
                 const videosGrid = document.getElementById('videos-grid');
                 videos.data.forEach(video => {
@@ -160,11 +240,11 @@
                     videoItem.classList.add('videos-grid-item');
                     videoItem.classList.add('box');
                     videoItem.innerHTML = `
-                        <img src="${video.thumbnail}" alt="Video thumbnail" class="video-thumbnail">
+                        <img src="${video.thumbnail.length > 0 ? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto"}" alt="Video thumbnail" class="video-thumbnail" width="1600" height="900">
                         <div class="video-bottom-row">
                             <div class="video-bottom-right">
                                 <p class="video-title"><strong>${video.title}</strong></p>
-                                <p class="video-description">${truncateString(video.description,15,"...")}</p>
+                                <p class="video-description">${truncateString(video.description, 75, "...")}</p>
                             </div>
                         </div>
                     `;
@@ -172,12 +252,72 @@
                 });
                 if (videos.data.length == 0) {
                     const noVideos = document.createElement("p");
-                    noVideos.textContent = "No videos found.";
+                    noVideos.textContent = "You have not created any videos. Click 'New Video' to create a new video.";
                     videosGrid.appendChild(noVideos);
                 }
             });
-            
+            // JSONEditor for new video
+            const newVidEditor = new JSONEditor(document.getElementById("newVidSettingsContainer"), {
+                theme: "spectre",
+                showErrors: "change",
+                disable_properties: true,
+                disable_collapse: true,
+                disable_edit_json: true,
+                enable_array_copy: true,
+                require_by_default: true,
+                compact: true,
+                schema: {
+                    type: "object",
+                    properties: {
+                        title: { 
+                            type: "string" 
+                        },
+                        description: {
+                            type: "string",
+                            format: "xhtml",
+                            options: {
+                                sceditor: {}
+                            }
+                        },
+                        video: {
+                            type: "string",
+                            format: "file",
+                            media: {
+                                binaryEncoding: "base64",
+                                type: "mp4",
+                            }
+                        },
+                        thumbnail: {
+                            type: "string",
+                            format: "file",
+                            media: {
+                                binaryEncoding: "base64",
+                                type: "img/png/jpg/jpeg",
+                            }
+                        },
+                        tracks: {
+                            type: "array",
+                            items: {
+                                type: "object",
+                                properties: {
+                                    langName: {
+                                        type: "string"
+                                    },
+                                    src: {
+                                        type: "string",
+                                        format: "file"
+                                    },
+                                    srclang: {
+                                        type: "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         };
     </script>
 </body>
+
 </html>
