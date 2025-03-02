@@ -198,6 +198,7 @@
             //document.getElementById("btnSUGoogle").disabled = false;
 
             document.getElementById("btnSI").onclick = function() {
+                this.classList.add("is-loading");
                 const email = document.getElementById("txtSIEmail").value;
                 const password = document.getElementById("txtSIPasswd").value;
                 // Is email valid?
@@ -211,11 +212,12 @@
                 document.getElementById("SIError").textContent = "";
                 sbApp.default.signIn(email, password).then(res => {
                     if (res.error) {
-                        document.getElementById("SIError").textContent = res.error
+                        document.getElementById("SIError").textContent = res.error;
                     } else {
                         //alert("Signed in successfully!");
                         window.location.href = continueUrl ? continueUrl : "/";
                     }
+                    this.classList.remove("is-loading");
                 });
             }
             document.getElementById("btnSIGoogle").onclick = function() {
@@ -229,6 +231,7 @@
                 });
             }
             document.getElementById("btnSU").onclick = function() {
+                this.classList.add("is-loading");
                 const email = document.getElementById("txtSUEmail").value;
                 const password = document.getElementById("txtSUPasswd").value;
                 const confirmPassword = document.getElementById("txtSUConfPasswd").value;
@@ -249,6 +252,7 @@
                         //alert("Signed up successfully!");
                         window.location.href = continueUrl ? continueUrl : "/";
                     }
+                    this.classList.remove("is-loading");
                 });
             }
             document.getElementById("btnSUGoogle").onclick = function() {
