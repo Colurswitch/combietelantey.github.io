@@ -160,6 +160,11 @@ const sbApp = {
     });
     return { data, error };
   },
+
+  async isSignedIn() {
+    const { data, error } = await supabase.auth.getSession();
+    return!!data.session.expires_at;
+  }
 };
 
 // Export sbApp when used as a module

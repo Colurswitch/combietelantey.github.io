@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        #videos-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            flex-wrap: wrap;
+            overflow-x: auto;
+            padding: 10px;
+            justify-items: center;
+        }
+
+        .videos-grid-item {
+            width: 300px;
+            min-height: 200px;
+            padding: 0 !important;
+            margin: 10px;
+        }
+
+        .video-thumbnail {
+            border-radius: 0.75rem;
+        }
+
+        .video-bottom-row {
+            display: flex;
+            flex-direction: row;
+            margin: 10px;
+        }
+
+        .video-author-img {
+            border-radius: 50%;
+            margin: 5px;
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        .menu {
+            padding: 10px;
+        }
+    </style>
+    
+    <!--Firebase-->
+    <script src="firebase.js" type="module" defer></script>
+</head>
+<body>
+    <div class="columns">
+        <div class="column is-one-quarter">
+            <img src="./assets/logo/original_logo.png" alt="Combiete Lantey" width="300" style="padding: 7px;"/>
+            <div class="menu">
+                <p class="menu-label">Content</p>
+                <ul class="menu-list">
+                    <li>
+                        <a href="#">
+                            <span class="icon-text">
+                                <span class="icon is-small">
+                                    <span class="material-icons">video_library</span>
+                                </span>
+                                <span>Videos</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box">
+                <h1 class="title">Videos</h1>
+                <div id="videos-grid"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

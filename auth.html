@@ -187,6 +187,8 @@
         }
         window.onload = function() {
             console.log(sbApp);
+            // Get "continue" url parameter
+            const continueUrl = new URLSearchParams(window.location.search).get("continue");
             // Link buttons to perform Supabase actions
             document.getElementById("btnSI").disabled = false;
             //document.getElementById("btnSIGoogle").disabled = false;
@@ -210,7 +212,7 @@
                         document.getElementById("SIError").textContent = res.error
                     } else {
                         //alert("Signed in successfully!");
-                        window.location.href = "/";
+                        window.location.href = continueUrl ? continueUrl : "/";
                     }
                 });
             }
@@ -243,7 +245,7 @@
                         document.getElementById("SUError").textContent = res.error
                     } else {
                         //alert("Signed up successfully!");
-                        window.location.href = "/";
+                        window.location.href = continueUrl ? continueUrl : "/";
                     }
                 });
             }

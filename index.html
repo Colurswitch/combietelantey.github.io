@@ -81,7 +81,7 @@
       overflow-y: auto;
       padding: 10px;
       justify-items: center;
-      max-height: calc(100vh - (52px + 44px + 140px));
+      max-height: calc(100vh - (54px + 44px + 140px));
     }
 
     #pages-grid .box {
@@ -91,7 +91,6 @@
       text-align: center;
       flex-direction: column;
       padding: 55px;
-      /* Same width as height? */
       width: 300px;
       height: 300px;
       box-shadow: none !important;
@@ -212,7 +211,7 @@
                   <span class="material-icons">settings</span>
                 </span>
               </button>
-              <button class="button transparent-button" onclick="account()">
+              <button class="button transparent-button" id="btnAccount">
                 <span class="icon">
                   <span class="material-icons">person</span>
                 </span>
@@ -280,36 +279,15 @@
       </footer>
     </div>
   </div>
-  <div class="modal" id="dlgAccount">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">Settings</p>
-      </header>
-      <section class="modal-card-body">
-        <div id="firebaseui-auth-container"></div>
-      </section>
-      <footer class="modal-card-foot">
-        <div class="buttons">
-          <button class="button is-success">Save changes</button>
-          <button class="button">Cancel</button>
-        </div>
-      </footer>
-    </div>
-  </div>
   <script type="module">
     import * as sbApp from './firebase.js';
-    function account() {
+    document.getElementById("btnAccount").onclick = function() {
       /*
         Is the user currently logged in?
         If not, open the login page.
         If the user is logged in, open the account modal.
       */
-      if (sbApp.default.isSignedIn()) {
-        document.getElementById("dlgAccount").style.display = "block";
-      } else {
-        window.location.href = "/auth";
-      }
+      window.location.href = sbApp.default.isSignedIn() ? "/account" : "/auth";
     }
     window.onload = () => {
       wapp.setup();
