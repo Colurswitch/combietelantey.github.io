@@ -300,7 +300,16 @@
   <script type="module">
     import * as sbApp from './firebase.js';
     function account() {
-
+      /*
+        Is the user currently logged in?
+        If not, open the login page.
+        If the user is logged in, open the account modal.
+      */
+      if (sbApp.default.isSignedIn()) {
+        document.getElementById("dlgAccount").style.display = "block";
+      } else {
+        window.location.href = "/auth";
+      }
     }
     window.onload = () => {
       wapp.setup();
