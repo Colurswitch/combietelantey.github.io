@@ -122,10 +122,9 @@
                     <div class="videos-grid-item box">
                         <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail" class="video-thumbnail">
                         <div class="video-bottom-row">
-                            <img src="https://placehold.co/64x64.png?font=roboto" alt="User" class="video-author-img">
+                            <!--<img src="https://placehold.co/64x64.png?font=roboto" alt="User" class="video-author-img">-->
                             <div class="video-bottom-right">
                                 <p class="video-title"><strong>Video title</strong></p>
-                                <p class="video-author">Author</p>
                                 <p class="video-description"></p>
                             </div>
                         </div>
@@ -142,10 +141,42 @@
             pages.forEach(page => page.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
+        // Function to truncate strings
+        function truncateString(str, length, ending) {
+            if (str.length > length) {
+                return str.substring(0, length - ending.length) + ending;
+            } else {
+                return str;
+            }
+        }
         window.onload = () => {
             // Fetch and display videos from Supabase
             // Supabase client can be retrieved from sbApp.default.supabase
             console.log("Videos:",sbApp.default.fetchVideos());
+            sbApp.default.fetchVideosByCurrentUser().then(videos => {
+                const videosGrid = document.getElementById('videos-grid');
+                videos.data.forEach(video => {
+                    const videoItem = document.createElement('div');
+                    videoItem.classList.add('videos-grid-item');
+                    videoItem.classList.add('box');
+                    videoItem.innerHTML = `
+                        <img src="${video.thumbnail}" alt="Video thumbnail" class="video-thumbnail">
+                        <div class="video-bottom-row">
+                            <div class="video-bottom-right">
+                                <p class="video-title"><strong>${video.title}</strong></p>
+                                <p class="video-description">${truncateString(video.description,15,"...")}</p>
+                            </div>
+                        </div>
+                    `;
+                    videosGrid.appendChild(videoItem);
+                });
+                if (videos.data.length == 0) {
+                    const noVideos = document.createElement("p");
+                    noVideos.textContent = "No videos found.";
+                    videosGrid.appendChild(noVideos);
+                }
+            });
+            
         };
     </script>
 </body>

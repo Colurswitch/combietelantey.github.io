@@ -193,6 +193,13 @@ const sbApp = {
   async fetchVideos() {
     const { data, error } = await supabase.from('videos').select();
     return { data, error };
+  },
+
+  async fetchVideosByCurrentUser() {
+    const { data, error } = await supabase.from('videos').select().eq(
+      "creator", (await this.getCurrentUser()).data.user.id
+    )
+    return { data, error };
   }
 };
 
