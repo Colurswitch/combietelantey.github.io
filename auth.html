@@ -192,6 +192,7 @@
             document.getElementById("btnSIGoogle").disabled = false;
             document.getElementById("btnSU").disabled = false;
             document.getElementById("btnSUGoogle").disabled = false;
+
             document.getElementById("btnSI").onclick = function() {
                 const email = document.getElementById("txtSIEmail").value;
                 const password = document.getElementById("txtSIPasswd").value;
@@ -208,8 +209,8 @@
                     if (res.error) {
                         document.getElementById("SIError").textContent = res.error
                     } else {
-                        alert("Signed in successfully!");
-                        window.location.href = "/";
+                        //alert("Signed in successfully!");
+                        //window.location.href = "/";
                     }
                 });
             }
@@ -218,8 +219,8 @@
                     if (res.error) {
                         document.getElementById("SIError").textContent = res.error
                     } else {
-                        alert("Signed in with Google successfully!");
-                        window.location.href = "/";
+                        //alert("Signed in with Google successfully!");
+                        //window.location.href = "/";
                     }
                 });
             }
@@ -241,8 +242,8 @@
                     if (res.error) {
                         document.getElementById("SUError").textContent = res.error
                     } else {
-                        alert("Signed up successfully!");
-                        window.location.href = "/";
+                        //alert("Signed up successfully!");
+                        //window.location.href = "/";
                     }
                 });
             }
@@ -251,8 +252,8 @@
                     if (res.error) {
                         document.getElementById("SUError").textContent = res.error
                     } else {
-                        alert("Signed up with Google successfully!");
-                        window.location.href = "/";
+                        //alert("Signed up with Google successfully!");
+                        //window.location.href = "/";
                     }
                 });
             }

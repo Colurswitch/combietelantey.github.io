@@ -154,6 +154,13 @@
       box-shadow: none !important;
     }
 
+    .transparent-button {
+      background-color: transparent !important;
+      color: white !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
     .page-view-left .bottom img {
       transform: rotate(-90deg);
       bottom: 0 !important;
@@ -200,17 +207,16 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <button class="js-modal-trigger button" data-target="dlgSettings"><span class="material-icons">settings</span></button>
-            </div>
-          </div>
-          <div class="navbar-item">
-            <div class="buttons">
-              <a class="button is-primary">
-                <strong>Sign up</strong>
-              </a>
-              <a class="button is-light">
-                Log in
-              </a>
+              <button class="js-modal-trigger button transparent-button" data-target="dlgSettings">
+                <span class="icon"> 
+                  <span class="material-icons">settings</span>
+                </span>
+              </button>
+              <button class="button transparent-button" onclick="account()">
+                <span class="icon">
+                  <span class="material-icons">person</span>
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -291,7 +297,11 @@
       </footer>
     </div>
   </div>
-  <script>
+  <script type="module">
+    import * as sbApp from './firebase.js';
+    function account() {
+
+    }
     window.onload = () => {
       wapp.setup();
       qod.create("lblQod");
