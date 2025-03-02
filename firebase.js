@@ -149,6 +149,12 @@ const sbApp = {
         email: data.user.email,
         display_name: data.user.email,
         enabled: true, // If false, the user is restricted from logging in.
+        bio: "Anonymous",
+        associated: false,
+        verified: false,
+        perms: [],
+        photo_url: "",
+        banner_url: "",
       }]);
       if (!error2) {
         console.log('User created and linked to current session:', data2);
