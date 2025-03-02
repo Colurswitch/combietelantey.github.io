@@ -130,7 +130,7 @@ const sbApp = {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: provider,
       options: {
-        redirectTo: '/account'
+        redirectTo: window.location.origin,
       }
     });
     return { data, error };
