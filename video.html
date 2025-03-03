@@ -302,8 +302,22 @@
                     <div id="tab-panel1" class="tab-panel">
                         <div class="content-wrapper content">
                             <h1 id="vidTitle">Title</h1>
+                            <p class="buttons">
+                                <button class="button is-info icon-text" id="vidLikes">
+                                    <span class="icon">
+                                        <i class="material-icons">thumb_up</i>
+                                    </span>
+                                    <span>0 likes</span>
+                                </button>
+                                <button class="button is-danger icon-text" id="vidDislikes">
+                                    <span class="icon">
+                                        <i class="material-icons">thumb_down</i>
+                                    </span>
+                                    <span>0 dislikes</span>
+                                </button>
+                            </p>
                             <p>
-                                <span id="vidPubDate">Jan 1, 2025</span> | <span id="vidHashtags">None</span>
+                                <span id="vidPubDate">Jan 1, 2025</span> | <span id="vidHashtags">None</span> | <span id="vidViews">0 views</span>
                             </p>
                             <article class="content" id="vidDescContent">
                                 This video has no description.
@@ -431,7 +445,7 @@
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script type="module">
         // Initialize Firebase
-        import firebase from "https://www.gstatic.com/firebasejs/11.3.1/firebase-compat.js";
+        import * as sbApp from "./firebase.js";
         // Video player object
         const vp = {
             create: function (src, posterSrc = "", subtitlesSrc = []) {
@@ -462,7 +476,57 @@
         window.onload = () => {
             // Get value of "id" url parameter
             const id = new URLSearchParams(window.location.search).get("id");
-
+            sbApp.default.fetchVideoById(id).then(video => {
+                sbApp.default.getUser(video.data[0].creator).then(user => {
+                    vp.create(video.url, video.thumbnail, video.subtitles);
+                    // Update video details
+                    document.getElementById("vidTitle").textContent = video.data[0].title;
+                    document.getElementById("vidAuthorName").textContent = user.data[0].display_name;
+                    document.getElementById("vidAuthorPicture").src = user.data[0].photo_url;
+                    document.getElementById("vidAuthorHandle").textContent = user.data[0].handle;
+                    document.getElementById("vidAuthorBio").textContent = user.data[0].bio;
+                    document.getElementById("vidPubDate").textContent = new Date(video.data[0].created_at).toLocaleString();
+                    document.getElementById("vidDescContent").innerHTML = video.data[0].description;
+                    // Extract hashtags from video title
+                    const words = video.data[0].title.split(" ");
+                    words.forEach(word => {
+                        if (word.startsWith("#")) {
+                            const hashtagLink = document.createElement("a");
+                            hashtagLink.href = `/search?q=${word}`;
+                            hashtagLink.textContent = word;
+                            document.getElementById("vidHashtags").appendChild(hashtagLink);
+                            document.getElementById("vidHashtags").appendChild(document.createTextNode(" "));
+                        }
+                    });
+                    if (words.length == 0) {
+                        document.getElementById("vidHashtags").textContent = "No hashtags found.";
+                    }
+                    // Set video views and likes
+                    document.getElementById("vidViews").textContent = video.data[0].views;
+                    if (sbApp.default.isSignedIn()) {
+                        sbApp.default.getCurrentUser().then(currentUser => {
+                            document.getElementById("vidLikes").innerHTML = `<span class="material-icons">${video.data[0].likes.includes(currentUser.data.user.id)?"thumb_up":"thumb_up_off_alt"}</span> <span>${video.data[0].likes.length}</span>`;
+                            document.getElementById("vidLikes").addEventListener("click", () => {
+                                if (sbApp.default.isSignedIn()) {
+                                    sbApp.default.likeVideo(video.data[0].id);
+                                    document.getElementById("vidLikes").innerHTML = `<span class="material-icons">${video.data[0].likes.includes(currentUser.data.user.id)?"thumb_up":"thumb_up_off_alt"}</span> <span>${video.data[0].likes.length}</span>`;
+                                } else {
+                                    alert("You need to sign in to like this video.");
+                                }
+                            });
+                            document.getElementById("vidDislikes").innerHTML = `<span class="material-icons">${video.data[0].dislikes.includes(currentUser.data.user.id)?"thumb_down":"thumb_down_off_alt"}</span> <span>${video.data[0].dislikes.length}</span>`;
+                            document.getElementById("vidDislikes").addEventListener("click", () => {
+                                if (sbApp.default.isSignedIn()) {
+                                    sbApp.default.dislikeVideo(video.data[0].id);
+                                    document.getElementById("vidDislikes").innerHTML = `<span class="material-icons">${video.data[0].dislikes.includes(currentUser.data.user.id)?"thumb_down":"thumb_down_off_alt"}</span> <span>${video.data[0].dislikes.length}</span>`;
+                                } else {
+                                    alert("You need to sign in to dislike this video.");
+                                }
+                            });
+                        });
+                    }
+                });
+            });
         }
     </script>
 </body>

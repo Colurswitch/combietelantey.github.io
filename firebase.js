@@ -190,6 +190,13 @@ const sbApp = {
     return { data, error };
   },
 
+  async getUser(user_id) {
+    const { data, error } = await supabase.from('users').select().eq(
+      "id", user_id
+    )
+    return { data, error };
+  },
+
   async fetchVideos() {
     const { data, error } = await supabase.from('videos').select();
     return { data, error };
