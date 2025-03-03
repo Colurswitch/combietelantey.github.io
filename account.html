@@ -170,9 +170,97 @@
                 </div>
             </div>
             <div class="box page active" id="video">
+                <img src="https://placehold.co/1600x900.png?font=roboto" alt="currentVideoThumbnail" id="currentVideoThumbnail" />
                 <h1 class="title" id="currentVideoName">Title</h1>
+                <p class="icon-text">
+                    <span class="icon">
+                        <span class="material-icons">thumb_up</span>
+                    </span>
+                    <span id="currentVideoLikes">0</span>
+                    <span class="icon">
+                        <span class="material-icons">thumb_down</span>
+                    </span>
+                    <span id="currentVideoDislikes">0</span>
+                </p>
                 <article class="content" id="currentVideoDesc">Description</article>
-                <a href="#" class="button" id="currentVideoLink">Open vi</a>
+                <p class="buttons">
+                    <a href="#" class="button" id="currentVideoLink">Open video link</a>
+                    <a href="#" class="button is-info" id="currentVideoEdit">Edit video</a>
+                    <a href="#" class="button is-danger" id="currentVideoDelete">Delete video</a>
+                </p>
+                <h1 class="title" id="currentVideoCommentsLength">0 comment(s)</h1>
+                <div id="currentVideoCommentsContainer">
+                    <!-- Comments will be dynamically loaded here -->
+                    <!-- Example comment --
+                    <div class="box">
+                        <div class="media">
+                            <div class="media-left">
+                                <img src="https://placehold.co/64x64.png?font=roboto" alt="User" class="media-object">
+                            </div>
+                            <div class="media-content">
+                                <p class="subtitle is-6">Username</p>
+                                <p class="content">Comment content</p>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!-- Add more comments here -->
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image is-32x32">
+                                    <img src="https://bulma.io/assets/images/placeholders/128x128.png"
+                                        alt="Image" class="comments-item-picture" />
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <div class="content" style="padding: 0;">
+                                    <p>
+                                        <strong>John Smith</strong> <small>@johnsmith</small><br />
+                                        This is a comment.
+                                    </p>
+                                    <a href="#" aria-label="like" class="icon-text"><span
+                                            class="material-icons">thumb_up</span>0</a>
+                                    <a href="#" aria-label="dislike" class="icon-text"><span
+                                            class="material-icons">thumb_down</span>0</a>
+                                    <a href="#" aria-label="reply" class="icon-text"><span
+                                            class="material-icons">reply</span></a>
+                                    <a href="#" aria-label="edit" class="icon-text"><span
+                                            class="material-icons">push_pin</span></a>
+                                    <a href="#" aria-label="delete" class="icon-text"><span
+                                            class="material-icons">delete</span></a>
+                                </div>
+                                <div class="box content">
+                                    <h3>0 replie(s)</h3>
+                                    <div class="box">
+                                        <article class="media">
+                                            <div class="media-left">
+                                                <figure class="image is-32x32">
+                                                    <img src="https://bulma.io/assets/images/placeholders/128x128.png"
+                                                        alt="Image" class="comments-item-picture" />
+                                                </figure>
+                                            </div>
+                                            <div class="media-content">
+                                                <div class="content" style="padding: 0;">
+                                                    <p>
+                                                        <strong>John Smith</strong>
+                                                        <small>@johnsmith</small><br />
+                                                        This is a reply.
+                                                    </p>
+                                                    <a href="#" aria-label="like" class="icon-text"><span
+                                                            class="material-icons">thumb_up</span>0</a>
+                                                    <a href="#" aria-label="dislike" class="icon-text"><span
+                                                            class="material-icons">thumb_down</span>0</a>
+                                                    <a href="#" aria-label="delete" class="icon-text"><span
+                                                            class="material-icons">delete</span></a>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -240,7 +328,13 @@
         // Function to load single video
         function loadSingleVideo(videoId) {
             sbApp.default.fetchVideoById(videoId).then(video => {
-                
+                document.getElementById("currentVideoName").innerHTML = video;
+                document.getElementById("currentVideoDescription").innerHTML = video.description;
+                document.getElementById("currentVideoThumbnail").src = video.thumbnail.length > 0? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto";
+                document.getElementById("currentVideoLikes").innerHTML = video.likes;
+                document.getElementById("currentVideoDislikes").innerHTML = video.dislikes;
+                document.getElementById("currentVideoComments").innerHTML = video.comments;
+                openPage("video");
             });
         }
         // Function to upload a new video

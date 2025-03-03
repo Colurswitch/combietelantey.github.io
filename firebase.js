@@ -202,12 +202,12 @@ const sbApp = {
     return { data, error };
   },
 
-  async fetchVideo(video_id) {
+  async fetchVideoById(video_id) {
     const { data, error } = await supabase.from('videos').select().eq(
       "id", video_id
     )
     return { data, error };
-  }
+  },
 
   async createVideo(title, description, vidSrc, thumbnailUrl, tracks = []) {
     if (!(await this.isSignedIn())) {
