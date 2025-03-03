@@ -316,6 +316,7 @@
                             </div>
                         </div>
                     `;
+                    videoItem.addEventListener('click', () => loadSingleVideo(video.id));
                     videosGrid.appendChild(videoItem);
                 });
                 if (videos.data.length == 0) {
