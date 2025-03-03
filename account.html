@@ -330,7 +330,7 @@
         function loadSingleVideo(videoId) {
             sbApp.default.fetchVideoById(videoId).then(video => {
                 document.getElementById("currentVideoName").innerHTML = video;
-                document.getElementById("currentVideoDescription").innerHTML = video.description;
+                document.getElementById("currentVideoDesc").innerHTML = video.description;
                 document.getElementById("currentVideoThumbnail").src = video.thumbnail.length > 0? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto";
                 document.getElementById("currentVideoLikes").innerHTML = video.likes;
                 document.getElementById("currentVideoDislikes").innerHTML = video.dislikes;
