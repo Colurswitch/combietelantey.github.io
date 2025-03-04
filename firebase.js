@@ -239,7 +239,7 @@ const sbApp = {
     }
     const { data, error } = await supabase.from('videos').update({
       likes: (await this.fetchVideoById(video_id)).data[0].likes.concat((await this.getCurrentUser()).data.user.id),
-    });
+    }).eq(video_id);
     return { data, error };
   },
 
@@ -248,9 +248,16 @@ const sbApp = {
       // User is not signed in.
       return;
     }
+    var arr = (await this.fetchVideoById(video_id)).data[0].likes;
+    var newArr = [];
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i]!== (await this.getCurrentUser()).data.user.id) {
+        newArr.push(arr[i]);
+      }
+    }
     const { data, error } = await supabase.from('videos').update({
-      likes: (await this.fetchVideoById(video_id)).data[0].likes.filter((id) => id !== ((await this.getCurrentUser()).data.user.id)),
-    });
+      likes: newArr,
+    }).eq(video_id);
     return { data, error };
   },
 
@@ -261,7 +268,7 @@ const sbApp = {
     }
     const { data, error } = await supabase.from('videos').update({
       dislikes: (await this.fetchVideoById(video_id)).data[0].dislikes.concat((await this.getCurrentUser()).data.user.id),
-    });
+    }).eq(video_id);
     return { data, error };
   },
 
@@ -270,9 +277,16 @@ const sbApp = {
       // User is not signed in.
       return;
     }
+    var arr = (await this.fetchVideoById(video_id)).data[0].dislikes;
+    var newArr = [];
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i]!== (await this.getCurrentUser()).data.user.id) {
+        newArr.push(arr[i]);
+      }
+    }
     const { data, error } = await supabase.from('videos').update({
-      dislikes: (await this.fetchVideoById(video_id)).data[0].dislikes.filter((id) => id !== ((await this.getCurrentUser()).data.user.id)),
-    });
+      dislikes: newArr,
+    }).eq(video_id);
     return { data, error };
   },
 
