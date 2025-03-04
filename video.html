@@ -473,6 +473,13 @@
             }, player: null
         }
 
+        function renderComments() {
+            sbApp.default.fetchCommentsByVideoId(new URLSearchParams(window.location.search).get("id")).then(comments => {
+                const commentsList = document.getElementById("comments-list");
+                console.log(comments);
+            });
+        }
+        
         window.onload = () => {
             // Get value of "id" url parameter
             const id = new URLSearchParams(window.location.search).get("id");
@@ -482,7 +489,7 @@
                     // Update video details
                     document.getElementById("vidTitle").textContent = video.data[0].title;
                     document.getElementById("vidAuthorName").textContent = user.data[0].display_name;
-                    document.getElementById("vidAuthorPicture").src = user.data[0].photo_url;
+                    document.getElementById("vidAuthorPicture").src = user.data[0].photo_url.length > 0 ? user.data[0].photo_url : "https://placehold.co/128x128?font=roboto";
                     document.getElementById("vidAuthorHandle").textContent = user.data[0].handle;
                     document.getElementById("vidAuthorBio").textContent = user.data[0].bio;
                     document.getElementById("vidPubDate").textContent = new Date(video.data[0].created_at).toLocaleString();
@@ -503,12 +510,12 @@
                     }
                     // Set video views and likes
                     document.getElementById("vidViews").textContent = video.data[0].views;
-                    if (sbApp.default.isSignedIn()) {
+                    //if (sbApp.default.isSignedIn()) {
                         sbApp.default.getCurrentUser().then(currentUser => {
                             document.getElementById("vidLikes").innerHTML = `<span class="material-icons">${video.data[0].likes.includes(currentUser.data.user.id)?"thumb_up":"thumb_up_off_alt"}</span> <span>${video.data[0].likes.length}</span>`;
                             document.getElementById("vidLikes").addEventListener("click", () => {
                                 if (sbApp.default.isSignedIn()) {
-                                    sbApp.default.likeVideo(video.data[0].id);
+                                    sbApp.default[video.data[0].likes.includes(currentUser.data.user.id)?"unlikeVideoById":"likeVideoById"](video.data[0].id);
                                     document.getElementById("vidLikes").innerHTML = `<span class="material-icons">${video.data[0].likes.includes(currentUser.data.user.id)?"thumb_up":"thumb_up_off_alt"}</span> <span>${video.data[0].likes.length}</span>`;
                                 } else {
                                     alert("You need to sign in to like this video.");
@@ -517,18 +524,19 @@
                             document.getElementById("vidDislikes").innerHTML = `<span class="material-icons">${video.data[0].dislikes.includes(currentUser.data.user.id)?"thumb_down":"thumb_down_off_alt"}</span> <span>${video.data[0].dislikes.length}</span>`;
                             document.getElementById("vidDislikes").addEventListener("click", () => {
                                 if (sbApp.default.isSignedIn()) {
-                                    sbApp.default.dislikeVideo(video.data[0].id);
+                                    sbApp.default[video.data[0].dislikes.includes(currentUser.data.user.id)?"undislikeVideoById":"dislikeVideoById"](video.data[0].id);
                                     document.getElementById("vidDislikes").innerHTML = `<span class="material-icons">${video.data[0].dislikes.includes(currentUser.data.user.id)?"thumb_down":"thumb_down_off_alt"}</span> <span>${video.data[0].dislikes.length}</span>`;
                                 } else {
                                     alert("You need to sign in to dislike this video.");
                                 }
                             });
                         });
-                    }
+                    //}
+                    // Render comments
+                    renderComments();
                 });
             });
         }
     </script>
 </body>
-
 </html>
