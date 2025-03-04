@@ -298,6 +298,15 @@ const sbApp = {
       ), content, likes, dislikes, replies
     `).in("id", cmnts);
     return { data, error };
+  },
+
+  async fetchRepliesByCommentId(comment_id) {
+    const { data, error } = await supabase.from('video_comment_replies').select(`
+      id, created_at, author (
+        display_name, handle, photo_url
+      ), content, likes, dislikes
+    `).eq("parent_comment_id", comment_id);
+    return { data, error };
   }
 };
 
