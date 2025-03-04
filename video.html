@@ -676,7 +676,7 @@
                     // Render comments
                     renderComments();
                     // Fetch related videos
-                    sbApp.default.getRelatedVideos(video.data[0].id).then(relatedVideos => {
+                    sbApp.default.fetchRelatedVideos(video.data[0].id).then(relatedVideos => {
                         const relatedVideosHTML = relatedVideos.data.map(video => {
                             return `
                                 <a class="videos-grid-item box" href="video?id=${video.id}">
