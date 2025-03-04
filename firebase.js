@@ -249,7 +249,7 @@ const sbApp = {
       return;
     }
     const { data, error } = await supabase.from('videos').update({
-      likes: (await this.fetchVideoById(video_id)).data[0].likes.filter((id) => id!== (await this.getCurrentUser()).data.user.id),
+      likes: (await this.fetchVideoById(video_id)).data[0].likes.filter((id) => {id!== (await this.getCurrentUser()).data.user.id}),
     });
     return { data, error };
   },
@@ -271,7 +271,7 @@ const sbApp = {
       return;
     }
     const { data, error } = await supabase.from('videos').update({
-      dislikes: (await this.fetchVideoById(video_id)).data[0].dislikes.filter((id) => id!== (await this.getCurrentUser()).data.user.id),
+      dislikes: (await this.fetchVideoById(video_id)).data[0].dislikes.filter((id) => {id!== (await this.getCurrentUser()).data.user.id}),
     });
     return { data, error };
   },
