@@ -502,8 +502,8 @@
                 document.getElementById("comments-container").innerHTML = `<h1>${comments.data.length} comment(s)</h1>`;
                 comments.data.forEach(comment => {
                     sbApp.default.fetchRepliesByCommentId(comment.id).then(replies => {
-                        var repNew = replies;
-                        repNew.data.map(reply => {
+                        var repNew = replies.data;
+                        repNew.map(reply => {
                             return `<div class="box">
                                                     <article class="media">
                                                         <div class="media-left">
