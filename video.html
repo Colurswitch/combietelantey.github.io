@@ -502,6 +502,7 @@
                 document.getElementById("comments-container").innerHTML = `<h1>${comments.data.length} comment(s)</h1>`;
                 comments.data.forEach(comment => {
                     sbApp.default.fetchRepliesByCommentId(comment.id).then(replies => {
+                        console.log(replies);
                         var repNew = replies.data;
                         repNew.map(reply => {
                             return `<div class="box">
