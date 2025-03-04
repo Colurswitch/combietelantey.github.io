@@ -303,13 +303,13 @@
                         <div class="content-wrapper content">
                             <h1 id="vidTitle">Title</h1>
                             <p class="buttons">
-                                <button class="button is-info icon-text" id="vidLikes">
+                                <button class="button is-info is-loading icon-text" id="vidLikes">
                                     <span class="icon">
                                         <i class="material-icons">thumb_up</i>
                                     </span>
                                     <span>0 likes</span>
                                 </button>
-                                <button class="button is-danger icon-text" id="vidDislikes">
+                                <button class="button is-danger is-loading icon-text" id="vidDislikes">
                                     <span class="icon">
                                         <i class="material-icons">thumb_down</i>
                                     </span>
@@ -317,7 +317,8 @@
                                 </button>
                             </p>
                             <p>
-                                <span id="vidPubDate">Jan 1, 2025</span> | <span id="vidHashtags">None</span> | <span id="vidViews">0 views</span>
+                                <span id="vidPubDate">Jan 1, 2025</span> | <span id="vidHashtags">None</span> | <span
+                                    id="vidViews">0 views</span>
                             </p>
                             <article class="content" id="vidDescContent">
                                 This video has no description.
@@ -442,6 +443,23 @@
             </ul>
         </div>
     </section>
+    <div class="modal" id="dlgNoParam">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Error</p>
+                <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+                No videoId was given.
+            </section>
+            <footer class="modal-card-foot">
+                <div class="buttons">
+                    <button class="button" onclick="window.history.back();">Back</button>
+                </div>
+            </footer>
+        </div>
+    </div>
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script type="module">
         // Initialize Firebase
@@ -479,7 +497,56 @@
                 console.log(comments);
             });
         }
-        
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Functions to open and close a modal
+            function openModal($el) {
+                $el.classList.add('is-active');
+            }
+
+            function closeModal($el) {
+                $el.classList.remove('is-active');
+            }
+
+            function closeAllModals() {
+                (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+                    closeModal($modal);
+                });
+            }
+
+            // Add a click event on buttons to open a specific modal
+            (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+                const modal = $trigger.dataset.target;
+                const $target = document.getElementById(modal);
+
+                $trigger.addEventListener('click', () => {
+                    openModal($target);
+                });
+            });
+
+            // Add a click event on various child elements to close the parent modal
+            (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+                const $target = $close.closest('.modal');
+
+                $close.addEventListener('click', () => {
+                    closeModal($target);
+                });
+            });
+
+            // Add a keyboard event to close all modals
+            document.addEventListener('keydown', (event) => {
+                if (event.key === "Escape") {
+                    closeAllModals();
+                }
+            });
+
+            if (new URLSearchParams(window.location.search).get("id") == null) {
+                // If no videoId is given, show an error modal
+                const $noParamModal = document.getElementById("dlgNoParam");
+                openModal($noParamModal);
+            }
+        });
+
         window.onload = () => {
             // Get value of "id" url parameter
             const id = new URLSearchParams(window.location.search).get("id");
@@ -510,33 +577,40 @@
                     }
                     // Set video views and likes
                     document.getElementById("vidViews").textContent = video.data[0].views;
-                    //if (sbApp.default.isSignedIn()) {
+                    if (sbApp.default.isSignedIn()) {
                         sbApp.default.getCurrentUser().then(currentUser => {
-                            document.getElementById("vidLikes").innerHTML = `<span class="material-icons">${video.data[0].likes.includes(currentUser.data.user.id)?"thumb_up":"thumb_up_off_alt"}</span> <span>${video.data[0].likes.length}</span>`;
+                            document.getElementById("vidLikes").innerHTML = `<span class="material-icons">${video.data[0].likes.includes(currentUser.data.user.id) ? "thumb_up" : "thumb_up_off_alt"}</span> <span>${video.data[0].likes.length}</span>`;
                             document.getElementById("vidLikes").addEventListener("click", () => {
                                 if (sbApp.default.isSignedIn()) {
-                                    sbApp.default[video.data[0].likes.includes(currentUser.data.user.id)?"unlikeVideoById":"likeVideoById"](video.data[0].id);
-                                    document.getElementById("vidLikes").innerHTML = `<span class="material-icons">${video.data[0].likes.includes(currentUser.data.user.id)?"thumb_up":"thumb_up_off_alt"}</span> <span>${video.data[0].likes.length}</span>`;
+                                    sbApp.default[video.data[0].likes.includes(currentUser.data.user.id) ? "unlikeVideoById" : "likeVideoById"](video.data[0].id);
+                                    document.getElementById("vidLikes").innerHTML = `<span class="material-icons">${video.data[0].likes.includes(currentUser.data.user.id) ? "thumb_up" : "thumb_up_off_alt"}</span> <span>${video.data[0].likes.length}</span>`;
                                 } else {
                                     alert("You need to sign in to like this video.");
                                 }
                             });
-                            document.getElementById("vidDislikes").innerHTML = `<span class="material-icons">${video.data[0].dislikes.includes(currentUser.data.user.id)?"thumb_down":"thumb_down_off_alt"}</span> <span>${video.data[0].dislikes.length}</span>`;
+                            document.getElementById("vidDislikes").innerHTML = `<span class="material-icons">${video.data[0].dislikes.includes(currentUser.data.user.id) ? "thumb_down" : "thumb_down_off_alt"}</span> <span>${video.data[0].dislikes.length}</span>`;
                             document.getElementById("vidDislikes").addEventListener("click", () => {
                                 if (sbApp.default.isSignedIn()) {
-                                    sbApp.default[video.data[0].dislikes.includes(currentUser.data.user.id)?"undislikeVideoById":"dislikeVideoById"](video.data[0].id);
-                                    document.getElementById("vidDislikes").innerHTML = `<span class="material-icons">${video.data[0].dislikes.includes(currentUser.data.user.id)?"thumb_down":"thumb_down_off_alt"}</span> <span>${video.data[0].dislikes.length}</span>`;
+                                    sbApp.default[video.data[0].dislikes.includes(currentUser.data.user.id) ? "undislikeVideoById" : "dislikeVideoById"](video.data[0].id);
+                                    document.getElementById("vidDislikes").innerHTML = `<span class="material-icons">${video.data[0].dislikes.includes(currentUser.data.user.id) ? "thumb_down" : "thumb_down_off_alt"}</span> <span>${video.data[0].dislikes.length}</span>`;
                                 } else {
                                     alert("You need to sign in to dislike this video.");
                                 }
                             });
                         });
-                    //}
+                    } else {
+                        document.getElementById("vidLikes").textContent = `<span class="material-icons">thumb_up_off_alt</span> <span>${video.data[0].likes.length}</span>`;
+                        document.getElementById("vidDislikes").textContent = `<span class="material-icons">thumb_down_off_alt</span> <span>${video.data[0].dislikes.length}</span>`;
+                    }
                     // Render comments
                     renderComments();
+                    // Remove loading indicator
+                    document.getElementById("vidLikes").classList.remove("is-loading");
+                    document.getElementById("vidDislikes").classList.remove("is-loading");
                 });
             });
         }
     </script>
 </body>
+
 </html>
