@@ -300,12 +300,22 @@ const sbApp = {
     return { data, error };
   },
 
+  async fetchCommentById(comment_id) {
+    const { data, error } = await supabase.from('video_comments').select(`
+      id, created_at, author (
+        display_name, handle, photo_url
+      ), content, likes, dislikes, replies
+    `).eq("id", comment_id);
+    return { data, error };
+  },
+
   async fetchRepliesByCommentId(comment_id) {
+    var rplys = (await this.fetchCommentById(comment_id)).data[0].replies
     const { data, error } = await supabase.from('video_comment_replies').select(`
       id, created_at, author (
         display_name, handle, photo_url
       ), content, likes, dislikes
-    `).eq("parent_comment_id", comment_id);
+    `).in("id", rplys);
     return { data, error };
   }
 };
