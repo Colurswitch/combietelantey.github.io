@@ -305,6 +305,7 @@
                     <label for="tab1">Description</label>
                     <div id="tab-panel1" class="tab-panel">
                         <div class="content-wrapper content">
+                            <progress class="progress is-small is-danger" max="100" id="loading-indicator">15%</progress>
                             <h1 id="vidTitle">Title</h1>
                             <p class="buttons">
                                 <button class="button is-info is-loading icon-text" id="vidLikes">
@@ -495,6 +496,13 @@
             }, player: null
         }
 
+        // Function to truncate strings
+        function truncate(str, maxLength) {
+            return str.length > maxLength? str.substr(0, maxLength - 3) + "..." : str;
+        }
+
+        // Function to load video comments and replies
+        
         function renderComments() {
             sbApp.default.fetchCommentsByVideoId(new URLSearchParams(window.location.search).get("id")).then(comments => {
                 const commentsList = document.getElementById("comments-list");
@@ -503,13 +511,12 @@
                 comments.data.forEach(comment => {
                     sbApp.default.fetchRepliesByCommentId(comment.id).then(replies => {
                         console.log(replies);
-                        var repNew = replies.data;
-                        repNew.map(reply => {
+                        var repNew = replies.data.map(reply => {
                             return `<div class="box">
                                                     <article class="media">
                                                         <div class="media-left">
                                                             <figure class="image is-32x32">
-                                                                <img src="${reply.autor.photo_url.length>0?reply.author.photo_url:"https://placehold.co/32x32.png?font=roboto"}"
+                                                                <img src="${reply.author.photo_url.length>0?reply.author.photo_url:"https://placehold.co/32x32.png?font=roboto"}"
                                                                     alt="Image" class="comments-item-picture" />
                                                             </figure>
                                                         </div>
@@ -527,8 +534,7 @@
                                                             </div>
                                                         </div>
                                                     </article>
-                                                </div>`;
-                        })
+                                                </div>`;});
                         document.getElementById("comments-container").innerHTML += `<div class="box">
                                     <article class="media">
                                         <div class="media-left">
@@ -669,9 +675,31 @@
                     }
                     // Render comments
                     renderComments();
+                    // Fetch related videos
+                    sbApp.default.getRelatedVideos(video.data[0].id).then(relatedVideos => {
+                        const relatedVideosHTML = relatedVideos.data.map(video => {
+                            return `
+                                <a class="videos-grid-item box" href="video?id=${video.id}">
+                                    <img src="${video.thumbnail.length>0?video.thumbnail:"https://placehold.co/1600x900.png?font=roboto"}" alt="Video thumbnail"
+                                        class="video-grid-item-thumbnail">
+                                    <div class="video-grid-item-bottom-row">
+                                        <img src="${video.creator.photo_url.length>0?video.creator.photo_url:"https://placehold.co/64x64.png?font=roboto"}" width="50" height="50"
+                                            alt="User" class="video-grid-item-author-img">
+                                        <div class="video-grid-item-bottom-right">
+                                            <p class="video-grid-item-title"><strong>${video.title}</strong></p>
+                                            <p class="video-grid-item-author icon-text">${video.creator.display_name} ${video.creator.verified?'<span class="material-icons">verified</span>':''}</p>
+                                            <p class="video-grid-item-description">${truncate(video.description,40)}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            `;
+                        }).join("");
+                        document.getElementById("videos-grid").innerHTML = relatedVideosHTML;
+                    });
                     // Remove loading indicator
                     document.getElementById("vidLikes").classList.remove("is-loading");
                     document.getElementById("vidDislikes").classList.remove("is-loading");
+                    document.getElementById("loading-indicator").remove();
                 });
             });
         }
