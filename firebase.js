@@ -368,6 +368,53 @@ const sbApp = {
     return { data, error };
   },
 
+  async createComment(video_id, content) {
+    if (!(await this.isSignedIn())) {
+      // User is not signed in.
+      return;
+    }
+    const { data, error } = await supabase.from('video_comments').insert({
+      content: content,
+      video: video_id,
+      author: (await this.getCurrentUser()).data.user.id,
+    });
+    return { data, error };
+  },
+
+  async deleteComment(comment_id) {
+    const { data, error } = await supabase.from('video_comments').delete().eq("id", comment_id);
+    return { data, error };
+  },
+
+  async editComment(comment_id, new_content) {
+    if (!(await this.isSignedIn())) {
+      // User is not signed in.
+      return;
+    }
+    const { data, error } = await supabase.from('video_comments').update({
+      content: new_content,
+    }).eq("id", comment_id);
+    return { data, error };
+  },
+
+  async createReplyToComment(comment_id, content) {
+    if (!(await this.isSignedIn())) {
+      // User is not signed in.
+      return;
+    }
+    const { data, error } = await supabase.from('video_comment_replies').insert({
+      content: content,
+      comment: comment_id,
+      author: (await this.getCurrentUser()).data.user.id,
+    });
+    return { data, error };
+  },
+
+  async deleteReply(reply_id) {
+    const { data, error } = await supabase.from('video_comment_replies').delete().eq("id", reply_id);
+    return { data, error };
+  },
+
   async fetchRepliesByCommentId(comment_id) {
     const { data, error } = await supabase.from('video_comment_replies').select(`
       id, created_at, author (

@@ -303,13 +303,14 @@
         </div>
         <!-- Tabs for video description, comments, and related videos-->
         <div class="video-bottom-row">
+            <progress class="progress is-small is-danger" max="100" id="loading-indicator">5%</progress>
             <ul class="tabs2">
                 <li>
                     <input id="tab1" type="radio" name="tabs" checked />
                     <label for="tab1">Description</label>
                     <div id="tab-panel1" class="tab-panel">
                         <div class="content-wrapper content">
-                            <progress class="progress is-small is-danger" max="100" id="loading-indicator">15%</progress>
+                            
                             <h1 id="vidTitle">Title</h1>
                             <p class="buttons">
                                 <button class="button is-info is-loading icon-text" id="vidLikes">
@@ -359,6 +360,13 @@
                     <label for="tab2">Comments</label>
                     <div id="tab-panel2" class="tab-panel">
                         <div class="content-wrapper content">
+                            <textarea id="txtNewComment" name="txtNewComment"></textarea>
+                            <button class="button is-primary icon-text" id="btnNewComment">
+                                <span class="icon">
+                                    <i class="material-icons">add_comment</i>
+                                </span>
+                                Add comment
+                            </button>
                             <div id="comments-container">
                                 <!-- Comments will be loaded here -->
                                 <h3>0 comment(s)</h3>
@@ -469,24 +477,6 @@
             </footer>
         </div>
     </div>
-    <div class="modal" id="dlgWYSIWYG">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title">WYSIWYG Editor</p>
-                <button class="delete" aria-label="close"></button>
-            </header>
-            <section class="modal-card-body">
-                <textarea id="wysiwyg-editor" rows="20" cols="80"></textarea>
-            </section>
-            <footer class="modal-card-foot">
-                <div class="buttons">
-                    <button class="button" onclick="updateVideoDescription();">Save</button>
-                    <button class="button" onclick="window.history.back();">Cancel</button>
-                </div>
-            </footer>
-        </div>
-    </div>
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script type="module">
         // Initialize Firebase
@@ -526,6 +516,7 @@
         // Function to load video comments and replies
         
         function renderComments() {
+            document.getElementById("loading-indicator").style.display = "block";
             sbApp.default.fetchCommentsByVideoId(new URLSearchParams(window.location.search).get("id")).then(comments => {
                 console.log(comments);
                 document.getElementById("comments-container").innerHTML = `<h1>${comments.data.length} comment(s)</h1>`;
@@ -533,6 +524,26 @@
                     sbApp.default.fetchRepliesByCommentId(comment.id).then(replies => {
                         console.log(replies);
                         var repNew = replies.data.map(reply => {
+                            var editBtn = document.createElement("a");
+                            editBtn.href = "#";
+                            editBtn.textContent = "Edit";
+                            editBtn.addEventListener("click", function () {
+                                document.getElementById("wysiwyg-editor").value = reply.content;
+                                document.querySelector("#dlgWYSIWYG .modal-card-title").textContent = "Edit comment";
+                            });
+                            var delBtn = document.createElement("a");
+                            delBtn.href = "#";
+                            delBtn.textContent = "Delete";
+                            delBtn.addEventListener("click", function () {
+                                if (confirm("Are you sure you want to delete this comment?")) {
+                                    sbApp.default.deleteComment(comment.id).then(() => {
+                                        alert("Comment deleted successfully.");
+                                        renderComments();
+                                    }).catch(error => {
+                                        alert("Error deleting comment: " + error.message);
+                                    });
+                                }
+                            });
                             return `<div class="box">
                                                     <article class="media">
                                                         <div class="media-left">
@@ -548,10 +559,7 @@
                                                                     <small>${reply.author.handle}</small><br />
                                                                     ${reply.content}
                                                                 </p>
-                                                                <a href="#" aria-label="edit" class="icon-text"><span
-                                                                        class="material-icons">edit</span></a>
-                                                                <a href="#" aria-label="delete" class="icon-text"><span
-                                                                        class="material-icons">delete</span></a>
+                                                                ${reply.author.id == sbApp.default.getCurrentUser().data.user.id ? editBtn.toString() + delBtn.toString() : ""}
                                                             </div>
                                                         </div>
                                                     </article>
@@ -572,10 +580,8 @@
                                                 </p>
                                                 <a href="#" aria-label="reply" class="icon-text"><span
                                                         class="material-icons">reply</span></a>
-                                                <a href="#" aria-label="edit" class="icon-text"><span
-                                                        class="material-icons">edit</span></a>
-                                                <a href="#" aria-label="delete" class="icon-text"><span
-                                                        class="material-icons">delete</span></a>
+                                                ${comment.author.id == sbApp.default.getCurrentUser().data.user.id ? `<a href="#" aria-label="edit" class="icon-text" onclick="editComment('${comment.id}')"><span class="material-icons">edit</span></a>` : ""}
+                                                ${comment.author.id == sbApp.default.getCurrentUser().data.user.id ? `<a href="#" aria-label="delete" class="icon-text" onclick="delComment('${comment.id}')"><span class="material-icons">delete</span></a>` : ""}
                                             </div>
                                             <div class="box content">
                                                 <h3>${comment.replies.length} replie(s)</h3>
@@ -584,7 +590,7 @@
                                         </div>
                                     </article>
                                 </div>`
-                
+                                document.getElementById("loading-indicator").style.display = "none";
                     });
                 });
             });
@@ -653,6 +659,7 @@
                     document.getElementById("vidAuthorBio").textContent = user.data[0].bio;
                     document.getElementById("vidPubDate").textContent = new Date(video.data[0].created_at).toLocaleString();
                     document.getElementById("vidDescContent").innerHTML = video.data[0].description;
+                    document.getElementById("btnNewComment").disabled = true;
                     // Extract hashtags from video title
                     const words = video.data[0].title.split(" ");
                     words.forEach(word => {
@@ -696,6 +703,25 @@
                     }
                     // Render comments
                     renderComments();
+                    // Create comment textarea
+                    sceditor.create(document.getElementById("txtNewComment"), {
+                        format: "xhtml",
+                        style: "https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/content/default.min.css",
+                    });
+                    document.getElementById("btnNewComment").onclick = () => {
+                        const commentText = sceditor.instance(document.getElementById("txtNewComment")).val();
+                        if (commentText.trim()!== "") {
+                            sbApp.default.createComment(video.data[0].id, commentText).then((res) => {
+                                if (res.error) {
+                                    alert("Error creating comment: " + res.error.message); return;
+                                }
+                                sceditor.instance(document.getElementById("txtNewComment")).val("");
+                                renderComments();
+                            });
+                        }
+                    }
+                    document.getElementById("btnNewComment").disabled = false;
+
                     // Fetch related videos
                     sbApp.default.fetchRelatedVideos(video.data[0].id).then(relatedVideos => {
                         const relatedVideosHTML = relatedVideos.data.map(video => {
@@ -720,7 +746,7 @@
                     // Remove loading indicator
                     document.getElementById("vidLikes").classList.remove("is-loading");
                     document.getElementById("vidDislikes").classList.remove("is-loading");
-                    document.getElementById("loading-indicator").remove();
+                    document.getElementById("loading-indicator").style.display = "none";
                 });
             });
         }
