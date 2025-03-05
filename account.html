@@ -339,7 +339,7 @@
                 openPage("video");
                 sbApp.default.fetchCommentsByVideoId(videoId).then(comments => {
                     console.log(comments);
-                    document.getElementById("comments-container").innerHTML = `<h1>${comments.data.length} comment(s)</h1>`;
+                    document.getElementById("currentVideoCommentsContainer").innerHTML = `<h1>${comments.data.length} comment(s)</h1>`;
                     comments.data.forEach(comment => {
                         sbApp.default.fetchRepliesByCommentId(comment.id).then(replies => {
                             console.log(replies);
