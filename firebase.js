@@ -221,14 +221,69 @@ const sbApp = {
       // User is not signed in.
       return;
     }
+    // User is signed in. Insert a new video record into the database.
+    // First, upload the video
+    const { data1, error1 } = await this.uploadVideo(vidSrc, title.replace(" ","_")+"_"+this.randomString(10));
+    if (error) {
+      console.error("Failed to upload video: ", error);
+      return;
+    }
     const { data, error } = await supabase.from('videos').insert({
       title: title,
       description: description,
-      video: vidSrc,
+      video: data1.fullPath,
       thumbnail: thumbnailUrl,
       creator: (await this.getCurrentUser()).data.user.id,
       tracks: tracks,
     });
+    return { data, error };
+  },
+
+  randomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+  },
+
+  base64ToArrayBuffer(base64) {
+    const binaryString = atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+  },
+
+  b64toBlob(b64Data, contentType='', sliceSize=512) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+  
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+  
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+  
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+      
+    const blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+  },
+
+  async uploadVideo(base64, filename) {
+    const { data, error } = await supabase.storage
+     .from('clmain')
+     .upload("videos/db_uploads/"+filename, this.b64toBlob(base64,"video/mp4"), {
+        contentType: 'video/mp4',
+      });
     return { data, error };
   },
 
