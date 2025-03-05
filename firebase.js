@@ -382,6 +382,13 @@ const sbApp = {
   },
 
   async deleteComment(comment_id) {
+    if (!(await this.isSignedIn())) {
+      // User is not signed in.
+      return;
+    } else if ((await this.getCurrentUser()).data.user.id != (await this.fetchCommentById(comment_id)).data[0].author.id) {
+      // User is not authorized to delete this comment.
+      return;
+    }
     const { data, error } = await supabase.from('video_comments').delete().eq("id", comment_id);
     return { data, error };
   },
@@ -389,6 +396,9 @@ const sbApp = {
   async editComment(comment_id, new_content) {
     if (!(await this.isSignedIn())) {
       // User is not signed in.
+      return;
+    } else if ((await this.getCurrentUser()).data.user.id != (await this.fetchCommentById(comment_id)).data[0].author.id) {
+      // User is not authorized to edit this comment.
       return;
     }
     const { data, error } = await supabase.from('video_comments').update({
@@ -411,6 +421,13 @@ const sbApp = {
   },
 
   async deleteReply(reply_id) {
+    if (!(await this.isSignedIn())) {
+      // User is not signed in.
+      return;
+    } else if ((await this.getCurrentUser()).data.user.id!= (await this.fetchReplyById(reply_id)).data[0].author.id) {
+      // User is not authorized to delete this reply.
+      return;
+    }
     const { data, error } = await supabase.from('video_comment_replies').delete().eq("id", reply_id);
     return { data, error };
   },

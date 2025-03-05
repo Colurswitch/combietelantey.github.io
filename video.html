@@ -552,7 +552,7 @@
                                                                     <small>${reply.author.handle}</small><br />
                                                                     ${reply.content}
                                                                 </p>
-                                                                ${sbApp.default.isSignedIn() && reply.author.id == sbApp.default.getCurrentUser().data.user.id ? delBtn.toString() : ""}
+                                                                ${delBtn.toString()}
                                                             </div>
                                                         </div>
                                                     </article>
@@ -586,7 +586,7 @@
                                                 </p>
                                                 <a href="#" aria-label="reply" class="icon-text"><span
                                                         class="material-icons">reply</span></a>
-                                                ${sbApp.default.isSignedIn() && comment.author.id == sbApp.default.getCurrentUser().data.user.id ? delBtn.toString() : ""}
+                                                ${delBtn.toString()}
                                             </div>
                                             <div class="box content">
                                                 <h3>${comment.replies.length} replie(s)</h3>
