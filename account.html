@@ -334,7 +334,7 @@
                 document.getElementById("currentVideoThumbnail").src = video.data[0].thumbnail.length > 0? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto";
                 document.getElementById("currentVideoLikes").innerHTML = video.data[0].likes;
                 document.getElementById("currentVideoDislikes").innerHTML = video.data[0].dislikes;
-                document.getElementById("currentVideoComments").innerHTML = video.data[0].comments;
+                //document.getElementById("currentVideoComments").innerHTML = video.data[0].comments;
                 document.getElementById("currentVideoLink").href = "video?id=" + video.data[0].id;
                 openPage("video");
                 sbApp.default.fetchCommentsByVideoId(new URLSearchParams(window.location.search).get("id")).then(comments => {
