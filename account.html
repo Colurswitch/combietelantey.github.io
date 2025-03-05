@@ -337,7 +337,7 @@
                 //document.getElementById("currentVideoComments").innerHTML = video.data[0].comments;
                 document.getElementById("currentVideoLink").href = "video?id=" + video.data[0].id;
                 openPage("video");
-                sbApp.default.fetchCommentsByVideoId(new URLSearchParams(window.location.search).get("id")).then(comments => {
+                sbApp.default.fetchCommentsByVideoId(videoId).then(comments => {
                     console.log(comments);
                     document.getElementById("comments-container").innerHTML = `<h1>${comments.data.length} comment(s)</h1>`;
                     comments.data.forEach(comment => {
