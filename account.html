@@ -335,8 +335,70 @@
                 document.getElementById("currentVideoLikes").innerHTML = video.data[0].likes;
                 document.getElementById("currentVideoDislikes").innerHTML = video.data[0].dislikes;
                 document.getElementById("currentVideoComments").innerHTML = video.data[0].comments;
-                document.getElementById("currentVideoLink").href = "video.html?id=" + video.data[0].id;
+                document.getElementById("currentVideoLink").href = "video?id=" + video.data[0].id;
                 openPage("video");
+                sbApp.default.fetchCommentsByVideoId(new URLSearchParams(window.location.search).get("id")).then(comments => {
+                    console.log(comments);
+                    document.getElementById("comments-container").innerHTML = `<h1>${comments.data.length} comment(s)</h1>`;
+                    comments.data.forEach(comment => {
+                        sbApp.default.fetchRepliesByCommentId(comment.id).then(replies => {
+                            console.log(replies);
+                            var repNew = replies.data.map(reply => {
+                                return `<div class="box">
+                                                        <article class="media">
+                                                            <div class="media-left">
+                                                                <figure class="image is-32x32">
+                                                                    <img src="${reply.author.photo_url.length>0?reply.author.photo_url:"https://placehold.co/32x32.png?font=roboto"}"
+                                                                        alt="Image" class="comments-item-picture" />
+                                                                </figure>
+                                                            </div>
+                                                            <div class="media-content">
+                                                                <div class="content" style="padding: 0;">
+                                                                    <p>
+                                                                        <strong>${reply.author.display_name}</strong>
+                                                                        <small>${reply.author.handle}</small><br />
+                                                                        ${reply.content}
+                                                                    </p>
+                                                                    <a href="#" aria-label="edit" class="icon-text"><span
+                                                                            class="material-icons">edit</span></a>
+                                                                    <a href="#" aria-label="delete" class="icon-text"><span
+                                                                            class="material-icons">delete</span></a>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+                                                    </div>`;});
+                            document.getElementById("comments-container").innerHTML += `<div class="box">
+                                        <article class="media">
+                                            <div class="media-left">
+                                                <figure class="image is-32x32">
+                                                    <img src="${comment.author.photo_url.length>0?comment.author.photo_url:"https://placehold.co/32x32.png?font-roboto"}"
+                                                        alt="Image" class="comments-item-picture" />
+                                                </figure>
+                                            </div>
+                                            <div class="media-content">
+                                                <div class="content" style="padding: 0;">
+                                                    <p>
+                                                        <strong>${comment.author.display_name}</strong> <small>${comment.author.handle}</small><br />
+                                                        ${comment.content}
+                                                    </p>
+                                                    <a href="#" aria-label="reply" class="icon-text"><span
+                                                            class="material-icons">reply</span></a>
+                                                    <a href="#" aria-label="edit" class="icon-text"><span
+                                                            class="material-icons">edit</span></a>
+                                                    <a href="#" aria-label="delete" class="icon-text"><span
+                                                            class="material-icons">delete</span></a>
+                                                </div>
+                                                <div class="box content">
+                                                    <h3>${repNew.length} replie(s)</h3>
+                                                    ${repNew.join(' ')}
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>`
+                        });
+                    });
+                });
+        
             });
         }
         // Function to upload a new video

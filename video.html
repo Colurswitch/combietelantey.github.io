@@ -287,6 +287,10 @@
 
     <!--Firebase-->
     <script src="firebase.js" type="module" defer></script>
+
+    <!--SCEditor-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/default.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sceditor@3/minified/sceditor.min.js"></script>
 </head>
 
 <body>
@@ -465,6 +469,24 @@
             </footer>
         </div>
     </div>
+    <div class="modal" id="dlgWYSIWYG">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">WYSIWYG Editor</p>
+                <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+                <textarea id="wysiwyg-editor" rows="20" cols="80"></textarea>
+            </section>
+            <footer class="modal-card-foot">
+                <div class="buttons">
+                    <button class="button" onclick="updateVideoDescription();">Save</button>
+                    <button class="button" onclick="window.history.back();">Cancel</button>
+                </div>
+            </footer>
+        </div>
+    </div>
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script type="module">
         // Initialize Firebase
@@ -505,7 +527,6 @@
         
         function renderComments() {
             sbApp.default.fetchCommentsByVideoId(new URLSearchParams(window.location.search).get("id")).then(comments => {
-                const commentsList = document.getElementById("comments-list");
                 console.log(comments);
                 document.getElementById("comments-container").innerHTML = `<h1>${comments.data.length} comment(s)</h1>`;
                 comments.data.forEach(comment => {

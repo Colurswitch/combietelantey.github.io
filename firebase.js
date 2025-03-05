@@ -291,12 +291,11 @@ const sbApp = {
   },
 
   async fetchCommentsByVideoId(video_id) {
-    var cmnts = (await this.fetchVideoById(video_id)).data[0].comments; // Returns list of IDs of comments
     const { data, error } = await supabase.from('video_comments').select(`
       id, created_at, author (
         display_name, handle, photo_url, id
       ), content, likes, dislikes, replies
-    `).in("id", cmnts);
+    `).eq("video", video_id);
     return { data, error };
   },
 
@@ -304,18 +303,17 @@ const sbApp = {
     const { data, error } = await supabase.from('video_comments').select(`
       id, created_at, author (
         display_name, handle, photo_url, id
-      ), content, likes, dislikes, replies
+      ), content, likes, dislikes, replies, video (*)
     `).eq("id", comment_id);
     return { data, error };
   },
 
   async fetchRepliesByCommentId(comment_id) {
-    var rplys = (await this.fetchCommentById(comment_id)).data[0].replies
     const { data, error } = await supabase.from('video_comment_replies').select(`
       id, created_at, author (
         display_name, handle, photo_url, id
       ), content, likes, dislikes
-    `).in("id", rplys);
+    `).eq("comment", comment_id);
     return { data, error };
   },
 
