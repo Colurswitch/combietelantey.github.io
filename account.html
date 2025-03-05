@@ -185,7 +185,6 @@
                 <article class="content" id="currentVideoDesc">Description</article>
                 <p class="buttons">
                     <a href="#" class="button" id="currentVideoLink">Open video link</a>
-                    <a href="#" class="button is-info" id="currentVideoEdit">Edit video</a>
                     <a href="#" class="button is-danger" id="currentVideoDelete">Delete video</a>
                 </p>
                 <h1 class="title" id="currentVideoCommentsLength">0 comment(s)</h1>
@@ -367,7 +366,7 @@
                                                             </div>
                                                         </article>
                                                     </div>`;});
-                            document.getElementById("comments-container").innerHTML += `<div class="box">
+                            document.getElementById("currentVideoCommentsContainer").innerHTML += `<div class="box">
                                         <article class="media">
                                             <div class="media-left">
                                                 <figure class="image is-32x32">
@@ -398,7 +397,21 @@
                         });
                     });
                 });
-        
+                document.getElementById("currentVideoDelete").onclick = () => {
+                    // Open a browser dialog
+                    const confirmation = confirm("Are you sure you want to delete this video?\nThis action is irreversible!");
+                    if (confirmation) {
+                        sbApp.default.deleteVideo(videoId).then((res) => {
+                            if (res.error) {
+                                console.error("Error deleting video:", res.error);
+                                alert("Error deleting video:", res.error);
+                                return;
+                            }
+                            alert("Video deleted successfully!");
+                            location.reload();
+                        });
+                    }
+                }
             });
         }
         // Function to upload a new video

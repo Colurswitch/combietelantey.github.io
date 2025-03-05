@@ -239,6 +239,11 @@ const sbApp = {
     return { data, error };
   },
 
+  async deleteVideo(videoId) {
+    const { data, error } = await supabase.from('videos').delete().eq("id",videoId);
+    return { data, error };
+  },
+
   randomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
