@@ -182,11 +182,11 @@ const sbApp = {
 
   async isSignedIn() {
     const { data, error } = await supabase.auth.getSession();
-    return!!data.session.expires_at;
+    return!!data.session.user;
   },
 
   async getCurrentUser() {
-    const { data, error } = await supabase.auth.getUser();
+    const { data, error } = await supabase.auth.getSession();
     return { data: {...data.session}, error };
   },
 
