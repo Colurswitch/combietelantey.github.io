@@ -240,6 +240,7 @@ const sbApp = {
   },
 
   async deleteVideo(videoId) {
+    //if (!confirm('Are you sure you want to delete this video?')) { return; }
     const { data, error } = await supabase.from('videos').delete().eq("id",videoId);
     return { data, error };
   },
@@ -353,7 +354,7 @@ const sbApp = {
   async fetchCommentsByVideoId(video_id) {
     const { data, error } = await supabase.from('video_comments').select(`
       id, created_at, author (
-        display_name, handle, photo_url, id
+        display_name, handle, photo_url, verified, id
       ), content, likes, dislikes, replies
     `).eq("video", video_id);
     return { data, error };
@@ -362,7 +363,7 @@ const sbApp = {
   async fetchCommentById(comment_id) {
     const { data, error } = await supabase.from('video_comments').select(`
       id, created_at, author (
-        display_name, handle, photo_url, id
+        display_name, handle, photo_url, verified, id
       ), content, likes, dislikes, replies, video (*)
     `).eq("id", comment_id);
     return { data, error };
@@ -387,6 +388,7 @@ const sbApp = {
       return;
     } else if ((await this.getCurrentUser()).data.user.id != (await this.fetchCommentById(comment_id)).data[0].author.id) {
       // User is not authorized to delete this comment.
+      alert('You are not authorized to delete this comment.');
       return;
     }
     const { data, error } = await supabase.from('video_comments').delete().eq("id", comment_id);
@@ -399,6 +401,7 @@ const sbApp = {
       return;
     } else if ((await this.getCurrentUser()).data.user.id != (await this.fetchCommentById(comment_id)).data[0].author.id) {
       // User is not authorized to edit this comment.
+      alert('You are not authorized to edit this comment.');
       return;
     }
     const { data, error } = await supabase.from('video_comments').update({
@@ -426,6 +429,7 @@ const sbApp = {
       return;
     } else if ((await this.getCurrentUser()).data.user.id!= (await this.fetchReplyById(reply_id)).data[0].author.id) {
       // User is not authorized to delete this reply.
+      alert('You are not authorized to delete this reply.');
       return;
     }
     const { data, error } = await supabase.from('video_comment_replies').delete().eq("id", reply_id);
@@ -435,7 +439,7 @@ const sbApp = {
   async fetchRepliesByCommentId(comment_id) {
     const { data, error } = await supabase.from('video_comment_replies').select(`
       id, created_at, author (
-        display_name, handle, photo_url, id
+        display_name, handle, photo_url, verified, id
       ), content, likes, dislikes
     `).eq("comment", comment_id);
     return { data, error };
