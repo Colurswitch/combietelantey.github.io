@@ -107,11 +107,12 @@ function initFirebaseUI(){
 initFirebaseUI();*/
 
 // Initialize Supabase
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 // Replace these with your own values
-const SUPABASE_URL = 'https://kpmsztuxrlrtbnxxrhpj.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwbXN6dHV4cmxydGJueHhyaHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3OTA1MzYsImV4cCI6MjA1NjM2NjUzNn0.wxYd_XO12CKjUeQZ1_MRPnD5o_S8KBK9XDKL0jh1I1I';
+const SUPABASE_URL = "https://kpmsztuxrlrtbnxxrhpj.supabase.co";
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwbXN6dHV4cmxydGJueHhyaHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3OTA1MzYsImV4cCI6MjA1NjM2NjUzNn0.wxYd_XO12CKjUeQZ1_MRPnD5o_S8KBK9XDKL0jh1I1I";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 console.log("Supabase Instance:", supabase);
@@ -121,8 +122,8 @@ const sbApp = {
   supabase: supabase,
   async signIn(email, password) {
     const { data, error } = await supabase.auth.signInWithPassword({
-      "email": email,
-      "password": password,
+      email: email,
+      password: password,
     });
     return { data, error };
   },
@@ -132,32 +133,34 @@ const sbApp = {
       provider: provider,
       options: {
         redirectTo: window.location.origin,
-      }
+      },
     });
     return { data, error };
   },
 
   async signUp(email, password) {
     const { data, error } = await supabase.auth.signUp({
-      "email": email,
-      "password": password,
+      email: email,
+      password: password,
     });
     if (!error) {
       // Create a new User record in the database, and link it to the current user.
-      const { data2, error2 } = await supabase.from('users').insert([{
-        id: data.user.id,
-        email: data.user.email,
-        display_name: data.user.email,
-        enabled: true, // If false, the user is restricted from logging in.
-        bio: "Anonymous",
-        associated: false,
-        verified: false,
-        perms: [],
-        photo_url: "",
-        banner_url: "",
-      }]);
+      const { data2, error2 } = await supabase.from("users").insert([
+        {
+          id: data.user.id,
+          email: data.user.email,
+          display_name: data.user.email,
+          enabled: true, // If false, the user is restricted from logging in.
+          bio: "Anonymous",
+          associated: false,
+          verified: false,
+          perms: [],
+          photo_url: "",
+          banner_url: "",
+        },
+      ]);
       if (!error2) {
-        console.log('User created and linked to current session:', data2);
+        console.log("User created and linked to current session:", data2);
       }
     }
     return { data, error };
@@ -167,52 +170,66 @@ const sbApp = {
     const { data, error } = await supabase.auth.signOut({
       options: {
         scope: scope,
-      }
+      },
     });
     return { data, error };
   },
 
   async updateUser(user_id, updated_fields) {
-    const { data, error } = await supabase.from('users').update({
+    const { data, error } = await supabase.from("users").update({
       id: user_id,
-     ...updated_fields
+      ...updated_fields,
     });
     return { data, error };
   },
 
   async isSignedIn() {
     const { data, error } = await supabase.auth.getSession();
-    return!!data.session.user;
+    return !!data.session.user;
   },
 
   async getCurrentUser() {
     const { data, error } = await supabase.auth.getSession();
-    return { data: {...data.session}, error };
+    return { data: { ...data.session }, error };
   },
 
   async getUser(user_id) {
-    const { data, error } = await supabase.from('users').select().eq(
-      "id", user_id
-    )
+    const { data, error } = await supabase
+      .from("users")
+      .select()
+      .eq("id", user_id);
+    return { data, error };
+  },
+
+  async getUsers() {
+    const { data, error } = await supabase.from("users").select();
+    return { data, error };
+  },
+
+  async getUsersEnum() {
+    const { data, error } = await supabase.from("users").select("id");
+    // "data" will return list of IDs of users
     return { data, error };
   },
 
   async fetchVideos() {
-    const { data, error } = await supabase.from('videos').select();
+    const { data, error } = await supabase.from("videos").select();
     return { data, error };
   },
 
   async fetchVideosByCurrentUser() {
-    const { data, error } = await supabase.from('videos').select().eq(
-      "creator", (await this.getCurrentUser()).data.user.id
-    )
+    const { data, error } = await supabase
+      .from("videos")
+      .select()
+      .eq("creator", (await this.getCurrentUser()).data.user.id);
     return { data, error };
   },
 
   async fetchVideoById(video_id) {
-    const { data, error } = await supabase.from('videos').select().eq(
-      "id", video_id
-    )
+    const { data, error } = await supabase
+      .from("videos")
+      .select()
+      .eq("id", video_id);
     return { data, error };
   },
 
@@ -223,12 +240,15 @@ const sbApp = {
     }
     // User is signed in. Insert a new video record into the database.
     // First, upload the video
-    const { data1, error1 } = await this.uploadVideo(vidSrc, title.replace(" ","_")+"_"+this.randomString(10));
+    const { data1, error1 } = await this.uploadVideo(
+      vidSrc,
+      title.replace(" ", "_") + "_" + this.randomString(10)
+    );
     if (error) {
       console.error("Failed to upload video: ", error);
       return;
     }
-    const { data, error } = await supabase.from('videos').insert({
+    const { data, error } = await supabase.from("videos").insert({
       title: title,
       description: description,
       video: data1.fullPath,
@@ -241,15 +261,21 @@ const sbApp = {
 
   async deleteVideo(videoId) {
     //if (!confirm('Are you sure you want to delete this video?')) { return; }
-    const { data, error } = await supabase.from('videos').delete().eq("id",videoId);
+    const { data, error } = await supabase
+      .from("videos")
+      .delete()
+      .eq("id", videoId);
     return { data, error };
   },
 
   randomString(length) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
     for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
     }
     return result;
   },
@@ -259,37 +285,41 @@ const sbApp = {
     const len = binaryString.length;
     const bytes = new Uint8Array(len);
     for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      bytes[i] = binaryString.charCodeAt(i);
     }
     return bytes.buffer;
   },
 
-  b64toBlob(b64Data, contentType='', sliceSize=512) {
+  b64toBlob(b64Data, contentType = "", sliceSize = 512) {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
-  
+
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
       const slice = byteCharacters.slice(offset, offset + sliceSize);
-  
+
       const byteNumbers = new Array(slice.length);
       for (let i = 0; i < slice.length; i++) {
         byteNumbers[i] = slice.charCodeAt(i);
       }
-  
+
       const byteArray = new Uint8Array(byteNumbers);
       byteArrays.push(byteArray);
     }
-      
-    const blob = new Blob(byteArrays, {type: contentType});
+
+    const blob = new Blob(byteArrays, { type: contentType });
     return blob;
   },
 
   async uploadVideo(base64, filename) {
     const { data, error } = await supabase.storage
-     .from('clmain')
-     .upload("videos/db_uploads/"+filename, this.b64toBlob(base64,"video/mp4"), {
-        contentType: 'video/mp4',
-      });
+      .from("clmain")
+      .upload(
+        "videos/db_uploads/" + filename,
+        this.b64toBlob(base64, "video/mp4"),
+        {
+          contentType: "video/mp4",
+        }
+      );
     return { data, error };
   },
 
@@ -298,9 +328,14 @@ const sbApp = {
       // User is not signed in.
       return;
     }
-    const { data, error } = await supabase.from('videos').update({
-      likes: (await this.fetchVideoById(video_id)).data[0].likes.concat((await this.getCurrentUser()).data.user.id),
-    }).eq(video_id);
+    const { data, error } = await supabase
+      .from("videos")
+      .update({
+        likes: (
+          await this.fetchVideoById(video_id)
+        ).data[0].likes.concat((await this.getCurrentUser()).data.user.id),
+      })
+      .eq(video_id);
     return { data, error };
   },
 
@@ -312,13 +347,16 @@ const sbApp = {
     var arr = (await this.fetchVideoById(video_id)).data[0].likes;
     var newArr = [];
     for (var i = 0; i < arr.length; i++) {
-      if (arr[i]!== (await this.getCurrentUser()).data.user.id) {
+      if (arr[i] !== (await this.getCurrentUser()).data.user.id) {
         newArr.push(arr[i]);
       }
     }
-    const { data, error } = await supabase.from('videos').update({
-      likes: newArr,
-    }).eq(video_id);
+    const { data, error } = await supabase
+      .from("videos")
+      .update({
+        likes: newArr,
+      })
+      .eq(video_id);
     return { data, error };
   },
 
@@ -327,9 +365,14 @@ const sbApp = {
       // User is not signed in.
       return;
     }
-    const { data, error } = await supabase.from('videos').update({
-      dislikes: (await this.fetchVideoById(video_id)).data[0].dislikes.concat((await this.getCurrentUser()).data.user.id),
-    }).eq(video_id);
+    const { data, error } = await supabase
+      .from("videos")
+      .update({
+        dislikes: (
+          await this.fetchVideoById(video_id)
+        ).data[0].dislikes.concat((await this.getCurrentUser()).data.user.id),
+      })
+      .eq(video_id);
     return { data, error };
   },
 
@@ -341,31 +384,44 @@ const sbApp = {
     var arr = (await this.fetchVideoById(video_id)).data[0].dislikes;
     var newArr = [];
     for (var i = 0; i < arr.length; i++) {
-      if (arr[i]!== (await this.getCurrentUser()).data.user.id) {
+      if (arr[i] !== (await this.getCurrentUser()).data.user.id) {
         newArr.push(arr[i]);
       }
     }
-    const { data, error } = await supabase.from('videos').update({
-      dislikes: newArr,
-    }).eq(video_id);
+    const { data, error } = await supabase
+      .from("videos")
+      .update({
+        dislikes: newArr,
+      })
+      .eq(video_id);
     return { data, error };
   },
 
   async fetchCommentsByVideoId(video_id) {
-    const { data, error } = await supabase.from('video_comments').select(`
+    const { data, error } = await supabase
+      .from("video_comments")
+      .select(
+        `
       id, created_at, author (
         display_name, handle, photo_url, verified, id
       ), content, likes, dislikes, replies
-    `).eq("video", video_id);
+    `
+      )
+      .eq("video", video_id);
     return { data, error };
   },
 
   async fetchCommentById(comment_id) {
-    const { data, error } = await supabase.from('video_comments').select(`
+    const { data, error } = await supabase
+      .from("video_comments")
+      .select(
+        `
       id, created_at, author (
         display_name, handle, photo_url, verified, id
       ), content, likes, dislikes, replies, video (*)
-    `).eq("id", comment_id);
+    `
+      )
+      .eq("id", comment_id);
     return { data, error };
   },
 
@@ -374,7 +430,7 @@ const sbApp = {
       // User is not signed in.
       return;
     }
-    const { data, error } = await supabase.from('video_comments').insert({
+    const { data, error } = await supabase.from("video_comments").insert({
       content: content,
       video: video_id,
       author: (await this.getCurrentUser()).data.user.id,
@@ -386,12 +442,18 @@ const sbApp = {
     if (!(await this.isSignedIn())) {
       // User is not signed in.
       return;
-    } else if ((await this.getCurrentUser()).data.user.id != (await this.fetchCommentById(comment_id)).data[0].author.id) {
+    } else if (
+      (await this.getCurrentUser()).data.user.id !=
+      (await this.fetchCommentById(comment_id)).data[0].author.id
+    ) {
       // User is not authorized to delete this comment.
-      alert('You are not authorized to delete this comment.');
+      alert("You are not authorized to delete this comment.");
       return;
     }
-    const { data, error } = await supabase.from('video_comments').delete().eq("id", comment_id);
+    const { data, error } = await supabase
+      .from("video_comments")
+      .delete()
+      .eq("id", comment_id);
     return { data, error };
   },
 
@@ -399,14 +461,20 @@ const sbApp = {
     if (!(await this.isSignedIn())) {
       // User is not signed in.
       return;
-    } else if ((await this.getCurrentUser()).data.user.id != (await this.fetchCommentById(comment_id)).data[0].author.id) {
+    } else if (
+      (await this.getCurrentUser()).data.user.id !=
+      (await this.fetchCommentById(comment_id)).data[0].author.id
+    ) {
       // User is not authorized to edit this comment.
-      alert('You are not authorized to edit this comment.');
+      alert("You are not authorized to edit this comment.");
       return;
     }
-    const { data, error } = await supabase.from('video_comments').update({
-      content: new_content,
-    }).eq("id", comment_id);
+    const { data, error } = await supabase
+      .from("video_comments")
+      .update({
+        content: new_content,
+      })
+      .eq("id", comment_id);
     return { data, error };
   },
 
@@ -415,11 +483,13 @@ const sbApp = {
       // User is not signed in.
       return;
     }
-    const { data, error } = await supabase.from('video_comment_replies').insert({
-      content: content,
-      comment: comment_id,
-      author: (await this.getCurrentUser()).data.user.id,
-    });
+    const { data, error } = await supabase
+      .from("video_comment_replies")
+      .insert({
+        content: content,
+        comment: comment_id,
+        author: (await this.getCurrentUser()).data.user.id,
+      });
     return { data, error };
   },
 
@@ -427,32 +497,136 @@ const sbApp = {
     if (!(await this.isSignedIn())) {
       // User is not signed in.
       return;
-    } else if ((await this.getCurrentUser()).data.user.id!= (await this.fetchReplyById(reply_id)).data[0].author.id) {
+    } else if (
+      (await this.getCurrentUser()).data.user.id !=
+      (await this.fetchReplyById(reply_id)).data[0].author.id
+    ) {
       // User is not authorized to delete this reply.
-      alert('You are not authorized to delete this reply.');
+      alert("You are not authorized to delete this reply.");
       return;
     }
-    const { data, error } = await supabase.from('video_comment_replies').delete().eq("id", reply_id);
+    const { data, error } = await supabase
+      .from("video_comment_replies")
+      .delete()
+      .eq("id", reply_id);
     return { data, error };
   },
 
   async fetchRepliesByCommentId(comment_id) {
-    const { data, error } = await supabase.from('video_comment_replies').select(`
+    const { data, error } = await supabase
+      .from("video_comment_replies")
+      .select(
+        `
       id, created_at, author (
         display_name, handle, photo_url, verified, id
       ), content, likes, dislikes
-    `).eq("comment", comment_id);
+    `
+      )
+      .eq("comment", comment_id);
     return { data, error };
   },
 
   async fetchRelatedVideos(video_id) {
-    const { data, error } = await supabase.from('videos').select(`
+    const { data, error } = await supabase
+      .from("videos")
+      .select(
+        `
       id, title, description, video, thumbnail, creator (
         display_name, handle, photo_url, verified, id
       ), likes, dislikes, views
-    `).neq("id", video_id);
+    `
+      )
+      .neq("id", video_id);
     return { data, error };
-  }
+  },
+
+  async fetchMessagesToUser(user_id) {
+    const { data, error } = await supabase
+      .from("messages")
+      .select(
+        `
+      id, sender (
+        display_name, handle, photo_url, verified, id
+      ), recipients, content
+    `
+      )
+      .containedBy("recipients", user_id);
+    return { data, error };
+  },
+
+  async fetchMessagesByUser(user_id) {
+    const { data, error } = await supabase
+      .from("messages")
+      .select(
+        `
+      id, sender (
+        display_name, handle, photo_url, verified, id
+      ), recipients, content
+    `
+      )
+      .eq("sender", user_id);
+    return { data, error };
+  },
+
+  async fetchMessagesToCurrentUser() {
+    const { data, error } = await this.fetchMessagesToUser(
+      (await this.getCurrentUser()).data.user.id
+    );
+    return { data, error };
+  },
+
+  async fetchMessagesByCurrentUser() {
+    const { data, error } = await this.fetchMessagesByUser(
+      (await this.getCurrentUser()).data.user.id
+    );
+    return { data, error };
+  },
+
+  async fetchMessageById(message_id) {
+    const { data, error } = await supabase
+      .from("messages")
+      .select(
+        `
+      id, sender (
+        display_name, handle, photo_url, verified, id
+      ), recipients, content
+    `
+      )
+      .eq("id", message_id);
+    return { data, error };
+  },
+
+  async sendMessage(subject, recipient_ids, content) {
+    if (!(await this.isSignedIn())) {
+      // User is not signed in.
+      return;
+    }
+    const { data, error } = await supabase.from("messages").insert({
+      sender: (await this.getCurrentUser()).data.user.id,
+      recipients: recipient_ids,
+      content: content,
+    });
+    return { data, error };
+  },
+
+  async deleteMessage(message_id) {
+    if (!(await this.isSignedIn())) {
+      // User is not signed in.
+      return;
+    } else if (
+      (await this.getCurrentUser()).data.user.id !=
+      (await this.fetchMessageById(message_id)).data[0].sender.id
+    ) {
+      // User is not authorized to delete this message.
+      alert("You are not authorized to delete this message.");
+      return;
+    }
+    const { data, error } = await supabase
+      .from("messages")
+      .delete()
+      .eq("id", message_id);
+    return { data, error };
+  },
 };
 
 // Export sbApp when used as a module
