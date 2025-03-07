@@ -360,11 +360,11 @@
                     const messageItem = document.createElement('tr');
                     messageItem.innerHTML = `
                         <td><i class="material-icons">mail</i></td>
-                        <td>${message.data[0].sender}</td>
-                        <td>${message.data[0].subject}</td>
+                        <td>${message.sender}</td>
+                        <td>${message.subject}</td>
                     `;
                     messageItem.addEventListener('click', () => {
-                        loadSingleMessage(message.data[0].id)
+                        loadSingleMessage(message.id)
                     });
                     messagesTableBody.appendChild(messageItem);
                 });
