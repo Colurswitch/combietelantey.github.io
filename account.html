@@ -378,6 +378,8 @@
         // Function to load single message
         function loadSingleMessage(messageId) {
             sbApp.default.fetchMessageById(messageId).then(message => {
+                console.log(message);
+                
                 document.getElementById("currentMsgSender").innerHTML = `
                     <article class="media">
                         <div class="media-left">
