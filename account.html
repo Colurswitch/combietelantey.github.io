@@ -380,7 +380,7 @@
             sbApp.default.fetchMessageById(messageId).then(message => {
                 console.log(message);
                 
-                document.getElementById("currentMsgSender").innerHTML = `
+                document.getElementById("currentMsgSenderLink").innerHTML = `
                     <article class="media">
                         <div class="media-left">
                             <figure class="image is-64x64">
@@ -397,7 +397,7 @@
                             </div>
                         </div>
                     </article>
-                `; document.getElementById("currentMsgSender").href = "user?id="+message.data[0].sender.id;
+                `; document.getElementById("currentMsgSenderLink").href = "user?id="+message.data[0].sender.id;
                 document.getElementById("currentMsgSubject").innerHTML = message.data[0].subject;
                 document.getElementById("currentMsgContent").innerHTML = message.data[0].content;
                 openPage("message");
