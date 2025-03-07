@@ -108,7 +108,7 @@
                 <p class="menu-label">Account</p>
                 <ul class="menu-list">
                     <li>
-                        <button href="#">
+                        <button onclick="openPage('profile')">
                             <span class="icon-text">
                                 <span class="icon">
                                     <span class="material-icons">account_circle</span>
@@ -208,7 +208,7 @@
                 </table>
             </div>
             <div class="box page" id="message">
-                <h1 class="title" id="currentMessageSubject">Message</h1>
+                <h1 class="title" id="currentMsgSubject">Message</h1>
                 <p class="icon-text" style="display: none;">
                     <span class="icon">
                         <span class="material-icons">thumb_up</span>
@@ -241,6 +241,30 @@
                 <p class="buttons">
                     <a href="#" class="button is-danger" id="currentMsgDelete">Delete message</a>
                 </p>
+            </div>
+            <div id="profile" class="box page">
+                <h1 class="title">Profile</h1>
+                <figure>
+                    <img src="https://placehold.co/900x300.png?font=roboto" alt="Image" />
+                </figure>
+                <div class="box">
+                    <article class="media">
+                      <div class="media-left">
+                        <figure class="image is-64x64">
+                          <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image" />
+                        </figure>
+                      </div>
+                      <div class="media-content">
+                        <div class="content">
+                          <p>
+                            <input id="txtUserDisplayName" class="input" type="text" placeholder="Display name" />
+                            <input id="txtUserHandle" class="input" type="text" placeholder="Handle" />
+                            <textarea id="txtUserBio" placeholder="Bio"></textarea>
+                          </p>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
             </div>
         </div>
     </div>
@@ -360,7 +384,7 @@
                     const messageItem = document.createElement('tr');
                     messageItem.innerHTML = `
                         <td><i class="material-icons">mail</i></td>
-                        <td>${message.sender}</td>
+                        <td>${message.sender.display_name}</td>
                         <td>${message.subject}</td>
                     `;
                     messageItem.addEventListener('click', () => {
@@ -461,6 +485,9 @@
             });
         });
         window.onload = () => {
+            // If "page" url parameter is specified, goto the page
+            const page = new URLSearchParams(window.location.search).get('page');
+            if (page) openPage(page);
             // Fetch and display videos from Supabase
             // Supabase client can be retrieved from sbApp.default.supabase
             console.log("Videos:", sbApp.default.fetchVideos());
