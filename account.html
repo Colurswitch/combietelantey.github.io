@@ -566,7 +566,7 @@
                 this.disabled = false; // Enable creating again
             };
             // JSONEditor for new message
-            const newMsgEditor = null;
+            var newMsgEditor = null;
             sbApp.default.getUsersEnum().then(ids => {
                 newMsgEditor = new JSONEditor(document.getElementById("newMsgSettingsContainer"), {
                     theme: "spectre",
@@ -628,6 +628,7 @@
                     });
                 }
             });
+            loadMessages();
         };
     </script>
 </body>
