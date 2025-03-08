@@ -179,7 +179,7 @@ const sbApp = {
     const { data, error } = await supabase.from("users").update({
       id: user_id,
       ...updated_fields,
-    });
+    }).eq("id",user_id);
     return { data, error };
   },
 
