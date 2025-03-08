@@ -480,6 +480,8 @@
                     style: 'https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/content/default.min.css'
                 });
                 sceditor.instance(document.getElementById("txtUserBio")).val(user.data[0].bio);
+                document.getElementById("imgUserBanner").src = user.data[0].banner_url;
+                document.getElementById("imgUserPhoto").src = user.data[0].photo_url;
                 document.getElementById("flUserPhoto").onchange = function (ev) {
                     const file = ev.target.files[0];
                     if (!file || !file.type.startsWith("image/")) {
@@ -489,12 +491,15 @@
                     if (!confirm("Upload?")) return;
                     const reader = new FileReader();
                     reader.onload = async function (e) {
-                        sbApp.default.uploadFile(e.target.result, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_" + new Date().toISOString()).then(res => {
+                        sbApp.default.uploadFile(e.target.result, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_" + new Date().toISOString(), file.type).then(res => {
                             if (res.error) {
                                 alert("Error uploading photo: " + res.error.message);
                             } else {
                                 sbApp.default.updateCurrentUser({
-                                    photo_url: res.data.fullPath
+                                    photo_url: res.url
+                                }).then(res => {
+                                    alert("Profile updated successfully!");
+                                    loadProfilePage();
                                 });
                             }
                         });
@@ -510,12 +515,15 @@
                     if (!confirm("Upload?")) return;
                     const reader = new FileReader();
                     reader.onload = async function (e) {
-                        sbApp.default.uploadFile(e.target.result, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_banner_" + new Date().toISOString()).then(res => {
+                        sbApp.default.uploadFile(e.target.result, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_banner_" + new Date().toISOString(), file.type).then(res => {
                             if (res.error) {
                                 alert("Error uploading banner: " + res.error.message);
                             } else {
                                 sbApp.default.updateCurrentUser({
-                                    banner_url: res.data.fullPath
+                                    banner_url: res.url
+                                }).then(res => {
+                                    alert("Profile updated successfully!");
+                                    loadProfilePage();
                                 });
                             }
                         });
@@ -548,6 +556,7 @@
                         } else {
                             alert("Profile updated successfully!");
                             //closeAllModals();
+                            loadProfilePage();
                         }
                     });
                 }

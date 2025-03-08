@@ -645,11 +645,13 @@ const sbApp = {
     return { data, error };
   },
 
-  async uploadFile(file, name) {
+  async uploadFile(file, name, type) {
     const { data, error } = await supabase.storage
      .from("clmain")
-     .upload("cms_uploads/"+name, file);
-    return { data, error };
+     .upload("cms_uploads/"+name, file, {
+        contentType: type
+     });
+    return { data, url: await supabase.storage.from("clmain").getPublicUrl(data.fullPath), error };
   }
 };
 
