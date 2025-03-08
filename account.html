@@ -475,11 +475,16 @@
                 document.getElementById("txtUserDisplayName").value = user.data[0].display_name;
                 document.getElementById("txtUserHandle").value = user.data[0].handle;
                 // SCEditor for user bio
-                const bioEditor = sceditor.create(document.getElementById("txtUserBio"), {
-                    format: "xhtml",
-                    style: 'https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/content/default.min.css'
-                });
-                sceditor.instance(document.getElementById("txtUserBio")).val(user.data[0].bio);
+                try {
+                    sceditor.instance(document.getElementById("txtUserBio"));
+                } catch (e) {
+                    // SCEditor is not initialized yet
+                    const bioEditor = sceditor.create(document.getElementById("txtUserBio"), {
+                        format: "xhtml",
+                        style: 'https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/content/default.min.css'
+                    });
+                    sceditor.instance(document.getElementById("txtUserBio")).val(user.data[0].bio);
+                }
                 document.getElementById("imgUserBanner").src = user.data[0].banner_url;
                 document.getElementById("imgUserPhoto").src = user.data[0].photo_url;
                 document.getElementById("flUserPhoto").onchange = function (ev) {
