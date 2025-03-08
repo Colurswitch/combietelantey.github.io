@@ -53,7 +53,8 @@
             display: block;
         }
 
-        .json-editor-btn-delete.delete::after , .json-editor-btn-delete.delete::before {
+        .json-editor-btn-delete.delete::after,
+        .json-editor-btn-delete.delete::before {
             display: none !important;
         }
 
@@ -166,7 +167,8 @@
                 </div>
             </div>
             <div class="box page" id="video">
-                <img src="https://placehold.co/1600x900.png?font=roboto" alt="currentVideoThumbnail" id="currentVideoThumbnail" />
+                <img src="https://placehold.co/1600x900.png?font=roboto" alt="currentVideoThumbnail"
+                    id="currentVideoThumbnail" />
                 <h1 class="title" id="currentVideoName">Title</h1>
                 <p class="icon-text" style="display: none;">
                     <span class="icon">
@@ -223,8 +225,7 @@
                     <article class="media">
                         <div class="media-left">
                             <figure class="image is-64x64">
-                                <img src="https://bulma.io/assets/images/placeholders/128x128.png"
-                                    alt="Image" />
+                                <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image" />
                             </figure>
                         </div>
                         <div class="media-content">
@@ -245,26 +246,52 @@
             <div id="profile" class="box page">
                 <h1 class="title">Profile</h1>
                 <figure>
-                    <img src="https://placehold.co/900x300.png?font=roboto" alt="Image" />
+                    <img src="https://placehold.co/900x300.png?font=roboto" alt="Image" id="imgUserBanner" />
                 </figure>
                 <div class="box">
                     <article class="media">
-                      <div class="media-left">
-                        <figure class="image is-64x64">
-                          <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image" />
-                        </figure>
-                      </div>
-                      <div class="media-content">
-                        <div class="content">
-                          <p>
-                            <input id="txtUserDisplayName" class="input" type="text" placeholder="Display name" />
-                            <input id="txtUserHandle" class="input" type="text" placeholder="Handle" />
-                            <textarea id="txtUserBio" placeholder="Bio"></textarea>
-                          </p>
+                        <div class="media-left">
+                            <figure class="image is-64x64">
+                                <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image" id="imgUserPhoto" />
+                            </figure>
                         </div>
-                      </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <input id="txtUserDisplayName" class="input" type="text"
+                                        placeholder="Display name" />
+                                    <input id="txtUserHandle" class="input" type="text" placeholder="Handle" />
+                                    <textarea id="txtUserBio" placeholder="Bio"></textarea>
+                                <p class="buttons">
+                                <div class="file is-primary">
+                                    <label class="file-label">
+                                        <input class="file-input" type="file" id="flUserBanner" />
+                                        <span class="file-cta">
+                                            <span class="file-icon">
+                                                <i class="material-icons">cloud_upload</i>
+                                            </span>
+                                            <span class="file-label"> Change Banner </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="file is-primary">
+                                    <label class="file-label">
+                                        <input class="file-input" type="file" id="flUserPhoto" />
+                                        <span class="file-cta">
+                                            <span class="file-icon">
+                                                <i class="material-icons">cloud_upload</i>
+                                            </span>
+                                            <span class="file-label"> Change Photo </span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <button class="button is-primary" id="btnSaveProfile">Save Changes</button>
+                                </p>
+                                </p>
+                            </div>
+                        </div>
                     </article>
-                  </div>
+                </div>
             </div>
         </div>
     </div>
@@ -353,7 +380,7 @@
             sbApp.default.fetchVideoById(videoId).then(video => {
                 document.getElementById("currentVideoName").innerHTML = video.data[0].title;
                 document.getElementById("currentVideoDesc").innerHTML = video.data[0].description;
-                document.getElementById("currentVideoThumbnail").src = video.data[0].thumbnail.length > 0? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto";
+                document.getElementById("currentVideoThumbnail").src = video.data[0].thumbnail.length > 0 ? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto";
                 document.getElementById("currentVideoLikes").innerHTML = video.data[0].likes;
                 document.getElementById("currentVideoDislikes").innerHTML = video.data[0].dislikes;
                 //document.getElementById("currentVideoComments").innerHTML = video.data[0].comments;
@@ -403,7 +430,7 @@
         function loadSingleMessage(messageId) {
             sbApp.default.fetchMessageById(messageId).then(message => {
                 console.log(message);
-                
+
                 document.getElementById("currentMsgSenderLink").innerHTML = `
                     <article class="media">
                         <div class="media-left">
@@ -421,7 +448,7 @@
                             </div>
                         </div>
                     </article>
-                `; document.getElementById("currentMsgSenderLink").href = "user?id="+message.data[0].sender.id;
+                `; document.getElementById("currentMsgSenderLink").href = "user?id=" + message.data[0].sender.id;
                 document.getElementById("currentMsgSubject").innerHTML = message.data[0].subject;
                 document.getElementById("currentMsgContent").innerHTML = message.data[0].content;
                 openPage("message");
@@ -442,6 +469,92 @@
                 }
             });
         }
+        // Function to load the profile page
+        function loadProfilePage() {
+            sbApp.default.getCurrentUserRecord().then(user => {
+                document.getElementById("txtUserDisplayName").value = user.data[0].display_name;
+                document.getElementById("txtUserHandle").value = user.data[0].handle;
+                // SCEditor for user bio
+                const bioEditor = sceditor.create(document.getElementById("txtUserBio"), {
+                    format: "xhtml",
+                    style: 'https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/content/default.min.css'
+                });
+                sceditor.instance(document.getElementById("txtUserBio")).val(user.data[0].bio);
+                document.getElementById("flUserPhoto").onchange = function (ev) {
+                    const file = ev.target.files[0];
+                    if (!file || file.type.startsWith("image/")) {
+                        alert("Please select an image file.");
+                        return;
+                    }
+                    if (!confirm("Upload?")) return;
+                    const reader = new FileReader();
+                    reader.onload = async function (e) {
+                        sbApp.default.uploadFile(e.target.result, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_" + new Date().toISOString()).then(res => {
+                            if (res.error) {
+                                alert("Error uploading photo: " + res.error.message);
+                            } else {
+                                sbApp.default.updateCurrentUser({
+                                    photo_url: res.data.fullPath
+                                });
+                            }
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
+                document.getElementById("flUserBanner").onchange = function (ev) {
+                    const file = ev.target.files[0];
+                    if (!file || file.type.startsWith("image/")) {
+                        alert("Please select an image file.");
+                        return;
+                    }
+                    if (!confirm("Upload?")) return;
+                    const reader = new FileReader();
+                    reader.onload = async function (e) {
+                        sbApp.default.uploadFile(e.target.result, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_banner_" + new Date().toISOString()).then(res => {
+                            if (res.error) {
+                                alert("Error uploading banner: " + res.error.message);
+                            } else {
+                                sbApp.default.updateCurrentUser({
+                                    banner_url: res.data.fullPath
+                                });
+                            }
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
+                document.getElementById("btnSaveProfile").onclick = function () {
+                    const displayName = document.getElementById("txtUserDisplayName").value.trim();
+                    const handle = document.getElementById("txtUserHandle").value.trim();
+                    const bio = sceditor.instance(document.getElementById("txtUserBio")).val().trim();
+
+                    if (displayName.length === 0 || handle.length === 0 || bio.length === 0) {
+                        alert("All fields are required.");
+                        return;
+                    } else if (displayName.length < 5) {
+                        alert("Display name must be at least 5 characters long.");
+                        return;
+                    } else if (!handle.startsWith("@") || handle.length < 3) {
+                        alert("Handle must start with '@' and be at least 3 characters long.");
+                        return;
+                    }
+
+                    sbApp.default.updateCurrentUser({
+                        display_name: displayName,
+                        handle: handle,
+                        bio: bio,
+                    }).then(res => {
+                        if (res.error) {
+                            alert("Error updating profile: " + res.error.message);
+                        } else {
+                            alert("Profile updated successfully!");
+                            closeAllModals();
+                        }
+                    });
+                }
+            });
+
+        }
+        
         document.addEventListener('DOMContentLoaded', () => {
             // Functions to open and close a modal
             function openModal($el) {
@@ -506,8 +619,8 @@
                 schema: {
                     type: "object",
                     properties: {
-                        title: { 
-                            type: "string" 
+                        title: {
+                            type: "string"
                         },
                         description: {
                             type: "string",
@@ -569,7 +682,7 @@
                     return;
                 }
                 // Validate tracks
-                if (videoData.tracks.length > 0 &&!videoData.tracks.every(track => track.langName && track.src && track.srclang)) {
+                if (videoData.tracks.length > 0 && !videoData.tracks.every(track => track.langName && track.src && track.srclang)) {
                     alert("Please provide all language information for all tracks.");
                     this.classList.remove("is-loading"); // Hide loading
                     this.disabled = false; // Enable creating again
@@ -609,8 +722,8 @@
                     schema: {
                         type: "object",
                         properties: {
-                            subject: { 
-                                type: "string" 
+                            subject: {
+                                type: "string"
                             },
                             content: {
                                 type: "string",
@@ -658,6 +771,8 @@
                 }
             });
             loadMessages();
+            // Profile page
+            
         };
     </script>
 </body>

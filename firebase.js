@@ -183,14 +183,30 @@ const sbApp = {
     return { data, error };
   },
 
+  async updateCurrentUser(updated_fields) {
+    const { data, error } = await this.updateUser(
+      (await this.getCurrentUser()).data.user.id,
+      updated_fields
+    );
+    return { data, error };
+  },
+
   async isSignedIn() {
     const { data, error } = await supabase.auth.getSession();
-    return !!data.session.user;
+    return !!data.session;
   },
 
   async getCurrentUser() {
     const { data, error } = await supabase.auth.getSession();
     return { data: { ...data.session }, error };
+  },
+
+  async getCurrentUserRecord() {
+    const { data, error } = await supabase.from("users").select().eq(
+      "id",
+      (await this.getCurrentUser()).data.user.id
+    );
+    return { data, error };
   },
 
   async getUser(user_id) {
@@ -589,7 +605,7 @@ const sbApp = {
         `
       id, sender (
         display_name, handle, photo_url, verified, id
-      ), recipients, content
+      ), recipients, content, subject
     `
       )
       .eq("id", message_id);
@@ -605,6 +621,7 @@ const sbApp = {
       sender: (await this.getCurrentUser()).data.user.id,
       recipients: recipient_ids,
       content: content,
+      subject: subject,
     });
     return { data, error };
   },
@@ -627,6 +644,13 @@ const sbApp = {
       .eq("id", message_id);
     return { data, error };
   },
+
+  async uploadFile(file, name) {
+    const { data, error } = await supabase.storage
+     .from("clmain")
+     .upload("cms_uploads/"+name, file);
+    return { data, error };
+  }
 };
 
 // Export sbApp when used as a module
