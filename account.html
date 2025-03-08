@@ -122,16 +122,6 @@
                         <button href="#">
                             <span class="icon-text">
                                 <span class="icon">
-                                    <span class="material-icons">settings</span>
-                                </span>
-                                <span>Settings</span>
-                            </span>
-                        </button>
-                    </li>
-                    <li>
-                        <button href="#">
-                            <span class="icon-text">
-                                <span class="icon">
                                     <span class="material-icons">logout</span>
                                 </span>
                                 <span>Logout</span>
@@ -190,6 +180,12 @@
                 <h1 class="title">Messages</h1>
                 <!-- Messages will be dynamically loaded here -->
                 <!-- Add more message items here -->
+                <button class="button is-primary icon-text js-modal-trigger" data-target="dlgNewMessage">
+                    <span class="icon">
+                        <span class="material-icons">add</span>
+                    </span>
+                    New Message
+                </button>
                 <table class="table">
                     <thead>
                         <tr>
@@ -292,6 +288,13 @@
                         </div>
                     </article>
                 </div>
+                <h1 class="title">Danger Zone</h1>
+                <p>
+                    <a href="#" class="button is-danger" id="btnDeleteAccount">Delete Account</a>
+                    <p>
+                        WARNING: This action cannot be undone. This will delete all your videos, messages, and account data.
+                    </p>
+                </p>
             </div>
         </div>
     </div>
@@ -407,6 +410,7 @@
         function loadMessages() {
             sbApp.default.fetchMessagesByCurrentUser().then(messages => {
                 const messagesTableBody = document.getElementById('messagesTableBody');
+                messagesTableBody.innerHTML = ""; // Clear existing messages
                 messages.data.forEach(message => {
                     const messageItem = document.createElement('tr');
                     messageItem.innerHTML = `
@@ -475,16 +479,11 @@
                 document.getElementById("txtUserDisplayName").value = user.data[0].display_name;
                 document.getElementById("txtUserHandle").value = user.data[0].handle;
                 // SCEditor for user bio
-                try {
-                    sceditor.instance(document.getElementById("txtUserBio"));
-                } catch (e) {
-                    // SCEditor is not initialized yet
-                    const bioEditor = sceditor.create(document.getElementById("txtUserBio"), {
-                        format: "xhtml",
-                        style: 'https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/content/default.min.css'
-                    });
-                    sceditor.instance(document.getElementById("txtUserBio")).val(user.data[0].bio);
-                }
+                const bioEditor = sceditor.create(document.getElementById("txtUserBio"), {
+                    format: "xhtml",
+                    style: 'https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/content/default.min.css'
+                });
+                sceditor.instance(document.getElementById("txtUserBio")).val(user.data[0].bio);
                 document.getElementById("imgUserBanner").src = user.data[0].banner_url;
                 document.getElementById("imgUserPhoto").src = user.data[0].photo_url;
                 document.getElementById("flUserPhoto").onchange = function (ev) {
@@ -496,7 +495,7 @@
                     if (!confirm("Upload?")) return;
                     const reader = new FileReader();
                     reader.onload = async function (e) {
-                        sbApp.default.uploadFile(e.target.result, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_" + new Date().toISOString(), file.type).then(res => {
+                        sbApp.default.uploadFile(file, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_" + new Date().toISOString(), file.type).then(res => {
                             if (res.error) {
                                 alert("Error uploading photo: " + res.error.message);
                             } else {
@@ -504,7 +503,8 @@
                                     photo_url: res.url
                                 }).then(res => {
                                     alert("Profile updated successfully!");
-                                    loadProfilePage();
+                                    //loadProfilePage();
+                                    location.reload();
                                 });
                             }
                         });
@@ -520,7 +520,7 @@
                     if (!confirm("Upload?")) return;
                     const reader = new FileReader();
                     reader.onload = async function (e) {
-                        sbApp.default.uploadFile(e.target.result, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_banner_" + new Date().toISOString(), file.type).then(res => {
+                        sbApp.default.uploadFile(file, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_banner_" + new Date().toISOString(), file.type).then(res => {
                             if (res.error) {
                                 alert("Error uploading banner: " + res.error.message);
                             } else {
@@ -528,7 +528,8 @@
                                     banner_url: res.url
                                 }).then(res => {
                                     alert("Profile updated successfully!");
-                                    loadProfilePage();
+                                    //loadProfilePage();
+                                    location.reload();
                                 });
                             }
                         });
@@ -561,9 +562,14 @@
                         } else {
                             alert("Profile updated successfully!");
                             //closeAllModals();
-                            loadProfilePage();
+                            //loadProfilePage();
+                            location.reload();
                         }
                     });
+                }
+                // Button to delete account
+                document.getElementById("btnDeleteAccount").onclick = function () {
+                    alert("Please contact website owner for account deletion.");
                 }
             });
 
@@ -774,13 +780,15 @@
                             alert("Error sending message: " + res.error);
                         } else {
                             alert("Message sent successfully!");
-                            closeModal(document.getElementById("dlgNewMessage"));
+                            //closeModal(document.getElementById("dlgNewMessage"));
                             newMsgEditor.setValue({
                                 subject: "",
                                 content: "",
                                 recipients: []
                             }); // Reset JSONEditor
                         }
+                        this.classList.remove("is-loading"); // Hide loading
+                        this.disabled = false; // Enable sending again
                     });
                 }
             });
