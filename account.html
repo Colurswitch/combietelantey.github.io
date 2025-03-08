@@ -506,7 +506,7 @@
                     if (!confirm("Upload?")) return;
                     const reader = new FileReader();
                     reader.onload = async function (e) {
-                        sbApp.default.uploadFile(file, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_" + new Date().toISOString() + ext, file.type).then(res => {
+                        sbApp.default.uploadFile(file, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_" + new Date().toISOString() + "." + ext, file.type).then(res => {
                             if (res.error) {
                                 alert("Error uploading photo: " + res.error.message);
                             } else {
@@ -546,7 +546,7 @@
                     if (!confirm("Upload?")) return;
                     const reader = new FileReader();
                     reader.onload = async function (e) {
-                        sbApp.default.uploadFile(file, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_banner_" + new Date().toISOString(), file.type).then(res => {
+                        sbApp.default.uploadFile(file, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_banner_" + new Date().toISOString() + "." + ext, file.type).then(res => {
                             if (res.error) {
                                 alert("Error uploading banner: " + res.error.message);
                             } else {
