@@ -488,6 +488,17 @@
                 document.getElementById("imgUserPhoto").src = user.data[0].photo_url;
                 document.getElementById("flUserPhoto").onchange = function (ev) {
                     const file = ev.target.files[0];
+                    // Get file extension
+                    const ext = file.name.split('.').pop();
+                    // Validate file type and size
+                    if (!/^(jpg|jpeg|png|gif)$/i.test(ext)) {
+                        alert("Invalid file type. Please select a JPG, JPEG, PNG, or GIF file.");
+                        return;
+                    }
+                    if (file.size > 2097152) {
+                        alert("File size exceeds 2MB. Please select a file less than 2MB.");
+                        return;
+                    }
                     if (!file || !file.type.startsWith("image/")) {
                         alert("Please select an image file.");
                         return;
@@ -495,7 +506,7 @@
                     if (!confirm("Upload?")) return;
                     const reader = new FileReader();
                     reader.onload = async function (e) {
-                        sbApp.default.uploadFile(file, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_" + new Date().toISOString(), file.type).then(res => {
+                        sbApp.default.uploadFile(file, (await sbApp.default.getCurrentUserRecord()).data[0].id + "_" + new Date().toISOString() + ext, file.type).then(res => {
                             if (res.error) {
                                 alert("Error uploading photo: " + res.error.message);
                             } else {
@@ -513,6 +524,21 @@
                 }
                 document.getElementById("flUserBanner").onchange = function (ev) {
                     const file = ev.target.files[0];
+                    // Get file extension
+                    const ext = file.name.split('.').pop();
+                    // Validate file type and size
+                    if (!/^(jpg|jpeg|png|gif)$/i.test(ext)) {
+                        alert("Invalid file type. Please select a JPG, JPEG, PNG, or GIF file.");
+                        return;
+                    }
+                    if (file.size > 2097152) {
+                        alert("File size exceeds 2MB. Please select a file less than 2MB.");
+                        return;
+                    }
+                    if (!file || !file.type.startsWith("image/")) {
+                        alert("Please select an image file.");
+                        return;
+                    }
                     if (!file || !file.type.startsWith("image/")) {
                         alert("Please select an image file.");
                         return;
