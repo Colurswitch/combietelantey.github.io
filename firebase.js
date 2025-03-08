@@ -651,7 +651,7 @@ const sbApp = {
      .upload("cms_uploads/"+name, file, {
         contentType: type
      });
-    return { data, url: await supabase.storage.from("clmain").getPublicUrl(data.fullPath).data.publicUrl, error };
+    return { data, url: await supabase.storage.from("clmain").getPublicUrl(data.path).data.publicUrl, error };
   }
 };
 
