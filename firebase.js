@@ -563,10 +563,12 @@ const sbApp = {
         `
       id, sender (
         display_name, handle, photo_url, verified, id
-      ), recipients, content
+      ), recipient (
+        display_name, handle, photo_url, verified, id
+      ), content
     `
       )
-      .containedBy("recipients", user_id);
+      .eq("recipient", user_id);
     return { data, error };
   },
 
@@ -577,7 +579,9 @@ const sbApp = {
         `
       id, sender (
         display_name, handle, photo_url, verified, id
-      ), recipients, content
+      ), recipient (
+        display_name, handle, photo_url, verified, id
+      ), content
     `
       )
       .eq("sender", user_id);
@@ -605,7 +609,9 @@ const sbApp = {
         `
       id, sender (
         display_name, handle, photo_url, verified, id
-      ), recipients, content, subject, created_time
+      ), recipient (
+        display_name, handle, photo_url, verified, id
+      ), content, subject, created_time
     `
       )
       .eq("id", message_id);

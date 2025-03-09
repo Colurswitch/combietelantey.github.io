@@ -119,7 +119,7 @@
                         </button>
                     </li>
                     <li>
-                        <button href="#">
+                        <button class="js-modal-trigger" data-target="dlgLogout">
                             <span class="icon-text">
                                 <span class="icon">
                                     <span class="material-icons">logout</span>
@@ -350,13 +350,12 @@
                 <input id="txtNewMsgSubject" class="input" type="text" placeholder="Subject" />
                 <textarea id="txtNewMsgContent" placeholder="Content"></textarea>
                 Recipents:
-                <div class="select is-multiple">
-                    <select id="selNewMsgRecipients" multiple size="10">
+                <div class="select">
+                    <select id="selNewMsgRecipients">
                         <!-- Add tag options here -->
                         <!-- Example tag options -->
                         <!-- <option value="tag1">Tag 1</option>
                         <option value="tag2">Tag 2</option> -->
-                        <option value="uid">User 1</option>
                     </select>
                 </div>
             </section>
@@ -365,6 +364,23 @@
                 <div class="buttons">
                     <button class="button is-success" id="btnSendNewMsg">Send!</button>
                     <button class="button">Close</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <div id="dlgLogout" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Logout</p>
+            </header>
+            <section class="modal-card-body">
+                Are you sure you want to log out?
+            </section>
+            <footer class="modal-card-foot">
+                <div class="buttons">
+                    <button class="button is-danger" id="btnLogoutConfirm">Logout</button>
+                    <button class="button">Cancel</button>
                 </div>
             </footer>
         </div>
@@ -823,28 +839,17 @@
                 document.getElementById("btnSendNewMsg").onclick = function () {
                     this.classList.add("is-loading"); // Show loading
                     this.disabled = true; // Avoid sending multiple instances
-                    var selectedUsersArr = [];
-                    for (var i = 0; i < selectedUsers.length; i++) {
-                        selectedUsersArr.push(selectedUsers[i].value);
-                    }
-                    // Validate recipients
-                    if (selectedUsersArr.length === 0) {
-                        alert("Please select at least one recipient.");
-                        this.classList.remove("is-loading"); // Hide loading
-                        this.disabled = false; // Enable sending again
-                        return;
-                    }
-                    sbApp.default.sendMessage(document.getElementById("txtNewMsgSubject").value, selectedUsersArr, sceditor.instance(document.getElementById("txtNewMsgContent")).val()).then(res => {
+                    sbApp.default.sendMessage(document.getElementById("txtNewMsgSubject").value, document.getElementById("selNewMsgRecipients").value, sceditor.instance(document.getElementById("txtNewMsgContent")).val()).then(res => {
                         if (res.error) {
                             alert("Error sending message: " + res.error);
                         } else {
                             alert("Message sent successfully!");
                             //closeModal(document.getElementById("dlgNewMessage"));
-                            newMsgEditor.setValue({
+                            /*newMsgEditor.setValue({
                                 subject: "",
                                 content: "",
                                 recipients: []
-                            }); // Reset JSONEditor
+                            }); // Reset JSONEditor*/
                         }
                         this.classList.remove("is-loading"); // Hide loading
                         this.disabled = false; // Enable sending again
