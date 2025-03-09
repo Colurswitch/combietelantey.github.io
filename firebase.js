@@ -198,7 +198,7 @@ const sbApp = {
 
   async getCurrentUser() {
     const { data: { user } } = await supabase.auth.getUser();
-    return { data };
+    return { data: {user} };
   },
 
   async getCurrentUserRecord() {
