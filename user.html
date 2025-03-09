@@ -154,7 +154,7 @@
                 document.getElementById("btnUserFollow").textContent = "Cannot follow yourself";
             }
 
-            sbApp.default.getUserRecord(uid).then(user => {
+            sbApp.default.getUser(uid).then(user => {
                 sbApp.default.fetchVideosByUser(uid).then(videos => {
                     sbApp.default.getUsersFollowingUser(uid).then(f_users => {
                         sbApp.default.getUsersFollowedByUser(uid).then(fd_users => {
