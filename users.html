@@ -1,0 +1,126 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <style>
+        #users-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            flex-wrap: wrap;
+            overflow-x: auto;
+            padding: 10px;
+            justify-items: center;
+        }
+
+        .videos-grid-item {
+            width: 300px;
+            min-height: 200px;
+            padding: 0 !important;
+            margin: 10px;
+        }
+
+        .video-thumbnail {
+            border-radius: 0.75rem;
+        }
+
+        .video-bottom-row {
+            display: flex;
+            flex-direction: row;
+            margin: 10px;
+        }
+
+        .video-author-img {
+            border-radius: 50%;
+            margin: 5px;
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+    </style>
+
+    <!--Firebase-->
+    <script src="firebase.js" type="module" defer></script>
+</head>
+
+<body>
+    <div class="field has-addons" style="margin: 10px;">
+        <div class="control">
+            <input class="input" type="text" placeholder="Search users">
+        </div>
+        <div class="control">
+            <button class="button is-info">
+                Search
+            </button>
+        </div>
+    </div>
+
+    <div id="users-grid">
+        <a class="card">
+            <div class="card-image">
+                <figure class="image is-3by1">
+                    <img src="https://placehold.co/900x300.png?font=roboto" alt="Placeholder image" />
+                </figure>
+            </div>
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-left">
+                        <figure class="image is-48x48">
+                            <img src="https://bulma.io/assets/images/placeholders/96x96.png" alt="Placeholder image" />
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <p class="title is-4">John Smith</p>
+                        <p class="subtitle is-6">@johnsmith</p>
+                    </div>
+                </div>
+
+                <div class="content">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
+                    iaculis mauris.
+                </div>
+            </div>
+        </a>
+    </div>
+    <script type="module">
+        import * as sbApp from "./firebase.js";
+        const usersGrid = document.getElementById('users-grid');
+        function truncate(str, maxLength) {
+            return str.length > maxLength ? str.substr(0, maxLength) + '...' : str;
+        }
+        sbApp.default.getUsers().then(users => {
+            usersGrid.innerHTML = users.data.map(user => {
+                return `
+                    <a class="card" href="user?id=${user.id}">
+                        <div class="card-image">
+                            <figure class="image is-3by1">
+                                <img src="${user.banner_url}" alt="Placeholder image" />
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        <img src="${user.photo_url}" alt="Placeholder image" />
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4">${user.display_name}</p>
+                                    <p class="subtitle is-6">${user.handle}</p>
+                                </div>
+                            </div>
+
+                            <div class="content">
+                                ${truncate(user.bio, 200)}
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('\n');
+        });
+    </script>
+</body>
+
+</html>

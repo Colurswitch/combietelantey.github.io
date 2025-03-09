@@ -197,8 +197,8 @@ const sbApp = {
   },
 
   async getCurrentUser() {
-    const { data, error } = await supabase.auth.getUser();
-    return { data, error };
+    const { data: { user } } = await supabase.auth.getUser();
+    return { data };
   },
 
   async getCurrentUserRecord() {
@@ -264,7 +264,7 @@ const sbApp = {
       .insert({
          follower: (await this.getCurrentUser()).data.user.id,
          following: user_id,
-       });
+      });
     return { data, error };
   },
 
@@ -275,6 +275,15 @@ const sbApp = {
       .eq("follower", (await this.getCurrentUser()).data.user.id)
       .eq("following", user_id);
     return { data, error };
+  },
+
+  async isFollowingUser(user_id) {
+    const { data, error } = await supabase
+      .from("followers")
+      .select()
+      .eq("follower", (await this.getCurrentUser()).data.user.id)
+      .eq("following", user_id);
+    return!!data.length;
   },
 
   async searchUsers(query) {

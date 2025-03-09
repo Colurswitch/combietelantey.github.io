@@ -66,10 +66,11 @@
 </head>
 
 <body>
+    <progress class="progress is-small is-primary" max="100" id="loadingIndicator"></progress>
     <figure class="figure" style="display: flex; justify-content: center;">
         <img id="userImage" src="https://placehold.co/900x300?font=roboto" alt="User Image" id="currentUserBanner">
     </figure>
-    <div class="block" style="display: flex; justify-content: center; flex-direction: column; padding: 20px">
+    <div class="block" style="display: flex; align-items: center; flex-direction: column; padding: 20px">
         <div class="box" style="max-width: 1200px;">
             <article class="media">
                 <div class="media-left">
@@ -92,19 +93,19 @@
                             <div class="level-item has-text-centered">
                                 <div>
                                     <p class="heading">Videos</p>
-                                    <p class="title">3,456</p>
+                                    <p class="title" id="currentUserVideosLen">3,456</p>
                                 </div>
                             </div>
                             <div class="level-item has-text-centered">
                                 <div>
                                     <p class="heading">Following</p>
-                                    <p class="title">123</p>
+                                    <p class="title" id="currentUserFollowingLen">123</p>
                                 </div>
                             </div>
                             <div class="level-item has-text-centered">
                                 <div>
                                     <p class="heading">Followers</p>
-                                    <p class="title">456K</p>
+                                    <p class="title" id="currentUserFollowersLen">456K</p>
                                 </div>
                             </div>
                         </nav>
@@ -148,36 +149,65 @@
             if(!sbApp.default.isSignedIn()) {
                 document.getElementById("btnUserFollow").disabled = true;
                 document.getElementById("btnUserFollow").textContent = "Not signed in";
-            }else if(uid == sbApp.default.getCurrentUser().data.user.id) {
+            //}else if(uid == sbApp.default.getCurrentUser().data.user.id) {
                 document.getElementById("btnUserFollow").disabled = true;
                 document.getElementById("btnUserFollow").textContent = "Cannot follow yourself";
             }
 
             sbApp.default.getUserRecord(uid).then(user => {
                 sbApp.default.fetchVideosByUser(uid).then(videos => {
-                    // Update user profile data
-                    document.getElementById("currentUserBanner").src = user.data[0].banner_image;
-                    document.getElementById("currentUserPhoto").src = user.data[0].photo_image;
-                    document.getElementById("currentUserDisplayName").textContent = user.data[0].display_name;
-                    document.getElementById("currentUserHandle").textContent = user.data[0].handle;
-                    document.getElementById("currentUserBio").textContent = user.data[0].bio;
-                    document.getElementById("videosGrid").innerHTML = videos.data.map(video => {
-                        return `
-                            <a class="videos-grid-item box" href="video?id=${video.id}">
-                                <img src="${video.thumbnail.length > 0 ? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto"}" alt="Video thumbnail"
-                                    class="video-grid-item-thumbnail">
-                                <div class="video-grid-item-bottom-row">
-                                    <img src="${video.creator.photo_url.length > 0 ? video.creator.photo_url : "https://placehold.co/64x64.png?font=roboto"}" width="50" height="50"
-                                        alt="User" class="video-grid-item-author-img">
-                                    <div class="video-grid-item-bottom-right">
-                                        <p class="video-grid-item-title"><strong>${video.title}</strong></p>
-                                        <p class="video-grid-item-author icon-text">${video.creator.display_name} ${video.creator.verified ? '<span class="material-icons">verified</span>' : ''}</p>
-                                        <p class="video-grid-item-description">${truncate(video.description, 40)}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        `;
-                    }).join('\n');
+                    sbApp.default.getUsersFollowingUser(uid).then(f_users => {
+                        sbApp.default.getUsersFollowedByUser(uid).then(fd_users => {
+                            // Update user profile data
+                            document.getElementById("currentUserBanner").src = user.data[0].banner_image;
+                            document.getElementById("currentUserPhoto").src = user.data[0].photo_image;
+                            document.getElementById("currentUserDisplayName").textContent = user.data[0].display_name;
+                            document.getElementById("currentUserHandle").textContent = user.data[0].handle;
+                            document.getElementById("currentUserBio").textContent = user.data[0].bio;
+                            document.getElementById("videosGrid").innerHTML = videos.data.map(video => {
+                                return `
+                                    <a class="videos-grid-item box" href="video?id=${video.id}">
+                                        <img src="${video.thumbnail.length > 0 ? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto"}" alt="Video thumbnail"
+                                            class="video-grid-item-thumbnail">
+                                        <div class="video-grid-item-bottom-row">
+                                            <img src="${video.creator.photo_url.length > 0 ? video.creator.photo_url : "https://placehold.co/64x64.png?font=roboto"}" width="50" height="50"
+                                                alt="User" class="video-grid-item-author-img">
+                                            <div class="video-grid-item-bottom-right">
+                                                <p class="video-grid-item-title"><strong>${video.title}</strong></p>
+                                                <p class="video-grid-item-author icon-text">${video.creator.display_name} ${video.creator.verified ? '<span class="material-icons">verified</span>' : ''}</p>
+                                                <p class="video-grid-item-description">${truncate(video.description, 40)}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                `;
+                            }).join('\n');
+                            document.getElementById("currentUserVideosLen").textContent = videos.data.length;
+                            document.getElementById("currentUserFollowingLen").textContent = fd_users.data.length;
+                            document.getElementById("currentUserFollowersLen").textContent = f_users.data.length;
+                            // Update user follow button
+                            document.getElementById("btnUserFollow").onclick = () => {
+                                if (sbApp.default.isSignedIn()) {
+                                    if (user.data[0].id == sbApp.default.getCurrentUser().data.user.id) {
+                                        alert("Cannot follow yourself");
+                                    } else {
+                                        if (sbApp.default.isFollowingUser(uid)) {
+                                            sbApp.default.unfollowUser(uid).then(() => {
+                                                alert("Unfollowed");
+                                                document.getElementById("btnUserFollow").textContent = "Follow";
+                                            });
+                                        } else {
+                                            sbApp.default.followUser(uid).then(() => {
+                                                alert("Followed");
+                                                document.getElementById("btnUserFollow").textContent = "Unfollow";
+                                            });
+                                        }
+                                    }
+                                } else {
+                                    alert("You need to sign in to follow users.");
+                                }
+                            }
+                        });
+                    });
                 });
             });
         }
