@@ -565,7 +565,7 @@ const sbApp = {
         display_name, handle, photo_url, verified, id
       ), recipient (
         display_name, handle, photo_url, verified, id
-      ), content
+      ), content, created_at
     `
       )
       .eq("recipient", user_id);
@@ -581,7 +581,7 @@ const sbApp = {
         display_name, handle, photo_url, verified, id
       ), recipient (
         display_name, handle, photo_url, verified, id
-      ), content
+      ), content, created_at
     `
       )
       .eq("sender", user_id);
@@ -611,7 +611,7 @@ const sbApp = {
         display_name, handle, photo_url, verified, id
       ), recipient (
         display_name, handle, photo_url, verified, id
-      ), content, subject, created_time
+      ), content, subject, created_at
     `
       )
       .eq("id", message_id);
