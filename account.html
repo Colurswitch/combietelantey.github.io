@@ -468,7 +468,7 @@
                         <td><i class="material-icons">mail</i></td>
                         <td>${message.sender.display_name}</td>
                         <td>${message.subject}</td>
-                        <td>${new Date(message.created_time).toLocaleDateString()}</td>
+                        <td>${new Date(message.created_at).toLocaleDateString()}</td>
                     `;
                     messageItem.addEventListener('click', () => {
                         loadSingleMessage(message.id)
@@ -490,7 +490,7 @@
                         <td><i class="material-icons">mail</i></td>
                         <td>${message.recipient.display_name}</td>
                         <td>${message.subject}</td>
-                        <td>${new Date(message.created_time).toLocaleDateString()}</td>
+                        <td>${new Date(message.created_at).toLocaleDateString()}</td>
                     `;
                     messageItem.addEventListener('click', () => {
                         loadSingleMessage(message.id)
@@ -716,6 +716,8 @@
             // If "page" url parameter is specified, goto the page
             const page = new URLSearchParams(window.location.search).get('page');
             if (page) openPage(page);
+            // Is the user logged in?
+            //if (!sbApp.default.isSignedIn()) location.href = "auth";
             // Fetch and display videos from Supabase
             // Supabase client can be retrieved from sbApp.default.supabase
             console.log("Videos:", sbApp.default.fetchVideos());
@@ -859,6 +861,12 @@
             loadMessages();
             // Profile page
             loadProfilePage();
+            // Log out button
+            document.getElementById("btnLogoutConfirm").onclick = () => {
+                sbApp.default.signOut("local").then(() => {
+                    window.location.href = "/";
+                });
+            }
         };
     </script>
 </body>

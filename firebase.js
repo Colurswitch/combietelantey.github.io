@@ -167,12 +167,12 @@ const sbApp = {
   },
 
   async signOut(scope) {
-    const { data, error } = await supabase.auth.signOut({
+    const { error } = await supabase.auth.signOut({
       options: {
         scope: scope,
       },
     });
-    return { data, error };
+    return { error };
   },
 
   async updateUser(user_id, updated_fields) {
@@ -565,7 +565,7 @@ const sbApp = {
         display_name, handle, photo_url, verified, id
       ), recipient (
         display_name, handle, photo_url, verified, id
-      ), content, created_at
+      ), content, created_at, subject
     `
       )
       .eq("recipient", user_id);
@@ -581,7 +581,7 @@ const sbApp = {
         display_name, handle, photo_url, verified, id
       ), recipient (
         display_name, handle, photo_url, verified, id
-      ), content, created_at
+      ), content, created_at, subject
     `
       )
       .eq("sender", user_id);
