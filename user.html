@@ -164,7 +164,7 @@
                             document.getElementById("currentUserDisplayName").textContent = user.data[0].display_name;
                             document.getElementById("currentUserHandle").textContent = user.data[0].handle;
                             document.getElementById("currentUserBio").textContent = user.data[0].bio;
-                            document.getElementById("videosGrid").innerHTML = videos.data.map(video => {
+                            document.getElementById("videos-grid").innerHTML = videos.data.map(video => {
                                 return `
                                     <a class="videos-grid-item box" href="video?id=${video.id}">
                                         <img src="${video.thumbnail.length > 0 ? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto"}" alt="Video thumbnail"
