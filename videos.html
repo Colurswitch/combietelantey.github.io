@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,19 +40,20 @@
             margin-right: 15px;
         }
     </style>
-    
+
     <!--Firebase-->
     <script src="firebase.js" type="module" defer></script>
 </head>
+
 <body>
     <div class="field has-addons" style="margin: 10px;">
         <div class="control">
-          <input class="input" type="text" placeholder="Search videos">
+            <input class="input" type="text" placeholder="Search videos">
         </div>
         <div class="control">
-          <button class="button is-info">
-            Search
-          </button>
+            <button class="button is-info">
+                Search
+            </button>
         </div>
     </div>
 
@@ -68,5 +70,36 @@
             </div>
         </div>
     </div>
+    <script type="module">
+        import * as sbApp from "./firebase.js";
+        const videosGrid = document.getElementById('videos-grid');
+        function truncate(str, maxLength) {
+            return str.length > maxLength? str.substr(0, maxLength) + '...' : str;
+        }
+        sbApp.default.fetchVideos().then(videos => {
+            if (videos.data.length === 0) {
+                videosGrid.innerHTML = '<p class="subtitle is-4">No videos found.</p>';
+                return;
+            }
+            videosGrid.innerHTML = videos.data.map(video => {
+                return `
+                    <a class="videos-grid-item box" href="video?id=${video.id}">
+                        <img src="${video.thumbnail.length > 0 ? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto"}" alt="Video thumbnail"
+                            class="video-grid-item-thumbnail">
+                        <div class="video-grid-item-bottom-row">
+                            <img src="${video.creator.photo_url.length > 0 ? video.creator.photo_url : "https://placehold.co/64x64.png?font=roboto"}" width="50" height="50"
+                                alt="User" class="video-grid-item-author-img">
+                            <div class="video-grid-item-bottom-right">
+                                <p class="video-grid-item-title"><strong>${video.title}</strong></p>
+                                <p class="video-grid-item-author icon-text">${video.creator.display_name} ${video.creator.verified ? '<span class="material-icons">verified</span>' : ''}</p>
+                                <p class="video-grid-item-description">${truncate(video.description, 40)}</p>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('\n');
+        });
+    </script>
 </body>
+
 </html>

@@ -192,13 +192,13 @@ const sbApp = {
   },
 
   async isSignedIn() {
-    const { data, error } = await supabase.auth.getSession();
-    return !!data.session;
+    const { data, error } = await supabase.auth.getUser();
+    return !!data.user;
   },
 
   async getCurrentUser() {
-    const { data, error } = await supabase.auth.getSession();
-    return { data: { ...data.session }, error };
+    const { data, error } = await supabase.auth.getUser();
+    return { data, error };
   },
 
   async getCurrentUserRecord() {
@@ -228,16 +228,84 @@ const sbApp = {
     return { data, error };
   },
 
+  async getUsersFollowingUser(user_id) {
+    const { data, error } = await supabase
+      .from("followers")
+      .select(`
+        id, follower (
+          display_name, verified, id
+        ), following (
+          display_name, verified, id
+        )
+      `)
+      .eq("following", user_id);
+    // "data" will return list of IDs of users following the specified user
+    return { data, error };
+  },
+
+  async getUsersFollowedByUser(user_id) {
+    const { data, error } = await supabase
+      .from("followers")
+      .select(`
+        id, follower (
+          display_name, verified, id
+        ), following (
+          display_name, verified, id
+        )
+      `)
+      .eq("follower", user_id);
+    // "data" will return list of IDs of users who follow the specified user
+    return { data, error };
+  },
+
+  async followUser(user_id) {
+    const { data, error } = await supabase
+      .from("followers")
+      .insert({
+         follower: (await this.getCurrentUser()).data.user.id,
+         following: user_id,
+       });
+    return { data, error };
+  },
+
+  async unfollowUser(user_id) {
+    const { data, error } = await supabase
+      .from("followers")
+      .delete()
+      .eq("follower", (await this.getCurrentUser()).data.user.id)
+      .eq("following", user_id);
+    return { data, error };
+  },
+
+  async searchUsers(query) {
+    const { data, error } = await supabase
+      .from("users")
+      .select()
+      .textSearch("display_name", query, {
+        type: "websearch"
+      });
+    return { data, error };
+  },
+
   async fetchVideos() {
-    const { data, error } = await supabase.from("videos").select();
+    const { data, error } = await supabase.from("videos").select(`
+      id, title, description, creator (
+        display_name, verified, id, photo_url
+      ), thumbnail, created_at
+    `);
+    return { data, error };
+  },
+
+  async fetchVideosByUser(user_id) {
+    const { data, error } = await supabase
+      .from("videos")
+      .select()
+      .eq("creator", user_id);
     return { data, error };
   },
 
   async fetchVideosByCurrentUser() {
-    const { data, error } = await supabase
-      .from("videos")
-      .select()
-      .eq("creator", (await this.getCurrentUser()).data.user.id);
+    const { data, error } = await this.fetchVideosByUser((await this.getCurrentUser()).data.user.id);
     return { data, error };
   },
 
@@ -246,6 +314,16 @@ const sbApp = {
       .from("videos")
       .select()
       .eq("id", video_id);
+    return { data, error };
+  },
+
+  async searchVideos(query) {
+    const { data, error } = await supabase
+      .from("videos")
+      .select()
+      .textSearch("title", query, {
+        type: "websearch"
+      });
     return { data, error };
   },
 

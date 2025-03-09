@@ -835,7 +835,7 @@
                 ids.data.forEach(id => {
                     var newOption = document.createElement("option");
                     newOption.value = id.id;
-                    newOption.text = id.name;
+                    newOption.text = id.display_name;
                     document.getElementById("selNewMsgRecipients").add(newOption);
                 });
                 document.getElementById("btnSendNewMsg").onclick = function () {
