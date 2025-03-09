@@ -223,7 +223,7 @@ const sbApp = {
   },
 
   async getUsersEnum() {
-    const { data, error } = await supabase.from("users").select("id");
+    const { data, error } = await supabase.from("users").select("id, display_name");
     // "data" will return list of IDs of users
     return { data, error };
   },
@@ -605,7 +605,7 @@ const sbApp = {
         `
       id, sender (
         display_name, handle, photo_url, verified, id
-      ), recipients, content, subject
+      ), recipients, content, subject, created_time
     `
       )
       .eq("id", message_id);

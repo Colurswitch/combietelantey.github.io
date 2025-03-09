@@ -186,24 +186,48 @@
                     </span>
                     New Message
                 </button>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Sender</th>
-                            <th>Subject</th>
-                        </tr>
-                    </thead>
-                    <tbody id="messagesTableBody">
-                        <!-- Example message item -->
-                        <!-- Add more message items here -->
-                        <tr>
-                            <td><i class="material-icons">mail</i></td>
-                            <td>clant</td>
-                            <td>Hello, this is a test message!</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="columns">
+                    <table class="table column">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Sender</th>
+                                <th>Subject</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messagesTableBody">
+                            <!-- Example message item -->
+                            <!-- Add more message items here -->
+                            <tr>
+                                <td><i class="material-icons">mail</i></td>
+                                <td>clant</td>
+                                <td>Hello, this is a test message!</td>
+                                <td>2022-02-01 12:34:56</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table column">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Sender</th>
+                                <th>Subject</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sentMessagesTableBody">
+                            <!-- Example archived message item -->
+                            <!-- Add more archived message items here -->
+                            <tr>
+                                <td><i class="material-icons">mail_outline</i></td>
+                                <td>clant</td>
+                                <td>Hello, this is a test message!</td>
+                                <td>2022-02-01 12:34:56</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="box page" id="message">
                 <h1 class="title" id="currentMsgSubject">Message</h1>
@@ -323,7 +347,18 @@
                 <p class="modal-card-title">New Message</p>
             </header>
             <section class="modal-card-body">
-                <div id="newMsgSettingsContainer"></div>
+                <input id="txtNewMsgSubject" class="input" type="text" placeholder="Subject" />
+                <textarea id="txtNewMsgContent" placeholder="Content"></textarea>
+                Recipents:
+                <div class="select is-multiple">
+                    <select id="selNewMsgRecipients" multiple size="10">
+                        <!-- Add tag options here -->
+                        <!-- Example tag options -->
+                        <!-- <option value="tag1">Tag 1</option>
+                        <option value="tag2">Tag 2</option> -->
+                        <option value="uid">User 1</option>
+                    </select>
+                </div>
             </section>
             <footer class="modal-card-foot">
                 <span class="error" id="newMsgError"></span>
@@ -408,7 +443,7 @@
         }
         // Function to load messages to current user
         function loadMessages() {
-            sbApp.default.fetchMessagesByCurrentUser().then(messages => {
+            sbApp.default.fetchMessagesToCurrentUser().then(messages => {
                 const messagesTableBody = document.getElementById('messagesTableBody');
                 messagesTableBody.innerHTML = ""; // Clear existing messages
                 messages.data.forEach(message => {
@@ -417,6 +452,7 @@
                         <td><i class="material-icons">mail</i></td>
                         <td>${message.sender.display_name}</td>
                         <td>${message.subject}</td>
+                        <td>${new Date(message.created_time).toLocaleDateString()}</td>
                     `;
                     messageItem.addEventListener('click', () => {
                         loadSingleMessage(message.id)
@@ -428,6 +464,23 @@
                     noMessages.textContent = "You have not received any messages.";
                     messagesTableBody.appendChild(noMessages);
                 }
+            });
+            sbApp.default.fetchMessagesByCurrentUser().then(messages => {
+                const messagesTableBody = document.getElementById('sentMessagesTableBody');
+                messagesTableBody.innerHTML = ""; // Clear existing messages
+                messages.data.forEach(message => {
+                    const messageItem = document.createElement('tr');
+                    messageItem.innerHTML = `
+                        <td><i class="material-icons">mail</i></td>
+                        <td>${message.recipient.display_name}</td>
+                        <td>${message.subject}</td>
+                        <td>${new Date(message.created_time).toLocaleDateString()}</td>
+                    `;
+                    messageItem.addEventListener('click', () => {
+                        loadSingleMessage(message.id)
+                    });
+                    messagesTableBody.appendChild(messageItem);
+                });
             });
         }
         // Function to load single message
@@ -756,52 +809,32 @@
             // JSONEditor for new message
             var newMsgEditor = null;
             sbApp.default.getUsersEnum().then(ids => {
-                newMsgEditor = new JSONEditor(document.getElementById("newMsgSettingsContainer"), {
-                    theme: "spectre",
-                    showErrors: "change",
-                    disable_properties: true,
-                    disable_collapse: true,
-                    disable_edit_json: true,
-                    enable_array_copy: true,
-                    require_by_default: true,
-                    compact: true,
-                    schema: {
-                        type: "object",
-                        properties: {
-                            subject: {
-                                type: "string"
-                            },
-                            content: {
-                                type: "string",
-                                format: "xhtml",
-                                options: {
-                                    sceditor: {}
-                                }
-                            },
-                            recipients: {
-                                type: "array",
-                                format: "table",
-                                uniqueItems: true,
-                                items: {
-                                    type: "enum",
-                                    enum: ids.data.map(id => ({ value: id, label: id }))
-                                }
-                            }
-                        }
-                    }
+                sceditor.create(document.getElementById("txtNewMsgContent"), {
+                    format: "xhtml",
+                    theme: "https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/content/default.min.css"
                 })
+                var selectedUsers = document.getElementById("selNewMsgRecipients").selectedOptions;
+                ids.data.forEach(id => {
+                    var newOption = document.createElement("option");
+                    newOption.value = id.id;
+                    newOption.text = id.name;
+                    document.getElementById("selNewMsgRecipients").add(newOption);
+                });
                 document.getElementById("btnSendNewMsg").onclick = function () {
                     this.classList.add("is-loading"); // Show loading
                     this.disabled = true; // Avoid sending multiple instances
-                    const msgData = newMsgEditor.getValue();
+                    var selectedUsersArr = [];
+                    for (var i = 0; i < selectedUsers.length; i++) {
+                        selectedUsersArr.push(selectedUsers[i].value);
+                    }
                     // Validate recipients
-                    if (msgData.recipients.length === 0) {
+                    if (selectedUsersArr.length === 0) {
                         alert("Please select at least one recipient.");
                         this.classList.remove("is-loading"); // Hide loading
                         this.disabled = false; // Enable sending again
                         return;
                     }
-                    sbApp.default.sendMessage(msgData.subject, msgData.recipients, msgData.content).then(res => {
+                    sbApp.default.sendMessage(document.getElementById("txtNewMsgSubject").value, selectedUsersArr, sceditor.instance(document.getElementById("txtNewMsgContent")).val()).then(res => {
                         if (res.error) {
                             alert("Error sending message: " + res.error);
                         } else {
