@@ -68,7 +68,7 @@
 <body>
     <progress class="progress is-small is-primary" max="100" id="loadingIndicator"></progress>
     <figure class="figure" style="display: flex; justify-content: center;">
-        <img id="userImage" src="https://placehold.co/900x300?font=roboto" alt="User Image" id="currentUserBanner">
+        <img class="image is-3by1" src="https://placehold.co/900x300?font=roboto" alt="User Image" id="currentUserBanner" />
     </figure>
     <div class="block" style="display: flex; align-items: center; flex-direction: column; padding: 20px">
         <div class="box" style="max-width: 1200px;">
@@ -159,8 +159,8 @@
                     sbApp.default.getUsersFollowingUser(uid).then(f_users => {
                         sbApp.default.getUsersFollowedByUser(uid).then(fd_users => {
                             // Update user profile data
-                            document.getElementById("currentUserBanner").src = user.data[0].banner_image;
-                            document.getElementById("currentUserPhoto").src = user.data[0].photo_image;
+                            document.getElementById("currentUserBanner").src = user.data[0].banner_url;
+                            document.getElementById("currentUserPhoto").src = user.data[0].photo_url;
                             document.getElementById("currentUserDisplayName").textContent = user.data[0].display_name;
                             document.getElementById("currentUserHandle").textContent = user.data[0].handle;
                             document.getElementById("currentUserBio").textContent = user.data[0].bio;
@@ -206,6 +206,7 @@
                                     alert("You need to sign in to follow users.");
                                 }
                             }
+                            document.getElementById("loadingIndicator").remove();
                         });
                     });
                 });
