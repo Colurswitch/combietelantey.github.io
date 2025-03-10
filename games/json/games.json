@@ -1,0 +1,21 @@
+[
+    {
+        "name": "Game 1",
+        "description": "The game that will be created with the new game",
+        "genres": [
+            "Action",
+            "Adventure"
+        ],
+        "photo": "url",
+        "banner": "url",
+        "achievements": [
+            {
+                "title": "First Achievement",
+                "description": "This is the first achievement in the game",
+                "type": "instant/progress",
+                "code": "//js code"
+            }
+        ],
+        "id": "1"
+    }
+]
