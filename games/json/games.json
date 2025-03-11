@@ -11,6 +11,7 @@
         "achievements": [
             {
                 "title": "First Achievement",
+                "photo": "url",
                 "description": "This is the first achievement in the game",
                 "type": "instant/progress",
                 "code": "//js code"

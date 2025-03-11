@@ -294,14 +294,9 @@
       qod.create("lblQod");
       try {
         pageList.generate("pages-grid",[
-          {icon:"video_library",title:"Video Library",url:"/videos"},
-          {icon:"sports_esports",title:"Games",url:"/games"},
-          {icon:"chat",title:"Chat",url:"/chat"},
-          {icon:"book",title:"Books",url:"/books"},
-          {icon:"movie",title:"Movies",url:"/movies"},
-          {icon:"music_note",title:"Music",url:"/music"},
-          {icon:"speaker_notes",title:"Notes",url:"/notes"},
-          {icon:"image",title:"Images",url:"/images"}
+          {icon:"video_library",title:"Video Library",url:"/videos",external:false},
+          {icon:"sports_esports",title:"Games",url:"/games",external:true},
+          {icon:"chat",title:"Chat",url:"/chat",external:false}
         ]);
       } catch (error) {
         document.getElementById("pages-error").style.display = "block";
