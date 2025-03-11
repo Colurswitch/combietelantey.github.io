@@ -68,7 +68,7 @@
 <body>
     <progress class="progress is-small is-primary" max="100" id="loadingIndicator"></progress>
     <figure class="figure" style="display: flex; justify-content: center;">
-        <img class="image is-3by1" src="https://placehold.co/900x300?font=roboto" alt="User Image" id="currentUserBanner" />
+        <div class="image is3by1" id="currentUserBanner"></div>
     </figure>
     <div class="block" style="display: flex; align-items: center; flex-direction: column; padding: 20px">
         <div class="box" style="max-width: 1200px;">
@@ -159,7 +159,10 @@
                     sbApp.default.getUsersFollowingUser(uid).then(f_users => {
                         sbApp.default.getUsersFollowedByUser(uid).then(fd_users => {
                             // Update user profile data
-                            document.getElementById("currentUserBanner").src = user.data[0].banner_url;
+                            document.getElementById("currentUserBanner").style.backgroundImage = "url(" + user.data[0].banner_url + ")";
+                            document.getElementById("currentUserBanner").style.backgroundSize = "cover";
+                            document.getElementById("currentUserBanner").style.backgroundPosition = "center";
+                            document.getElementById("currentUserBanner").style.backgroundRepeat = "no-repeat";
                             document.getElementById("currentUserPhoto").src = user.data[0].photo_url;
                             document.getElementById("currentUserDisplayName").textContent = user.data[0].display_name;
                             document.getElementById("currentUserHandle").textContent = user.data[0].handle;

@@ -14,9 +14,11 @@
                 "photo": "url",
                 "description": "This is the first achievement in the game",
                 "type": "instant/progress",
+                "score": 300,
                 "code": "//js code"
             }
         ],
+        "date": "3-11-2025",
         "id": "1"
     }
 ]
