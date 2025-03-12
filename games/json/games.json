@@ -8,6 +8,7 @@
         ],
         "photo": "url",
         "banner": "url",
+        "link": "url",
         "achievements": [
             {
                 "title": "First Achievement",
@@ -20,5 +21,43 @@
         ],
         "date": "3-11-2025",
         "id": "1"
+    },
+    {
+        "name": "Game 2",
+        "description": "Another game that will be created with the new game",
+        "genres": [
+            "RPG",
+            "Strategy"
+        ],
+        "photo": "url",
+        "banner": "url",
+        "link": "url",
+        "achievements": [
+            {
+                "title": "Second Achievement",
+                "photo": "url",
+                "description": "This is the second achievement in the game",
+                "type": "progress",
+                "score": 500,
+                "code": "//js code"
+            }
+        ],
+        "date": "3-12-2025",
+        "id": "2"
+    },
+    {
+        "name": "Cookie Clicker",
+        "photo": "https://raw.githubusercontent.com/ccsgames/outred-static/main/img/cookieclicker.png",
+        "banner": "https://raw.githubusercontent.com/ccsgames/outred-static/main/img/cookieclicker.png",
+        "description": "Cookie Clicker is a fun idle game where you click on a giant cookie to earn cookies. Use your cookies to buy upgrades and unlock new features. Can you become the ultimate cookie master?",
+        "link": "",
+        "genres": [
+            "Action",
+            "Adventure",
+            "Simulation"
+        ],
+        "achievements":[],
+        "date": "3-10-2025",
+        "id": "3"
     }
 ]

@@ -128,7 +128,6 @@
             padding: 10px;
             border-radius: 10px;
             background-color: rgba(0, 0, 0, 0.6);
-            background-image: attr("data-bg");
             display: flex;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.493);
             flex-direction: column;
@@ -136,6 +135,39 @@
             align-content: flex-end;
             height: 200px;
             width: 400px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            transition: box-shadow 0.25s ease-in-out;
+        }
+
+        .game-card:hover {
+            animation: rainbow-shadow 3s infinite;
+        }
+
+        @keyframes rainbow-shadow {
+            from {
+                box-shadow: 0 2px 5px red;
+            }
+            16.66% {
+                box-shadow: 0 2px 5px orange;
+            }
+            33.33% {
+                box-shadow: 0 2px 5px yellow;
+            }
+            50% {
+                box-shadow: 0 2px 5px green;
+            }
+            66.66% {
+                box-shadow: 0 2px 5px blue;
+            }
+            83.33% {
+                box-shadow: 0 2px 5px indigo;
+            }
+            to {
+                box-shadow: 0 2px 5px red;
+            }
+            
         }
 
         .game-card-title {
@@ -185,7 +217,7 @@
             <div class="page" id="newReleases">
                 <h1 class="title">New Releases</h1>
                 <!-- Game cards here -->
-                <div class="game-card" data-bg="https://picsum/photos/300/200">
+                <div class="game-card" style="background-image: url('https://picsum.photos/300/200');">
                     <h2 class="game-card-title">Game 1</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis, mauris vel cursus ullamcorper, mauris velit vestibulum velit, in consectetur est velit in orci.</p>
                 </div>
@@ -207,14 +239,14 @@
         }
     </script>
     <script type="module">
-        import * as sbApp from './firebase.js';
+        import * as sbApp from '/firebase.js';
 
         window.onload = () => {
             // Is the browser running on a mobile device?
             var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
             if (isMobile) alert("The games page has not been designed to be used on a mobile device.\nYou may continue using the gamebrowser, but you\nmay experience screen issues.");
             // Retrieve games from games.json
-            fetch('/games.json')
+            fetch('json/games.json')
                .then(response => response.json())
                .then(data => {
                     // Display games in the New Releases page

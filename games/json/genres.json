@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Adventure",
+        "description": "Adventure games",
+        "banner": "url"
+    },
+    {
+        "name": "Strategy",
+        "description": "Strategy games",
+        "banner": "url"
+    },
+    {
+        "name": "Puzzle",
+        "description": "Puzzle games",
+        "banner": "url"
+    }
+]
