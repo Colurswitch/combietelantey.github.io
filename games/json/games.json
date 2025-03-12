@@ -1,63 +1,25 @@
 [
     {
-        "name": "Game 1",
-        "description": "The game that will be created with the new game",
+        "name": "2048",
+        "description": "A simple yet addictive puzzle game where you slide numbered tiles on a board to merge them.",
         "genres": [
-            "Action",
-            "Adventure"
+            "Puzzle"
         ],
-        "photo": "url",
-        "banner": "url",
-        "link": "url",
+        "photo": "static/2048/favicon.ico",
+        "banner": "none",
+        "link": "static/2048/index.html",
         "achievements": [
             {
-                "title": "First Achievement",
-                "photo": "url",
-                "description": "This is the first achievement in the game",
-                "type": "instant/progress",
-                "score": 300,
-                "code": "//js code"
-            }
-        ],
-        "date": "3-11-2025",
-        "id": "1"
-    },
-    {
-        "name": "Game 2",
-        "description": "Another game that will be created with the new game",
-        "genres": [
-            "RPG",
-            "Strategy"
-        ],
-        "photo": "url",
-        "banner": "url",
-        "link": "url",
-        "achievements": [
-            {
-                "title": "Second Achievement",
-                "photo": "url",
-                "description": "This is the second achievement in the game",
-                "type": "progress",
-                "score": 500,
-                "code": "//js code"
+                "title": "2048",
+                "photo": "none",
+                "description": "Achieve the 2048 tile",
+                "type": "instant",
+                "score": 2048,
+                "code": "//js code",
+                "id": "1"
             }
         ],
         "date": "3-12-2025",
-        "id": "2"
-    },
-    {
-        "name": "Cookie Clicker",
-        "photo": "https://raw.githubusercontent.com/ccsgames/outred-static/main/img/cookieclicker.png",
-        "banner": "https://raw.githubusercontent.com/ccsgames/outred-static/main/img/cookieclicker.png",
-        "description": "Cookie Clicker is a fun idle game where you click on a giant cookie to earn cookies. Use your cookies to buy upgrades and unlock new features. Can you become the ultimate cookie master?",
-        "link": "",
-        "genres": [
-            "Action",
-            "Adventure",
-            "Simulation"
-        ],
-        "achievements":[],
-        "date": "3-10-2025",
-        "id": "3"
+        "id": "1"
     }
 ]
