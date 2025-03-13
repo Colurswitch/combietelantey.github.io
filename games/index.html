@@ -138,11 +138,17 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
+            background-blend-mode: darken;
             transition: box-shadow 0.25s ease-in-out;
         }
 
         .game-card:hover {
             animation: rainbow-shadow 3s infinite;
+        }
+
+        .game-card .game-card-icon {
+            margin: 10px;
+            width: 64px;
         }
 
         @keyframes rainbow-shadow {
@@ -170,6 +176,14 @@
             
         }
 
+        .game-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+            width: inherit;
+        }
+
         .game-card-title {
             font-size: 1.25em;
             margin-bottom: 0;
@@ -192,34 +206,75 @@
                 <span class="material-icons icon">videogame_asset</span>
                 <span class="fs-sidebar-item-text">New Releases</span>
             </button>
-            <button class="fs-sidebar-item page-link" onclick="openPage('popularGames',event)">
-                <span class="material-icons icon">star</span>
-                <span class="fs-sidebar-item-text">Popular Games</span>
-            </button>
-            <button class="fs-sidebar-item page-link">
+            <button class="fs-sidebar-item page-link" onclick="openPage('browseGames',event)">
                 <span class="material-icons icon">search</span>
                 <span class="fs-sidebar-item-text">Browse</span>
             </button>
-            <button class="fs-sidebar-item page-link">
+            <button class="fs-sidebar-item page-link" onclick="openPage('history',event)">
                 <span class="material-icons icon">history</span>
                 <span class="fs-sidebar-item-text">History</span>
-            </button>
-            <button class="fs-sidebar-item page-link">
-                <span class="material-icons icon">help</span>
-                <span class="fs-sidebar-item-text">Help</span>
-            </button>
-            <button class="fs-sidebar-item page-link">
-                <span class="material-icons icon">settings</span>
-                <span class="fs-sidebar-item-text">Settings</span>
             </button>
         </aside>
         <div class="fs-right">
             <div class="page" id="newReleases">
                 <h1 class="title">New Releases</h1>
                 <!-- Game cards here -->
-                <div class="game-card" style="background-image: url('https://picsum.photos/300/200');">
-                    <h2 class="game-card-title">Game 1</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis, mauris vel cursus ullamcorper, mauris velit vestibulum velit, in consectetur est velit in orci.</p>
+                <div class="game-card-container" id="newReleaseCards">
+                    <div class="game-card" style="background-image: url('https://picsum.photos/300/200');">
+                        <h2 class="game-card-title">Game 1</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis, mauris vel cursus ullamcorper, mauris velit vestibulum velit, in consectetur est velit in orci.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="page" id="browseGames" style="display: none;">
+                <h1 class="title">Browse Games</h1>
+                <!-- Game cards here -->
+                <div class="field">
+                    <p class="control has-icons-left block">
+                        <input class="input" type="text" id="txtGameSearchQuery" placeholder="Search games" />
+                        <span class="icon is-small is-left">
+                            <i class="material-icons">search</i>
+                        </span>
+                    </p>
+                    <div class="select">
+                        <select id="selGameGenre">
+                            <option value="all">All Games</option>
+                            <option value="action">Action Games</option>
+                            <option value="adventure">Adventure Games</option>
+                            <option value="strategy">Strategy Games</option>
+                            <option value="racing">Racing Games</option>
+                            <option value="puzzle">Puzzle Games</option>
+                        </select>
+                    </div>
+                    <div class="select">
+                        <select id="selGameAchievementFilter">
+                            <option value="achievements">Has Achievements</option>
+                            <option value="noAchievements">Has no Achievements</option>
+                            <option value="any">No Filter</option>
+                        </select>
+                    </div>
+                    <div class="select">
+                        <select id="selGameSort">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="a-to-z">Name (A to Z)</option>
+                            <option value="z-to-a">Name (Z to A)</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Game cards here -->
+                <div class="game-card-container" id="browsePageCards">
+
+                </div>
+            </div>
+            <div class="page" id="history" style="display: none;">
+                <h1 class="title">History</h1>
+                <!-- Game history here -->
+                <div class="game-card-container" id="gameHistoryCards">
+                    <div class="game-card" style="background-image: url('https://picsum.photos/300/200');">
+                        <h2 class="game-card-title">Game 1</h2>
+                        <small>3-12-2025</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -241,6 +296,7 @@
     <script type="module">
         import * as sbApp from '/firebase.js';
 
+
         window.onload = () => {
             // Is the browser running on a mobile device?
             var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -250,16 +306,59 @@
                .then(response => response.json())
                .then(data => {
                     // Display games in the New Releases page
-                    const newReleasesPage = document.getElementById('newReleases');
+                    const newReleasesPage = document.getElementById('newReleaseCards');
+                    const browsePageCards = document.getElementById('browsePageCards');
                     data.forEach(game => {
                         const gameCard = document.createElement('div');
                         gameCard.className = 'game-card';
-                        gameCard.dataset.bg = game.banner;
+                        gameCard.style.backgroundImage = `url('${game.banner=="none"?"/assets/background/game_placeholder.png":game.banner}')`;
                         gameCard.innerHTML = `
-                            <h2 class="game-card-title">${game.title}</h2>
+                            <h2 class="game-card-title">${game.name}</h2>
                             <p>${game.description}</p>
                         `;
-                        newReleasesPage.appendChild(gameCard);
+                        // If the game was realeased within the past month, display on the new release page
+                        if (new Date(game.releaseDate) >= new Date(new Date() - 2628000000))  newReleasesPage.appendChild(gameCard);
+                        // Display the game on the browse page
+                        browsePageCards.appendChild(gameCard);
+                        const searchQueryCallback = () => {
+                            const searchQuery = document.getElementById('txtGameSearchQuery').value.toLowerCase();
+                            const genreFilter = document.getElementById('selGameGenre').value;
+                            const achievementFilter = document.getElementById('selGameAchievementFilter').value;
+                            const sortFilter = document.getElementById('selGameSort').value;
+                            const filteredGames = data.filter(game => {
+                                if (game.name.toLowerCase().includes(searchQuery)) {
+                                    if (genreFilter!== 'all' && game.genre.toLowerCase()!== genreFilter) return false;
+                                    if (achievementFilter === 'achievements' && game.achievements === 0) return false;
+                                    if (achievementFilter === 'noAchievements' && game.achievements > 0) return false;
+                                    return true;
+                                } else return false;
+                            });
+                            browsePageCards.innerHTML = '';
+                            filteredGames.sort((a, b) => {
+                                switch (sortFilter) {
+                                    case 'newest':
+                                        return new Date(b.date) - new Date(a.date);
+                                    case 'oldest':
+                                        return new Date(a.date) - new Date(b.date);
+                                    case 'a-to-z':
+                                        return a.name.localeCompare(b.name);
+                                    case 'z-to-a':
+                                        return b.name.localeCompare(a.name);
+                                    default:
+                                        return 0;
+                                }
+                            });
+                            filteredGames.forEach(game => {
+                                const gameCard = document.createElement('div');
+                                gameCard.className = 'game-card';
+                                gameCard.style.backgroundImage = `url('${game.banner=="none"?"/assets/background/game_placeholder.png":game.banner}')`;
+                                gameCard.innerHTML = `
+                                    <h2 class="game-card-title">${game.name}</h2>
+                                    <p>${game.description}</p>
+                                `;
+                                browsePageCards.appendChild(gameCard);
+                            });
+                        }
                     });
                 })
                .catch(error => console.error('Error:', error));
