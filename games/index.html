@@ -263,6 +263,7 @@
                     </div>
                 </div>
                 <!-- Game cards here -->
+                <progress class="progress is-intermediate is-small is-primary" id="browsePageLoader" style="display: none;">50%</progress>
                 <div class="game-card-container" id="browsePageCards">
 
                 </div>
@@ -321,6 +322,7 @@
                         // Display the game on the browse page
                         browsePageCards.appendChild(gameCard);
                         const searchQueryCallback = () => {
+                            document.getElementById('browsePageLoader').style.display = 'block';
                             const searchQuery = document.getElementById('txtGameSearchQuery').value.toLowerCase();
                             const genreFilter = document.getElementById('selGameGenre').value;
                             const achievementFilter = document.getElementById('selGameAchievementFilter').value;
@@ -358,7 +360,12 @@
                                 `;
                                 browsePageCards.appendChild(gameCard);
                             });
+                            document.getElementById('browsePageLoader').style.display = 'none';
                         }
+                        document.getElementById('txtGameSearchQuery').addEventListener('input', searchQueryCallback);
+                        document.getElementById('selGameGenre').addEventListener('change', searchQueryCallback);
+                        document.getElementById('selGameAchievementFilter').addEventListener('change', searchQueryCallback);
+                        document.getElementById('selGameSort').addEventListener('change', searchQueryCallback);
                     });
                 })
                .catch(error => console.error('Error:', error));
