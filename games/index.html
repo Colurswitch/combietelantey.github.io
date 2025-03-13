@@ -119,8 +119,14 @@
             background-image: url("/assets/background/business.jpg");
             background-repeat: no-repeat;
             background-size: cover;
+            background-color: rgba(0, 0, 0, 0.6);
+            background-blend-mode: darken;
             color: white !important;
             position: relative;
+        }
+
+        .fs-right .title {
+            color: white;
         }
 
         .game-card {
@@ -189,6 +195,7 @@
             margin-bottom: 0;
             font-weight: bold;
         }
+
     </style>
 </head>
 
@@ -297,6 +304,15 @@
     <script type="module">
         import * as sbApp from '/firebase.js';
 
+        function isDateWithinPastMonth(date) {
+            const inputDate = new Date(date);
+            const today = new Date();
+            const oneMonthAgo = new Date();
+
+            oneMonthAgo.setMonth(today.getMonth() - 1);
+
+            return inputDate >= oneMonthAgo && inputDate <= today;
+        }
 
         window.onload = () => {
             // Is the browser running on a mobile device?
@@ -318,7 +334,7 @@
                             <p>${game.description}</p>
                         `;
                         // If the game was realeased within the past month, display on the new release page
-                        if (new Date(game.releaseDate) >= new Date(new Date() - 2628000000))  newReleasesPage.appendChild(gameCard);
+                        if (isDateWithinPastMonth(game.date))  newReleasesPage.appendChild(gameCard);
                         // Display the game on the browse page
                         browsePageCards.appendChild(gameCard);
                         const searchQueryCallback = () => {
