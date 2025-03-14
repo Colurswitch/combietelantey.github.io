@@ -12,27 +12,42 @@
     <link rel="stylesheet" href="/tvsidebar.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        
         .fullscreen {
             width: 100%;
             height: 100vh;
-            
+            top: 0; left: 0;
+            position: fixed;
         }
 
         #startup {
-            display: none;
             justify-content: center;
             align-items: center;
             position: absolute;
             background-color: black;
             color: white;
+            z-index: 1000;
+        }
+
+        #startup.hidden {
+            pointer-events: none;
+            animation: fade-out 1s linear;
+            opacity: 0;
+        }
+
+        @keyframes fade-out {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
         }
 
         .fs-sidebar {
             position: fixed;
             width: 60px;
             height: 100vh;
-            background: linear-gradient(0deg, rgb(142, 3, 255), rgb(2, 184, 230));
+            background: linear-gradient(0deg, rgb(3, 255, 79), rgb(2, 203, 230));
             color: white;
             z-index: 10;
             display: flex;
@@ -79,7 +94,7 @@
 
         .fs-sidebar-item:hover {
             background-color: #44444463;
-            
+
         }
 
         .fs-sidebar:hover .fs-sidebar-item-text {
@@ -161,25 +176,41 @@
             from {
                 box-shadow: 0 2px 5px red;
             }
+
             16.66% {
                 box-shadow: 0 2px 5px orange;
             }
+
             33.33% {
                 box-shadow: 0 2px 5px yellow;
             }
+
             50% {
                 box-shadow: 0 2px 5px green;
             }
+
             66.66% {
                 box-shadow: 0 2px 5px blue;
             }
+
             83.33% {
                 box-shadow: 0 2px 5px indigo;
             }
+
             to {
                 box-shadow: 0 2px 5px red;
             }
-            
+
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .game-card-container {
@@ -196,13 +227,103 @@
             font-weight: bold;
         }
 
+        .basic-loader {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            border-top: 5px solid rgb(255, 255, 255);
+            border-right: 5px solid rgb(0, 0, 0);
+            border-bottom: 5px solid rgb(255, 255, 255);
+            border-left: 5px solid black;
+        }
+
+        /* From Uiverse.io by JkHuger */
+        @keyframes loader_5191 {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .square {
+            background: #ddd;
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -5px;
+            margin-left: -5px;
+        }
+
+        .square.sq1 {
+            margin-top: -25px;
+            margin-left: -25px;
+            animation: loader_5191 675ms ease-in-out 0s infinite alternate;
+        }
+
+        .square.sq2 {
+            margin-top: -25px;
+            animation: loader_5191 675ms ease-in-out 75ms infinite alternate;
+        }
+
+        .square.sq3 {
+            margin-top: -25px;
+            margin-left: 15px;
+            animation: loader_5191 675ms ease-in-out 150ms infinite;
+        }
+
+        .square.sq4 {
+            margin-left: -25px;
+            animation: loader_5191 675ms ease-in-out 225ms infinite;
+        }
+
+        .square.sq5 {
+            animation: loader_5191 675ms ease-in-out 300ms infinite;
+        }
+
+        .square.sq6 {
+            margin-left: 15px;
+            animation: loader_5191 675ms ease-in-out 375ms infinite;
+        }
+
+        .square.sq7 {
+            margin-top: 15px;
+            margin-left: -25px;
+            animation: loader_5191 675ms ease-in-out 450ms infinite;
+        }
+
+        .square.sq8 {
+            margin-top: 15px;
+            animation: loader_5191 675ms ease-in-out 525ms infinite;
+        }
+
+        .square.sq9 {
+            margin-top: 15px;
+            margin-left: 15px;
+            animation: loader_5191 675ms ease-in-out 600ms infinite;
+        }
     </style>
 </head>
 
 <body>
     <!-- Games! -->
-    <div id="startup" class="fullscreen">
-        <div class="loader"></div>
+    <div id="startup" class="fullscreen hidden">
+        <div class="load">
+            <div class="square sq1"></div>
+            <div class="square sq2"></div>
+            <div class="square sq3"></div>
+            <div class="square sq4"></div>
+            <div class="square sq5"></div>
+            <div class="square sq6"></div>
+            <div class="square sq7"></div>
+            <div class="square sq8"></div>
+            <div class="square sq9"></div>
+        </div>
     </div>
     <div id="gamesPage" class="fullscreen">
         <aside class="fs-sidebar">
@@ -229,7 +350,8 @@
                 <div class="game-card-container" id="newReleaseCards">
                     <div class="game-card" style="background-image: url('https://picsum.photos/300/200');">
                         <h2 class="game-card-title">Game 1</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis, mauris vel cursus ullamcorper, mauris velit vestibulum velit, in consectetur est velit in orci.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis, mauris vel cursus
+                            ullamcorper, mauris velit vestibulum velit, in consectetur est velit in orci.</p>
                     </div>
                 </div>
             </div>
@@ -257,7 +379,7 @@
                         <select id="selGameAchievementFilter">
                             <option value="achievements">Has Achievements</option>
                             <option value="noAchievements">Has no Achievements</option>
-                            <option value="any">No Filter</option>
+                            <option value="any" selected>No Filter</option>
                         </select>
                     </div>
                     <div class="select">
@@ -270,7 +392,8 @@
                     </div>
                 </div>
                 <!-- Game cards here -->
-                <progress class="progress is-intermediate is-small is-primary" id="browsePageLoader" style="display: none;">50%</progress>
+                <progress class="progress is-intermediate is-small is-primary" id="browsePageLoader"
+                    style="display: none;">50%</progress>
                 <div class="game-card-container" id="browsePageCards">
 
                 </div>
@@ -287,8 +410,11 @@
             </div>
         </div>
     </div>
+    <div id="game" class="fullscreen page">
+        <h1 class="title">Game Title</h1>
+    </div>
     <script>
-        function openPage(id,evt = event) {
+        function openPage(id, evt = event) {
             var tabContents = document.getElementsByClassName('page');
             for (var i = 0; i < tabContents.length; i++) {
                 tabContents[i].style.display = "none";
@@ -320,21 +446,21 @@
             if (isMobile) alert("The games page has not been designed to be used on a mobile device.\nYou may continue using the gamebrowser, but you\nmay experience screen issues.");
             // Retrieve games from games.json
             fetch('json/games.json')
-               .then(response => response.json())
-               .then(data => {
+                .then(response => response.json())
+                .then(data => {
                     // Display games in the New Releases page
                     const newReleasesPage = document.getElementById('newReleaseCards');
                     const browsePageCards = document.getElementById('browsePageCards');
                     data.forEach(game => {
                         const gameCard = document.createElement('div');
                         gameCard.className = 'game-card';
-                        gameCard.style.backgroundImage = `url('${game.banner=="none"?"/assets/background/game_placeholder.png":game.banner}')`;
+                        gameCard.style.backgroundImage = `url('${game.banner == "none" ? "/assets/background/game_placeholder.png" : game.banner}')`;
                         gameCard.innerHTML = `
                             <h2 class="game-card-title">${game.name}</h2>
                             <p>${game.description}</p>
                         `;
                         // If the game was realeased within the past month, display on the new release page
-                        if (isDateWithinPastMonth(game.date))  newReleasesPage.appendChild(gameCard);
+                        if (isDateWithinPastMonth(game.date)) newReleasesPage.appendChild(gameCard);
                         // Display the game on the browse page
                         browsePageCards.appendChild(gameCard);
                         const searchQueryCallback = () => {
@@ -345,9 +471,9 @@
                             const sortFilter = document.getElementById('selGameSort').value;
                             const filteredGames = data.filter(game => {
                                 if (game.name.toLowerCase().includes(searchQuery)) {
-                                    if (genreFilter!== 'all' && game.genre.toLowerCase()!== genreFilter) return false;
-                                    if (achievementFilter === 'achievements' && game.achievements === 0) return false;
-                                    if (achievementFilter === 'noAchievements' && game.achievements > 0) return false;
+                                    if (genreFilter !== 'all' && game.genre.toLowerCase() !== genreFilter) return false;
+                                    if (achievementFilter === 'achievements' && game.achievements.length > 0) return false;
+                                    if (achievementFilter === 'noAchievements' && game.achievements.length === 0) return false;
                                     return true;
                                 } else return false;
                             });
@@ -369,7 +495,7 @@
                             filteredGames.forEach(game => {
                                 const gameCard = document.createElement('div');
                                 gameCard.className = 'game-card';
-                                gameCard.style.backgroundImage = `url('${game.banner=="none"?"/assets/background/game_placeholder.png":game.banner}')`;
+                                gameCard.style.backgroundImage = `url('${game.banner == "none" ? "/assets/background/game_placeholder.png" : game.banner}')`;
                                 gameCard.innerHTML = `
                                     <h2 class="game-card-title">${game.name}</h2>
                                     <p>${game.description}</p>
@@ -382,9 +508,10 @@
                         document.getElementById('selGameGenre').addEventListener('change', searchQueryCallback);
                         document.getElementById('selGameAchievementFilter').addEventListener('change', searchQueryCallback);
                         document.getElementById('selGameSort').addEventListener('change', searchQueryCallback);
+                        document.getElementById('startup').classList.add('hidden');
                     });
                 })
-               .catch(error => console.error('Error:', error));
+                .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
