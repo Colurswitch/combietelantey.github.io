@@ -406,7 +406,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-image: url("https://picsum.photos/300");
+            background-image: url("/assets/background/game_placeholder.png");
             box-shadow: 0 -20px 10px -5px rgb(36, 36, 36) inset;
 
         }
@@ -598,6 +598,17 @@
 
                 </div>
             </div>
+            <div class="page" id="savedGamesPage" style="display: none;">
+                <h1 class="title">Saved Games</h1>
+                <!-- Game cards here -->
+                <div class="game-card-container" id="savedGamesCards">
+                    <div class="game-card" style="background-image: url('https://picsum.photos/300/200');">
+                        <h2 class="game-card-title">Game 1</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis, mauris vel cursus
+                            ullamcorper, mauris velit vestibulum velit, in consectetur est velit in orci.</p>
+                    </div>
+                </div>
+            </div>
             <div class="page" id="history" style="display: none;">
                 <h1 class="title">History</h1>
                 <!-- Game history here -->
@@ -617,10 +628,10 @@
                 <i class="material-icons">close</i>
             </span>
         </button>
-        <div class="game-page-banner"></div>
+        <div class="game-page-banner" id="currentGameBanner"></div>
         <div class="game-page-icon">
             <!-- Game icon here -->
-            <img src="https://picsum.photos/200" alt="Game Icon" />
+            <img src="/assets/background/game_icon_placeholder.png" alt="Game Icon" id="currentGameIcon" />
         </div>
         <div class="game-page-bottom">
             <!-- Game controls and information here -->
@@ -643,23 +654,23 @@
                 <a href="#" class="material-icons">hiking</a>
             </span>
             <p class="buttons">
-                <button class="button is-success">
+                <a class="button is-success" id="currentGamePlay" href="#">
                     <span class="icon">
                         <i class="material-icons">play_arrow</i>
                     </span>
                     <span>
                         Play
                     </span>
-                </button>
-                <button class="button is-dark">
+                </a>
+                <a class="button is-dark" id="currentGameDownload">
                     <span class="icon">
                         <i class="material-icons">file_download</i>
                     </span>
                     <span>
                         Download
                     </span>
-                </button>
-                <button class="button is-dark">
+                </a>
+                <button class="button is-dark" id="btnCurrentGameSave">
                     <span class="icon">
                         <i class="material-icons">bookmark</i>
                     </span>
@@ -745,6 +756,27 @@
             return inputDate >= oneMonthAgo && inputDate <= today;
         }
 
+        function isGameSaved(game_id) {
+            // Check if the game is saved in local storage
+            const savedGames = JSON.parse(localStorage.getItem("saved_games"));
+            return savedGames && savedGames.includes(game_id);
+        }
+
+        function toggleSavedGame(game_id) {
+            // Toggle saved status in local storage
+            const savedGames = JSON.parse(localStorage.getItem("saved_games"));
+            if (savedGames) {
+                if (savedGames.includes(game_id)) {
+                    savedGames.splice(savedGames.indexOf(game_id), 1);
+                } else {
+                    savedGames.push(game_id);
+                }
+                localStorage.setItem("saved_games", JSON.stringify(savedGames));
+            } else {
+                localStorage.setItem("saved_games", JSON.stringify([game_id]));
+            }
+        }
+
         function loadSingleGame(game_id) {
             // Fetch games and genre data from json/games.json, and json/genres.json
             // Display game details in the Game page
@@ -760,10 +792,11 @@
                     fetch('json/genres.json')
                         .then(response => response.json())
                         .then(genres => {
-                            var gameGenres = genres.filter(g => game.genres.contains(g.name));
+                            var gameGenres = genres.filter(g => game.genres.includes(g.name));
                             gameGenres.forEach(genre => {
                                 const newGenreLink = document.createElement("a");
                                 newGenreLink.href = "#";
+                                newGenreLink.title = genre.name;
                                 newGenreLink.classList.add("material-icons");
                                 newGenreLink.textContent = genre.icon;
                                 document.getElementById('currentGameGenres').appendChild(newGenreLink);
@@ -771,11 +804,101 @@
                             // Fill in rest of game details
                             document.getElementById('currentGameDescription').innerHTML = game.description;
                             document.getElementById('gamePageLoader').style.display = "none";
+                            if (game.banner != "none") document.getElementById('currentGameBanner').style.backgroundImage = "url(" + game.banner + ")";
+                            if (game.photo != "none") document.getElementById('currentGameIcon').src = game.photo;
+                            document.getElementById('currentGamePlay').href = "/game?id=" + game.id;
+                            if (game.download == none) document.getElementById('currentGameDownload').disabled = true;
+                            else {
+                                document.getElementById('currentGameDownload').href = game.download;
+                                document.getElementById('currentGameDownload').disabled = false;
+                            }
+                            document.getElementById('btnCurrentGameSave').innerHTML = isGameSaved(game.id) ? `
+                                <span class="icon">
+                                    <i class="material-icons">bookmark</i>
+                                </span>
+                                <span>
+                                    Saved
+                                </span>
+                            ` : `
+                                <span class="icon">
+                                    <i class="material-icons">bookmark_border</i>
+                                </span>
+                                <span>
+                                    Save
+                                </span>
+                            `;
+                            document.getElementById('btnCurrentGameSave').onclick = () => {
+                                toggleSavedGame(game.id);
+                                loadSingleGame(game.id);
+                            }
+
                         })
                         .catch(error => console.error('Error:', error));
                 })
                 .catch(error => console.error('Error:', error));
             document.getElementById('gamePageLoader').style.display = "none";
+        }
+
+        function loadSavedGames() {
+            // Fetch saved games from local storage
+            if (localStorage.getItem("savedGames") == null) localStorage.setItem("savedGames", JSON.stringify([]));
+            const savedGames = JSON.parse(localStorage.getItem("saved_games"));
+            const savedGamesCards = document.getElementById("savedGamesCards");
+            savedGamesCards.innerHTML = "";
+            fetch('json/games.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Display saved games in the Saved Games page
+                    savedGames.forEach(game_id => {
+                        const game = data.find(g => g.id === game_id);
+                        const gameCard = document.createElement('div');
+                        gameCard.className = 'game-card';
+                        gameCard.style.backgroundImage = `url('${game.banner == "none" ? "/assets/background/game_placeholder.png" : game.banner}')`;
+                        gameCard.innerHTML = `
+                            <h2 class="game-card-title">${game.name}</h2>
+                            <p>${game.description}</p>
+                        `;
+                        gameCard.onclick = () => { loadSingleGame(game.id); };
+                        savedGamesCards.appendChild(gameCard);
+                    })
+                    if (savedGames.length == 0) savedGamesCards.innerText = "You have not saved any games";
+                })
+                .catch(error => console.log(error));
+        }
+
+        function loadHistory() {
+            if (localStorage.getItem("history") == null) localStorage.setItem("history", JSON.stringify([]));
+            const history = JSON.parse(localStorage.getItem("history"));
+            const historyCards = document.getElementById("gameHistoryCards");
+            historyCards.innerHTML = "";
+            fetch('json/games.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Display game history in the History page
+                    // history is a list of: {game_id, date}
+                    history.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date in descending order
+                    history.forEach(entry => {
+                        const game = data.find(g => g.id === entry.game_id);
+                        const gameCard = document.createElement('div');
+                        gameCard.className = 'game-card';
+                        gameCard.style.backgroundImage = `url('${game.banner == "none" ? "/assets/background/game_placeholder.png" : game.banner}')`;
+                        gameCard.innerHTML = `
+                            <h2 class="game-card-title">${game.name}</h2>
+                            <p>${game.description}</p>
+                        `;
+                        gameCard.onclick = () => { loadSingleGame(game.id); };
+                        historyCards.appendChild(gameCard);
+                    })
+                    if (history.length == 0) historyCards.innerText = "You have not played any games";
+                })
+                .catch(error => console.log(error));
+        }
+
+        function appendToHistory(game_id) {
+            // Add game to history in local storage
+            const history = JSON.parse(localStorage.getItem("history"));
+            history.unshift({ game_id: game_id, date: new Date().toISOString() });
+            localStorage.setItem("history", JSON.stringify(history));
         }
 
         window.onload = () => {
@@ -797,7 +920,7 @@
                             <h2 class="game-card-title">${game.name}</h2>
                             <p>${game.description}</p>
                         `;
-                        gameCard.onclick = () => {loadSingleGame(game.id);};
+                        gameCard.onclick = () => { loadSingleGame(game.id); };
                         // If the game was released within the past month, display on the new release page
                         if (isDateWithinPastMonth(game.date)) newReleasesPage.appendChild(gameCard);
                         // Display the game on the browse page
@@ -839,7 +962,7 @@
                                     <h2 class="game-card-title">${game.name}</h2>
                                     <p>${game.description}</p>
                                 `;
-                                gameCard.onclick = () => {loadSingleGame(game.id);};
+                                gameCard.onclick = () => { loadSingleGame(game.id); };
                                 browsePageCards.appendChild(gameCard);
                             });
                             document.getElementById('browsePageLoader').style.display = 'none';
@@ -849,6 +972,7 @@
                         document.getElementById('selGameAchievementFilter').addEventListener('change', searchQueryCallback);
                         document.getElementById('selGameSort').addEventListener('change', searchQueryCallback);
                         document.getElementById('startup').classList.add('hidden');
+                        loadHistory();
                     });
                 })
                 .catch(error => console.error('Error:', error));
