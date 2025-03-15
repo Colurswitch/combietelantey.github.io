@@ -15,7 +15,8 @@
         .fullscreen {
             width: 100%;
             height: 100vh;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             position: fixed;
         }
 
@@ -38,6 +39,7 @@
             0% {
                 opacity: 1;
             }
+
             100% {
                 opacity: 0;
             }
@@ -263,12 +265,12 @@
         .square.sq1 {
             margin-top: -25px;
             margin-left: -25px;
-            animation: loader_5191 675ms ease-in-out 0s infinite alternate;
+            animation: loader_5191 675ms ease-in-out 0s infinite;
         }
 
         .square.sq2 {
             margin-top: -25px;
-            animation: loader_5191 675ms ease-in-out 75ms infinite alternate;
+            animation: loader_5191 675ms ease-in-out 75ms infinite;
         }
 
         .square.sq3 {
@@ -307,6 +309,223 @@
             margin-left: 15px;
             animation: loader_5191 675ms ease-in-out 600ms infinite;
         }
+
+        .blob-bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            backdrop-filter: hue-rotate(90deg);
+            mask: linear-gradient(45deg, #0000, #000);
+            animation: rotaty 5s linear infinite;
+            transform-origin: center;
+        }
+
+        .blob-bg {
+            background-image: radial-gradient(circle at 50% 50%,
+                    #0000 0,
+                    #0000 2px,
+                    hsl(0 0 4%) 2px);
+            background-size: 8px 8px;
+        }
+
+        @keyframes thingy {
+            0% {
+                filter: var(--f) hue-rotate(0deg);
+            }
+
+            to {
+                filter: var(--f) hue-rotate(1turn);
+            }
+        }
+
+        .blob-bg::before {
+            content: "";
+            position: absolute;
+            inset: -8em;
+            z-index: -1;
+            --f: blur(7em) brightness(5);
+            --c: #09f;
+            animation:
+                blobs-1e28bd3d 150s linear infinite,
+                thingy 5s linear infinite;
+            background-color: #000;
+            background-image: radial-gradient(ellipse 66px 50px at 50% 50%,
+                    #0f0 0%,
+                    transparent 100%),
+                radial-gradient(ellipse 77px 60px at 50% 50%, #0f0 0%, transparent 100%),
+                radial-gradient(ellipse 78px 100px at 50% 50%, #0f0 0%, transparent 100%),
+                radial-gradient(ellipse 73px 96px at 50% 50%, #0f0 0%, transparent 100%),
+                radial-gradient(ellipse 76px 77px at 50% 50%, #0f0 0%, transparent 100%),
+                radial-gradient(ellipse 66px 51px at 50% 50%, #0f0 0%, transparent 100%),
+                radial-gradient(ellipse 90px 57px at 50% 50%, #0f0 0%, transparent 100%),
+                radial-gradient(ellipse 89px 93px at 50% 50%, #0f0 0%, transparent 100%);
+            background-size:
+                726px 576px,
+                1242px 454px,
+                876px 1160px,
+                691px 873px,
+                914px 550px,
+                1159px 340px,
+                1017px 831px,
+                313px 977px;
+        }
+
+        @keyframes blobs-1e28bd3d {
+            0% {
+                background-position:
+                    271px 478px,
+                    62px 291px,
+                    67px 861px,
+                    553px 413px,
+                    36px 392px,
+                    1077px 226px,
+                    400px 799px,
+                    7px 264px;
+            }
+
+            to {
+                background-position:
+                    -14975px -2978px,
+                    31112px 11187px,
+                    -20081px 8981px,
+                    11609px -3952px,
+                    -12760px 12492px,
+                    -9354px 2946px,
+                    9553px 21574px,
+                    946px 9057px;
+            }
+        }
+
+
+        #game {
+            background: rgb(36, 36, 36);
+            color: white;
+            animation: game-page-open 0.7s ease-out;
+            overflow-y: auto;
+        }
+
+        #game.hidden {
+            pointer-events: none;
+            animation: game-page-open 0.7s ease-out reverse;
+            opacity: 0;
+        }
+
+        @keyframes game-page-open {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .game-page-banner {
+            width: 100%;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url("https://picsum.photos/300");
+            box-shadow: 0 -20px 10px -5px rgb(36, 36, 36) inset;
+
+        }
+
+        .game-page-bottom {
+            padding: 0 20px;
+        }
+
+        .game-page-title {
+            font-size: 40px;
+        }
+
+        .game-page-icon {
+            width: 150px;
+            height: 150px;
+            border-radius: 5px;
+            overflow: hidden;
+            position: absolute;
+            right: 20px;
+            top: 300px;
+        }
+
+        .game-page-close {
+            position: fixed;
+            margin: 10px;
+            width: 20px;
+            height: 50px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .game-page-achievements {
+            padding: 20px 0;
+            background: rgb(36, 36, 36);
+            color: white;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .game-page-achievements h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .achievement-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .achievement {
+            display: flex;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 15px;
+            min-height: fit-content;
+            width: 700px;
+            background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+            box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.493);
+        }
+
+        .achievement-info {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-left: 10px;
+        }
+
+        .achievement-info h3 {
+            font-size: 20px;
+            font-weight: bold;
+            color: gray;
+        }
+
+        .game-score {
+            color: orange;
+        }
+
+        .achievement.is-unlocked .achievement-info h3 {
+            color: white;
+        }
+
+        .achievement-photo img {
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100;
+            height: 100;
+        }
+
+        h1 small {
+            font-size: 14px;
+            margin-left: 5px;
+            color: gray;
+        }
     </style>
 </head>
 
@@ -325,7 +544,7 @@
             <div class="square sq9"></div>
         </div>
     </div>
-    <div id="gamesPage" class="fullscreen">
+    <div id="gamesPage" class="fullscreen blob-bg">
         <aside class="fs-sidebar">
             <div class="fs-sidebar-header">
                 <span class="material-icons icon">sports_esports</span>
@@ -337,6 +556,10 @@
             <button class="fs-sidebar-item page-link" onclick="openPage('browseGames',event)">
                 <span class="material-icons icon">search</span>
                 <span class="fs-sidebar-item-text">Browse</span>
+            </button>
+            <button class="fs-sidebar-item page-link" onclick="openPage('savedGamesPage')">
+                <span class="material-icons icon">bookmark</span>
+                <span class="fs-sidebar-item-text">Saved Games</span>
             </button>
             <button class="fs-sidebar-item page-link" onclick="openPage('history',event)">
                 <span class="material-icons icon">history</span>
@@ -411,7 +634,110 @@
         </div>
     </div>
     <div id="game" class="fullscreen page">
-        <h1 class="title">Game Title</h1>
+        <button class="button is-dark game-page-close"
+            onclick="document.getElementById('game').classList.add('hidden')">
+            <span class="icon">
+                <i class="material-icons">close</i>
+            </span>
+        </button>
+        <div class="game-page-banner"></div>
+        <div class="game-page-icon">
+            <!-- Game icon here -->
+            <img src="https://picsum.photos/200" alt="Game Icon" />
+        </div>
+        <div class="game-page-bottom">
+            <!-- Game controls and information here -->
+            <div class="load" id="gamePageLoader">
+                <div class="square sq1"></div>
+                <div class="square sq2"></div>
+                <div class="square sq3"></div>
+                <div class="square sq4"></div>
+                <div class="square sq5"></div>
+                <div class="square sq6"></div>
+                <div class="square sq7"></div>
+                <div class="square sq8"></div>
+                <div class="square sq9"></div>
+             </div>
+            <h1 class="game-page-title" id="currentGameName">
+                Game Name<small>3-12-2025</small>
+            </h1>
+            <span class="icon-text" id="currentGameGenres" style="margin-bottom: 7px;">
+                <a href="#" class="material-icons">extension</a>
+                <a href="#" class="material-icons">hiking</a>
+            </span>
+            <p class="buttons">
+                <button class="button is-success">
+                    <span class="icon">
+                        <i class="material-icons">play_arrow</i>
+                    </span>
+                    <span>
+                        Play
+                    </span>
+                </button>
+                <button class="button is-dark">
+                    <span class="icon">
+                        <i class="material-icons">file_download</i>
+                    </span>
+                    <span>
+                        Download
+                    </span>
+                </button>
+                <button class="button is-dark">
+                    <span class="icon">
+                        <i class="material-icons">bookmark</i>
+                    </span>
+                    <span>
+                        Save
+                    </span>
+                </button>
+            </p>
+            <div class="game-page-description">
+                <!-- Game description here -->
+                <p id="currentGameDescription">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus, accusamus sunt sit exercitationem dolor et totam itaque ea dolorem libero harum, deserunt, quae voluptate maxime veritatis eveniet officiis cumque quam.
+                </p>
+            </div>
+            <div class="game-page-achievements">
+                <!-- Game achievements here -->
+                <h2>Achievements</h2>
+                <div class="achievement-container">
+                    <div class="achievement">
+                        <div class="achievement-photo">
+                            <!-- Achievement photo here -->
+                            <img src="https://picsum.photos/100/100" alt="Achievement Icon" />
+                        </div>
+                        <div class="achievement-info">
+                            <h3>Achievement Name</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <span class="game-score icon-text">
+                                <span class="material-icons">star</span>
+                                32
+                            </span>
+                            <div class="achievement-progress">
+                                <progress class="progress is-small is-success" value="72" max="100"></progress>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="achievement is-unlocked">
+                        <div class="achievement-photo">
+                            <!-- Achievement photo here -->
+                            <img src="https://picsum.photos/100" alt="Achievement Icon" />
+                        </div>
+                        <div class="achievement-info">
+                            <h3>Achievement Name (Unlocked)</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <span class="game-score icon-text">
+                                <span class="material-icons">star</span>
+                                32
+                            </span>
+                            <div class="achievement-progress">
+                                <progress class="progress is-small is-success" value="100" max="100"></progress>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         function openPage(id, evt = event) {
@@ -440,6 +766,39 @@
             return inputDate >= oneMonthAgo && inputDate <= today;
         }
 
+        function loadSingleGame(game_id) {
+            // Fetch games and genre data from json/games.json, and json/genres.json
+            // Display game details in the Game page
+            openPage('game');
+            document.getElementById('gamePageLoader').style.display = "block";
+            fetch('json/games.json')
+               .then(response => response.json())
+               .then(data => {
+                    const game = data.find(g => g.id === game_id);
+                    document.getElementById('currentGameName').innerHTML = game.name+'<small>'+game.date+'</small>';
+                    document.getElementById('currentGameGenres').innerHTML = "";
+                    // Fetch genres from json/genres.json
+                    fetch('json/genres.json')
+                    .then(response => response.json())
+                    .then(genres => {
+                        var gameGenres = genres.filter(g => game.genres.contains(g.name));
+                        gameGenres.forEach(genre => {
+                            const newGenreLink = document.createElement("a");
+                            newGenreLink.href = "#";
+                            newGenreLink.classList.add("material-icons");
+                            newGenreLink.textContent = genre.icon;
+                            document.getElementById('currentGameGenres').appendChild(newGenreLink);
+                        })
+                        // Fill in rest of game details
+                        document.getElementById('currentGameDescription').innerHTML = game.description;
+                        document.getElementById('gamePageLoader').style.display = "none";
+                    })
+                    .catch(error => console.error('Error:', error));
+               })
+               .catch(error => console.error('Error:', error));
+            document.getElementById('gamePageLoader').style.display = "none";
+        }
+
         window.onload = () => {
             // Is the browser running on a mobile device?
             var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -459,6 +818,7 @@
                             <h2 class="game-card-title">${game.name}</h2>
                             <p>${game.description}</p>
                         `;
+                        gameCard.onclick = () => loadSingleGame(game.id);
                         // If the game was realeased within the past month, display on the new release page
                         if (isDateWithinPastMonth(game.date)) newReleasesPage.appendChild(gameCard);
                         // Display the game on the browse page

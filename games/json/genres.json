@@ -2,16 +2,25 @@
     {
         "name": "Adventure",
         "description": "Adventure games",
-        "banner": "url"
+        "banner": "url",
+        "icon": "hiking"
     },
     {
         "name": "Strategy",
         "description": "Strategy games",
-        "banner": "url"
+        "banner": "url",
+        "icon": "lightbulb"
     },
     {
         "name": "Puzzle",
         "description": "Puzzle games",
-        "banner": "url"
+        "banner": "url",
+        "icon": "extension"
+    },
+    {
+        "name": "Simulation",
+        "description": "Simulation games",
+        "banner": "url",
+        "icon": "videocam"
     }
 ]
