@@ -806,8 +806,8 @@
                             document.getElementById('gamePageLoader').style.display = "none";
                             if (game.banner != "none") document.getElementById('currentGameBanner').style.backgroundImage = "url(" + game.banner + ")";
                             if (game.photo != "none") document.getElementById('currentGameIcon').src = game.photo;
-                            document.getElementById('currentGamePlay').href = "/game?id=" + game.id;
-                            if (game.download == none) document.getElementById('currentGameDownload').disabled = true;
+                            document.getElementById('currentGamePlay').href = "games/play?id=" + game.id;
+                            if (game.download == "none") document.getElementById('currentGameDownload').disabled = true;
                             else {
                                 document.getElementById('currentGameDownload').href = game.download;
                                 document.getElementById('currentGameDownload').disabled = false;
