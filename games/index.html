@@ -891,7 +891,6 @@
                     })
                     if (history.length == 0) historyCards.innerText = "You have not played any games";
                 })
-                .catch(error => console.log(error));
         }
 
         function appendToHistory(game_id) {
@@ -975,7 +974,6 @@
                         loadHistory();
                     });
                 })
-                .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
