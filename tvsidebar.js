@@ -1,6 +1,6 @@
 const TVSidebar = {
     sidebar: null,
-    init(id, menuData = {}, keyToOpen = "o") {
+    init(id, menuData = {}, isClosed = false, keyToOpen = "o") {
         var sidebar = document.querySelector("#" + id);
         if (menuData.title && menuData.items) {
             sidebar.innerHTML = `<div class="tvs-side-top">
@@ -40,8 +40,8 @@ const TVSidebar = {
             for (var i = 0; i < sidebarItems.length; i++) {
                 if (sidebarItems[i].classList.contains("is-selected")) {
                     console.log(event.key);
-                    switch (event.key) {
-                        case "w":
+                    switch (event.code) {
+                        case "KeyW":
                         case "ArrowUp":
                             if (sidebarItems[i].previousElementSibling != null) {
                                 sidebarItems[i].classList.remove("is-selected");
@@ -53,7 +53,7 @@ const TVSidebar = {
                                 );
                             }
                             break;
-                        case "s":
+                        case "KeyS":
                         case "ArrowDown":
                             if (sidebarItems[i].nextElementSibling != null && ovr == 0) {
                                 sidebarItems[i].classList.remove("is-selected");
@@ -67,7 +67,7 @@ const TVSidebar = {
                         case "Enter":
                             sidebarItems[i].click()
                             break;
-                        case keyToOpen:
+                        case "Backquote":
                             sidebar.classList[
                                 sidebar.classList.contains("is-hidden") ? "remove" : "add"
                             ]("is-hidden");
@@ -79,6 +79,7 @@ const TVSidebar = {
             }
             ovr = 0;
         };
+        if (isClosed) sidebar.classList.add("is-hidden")
     },
     readKey() {
         return new Promise((resolve) => {
