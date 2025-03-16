@@ -129,7 +129,7 @@
 					}
 				}
 			]
-		}, true, "`")
+		}, true, document.getElementById("mainGameFrame"), "`")
 		// Get id url parameter
 		const id = new URLSearchParams(window.location.search).get("id")
         if (!id) alert("No game ID was provided.")
