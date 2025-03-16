@@ -830,6 +830,7 @@
                             document.getElementById('btnCurrentGameSave').onclick = () => {
                                 toggleSavedGame(game.id);
                                 loadSingleGame(game.id);
+                                loadSavedGames();
                             }
 
                         })
@@ -972,6 +973,7 @@
                         document.getElementById('selGameSort').addEventListener('change', searchQueryCallback);
                         document.getElementById('startup').classList.add('hidden');
                         loadHistory();
+                        loadSavedGames();
                     });
                 })
         }

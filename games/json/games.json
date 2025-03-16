@@ -5,7 +5,7 @@
         "genres": [
             "Puzzle"
         ],
-        "photo": "static/2048/favicon.ico",
+        "photo": "static/2048/meta/apple-touch-icon.png",
         "banner": "none",
         "link": "static/2048/index.html",
         "achievements": [

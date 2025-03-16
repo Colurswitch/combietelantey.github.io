@@ -1,0 +1,19 @@
+[
+    {
+        "version": "2.23a",
+        "date": "3-15-2025",
+        "added": [
+            "Saving games to play later",
+            "Changelog"
+        ],
+        "removed": [
+            "None"
+        ],
+        "updated": [
+            "Fixing game loading issues"
+        ],
+        "fixed": [
+            "Downloading games for offline playing"
+        ]
+    }
+]
