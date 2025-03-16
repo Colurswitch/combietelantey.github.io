@@ -493,8 +493,8 @@
         .achievement-photo img, .achievement-photo {
             border-radius: 10px;
             overflow: hidden;
-            width: 100;
-            height: 100;
+            width: 100px;
+            height: 100px;
         }
 
         h1 small {
@@ -507,7 +507,7 @@
 
 <body>
     <!-- Games! -->
-    <div id="startup" class="fullscreen">
+    <div id="startup" class="fullscreen hidden">
         <div class="load">
             <div class="square sq1"></div>
             <div class="square sq2"></div>
@@ -540,6 +540,10 @@
             <button class="fs-sidebar-item page-link" onclick="openPage('history',event)">
                 <span class="material-icons icon">history</span>
                 <span class="fs-sidebar-item-text">History</span>
+            </button>
+            <button class="fs-sidebar-item page-link" onclick="openPage('youPage',event)">
+                <span class="material-icons icon">person</span>
+                <span class="fs-sidebar-item-text">You</span>
             </button>
         </aside>
         <div class="fs-right">
@@ -618,9 +622,12 @@
                     </div>
                 </div>
             </div>
+            <div class="page" id="youPage" style="display: none;">
+                <h1 class="title">Achievements</h1>
+            </div>
         </div>
     </div>
-    <div id="game" class="fullscreen">
+    <div id="game" class="fullscreen hidden">
         <button class="button is-dark game-page-close"
             onclick="document.getElementById('game').classList.add('hidden')">
             <span class="icon">
@@ -742,7 +749,7 @@
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
             document.getElementById(id).style.display = "block";
-            evt.currentTarget.className += " active";
+            if (evt) evt.currentTarget.className += " active";
         }
     </script>
     <script type="module">
@@ -794,7 +801,7 @@
                     fetch('json/genres.json')
                         .then(response => response.json())
                         .then(genres => {
-                            var gameGenres = genres.filter(g => game.genres.includes(g.name));
+                            var gameGenres = genres.filter(g => game.genres.includes(g.title));
                             gameGenres.forEach(genre => {
                                 const newGenreLink = document.createElement("a");
                                 newGenreLink.href = "#";
@@ -957,7 +964,7 @@
                             const sortFilter = document.getElementById('selGameSort').value;
                             const filteredGames = data.filter(game => {
                                 if (game.name.toLowerCase().includes(searchQuery)) {
-                                    if (genreFilter !== 'all' && game.genres.find(gen => gen.toLowerCase() == genreFilter)) return false;
+                                    if (genreFilter !== 'all' && game.genres.find(gen => gen.title.toLowerCase() == genreFilter)) return false;
                                     if (achievementFilter === 'achievements' && game.achievements.length === 0) return false;
                                     if (achievementFilter === 'noAchievements' && game.achievements.length > 0) return false;
                                     return true;

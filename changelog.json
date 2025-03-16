@@ -47,5 +47,21 @@
         "fixed": [
             "None"
         ]
+    },
+    {
+        "version": "2.23a3",
+        "date": "3-16-2025",
+        "added": [
+            "None"
+        ],
+        "removed": [
+            "None"
+        ],
+        "updated": [
+            "None"
+        ],
+        "fixed": [
+            "Game search by genre"
+        ]
     }
 ]
