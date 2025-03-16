@@ -350,7 +350,7 @@
     </div>
     <script type="module">
       import * as sbApp from "./firebase.js";
-      import changelog from "./changelog.json" assert {type: "json"};
+      import changelog from "./changelog.json" with {type: "json"};
       window.onload = () => {
         wapp.setup();
         qod.create("lblQod");

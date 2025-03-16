@@ -174,7 +174,7 @@
         }
 
         @keyframes rainbow-shadow {
-            from {
+            from, to {
                 box-shadow: 0 2px 5px red;
             }
 
@@ -196,10 +196,6 @@
 
             83.33% {
                 box-shadow: 0 2px 5px indigo;
-            }
-
-            to {
-                box-shadow: 0 2px 5px red;
             }
 
         }
@@ -346,7 +342,7 @@
         }
 
         /* Secondary rotating layer for depth */
-        .container::after {
+        .blob-bg::after {
             width: 180%;
             height: 180%;
             animation: rotate-reverse 10s linear infinite;
@@ -508,7 +504,7 @@
 
 <body>
     <!-- Games! -->
-    <div id="startup" class="fullscreen hidden">
+    <div id="startup" class="fullscreen">
         <div class="load">
             <div class="square sq1"></div>
             <div class="square sq2"></div>
