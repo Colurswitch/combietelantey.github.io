@@ -15,6 +15,7 @@
                 "description": "Achieve the 2048 tile, or win the game",
                 "type": "instant",
                 "score": 2048,
+                "rare": false,
                 "checkFunc": "gm.won",
                 "id": "1"
             }

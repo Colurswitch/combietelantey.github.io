@@ -19,28 +19,28 @@ const changelogGen = {
                           <article class="message is-success">
                               <div class="message-body">
                                   <ul>
-                                      ${added.map(add => "<li>"+add+"</li>")}
+                                      ${added.map(add => "<li>"+add+"</li>").join("")}
                                   </ul>
                               </div>
                           </article>
                           <article class="message is-danger">
                               <div class="message-body">
                                   <ul>
-                                      ${removed.map(rem => "<li>"+rem+"</li>")}
+                                      ${removed.map(rem => "<li>"+rem+"</li>").join("")}
                                   </ul>
                               </div>
                           </article>
                           <article class="message is-info">
                               <div class="message-body">
                                   <ul>
-                                      ${updated.map(upd => "<li>"+upd+"</li>")}
+                                      ${updated.map(upd => "<li>"+upd+"</li>").join("")}
                                   </ul>
                               </div>
                           </article>
                           <article class="message is-warning">
                               <div class="message-body">
                                   <ul>
-                                      ${fixed.map(fix => "<li>"+fix+"</li>")}
+                                      ${fixed.map(fix => "<li>"+fix+"</li>").join("")}
                                   </ul>
                               </div>
                           </article>

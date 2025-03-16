@@ -482,6 +482,10 @@
             color: orange;
         }
 
+        .rare {
+            color: dodgerblue;
+        }
+
         .achievement.is-unlocked .achievement-info h3 {
             color: white;
         }
@@ -715,6 +719,9 @@
                                 <span class="material-icons">star</span>
                                 32
                             </span>
+                            <span class="rare">
+                                Rare
+                            </span>
                             <div class="achievement-progress">
                                 <progress class="progress is-small is-success" value="100" max="100"></progress>
                             </div>
@@ -801,7 +808,7 @@
                             document.getElementById('gamePageLoader').style.display = "none";
                             if (game.banner != "none") document.getElementById('currentGameBanner').style.backgroundImage = "url(" + game.banner + ")";
                             if (game.photo != "none") document.getElementById('currentGameIcon').src = game.photo;
-                            document.getElementById('currentGamePlay').href = "games/play?id=" + game.id;
+                            document.getElementById('currentGamePlay').href = "play?id=" + game.id;
                             if (game.download == "none") document.getElementById('currentGameDownload').disabled = true;
                             else {
                                 document.getElementById('currentGameDownload').href = game.download;
@@ -836,6 +843,7 @@
                                                 <span class="material-icons">star</span>
                                                 ${achievement.score}
                                             </span>
+                                            ${achievement.rare?'<span class="rare">Rare</span>':""}
                                             <div class="achievement-progress">
                                                 <progress class="progress is-small is-success" value="100" max="100"></progress>
                                             </div>

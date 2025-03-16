@@ -1,13 +1,7 @@
 const TVSidebar = {
     sidebar: null,
     init(id, menuData = {}, keyToOpen = "o") {
-        var sidebarItems = document.querySelectorAll(
-            `#${id} .tvs-side-bottom .tvs-side-item`
-        );
         var sidebar = document.querySelector("#" + id);
-        this.sidebar = sidebar;
-        var scrollOptions = { behavior: "smooth", block: "center" };
-        var ovr = 0;
         if (menuData.title && menuData.items) {
             sidebar.innerHTML = `<div class="tvs-side-top">
             <h1>${menuData.title}</h1>
@@ -34,6 +28,14 @@ const TVSidebar = {
           });
           sidebar.appendChild(tvsSideBottom);
         }
+        var sidebarItems = document.querySelectorAll(
+            `#${id} .tvs-side-bottom .tvs-side-item`
+        );
+        
+        this.sidebar = sidebar;
+        var scrollOptions = { behavior: "smooth", block: "center" };
+        var ovr = 0;
+        
         window.onkeydown = (event) => {
             for (var i = 0; i < sidebarItems.length; i++) {
                 if (sidebarItems[i].classList.contains("is-selected")) {
