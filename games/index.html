@@ -686,7 +686,7 @@
             <div class="game-page-achievements">
                 <!-- Game achievements here -->
                 <h2>Achievements</h2>
-                <div class="achievement-container">
+                <div class="achievement-container" id="currentGameAchievements">
                     <div class="achievement">
                         <div class="achievement-photo">
                             <!-- Achievement photo here -->
@@ -823,6 +823,27 @@
                                     Save
                                 </span>
                             `;
+                            document.getElementById("currentGameAchievements").innerHTML = game.achievements.map(achievement => {
+                                return `
+                                    <div class="achievement">
+                                        <div class="achievement-photo">
+                                            <!-- Achievement photo here -->
+                                            <img src="${achievement.photo != "none" ? achievement.photo : "/assets/background/achievement_icon_placeholder.png"}" alt="Achievement Icon" />
+                                        </div>
+                                        <div class="achievement-info">
+                                            <h3>${achievement.title}</h3>
+                                            <p>${achievement.description}</p>
+                                            <span class="game-score icon-text">
+                                                <span class="material-icons">star</span>
+                                                ${achievement.score}
+                                            </span>
+                                            <div class="achievement-progress">
+                                                <progress class="progress is-small is-success" value="100" max="100"></progress>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')
                             document.getElementById('btnCurrentGameSave').onclick = () => {
                                 toggleSavedGame(game.id);
                                 loadSingleGame(game.id);

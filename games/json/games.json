@@ -12,10 +12,10 @@
             {
                 "title": "2048",
                 "photo": "none",
-                "description": "Achieve the 2048 tile",
+                "description": "Achieve the 2048 tile, or win the game",
                 "type": "instant",
                 "score": 2048,
-                "code": "//js code",
+                "checkFunc": "gm.won",
                 "id": "1"
             }
         ],
