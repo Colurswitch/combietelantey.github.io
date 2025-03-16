@@ -17,10 +17,26 @@
         ]
     },
     {
-        "version": "2.24a",
+        "version": "2.23a1",
         "date": "3-15-2025",
         "added": [
             "Loading achievements"
+        ],
+        "removed": [
+            "None"
+        ],
+        "updated": [
+            "None"
+        ],
+        "fixed": [
+            "None"
+        ]
+    },
+    {
+        "version": "2.23a2",
+        "date": "3-15-2025",
+        "added": [
+            "Added game player"
         ],
         "removed": [
             "None"
