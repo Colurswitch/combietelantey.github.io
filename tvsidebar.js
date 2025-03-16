@@ -35,7 +35,10 @@ const TVSidebar = {
         this.sidebar = sidebar;
         var scrollOptions = { behavior: "smooth", block: "center" };
         var ovr = 0;
-        frame.contentWindow.onkeydown = (event) => {window.onkeydown(event)}
+        frame.contentWindow.onkeydown = (event) => {
+            window.onkeydown(event);
+            if (!sidebar.classList.contains("is-hidden")) return;
+        }
         window.onkeydown = (event) => {
             for (var i = 0; i < sidebarItems.length; i++) {
                 if (sidebarItems[i].classList.contains("is-selected")) {
@@ -68,9 +71,7 @@ const TVSidebar = {
                             sidebarItems[i].click()
                             break;
                         case "Backquote":
-                            sidebar.classList[
-                                sidebar.classList.contains("is-hidden") ? "remove" : "add"
-                            ]("is-hidden");
+                            sidebar.classList.toggle("is-hidden");
                     }
                 }
             }

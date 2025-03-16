@@ -24,18 +24,14 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(100% - 400px);
+  width: 100vw;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: -10;
 }
 
 .tvs-side.is-left {
   right: auto;
   left: 0;
-}
-
-.tvs-side.is-left::before {
-  left: auto;
-  right: 0;
 }
 
 .tvs-side.is-hidden {
