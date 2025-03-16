@@ -1,6 +1,6 @@
 const TVSidebar = {
     sidebar: null,
-    init(id, menuData = {}, isClosed = false, keyToOpen = "o") {
+    init(id, menuData = {}, isClosed = false, frame, keyToOpen = "o") {
         var sidebar = document.querySelector("#" + id);
         if (menuData.title && menuData.items) {
             sidebar.innerHTML = `<div class="tvs-side-top">
@@ -35,7 +35,7 @@ const TVSidebar = {
         this.sidebar = sidebar;
         var scrollOptions = { behavior: "smooth", block: "center" };
         var ovr = 0;
-        
+        frame.contentWindow.onkeydown = (event) => {window.onkeydown(event)}
         window.onkeydown = (event) => {
             for (var i = 0; i < sidebarItems.length; i++) {
                 if (sidebarItems[i].classList.contains("is-selected")) {
