@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <!--Firebase-->
     <script src="/firebase.js" type="module" defer></script>
-    <link rel="stylesheet" href="/tvsidebar.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         .fullscreen {
@@ -487,7 +486,7 @@
             color: white;
         }
 
-        .achievement-photo img {
+        .achievement-photo img, .achievement-photo {
             border-radius: 10px;
             overflow: hidden;
             width: 100;
@@ -950,9 +949,9 @@
                             const sortFilter = document.getElementById('selGameSort').value;
                             const filteredGames = data.filter(game => {
                                 if (game.name.toLowerCase().includes(searchQuery)) {
-                                    if (genreFilter !== 'all' && game.genre.toLowerCase() !== genreFilter) return false;
-                                    if (achievementFilter === 'achievements' && game.achievements.length > 0) return false;
-                                    if (achievementFilter === 'noAchievements' && game.achievements.length === 0) return false;
+                                    if (genreFilter !== 'all' && game.genres.find(gen => gen.toLowerCase() == genreFilter)) return false;
+                                    if (achievementFilter === 'achievements' && game.achievements.length === 0) return false;
+                                    if (achievementFilter === 'noAchievements' && game.achievements.length > 0) return false;
                                     return true;
                                 } else return false;
                             });

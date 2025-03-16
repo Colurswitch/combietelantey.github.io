@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Play</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--Bulma CSS-->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+		<link rel="stylesheet" href="/tvsidebar.css" />
+		<script src="/tvsidebar.js"></script>
+		<!--Firebase-->
+		<script src="/firebase.js" type="module" defer></script>
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet" />
+		<style>
+      /* From Uiverse.io by JkHuger */
+      @keyframes loader_5191 {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      .square {
+        background: #ddd;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -5px;
+        margin-left: -5px;
+      }
+
+      .square.sq1 {
+        margin-top: -25px;
+        margin-left: -25px;
+        animation: loader_5191 675ms ease-in-out 0s infinite;
+      }
+
+      .square.sq2 {
+        margin-top: -25px;
+        animation: loader_5191 675ms ease-in-out 75ms infinite;
+      }
+
+      .square.sq3 {
+        margin-top: -25px;
+        margin-left: 15px;
+        animation: loader_5191 675ms ease-in-out 150ms infinite;
+      }
+
+      .square.sq4 {
+        margin-left: -25px;
+        animation: loader_5191 675ms ease-in-out 225ms infinite;
+      }
+
+      .square.sq5 {
+        animation: loader_5191 675ms ease-in-out 300ms infinite;
+      }
+
+      .square.sq6 {
+        margin-left: 15px;
+        animation: loader_5191 675ms ease-in-out 375ms infinite;
+      }
+
+      .square.sq7 {
+        margin-top: 15px;
+        margin-left: -25px;
+        animation: loader_5191 675ms ease-in-out 450ms infinite;
+      }
+
+      .square.sq8 {
+        margin-top: 15px;
+        animation: loader_5191 675ms ease-in-out 525ms infinite;
+      }
+
+      .square.sq9 {
+        margin-top: 15px;
+        margin-left: 15px;
+        animation: loader_5191 675ms ease-in-out 600ms infinite;
+      }
+    </style>
+	</head>
+	<body>
+		<div class="tvs-back">
+			<div class="container">
+				<div class="columns">
+					<div class="column is-one-third">
+						<div class="box">
+							<p class="title">TV Shows</p>
+							<div id="tv-list"></div>
+						</div>
+					</div>
+					<div class="column">
+						<div class="box">
+							<p class="title">Current Episode</p>
+							<div id="current-episode"></div>
+						</div>
+					</div>
+					<div class="column">
+						<div class="box">
+							<p class="title">Next Episode</p>
+							<div id="next-episode"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tvs-side" id="mainSide"></div>
+		<script>
+			// Use TVSidebar to instantiate a sidebar
+			TVSidebar.init(document.getElementById("mainSide"), {
+				title: "Main Menu",
+				items: [
+					{
+						title: "Exit",
+						icon: "exit_to_app",
+						description: "Close the game",
+                        callback() {
+                            if (confirm("Are you sure you want to close tha game?")) history.back()
+                        }
+					}
+				]
+			}, "`")
+		</script>
+	</body>
+</html>
