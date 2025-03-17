@@ -115,6 +115,11 @@
 			achievements.push({aid: achievement_id, gid: game_id, earned: new Date()});
 			localStorage.setItem("earnedAchievements", JSON.stringify(achievements));
 		}
+
+		function isAchieved(game_id, achievement_id) {
+			const achievements = JSON.parse(localStorage.getItem("earnedAchievements") || "[]");
+            return achievements.some(a => a.aid === achievement_id && a.gid === game_id);
+		}
 		
 		// Use TVSidebar to instantiate a sidebar
 		TVSidebar.init("mainSide", {
@@ -151,7 +156,7 @@
 				game.achievements.forEach(achievement => {
 					var chk = mainGameFrame.contentWindow.eval(achievement.checkFunc); // Is the property true?
 					console.log(chk);
-					if (chk === true || chk === achievement.target) {
+					if ((chk === true || chk === achievement.target) && !isAchieved(id, achievement.id)) {
                         unlockAchievement(id, achievement.id)
 						new UIAchievement({
 							title: achievement.title,
