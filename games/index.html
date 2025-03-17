@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <!--Firebase-->
     <script src="/firebase.js" type="module" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.7.1/countUp.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         .fullscreen {
@@ -493,8 +494,7 @@
         .achievement-photo img, .achievement-photo {
             border-radius: 10px;
             overflow: hidden;
-            width: 100px;
-            height: 100px;
+            width: 100px !important;
         }
 
         h1 small {
@@ -549,14 +549,15 @@
         <div class="fs-right">
             <div class="page" id="newReleases">
                 <h1 class="title">New Releases</h1>
-                <!-- Game cards here -->
+                <!-- Game cards here --
                 <div class="game-card-container" id="newReleaseCards">
                     <div class="game-card" style="background-image: url('https://picsum.photos/300/200');">
                         <h2 class="game-card-title">Game 1</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis, mauris vel cursus
                             ullamcorper, mauris velit vestibulum velit, in consectetur est velit in orci.</p>
                     </div>
-                </div>
+                </div>-->
+                No new releases
             </div>
             <div class="page" id="browseGames" style="display: none;">
                 <h1 class="title">Browse Games</h1>
@@ -623,7 +624,15 @@
                 </div>
             </div>
             <div class="page" id="youPage" style="display: none;">
+                
                 <h1 class="title">Achievements</h1>
+                <span class="game-score icon-text">
+                    <span class="material-icons">star</span>
+                    <span id="totalGameScore">0</span>
+                </span>
+                <div id="earnedAchievementsContainer">
+
+                </div>
             </div>
         </div>
     </div>
@@ -754,6 +763,7 @@
     </script>
     <script type="module">
         import * as sbApp from '/firebase.js';
+        import gamesJson from '/games/json/games.json' with {type: "json"};
 
         function isDateWithinPastMonth(date) {
             const inputDate = new Date(date);
@@ -932,6 +942,16 @@
             localStorage.setItem("history", JSON.stringify(history));
         }
 
+        function countAchievements(num) {
+            // Count up to num
+            var interval = setInterval(() => {
+                document.getElementById('totalGameScore').textContent = parseInt(document.getElementById('totalGameScore').textContent) + 1;
+                if (parseInt(document.getElementById('totalGameScore').textContent) >= num) {
+                    clearInterval(interval);
+                }
+            }, 10);
+        }
+
         window.onload = () => {
             // Is the browser running on a mobile device?
             var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -1005,6 +1025,14 @@
                         document.getElementById('startup').classList.add('hidden');
                         loadHistory();
                         loadSavedGames();
+                        var earnedAchievements = JSON.parse(localStorage.getItem('earnedAchievements') || "[]");
+                        // earnedAchievements is: {aid, gid, date}[]
+                        earnedAchievements.forEach(achievement => {
+                            const achievementElement = document.getElementById(`achievement-${achievement.aid}`);
+                            if (achievementElement) {
+                                achievementElement.classList.add('earned');
+                            }
+                        });
                     });
                 })
         }
