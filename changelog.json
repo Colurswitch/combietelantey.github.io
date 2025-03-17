@@ -63,5 +63,21 @@
         "fixed": [
             "Game search by genre"
         ]
+    },
+    {
+        "version": "2.23a4",
+        "date": "3-17-2025",
+        "added": [
+            "Documentation for games"
+        ],
+        "removed": [
+            "None"
+        ],
+        "updated": [
+            "None"
+        ],
+        "fixed": [
+            "Game achievement check"
+        ]
     }
 ]

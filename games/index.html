@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Games</title>
-    <!--Bulma CSS-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
-    <!--Firebase-->
-    <script src="/firebase.js" type="module" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.7.1/countUp.min.js"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Games</title>
+        <!--Bulma CSS-->
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+        <!--Firebase-->
+        <script src="/firebase.js" type="module" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.7.1/countUp.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet">
+        <style>
         .fullscreen {
             width: 100%;
             height: 100vh;
@@ -497,160 +500,18 @@
             width: 100px !important;
         }
 
-        h1 small {
+        h1 small, h2 small, h3 small, h4 small, h5 small{
             font-size: 14px;
             margin-left: 5px;
             color: gray;
         }
     </style>
-</head>
+    </head>
 
-<body>
-    <!-- Games! -->
-    <div id="startup" class="fullscreen hidden">
-        <div class="load">
-            <div class="square sq1"></div>
-            <div class="square sq2"></div>
-            <div class="square sq3"></div>
-            <div class="square sq4"></div>
-            <div class="square sq5"></div>
-            <div class="square sq6"></div>
-            <div class="square sq7"></div>
-            <div class="square sq8"></div>
-            <div class="square sq9"></div>
-        </div>
-    </div>
-    <div id="gamesPage" class="fullscreen blob-bg">
-        <aside class="fs-sidebar">
-            <div class="fs-sidebar-header">
-                <span class="material-icons icon">sports_esports</span>
-            </div>
-            <button class="fs-sidebar-item active page-link" onclick="openPage('newReleases',event)">
-                <span class="material-icons icon">videogame_asset</span>
-                <span class="fs-sidebar-item-text">New Releases</span>
-            </button>
-            <button class="fs-sidebar-item page-link" onclick="openPage('browseGames',event)">
-                <span class="material-icons icon">search</span>
-                <span class="fs-sidebar-item-text">Browse</span>
-            </button>
-            <button class="fs-sidebar-item page-link" onclick="openPage('savedGamesPage')">
-                <span class="material-icons icon">bookmark</span>
-                <span class="fs-sidebar-item-text">Saved Games</span>
-            </button>
-            <button class="fs-sidebar-item page-link" onclick="openPage('history',event)">
-                <span class="material-icons icon">history</span>
-                <span class="fs-sidebar-item-text">History</span>
-            </button>
-            <button class="fs-sidebar-item page-link" onclick="openPage('youPage',event)">
-                <span class="material-icons icon">person</span>
-                <span class="fs-sidebar-item-text">You</span>
-            </button>
-        </aside>
-        <div class="fs-right">
-            <div class="page" id="newReleases">
-                <h1 class="title">New Releases</h1>
-                <!-- Game cards here --
-                <div class="game-card-container" id="newReleaseCards">
-                    <div class="game-card" style="background-image: url('https://picsum.photos/300/200');">
-                        <h2 class="game-card-title">Game 1</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis, mauris vel cursus
-                            ullamcorper, mauris velit vestibulum velit, in consectetur est velit in orci.</p>
-                    </div>
-                </div>-->
-                No new releases
-            </div>
-            <div class="page" id="browseGames" style="display: none;">
-                <h1 class="title">Browse Games</h1>
-                <!-- Game cards here -->
-                <div class="field">
-                    <p class="control has-icons-left block">
-                        <input class="input" type="text" id="txtGameSearchQuery" placeholder="Search games" />
-                        <span class="icon is-small is-left">
-                            <i class="material-icons">search</i>
-                        </span>
-                    </p>
-                    <div class="select">
-                        <select id="selGameGenre">
-                            <option value="all">All Games</option>
-                            <option value="action">Action Games</option>
-                            <option value="adventure">Adventure Games</option>
-                            <option value="strategy">Strategy Games</option>
-                            <option value="racing">Racing Games</option>
-                            <option value="puzzle">Puzzle Games</option>
-                        </select>
-                    </div>
-                    <div class="select">
-                        <select id="selGameAchievementFilter">
-                            <option value="achievements">Has Achievements</option>
-                            <option value="noAchievements">Has no Achievements</option>
-                            <option value="any" selected>No Filter</option>
-                        </select>
-                    </div>
-                    <div class="select">
-                        <select id="selGameSort">
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                            <option value="a-to-z">Name (A to Z)</option>
-                            <option value="z-to-a">Name (Z to A)</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- Game cards here -->
-                <progress class="progress is-intermediate is-small is-primary" id="browsePageLoader"
-                    style="display: none;">50%</progress>
-                <div class="game-card-container" id="browsePageCards">
-
-                </div>
-            </div>
-            <div class="page" id="savedGamesPage" style="display: none;">
-                <h1 class="title">Saved Games</h1>
-                <!-- Game cards here -->
-                <div class="game-card-container" id="savedGamesCards">
-                    <div class="game-card" style="background-image: url('https://picsum.photos/300/200');">
-                        <h2 class="game-card-title">Game 1</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis, mauris vel cursus
-                            ullamcorper, mauris velit vestibulum velit, in consectetur est velit in orci.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="page" id="history" style="display: none;">
-                <h1 class="title">History</h1>
-                <!-- Game history here -->
-                <div class="game-card-container" id="gameHistoryCards">
-                    <div class="game-card" style="background-image: url('https://picsum.photos/300/200');">
-                        <h2 class="game-card-title">Game 1</h2>
-                        <small>3-12-2025</small>
-                    </div>
-                </div>
-            </div>
-            <div class="page" id="youPage" style="display: none;">
-                
-                <h1 class="title">Achievements</h1>
-                <span class="game-score icon-text">
-                    <span class="material-icons">star</span>
-                    <span id="totalGameScore">0</span>
-                </span>
-                <div id="earnedAchievementsContainer">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="game" class="fullscreen hidden">
-        <button class="button is-dark game-page-close"
-            onclick="document.getElementById('game').classList.add('hidden')">
-            <span class="icon">
-                <i class="material-icons">close</i>
-            </span>
-        </button>
-        <div class="game-page-banner" id="currentGameBanner"></div>
-        <div class="game-page-icon">
-            <!-- Game icon here -->
-            <img src="/assets/background/game_icon_placeholder.png" alt="Game Icon" id="currentGameIcon" />
-        </div>
-        <div class="game-page-bottom">
-            <!-- Game controls and information here -->
-            <div class="load" id="gamePageLoader">
+    <body>
+        <!-- Games! -->
+        <div id="startup" class="fullscreen hidden">
+            <div class="load">
                 <div class="square sq1"></div>
                 <div class="square sq2"></div>
                 <div class="square sq3"></div>
@@ -661,93 +522,265 @@
                 <div class="square sq8"></div>
                 <div class="square sq9"></div>
             </div>
-            <h1 class="game-page-title" id="currentGameName">
-                Game Name<small>3-12-2025</small>
-            </h1>
-            <span class="icon-text" id="currentGameGenres" style="margin-bottom: 7px;">
-                <a href="#" class="material-icons">extension</a>
-                <a href="#" class="material-icons">hiking</a>
-            </span>
-            <p class="buttons">
-                <a class="button is-success" id="currentGamePlay" href="#">
-                    <span class="icon">
-                        <i class="material-icons">play_arrow</i>
-                    </span>
-                    <span>
-                        Play
-                    </span>
-                </a>
-                <a class="button is-dark" id="currentGameDownload">
-                    <span class="icon">
-                        <i class="material-icons">file_download</i>
-                    </span>
-                    <span>
-                        Download
-                    </span>
-                </a>
-                <button class="button is-dark" id="btnCurrentGameSave">
-                    <span class="icon">
-                        <i class="material-icons">bookmark</i>
-                    </span>
-                    <span>
-                        Save
-                    </span>
+        </div>
+        <div id="gamesPage" class="fullscreen blob-bg">
+            <aside class="fs-sidebar">
+                <div class="fs-sidebar-header">
+                    <span class="material-icons icon">sports_esports</span>
+                </div>
+                <button class="fs-sidebar-item active page-link"
+                    onclick="openPage('newReleases',event)">
+                    <span class="material-icons icon">videogame_asset</span>
+                    <span class="fs-sidebar-item-text">New Releases</span>
                 </button>
-            </p>
-            <div class="game-page-description">
-                <!-- Game description here -->
-                <p id="currentGameDescription">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus, accusamus sunt sit exercitationem
-                    dolor et totam itaque ea dolorem libero harum, deserunt, quae voluptate maxime veritatis eveniet
-                    officiis cumque quam.
-                </p>
-            </div>
-            <div class="game-page-achievements">
-                <!-- Game achievements here -->
-                <h2>Achievements</h2>
-                <div class="achievement-container" id="currentGameAchievements">
-                    <div class="achievement">
-                        <div class="achievement-photo">
-                            <!-- Achievement photo here -->
-                            <img src="https://picsum.photos/100/100" alt="Achievement Icon" />
-                        </div>
-                        <div class="achievement-info">
-                            <h3>Achievement Name</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <span class="game-score icon-text">
-                                <span class="material-icons">star</span>
-                                32
+                <button class="fs-sidebar-item page-link"
+                    onclick="openPage('browseGames',event)">
+                    <span class="material-icons icon">search</span>
+                    <span class="fs-sidebar-item-text">Browse</span>
+                </button>
+                <button class="fs-sidebar-item page-link"
+                    onclick="openPage('savedGamesPage')">
+                    <span class="material-icons icon">bookmark</span>
+                    <span class="fs-sidebar-item-text">Saved Games</span>
+                </button>
+                <button class="fs-sidebar-item page-link"
+                    onclick="openPage('history',event)">
+                    <span class="material-icons icon">history</span>
+                    <span class="fs-sidebar-item-text">History</span>
+                </button>
+                <button class="fs-sidebar-item page-link"
+                    onclick="openPage('youPage',event)">
+                    <span class="material-icons icon">person</span>
+                    <span class="fs-sidebar-item-text">You</span>
+                </button>
+            </aside>
+            <div class="fs-right">
+                <div class="page" id="newReleases">
+                    <h1 class="title">New Releases</h1>
+                    <!-- Game cards here --
+                <div class="game-card-container" id="newReleaseCards">
+                    <div class="game-card" style="background-image: url('https://picsum.photos/300/200');">
+                        <h2 class="game-card-title">Game 1</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis, mauris vel cursus
+                            ullamcorper, mauris velit vestibulum velit, in consectetur est velit in orci.</p>
+                    </div>
+                </div>-->
+                    No new releases
+                </div>
+                <div class="page" id="browseGames" style="display: none;">
+                    <h1 class="title">Browse Games</h1>
+                    <!-- Game cards here -->
+                    <div class="field">
+                        <p class="control has-icons-left block">
+                            <input class="input" type="text"
+                                id="txtGameSearchQuery"
+                                placeholder="Search games" />
+                            <span class="icon is-small is-left">
+                                <i class="material-icons">search</i>
                             </span>
-                            <div class="achievement-progress">
-                                <progress class="progress is-small is-success" value="72" max="100"></progress>
-                            </div>
+                        </p>
+                        <div class="select">
+                            <select id="selGameGenre">
+                                <option value="all">All Games</option>
+                                <option value="action">Action Games</option>
+                                <option value="adventure">Adventure
+                                    Games</option>
+                                <option value="strategy">Strategy Games</option>
+                                <option value="racing">Racing Games</option>
+                                <option value="puzzle">Puzzle Games</option>
+                            </select>
+                        </div>
+                        <div class="select">
+                            <select id="selGameAchievementFilter">
+                                <option value="achievements">Has
+                                    Achievements</option>
+                                <option value="noAchievements">Has no
+                                    Achievements</option>
+                                <option value="any" selected>No Filter</option>
+                            </select>
+                        </div>
+                        <div class="select">
+                            <select id="selGameSort">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="a-to-z">Name (A to Z)</option>
+                                <option value="z-to-a">Name (Z to A)</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="achievement is-unlocked">
-                        <div class="achievement-photo">
-                            <!-- Achievement photo here -->
-                            <img src="https://picsum.photos/100" alt="Achievement Icon" />
+                    <!-- Game cards here -->
+                    <progress
+                        class="progress is-intermediate is-small is-primary"
+                        id="browsePageLoader"
+                        style="display: none;">50%</progress>
+                    <div class="game-card-container" id="browsePageCards">
+
+                    </div>
+                </div>
+                <div class="page" id="savedGamesPage" style="display: none;">
+                    <h1 class="title">Saved Games</h1>
+                    <!-- Game cards here -->
+                    <div class="game-card-container" id="savedGamesCards">
+                        <div class="game-card"
+                            style="background-image: url('https://picsum.photos/300/200');">
+                            <h2 class="game-card-title">Game 1</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Sed convallis, mauris vel
+                                cursus
+                                ullamcorper, mauris velit vestibulum velit, in
+                                consectetur est velit in orci.</p>
                         </div>
-                        <div class="achievement-info">
-                            <h3>Achievement Name (Unlocked)</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <span class="game-score icon-text">
-                                <span class="material-icons">star</span>
-                                32
-                            </span>
-                            <span class="rare">
-                                Rare
-                            </span>
-                            <div class="achievement-progress">
-                                <progress class="progress is-small is-success" value="100" max="100"></progress>
+                    </div>
+                </div>
+                <div class="page" id="history" style="display: none;">
+                    <h1 class="title">History</h1>
+                    <!-- Game history here -->
+                    <div class="game-card-container" id="gameHistoryCards">
+                        <div class="game-card"
+                            style="background-image: url('https://picsum.photos/300/200');">
+                            <h2 class="game-card-title">Game 1</h2>
+                            <small>3-12-2025</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" id="youPage" style="display: none;">
+
+                    <h1 class="title">Achievements</h1>
+                    <span class="game-score icon-text">
+                        <span class="material-icons">star</span>
+                        <span id="totalGameScore">0</span>
+                    </span>
+                    <div id="earnedAchievementsContainer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="game" class="fullscreen hidden">
+            <button class="button is-dark game-page-close"
+                onclick="document.getElementById('game').classList.add('hidden')">
+                <span class="icon">
+                    <i class="material-icons">close</i>
+                </span>
+            </button>
+            <div class="game-page-banner" id="currentGameBanner"></div>
+            <div class="game-page-icon">
+                <!-- Game icon here -->
+                <img src="/assets/background/game_icon_placeholder.png"
+                    alt="Game Icon" id="currentGameIcon" />
+            </div>
+            <div class="game-page-bottom">
+                <!-- Game controls and information here -->
+                <div class="load" id="gamePageLoader">
+                    <div class="square sq1"></div>
+                    <div class="square sq2"></div>
+                    <div class="square sq3"></div>
+                    <div class="square sq4"></div>
+                    <div class="square sq5"></div>
+                    <div class="square sq6"></div>
+                    <div class="square sq7"></div>
+                    <div class="square sq8"></div>
+                    <div class="square sq9"></div>
+                </div>
+                <h1 class="game-page-title" id="currentGameName">
+                    Game Name<small>3-12-2025</small>
+                </h1>
+                <span class="icon-text" id="currentGameGenres"
+                    style="margin-bottom: 7px;">
+                    <a href="#" class="material-icons">extension</a>
+                    <a href="#" class="material-icons">hiking</a>
+                </span>
+                <p class="buttons">
+                    <a class="button is-success" id="currentGamePlay" href="#">
+                        <span class="icon">
+                            <i class="material-icons">play_arrow</i>
+                        </span>
+                        <span>
+                            Play
+                        </span>
+                    </a>
+                    <a class="button is-dark" id="currentGameDownload">
+                        <span class="icon">
+                            <i class="material-icons">file_download</i>
+                        </span>
+                        <span>
+                            Download
+                        </span>
+                    </a>
+                    <button class="button is-dark" id="btnCurrentGameSave">
+                        <span class="icon">
+                            <i class="material-icons">bookmark</i>
+                        </span>
+                        <span>
+                            Save
+                        </span>
+                    </button>
+                </p>
+                <div class="game-page-description">
+                    <!-- Game description here -->
+                    <p id="currentGameDescription">
+                        Lorem ipsum, dolor sit amet consectetur adipisicing
+                        elit. Ducimus, accusamus sunt sit exercitationem
+                        dolor et totam itaque ea dolorem libero harum, deserunt,
+                        quae voluptate maxime veritatis eveniet
+                        officiis cumque quam.
+                    </p>
+                </div>
+                <div class="game-page-achievements">
+                    <!-- Game achievements here -->
+                    <h2>Achievements</h2>
+                    <div class="achievement-container"
+                        id="currentGameAchievements">
+                        <div class="achievement">
+                            <div class="achievement-photo">
+                                <!-- Achievement photo here -->
+                                <img src="https://picsum.photos/100/100"
+                                    alt="Achievement Icon" />
+                            </div>
+                            <div class="achievement-info">
+                                <h3>Achievement Name</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit.</p>
+                                <span class="game-score icon-text">
+                                    <span class="material-icons">star</span>
+                                    32
+                                </span>
+                                <div class="achievement-progress">
+                                    <progress
+                                        class="progress is-small is-success"
+                                        value="72" max="100"></progress>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="achievement is-unlocked">
+                            <div class="achievement-photo">
+                                <!-- Achievement photo here -->
+                                <img src="https://picsum.photos/100"
+                                    alt="Achievement Icon" />
+                            </div>
+                            <div class="achievement-info">
+                                <h3>Achievement Name (Unlocked)</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit.</p>
+                                <span class="game-score icon-text">
+                                    <span class="material-icons">star</span>
+                                    32
+                                </span>
+                                <span class="rare">
+                                    Rare
+                                </span>
+                                <div class="achievement-progress">
+                                    <progress
+                                        class="progress is-small is-success"
+                                        value="100" max="100"></progress>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
+        <script>
         function openPage(id, evt = event) {
             var tabContents = document.getElementsByClassName('page');
             for (var i = 0; i < tabContents.length; i++) {
@@ -761,7 +794,7 @@
             if (evt) evt.currentTarget.className += " active";
         }
     </script>
-    <script type="module">
+        <script type="module">
         import * as sbApp from '/firebase.js';
         import gamesJson from '/games/json/games.json' with {type: "json"};
 
@@ -847,6 +880,7 @@
                                 </span>
                             `;
                             document.getElementById("currentGameAchievements").innerHTML = game.achievements.map(achievement => {
+                                var earnedAchievements = JSON.parse(localStorage.getItem('earnedAchievements') || "[]");
                                 return `
                                     <div class="achievement">
                                         <div class="achievement-photo">
@@ -862,7 +896,7 @@
                                             </span>
                                             ${achievement.rare?'<span class="rare">Rare</span>':""}
                                             <div class="achievement-progress">
-                                                <progress class="progress is-small is-success" value="100" max="100"></progress>
+                                                <progress class="progress is-small is-success"${achievement.type === "progress" ? ` value="${earnedAchievements.find(a => a.gid === game.id && a.aid === achievement.id).value}" max="${achievement.target}"` : ` value="${earnedAchievements.find(a => a.gid === game.id && a.aid === achievement.id) !== undefined ? 1 : 0}" max="1"`}></progress>
                                             </div>
                                         </div>
                                     </div>
@@ -1026,17 +1060,39 @@
                         loadHistory();
                         loadSavedGames();
                         var earnedAchievements = JSON.parse(localStorage.getItem('earnedAchievements') || "[]");
+                        var totalGameScore = 0;
                         // earnedAchievements is: {aid, gid, date}[]
-                        earnedAchievements.forEach(achievement => {
-                            const achievementElement = document.getElementById(`achievement-${achievement.aid}`);
-                            if (achievementElement) {
-                                achievementElement.classList.add('earned');
+                        earnedAchievements.forEach(achievementd => {
+                            const earnedAchievement = gamesJson.find(g => g.id === achievementd.gid).achievements.find(a => a.id === achievementd.aid);
+                            if (earnedAchievement) {
+                                const achievement = earnedAchievement
+                                document.getElementById('earnedAchievementsContainer').innerHTML += `
+                                    <div class="achievement">
+                                        <div class="achievement-photo">
+                                            <img src="${achievement.photo != "none" ? achievement.photo : "/assets/background/achievement_icon_placeholder.png"}" alt="Achievement Icon" />
+                                        </div>
+                                        <div class="achievement-info">
+                                            <h3>${achievement.title}<small>${gamesJson.find(g => g.id === achievement.gid).title}</small></h3>
+                                            <p>${achievement.description}</p>
+                                            <span class="game-score icon-text">
+                                                <span class="material-icons">star</span>
+                                                ${achievement.score}
+                                            </span>
+                                            ${achievement.rare?'<span class="rare">Rare</span>':""}
+                                            <div class="achievement-progress">
+                                                <progress class="progress is-small is-success" value="1" max="1"></progress>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                                totalGameScore += achievement.score;
                             }
                         });
+                        countAchievements(totalGameScore)
                     });
                 })
         }
     </script>
-</body>
+    </body>
 
 </html>
