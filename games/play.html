@@ -149,7 +149,8 @@
 			})
 			achievementInterval = setInterval(() => {
 				game.achievements.forEach(achievement => {
-					var chk = mainGameFrame.contentWindow.eval(achievement.checkFunc) // Is the property true?
+					var chk = mainGameFrame.contentWindow.eval(achievement.checkFunc); // Is the property true?
+					console.log(chk);
 					if (chk === true || chk === achievement.target) {
                         unlockAchievement(id, achievement.id)
 						new UIAchievement({
