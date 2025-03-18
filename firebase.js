@@ -750,7 +750,7 @@ const sbApp = {
   async subscribeToMainChat(callback) {
     const channel = await supabase.channel("main-chat");
 
-    channel.on("broadcast", { event: "send" }, callback(payload))
+    channel.on("broadcast", { event: "send" }, payload => callback(payload));
   },
 
   async sendToMainChat(photo_url, username, message) {
