@@ -918,7 +918,7 @@
         function loadSavedGames() {
             // Fetch saved games from local storage
             if (localStorage.getItem("savedGames") == null) localStorage.setItem("savedGames", JSON.stringify([]));
-            const savedGames = JSON.parse(localStorage.getItem("saved_games"));
+            const savedGames = JSON.parse(localStorage.getItem("savedGames"));
             const savedGamesCards = document.getElementById("savedGamesCards");
             savedGamesCards.innerHTML = "";
             fetch('json/games.json')

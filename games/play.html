@@ -158,13 +158,16 @@
 					console.log(chk);
 					if ((chk === true || chk === achievement.target) && !isAchieved(id, achievement.id)) {
                         unlockAchievement(id, achievement.id)
-						new UIAchievement({
+						/*new UIAchievement({
 							title: achievement.title,
                             description: achievement.description,
 							id: achievement.id,
 							isRare: achievement.rare,
 							score: achievement.score,
-						}).pop(); // Show the achievement
+						}).pop(); // Show the achievement*/
+						Toasty.showToast(`${achievement.rare?"Rare ":""}Achievement Unlocked`, achievement.title, `<img src="${achievement.photo === "none" ? "/assets/background/achievement_icon_placeholder.png" : achievement.photo}" width="100" height="100" />`, 6000)
+						// Play a sound effect for the achievement
+						new Audio(achievement.rare ? "/assets/sound/rare_achievement.mp3" : "/assets/sound/achievement.mp3").play();
                     }
 				})
 			},1000)
