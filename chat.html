@@ -97,7 +97,7 @@
                     if (txtMessageText.value.trim() === "") {
                         return;
                     }
-                    sbApp.default.sendToMainChat(txtMessageText.value);
+                    sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, txtMessageText.value);
                     txtMessageText.value = "";
                 })
                 btnMessageSend.classList.remove("is-loading");
