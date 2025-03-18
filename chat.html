@@ -33,7 +33,7 @@
         <!-- More messages will be added here -->
 
     </div>
-    <div class="lower-section">
+    <div class="lower-section" style="width: 100%;">
         <div class="field has-addons" style="width: 100%; padding: 10px;">
             <div class="control">
               <input class="input" type="text" placeholder="Send a message" id="txtMessageText">
@@ -100,6 +100,7 @@
                     sbApp.default.sendToMainChat(txtMessageText.value);
                     txtMessageText.value = "";
                 })
+                btnMessageSend.classList.remove("is-loading");
             })
         }
     </script>
