@@ -23,5 +23,18 @@
         "date": "3-12-2025",
         "download": "static/2048/2048.zip",
         "id": "1"
+    },
+    {
+        "title": "BitLife",
+        "description": "BitLife is a simulation game that allows you to experience the ups and downs of life from birth to death. It is often considered one of the most popular games in the life simulation game genre. Developed by Candywriter, LLC, this game lets you experience the feeling of being reborn again when making choices in life. The casual game is where you can live a life that you create yourself. Every decision leads to a change in your future. Do you want to have a successful career, a happy family, or become rich? It's all in your hands!",
+        "genres": [
+            "Simulation",
+            "Adventure"
+        ],
+        "photo": "static/bitlife/logo.png",
+        "banner": "none",
+        "link": "static/bitlife/index.html",
+        "achievements": [],
+        "date": "3-17-2025"
     }
 ]

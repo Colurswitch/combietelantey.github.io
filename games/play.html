@@ -116,6 +116,13 @@
 			localStorage.setItem("earnedAchievements", JSON.stringify(achievements));
 		}
 
+		function appendToHistory(game_id) {
+            // Add game to history in local storage
+            const history = JSON.parse(localStorage.getItem("history"));
+            history.unshift({ game_id: game_id, date: new Date().toISOString() });
+            localStorage.setItem("history", JSON.stringify(history));
+        }
+
 		function isAchieved(game_id, achievement_id) {
 			const achievements = JSON.parse(localStorage.getItem("earnedAchievements") || "[]");
             return achievements.some(a => a.aid === achievement_id && a.gid === game_id);
@@ -145,6 +152,8 @@
 	    mainGameFrame.src = game.link;
 		window.onload = () => {
 			Toasty.showToast("Game loaded successfully", "")
+			// Set the history in local storage
+			appendToHistory(id)
 			// Set achievements for the game
 			// First, initialize the UIAchievementSystem.
 			new UIAchievementSystem({
