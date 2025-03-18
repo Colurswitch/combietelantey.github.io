@@ -745,6 +745,24 @@ const sbApp = {
         contentType: type
      });
     return { data, url: await supabase.storage.from("clmain").getPublicUrl(data.path).data.publicUrl, error };
+  },
+
+  async subscribeToMainChat(callback) {
+    const channel = await supabase.channel("main-chat");
+
+    channel.on("broadcast", { event: "send" }, callback(payload))
+  },
+
+  async sendToMainChat(photo_url, username, message) {
+    supabase.channel("main-chat").send({
+      type: "broadcast",
+      event: "send",
+      payload: {
+        photo_url: photo_url,
+        username: username,
+        message: message,
+      },
+    })
   }
 };
 

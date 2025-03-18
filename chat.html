@@ -3,9 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Bulma CSS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <title>Chat</title>
+
+    <style>
+        .upper-section {
+            display: flex;
+            align-items: flex-end;
+            overflow-y: auto;
+            padding: 10px;
+            height: calc(100vh - 60px);
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="upper-section" id="messages-container">
+        <!--Messages will be appended here in real time-->
+        <!-- Example: -->
+        <div class="message">
+            <div class="message-header">
+                <p class="message-author">User 1</p>
+                <span class="message-timestamp">11:01 AM</span>
+            </div>
+            <div class="message-body">
+                Hello, how are you?
+            </div>
+        </div>
+        <!-- More messages will be added here -->
+
+    </div>
+    <div class="lower-section">
+        <div class="field has-addons" style="width: 100%; padding: 10px;">
+            <div class="control">
+              <input class="input" type="text" placeholder="Send a message" id="txtMessageText">
+            </div>
+            <div class="control">
+              <button class="button is-info is-loading" id="btnMessageSend" disabled>
+                Send
+              </button>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import * as sbApp from "./firebase.js";
+        window.onload = () => {
+            sbApp.default.subscribeToMainChat((payload) => {
+                const messagesContainer = document.getElementById("messages-container");
+                /*const message = document.createElement("div");
+                message.classList.add("message");
+                const messageHeader = document.createElement("div");
+                messageHeader.classList.add("message-header");
+                const messageAuthor = document.createElement("p");
+                messageAuthor.classList.add("message-author");
+                messageAuthor.textContent = payload.sender;
+                const messageTimestamp = document.createElement("span");
+                messageTimestamp.classList.add("message-timestamp");
+                messageTimestamp.textContent = payload.timestamp;
+                messageHeader.appendChild(messageAuthor);
+                messageHeader.appendChild(messageTimestamp);
+                message.appendChild(messageHeader);
+                const messageBody = document.createElement("div");
+                messageBody.classList.add("message-body");
+                messageBody.textContent = payload.message;
+                message.appendChild(messageBody);
+                messagesContainer.appendChild(message);*/
+                messagesContainer.innerHTML += `
+                    <div class="message">
+                        <div class="message-header">
+                            <p class="message-author">${payload.username}</p>
+                            <span class="message-timestamp">${new Date().toLocaleDateString()}</span>
+                        </div>
+                        <div class="message-body">
+                            ${payload.message}
+                        </div>
+                    </div>
+                `;
+            });
+            const txtMessageText = document.getElementById("txtMessageText");
+            const btnMessageSend = document.getElementById("btnMessageSend");
+            sbApp.default.getCurrentUserRecord().then(res => {
+                if (res.error) {
+                    // User is not signed in
+                    console.error("User not signed in", res.error);
+                    btnMessageSend.textContent = "Not signed in";
+                    btnMessageSend.classList.remove("is-loading")
+                    return;
+                }
+                btnMessageSend.disabled = false;
+                txtMessageText.disabled = false;
+                txtMessageText.placeholder = `Send a message as ${res.data[0].display_name}`;
+                btnMessageSend.addEventListener("click", () => {
+                    if (txtMessageText.value.trim() === "") {
+                        return;
+                    }
+                    sbApp.default.sendToMainChat(txtMessageText.value);
+                    txtMessageText.value = "";
+                })
+            })
+        }
+    </script>
 </body>
 </html>

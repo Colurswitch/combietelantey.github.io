@@ -343,7 +343,18 @@
             url: "/games",
             external: true,
           },
-          { icon: "chat", title: "Chat", url: "/chat", external: false },
+          {
+            icon: "person",
+            title: "Users",
+            url: "/users",
+            external: false,
+          },
+          { 
+            icon: "chat", 
+            title: "Chat", 
+            url: "/chat", 
+            external: false 
+          },
         ]);
       } catch (error) {
         document.getElementById("pages-error").style.display = "block";
