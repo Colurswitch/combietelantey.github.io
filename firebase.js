@@ -760,7 +760,7 @@ const sbApp = {
     });
   },
 
-  async sendToMainChat(photo_url, username, message) {
+  async sendToMainChat(photo_url, username, message, announce) {
     supabase.channel("main-chat").send({
       type: "broadcast",
       event: "send",
@@ -768,6 +768,7 @@ const sbApp = {
         photo_url: photo_url,
         username: username,
         message: message,
+        msgType: announce ? "announcement" : "normal",
       },
     })
   }

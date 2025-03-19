@@ -21,7 +21,7 @@
 <body>
     <div class="upper-section" id="messages-container">
         <!--Messages will be appended here in real time-->
-        <!-- Example: -->
+        <!-- Example: --
         <div class="message">
             <div class="message-header">
                 <p class="message-author">User 1</p>
@@ -30,19 +30,24 @@
             <div class="message-body">
                 Hello, how are you?
             </div>
-        </div>
+        </div>-->
         <!-- More messages will be added here -->
 
     </div>
     <div class="lower-section" style="width: 100%;">
-        <div class="field has-addons" style="width: 100%; padding: 10px;">
-            <div class="control" style="width: 100%;">
-              <input class="input" type="text" style="width: 100%;" placeholder="Send a message" id="txtMessageText">
+        <div class="field is-grouped" style="width: 100%; padding: 10px;">
+            <div class="control is-expanded">
+              <input class="input" type="text" placeholder="Send a message" id="txtMessageText">
             </div>
             <div class="control">
               <button class="button is-info is-loading" id="btnMessageSend" disabled>
                 Send
               </button>
+            </div>
+            <div class="control" style="display: none;">
+                <button class="button is-warning" id="btnAnnounceMessage">
+                    Announce
+                </button>
             </div>
         </div>
     </div>
@@ -69,6 +74,17 @@
                 messageBody.textContent = payload.message;
                 message.appendChild(messageBody);
                 messagesContainer.appendChild(message);*/
+                if (payload.payload.msgType && payload.payload.msgType === "announcement") {
+                    console.log("Announcement received:", payload.payload.message);
+                    // Show an announcement message
+                    messagesContainer.innerHTML += `
+                        <article class="message is-warning">
+                            <div class="message-body">
+                                ${payload.payload.message}
+                            </div>
+                        </article>
+                    `;
+                }
                 messagesContainer.innerHTML += `
                     <div class="message">
                         <div class="message-header">
@@ -84,6 +100,7 @@
             });
             const txtMessageText = document.getElementById("txtMessageText");
             const btnMessageSend = document.getElementById("btnMessageSend");
+            const btnAnnounceMessage = document.getElementById("btnAnnounceMessage");
             sbApp.default.getCurrentUserRecord().then(res => {
                 if (res.error) {
                     // User is not signed in
@@ -103,6 +120,18 @@
                     txtMessageText.value = "";
                 })
                 btnMessageSend.classList.remove("is-loading");
+                window.onkeydown = (evt) => {
+                    if (evt.key === "Enter" &&!evt.shiftKey && btnMessageSend.disabled === false) {
+                        btnMessageSend.click();
+                    }
+                }
+                if (res.data[0].isAdmin) {
+                    btnAnnounceMessage.style.display = "block";
+                    btnAnnounceMessage.parentElement.style.display = "block";
+                    btnAnnounceMessage.addEventListener("click", () => {
+                        sbApp.default.sendToMainChat(null, "Admin", "This is an announcement message.");
+                    });
+                }
             })
         }
     </script>
