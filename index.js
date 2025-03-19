@@ -38,6 +38,23 @@ const wapp = {
         }
     },
     setup: function () {
+        // Initialize toastr.js
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "2000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
         // When key combo is pressed, trigger panic function, based on pressed number key
         /*document.addEventListener('keydown', function(event) {
             const key = event.key;
@@ -50,11 +67,6 @@ const wapp = {
         });*/
         // Initialize error handling
         window.onerror = function(message, url, lineNo, columnNo, error) {
-            console.error('Error: ', message);
-            console.error('URL: ', url);
-            console.error('Line No: ', lineNo);
-            console.error('Column No: ', columnNo);
-            console.error('Error object: ', error);
             // Use toastr.js to display error message
             toastr.error('An error occurred: '+ message + '\n'
                 + 'URL: '+ url + '\n'
@@ -81,25 +93,10 @@ const wapp = {
 
         // Style body::before
         var newStyle = document.getElementById('settingStyle');
-        newStyle.type = 'text/css'; newStyle.innerHTML = "body::before{background:"+appValues.background+"!important;}";
+        //newStyle.type = 'text/css'; newStyle.innerHTML = "body::before{background:"+appValues.background+"!important;}";
+        document.body.style.background = appValues.background;
 
-        // Initialize toastr.js
-        toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": false,
-            "progressBar": true,
-            "positionClass": "toast-bottom-right",
-            "preventDuplicates": false,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "2000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-          }
+        
     },
     save: function() {
         if (wapp.storageAvailable('localStorage')) {

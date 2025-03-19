@@ -35,6 +35,8 @@
         "banner": "none",
         "link": "static/bitlife/index.html",
         "achievements": [],
-        "date": "3-17-2025"
+        "date": "3-17-2025",
+        "download": "static/bitlife/bitlife.zip",
+        "id": "2"
     }
 ]

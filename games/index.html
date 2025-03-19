@@ -955,7 +955,7 @@
                         gameCard.style.backgroundImage = `url('${game.banner == "none" ? "/assets/background/game_placeholder.png" : game.banner}')`;
                         gameCard.innerHTML = `
                             <h2 class="game-card-title">${game.name}</h2>
-                            <p>${game.description}</p>
+                            <p>${game.date}</p>
                         `;
                         gameCard.onclick = () => { loadSingleGame(game.id); };
                         historyCards.appendChild(gameCard);
@@ -998,7 +998,7 @@
                         gameCard.style.backgroundImage = `url('${game.banner == "none" ? "/assets/background/game_placeholder.png" : game.banner}')`;
                         gameCard.innerHTML = `
                             <h2 class="game-card-title">${game.name}</h2>
-                            <p>${game.description}</p>
+                            <p>${game.date}</p>
                         `;
                         gameCard.onclick = () => { loadSingleGame(game.id); };
                         // If the game was released within the past month, display on the new release page
@@ -1040,7 +1040,7 @@
                                 gameCard.style.backgroundImage = `url('${game.banner == "none" ? "/assets/background/game_placeholder.png" : game.banner}')`;
                                 gameCard.innerHTML = `
                                     <h2 class="game-card-title">${game.name}</h2>
-                                    <p>${game.description}</p>
+                                    <p>${game.date}</p>
                                 `;
                                 gameCard.onclick = () => { loadSingleGame(game.id); };
                                 browsePageCards.appendChild(gameCard);
@@ -1060,7 +1060,7 @@
                         earnedAchievements.forEach(achievementd => {
                             const earnedAchievement = gamesJson.find(g => g.id === achievementd.gid).achievements.find(a => a.id === achievementd.aid);
                             if (earnedAchievement) {
-                                const achievement = earnedAchievement
+                                const achievement = earnedAchievement;
                                 document.getElementById('earnedAchievementsContainer').innerHTML += `
                                     <div class="achievement">
                                         <div class="achievement-photo">

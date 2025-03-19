@@ -3,7 +3,7 @@ const tad = {
     createTime: function(id, am_pm) {
         setInterval(() => {
             let time = am_pm ? 
-                (((this.time.getHours())%12)+1) + ":"
+                (((this.time.getHours())%12)==0?1:(this.time.getHours()%12)) + ":"
                 + (this.time.getMinutes()<10?"0"+this.time.getMinutes():this.time.getMinutes()) + ":"
                 + (this.time.getSeconds()<10?"0"+this.time.getSeconds():this.time.getSeconds()) + " "
                 + ((this.time.getHours())>12?"PM":"AM") :
