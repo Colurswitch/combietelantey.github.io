@@ -202,6 +202,9 @@ const sbApp = {
   },
 
   async getCurrentUserRecord() {
+    if ((await this.getCurrentUser()).data.error) {
+      return { data: null, error: "User not signed in" };
+    }
     const { data, error } = await supabase.from("users").select().eq(
       "id",
       (await this.getCurrentUser()).data.user.id
