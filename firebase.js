@@ -204,7 +204,7 @@ const sbApp = {
   async getCurrentUserRecord() {
     // Check if user is signed in before trying to fetch their data.
     const current_user = await this.getCurrentUser();
-    if (!current_user.user) {
+    if (!current_user.data.user) {
       return { data: null, error: "User not signed in" };
     }
     const { data, error } = await supabase.from("users").select().eq(
