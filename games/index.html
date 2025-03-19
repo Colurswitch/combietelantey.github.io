@@ -553,6 +553,11 @@
                     <span class="material-icons icon">person</span>
                     <span class="fs-sidebar-item-text">You</span>
                 </button>
+                <button class="fs-sidebar-item page-link"
+                    onclick="openPage('helpPage',event)">
+                    <span class="material-icons icon">info</span>
+                    <span class="fs-sidebar-item-text">Info</span>
+                </button>
             </aside>
             <div class="fs-right">
                 <div class="page" id="newReleases">
@@ -648,6 +653,12 @@
                     <div id="earnedAchievementsContainer">
 
                     </div>
+                </div>
+                <div class="page" id="helpPage" style="display: none;">
+                    <h1 class="title">Help</h1>
+                    <!-- Help content here -->
+                    <a href="documentation.md">Game Documentation</a><br />
+                    <a href="/">Home</a>
                 </div>
             </div>
         </div>

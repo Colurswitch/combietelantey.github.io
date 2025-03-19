@@ -97,6 +97,14 @@
                     </div>
                 `;
                 console.log(payload);
+            }).catch(err => {
+                messagesContainer.innerHTML += `
+                    <article class="message is-danger">
+                        <div class="message-body">
+                            Connection to the server was lost.
+                        </div>
+                    </article>
+                `;
             });
             const txtMessageText = document.getElementById("txtMessageText");
             const btnMessageSend = document.getElementById("btnMessageSend");
@@ -125,7 +133,7 @@
                         btnMessageSend.click();
                     }
                 }
-                if (res.data[0].isAdmin) {
+                if (res.data[0].is_admin) {
                     btnAnnounceMessage.style.display = "block";
                     btnAnnounceMessage.parentElement.style.display = "block";
                     btnAnnounceMessage.addEventListener("click", () => {
