@@ -201,6 +201,11 @@ const sbApp = {
     return { data: {user} };
   },
 
+  async getCurrentSession() {
+    const { data, error } = await supabase.auth.getSession();
+    return { data, error };
+  },
+
   async getCurrentUserRecord() {
     // Check if user is signed in before trying to fetch their data.
     const current_user = await this.getCurrentUser();
@@ -758,6 +763,47 @@ const sbApp = {
     channel.on("broadcast", { event: "send" }, payload => callback(payload)).subscribe((status) => {
       console.log("Subscribed to main-chat:", status);
     });
+  },
+
+  async subscribeToAuthChannel(photo_url, username, callback = () => {}) {
+    const channel = supabase.channel("main-chat");
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(event, session)
+    
+      if (event === 'INITIAL_SESSION') {
+        // handle initial session
+      } else if (event === 'SIGNED_IN') {
+        // handle sign in event
+        supabase.channel("main-chat").send({
+          type: "broadcast",
+          event: "send",
+          payload: {
+            photo_url: photo_url,
+            username: username,
+            message: username+" is now online.",
+            msgType: "userOnline",
+          },
+        });
+      } else if (event === 'SIGNED_OUT') {
+        // handle sign out event
+        supabase.channel("main-chat").send({
+          type: "broadcast",
+          event: "send",
+          payload: {
+            photo_url: photo_url,
+            username: username,
+            message: username+" is now offline.",
+            msgType: "userOffline",
+          },
+        });
+      } else if (event === 'PASSWORD_RECOVERY') {
+        // handle password recovery event
+      } else if (event === 'TOKEN_REFRESHED') {
+        // handle token refreshed event
+      } else if (event === 'USER_UPDATED') {
+        // handle user updated event
+      }
+    })
   },
 
   async sendToMainChat(photo_url, username, message, announce) {

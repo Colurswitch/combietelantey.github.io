@@ -721,8 +721,8 @@
             // Fetch and display videos from Supabase
             // Supabase client can be retrieved from sbApp.default.supabase
             console.log("Videos:", sbApp.default.fetchVideos());
-            sbApp.default.getCurrentUser().then((res) => {
-                if (res.error || !res.user) location.href = "auth";
+            sbApp.default.getCurrentSession().then((res) => {
+                if (res.error || !res.data.session) location.href = "auth";
             });
             loadVideos();
             // JSONEditor for new video

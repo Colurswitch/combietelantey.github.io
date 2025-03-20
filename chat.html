@@ -84,6 +84,26 @@
                             </div>
                         </article>
                     `;
+                } else if (payload.payload.msgType && payload.payload.msgType === "userOnline") {
+                    console.log("User", payload.payload.username, "is now online");
+                    // Show a notification message
+                    messagesContainer.innerHTML += `
+                        <article class="message is-success">
+                            <div class="message-body">
+                                ${payload.payload.message}
+                            </div>
+                        </article>
+                    `;
+                } else if (payload.payload.msgType && payload.payload.msgType === "userOffline") {
+                    console.log("User", payload.payload.username, "is now offline");
+                    // Show a notification message
+                    messagesContainer.innerHTML += `
+                        <article class="message is-danger">
+                            <div class="message-body">
+                                ${payload.payload.message}
+                            </div>
+                        </article>
+                    `;
                 }
                 messagesContainer.innerHTML += `
                     <div class="message">
@@ -133,6 +153,7 @@
                         btnMessageSend.click();
                     }
                 }
+                console.log(res)
                 if (res.data[0].is_admin) {
                     btnAnnounceMessage.style.display = "block";
                     btnAnnounceMessage.parentElement.style.display = "block";
