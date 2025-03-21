@@ -84,6 +84,7 @@
                             </div>
                         </article>
                     `;
+                    return;
                 } else if (payload.payload.msgType && payload.payload.msgType === "userOnline") {
                     console.log("User", payload.payload.username, "is now online");
                     // Show a notification message
@@ -94,6 +95,7 @@
                             </div>
                         </article>
                     `;
+                    return;
                 } else if (payload.payload.msgType && payload.payload.msgType === "userOffline") {
                     console.log("User", payload.payload.username, "is now offline");
                     // Show a notification message
@@ -104,6 +106,7 @@
                             </div>
                         </article>
                     `;
+                    return;
                 }
                 messagesContainer.innerHTML += `
                     <div class="message">
@@ -158,9 +161,10 @@
                     btnAnnounceMessage.style.display = "block";
                     btnAnnounceMessage.parentElement.style.display = "block";
                     btnAnnounceMessage.addEventListener("click", () => {
-                        sbApp.default.sendToMainChat(null, "Admin", "This is an announcement message.");
+                        sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, txtMessageText.value, "announcement");
                     });
                 }
+                
             })
         }
     </script>

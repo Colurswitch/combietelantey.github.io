@@ -10,6 +10,7 @@
   <meta name="viewport" content="width=device-width" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/toasty.css" />
   <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -192,6 +193,7 @@
   <script src="index.js"></script>
   <script src="timeAndDate.js"></script>
   <script src="changelog.js"></script>
+  <script src="toasty.js"></script>
 </head>
 
 <body>
@@ -327,6 +329,7 @@
   <script type="module">
     import * as sbApp from "./firebase.js";
     import changelog from "./changelog.json" with {type: "json"};
+
     window.onload = () => {
       wapp.setup();
       qod.create("lblQod");
@@ -416,6 +419,27 @@
         wapp.setup();
       });
       changelogGen.generate(document.getElementById("changelogContainer"), changelog);
+      sbApp.default.subscribeToMainChat(res => {
+        switch (res.payload.msgType) {
+          case "announcement":
+            Toasty.showToast(res.payload.message, "", `<i class="material-icons">campaign</i>`); break;
+          case "userOnline":
+            Toasty.showToast(res.payload.message, "", `<i class="material-icons">info</i>`); break;
+          case "userOffline":
+            Toasty.showToast(res.payload.message, "", `<i class="material-icons">info_outline</i>`); break;
+          default:
+            break;
+        }
+      });
+      sbApp.default.getCurrentSession().then(res0 => {
+        if (res0.error || !res0.data.session) return;
+        sbApp.getCurrentUserRecord().then(res => {
+          sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, res.data[0].display_name + " is now online", "userOnline");
+          window.onbeforeunload = () => {
+              sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, res.data[0].display_name + " is now offline", "userOffline");
+          }
+        })
+      });
     };
 
     document.addEventListener("DOMContentLoaded", () => {
