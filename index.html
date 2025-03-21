@@ -433,7 +433,7 @@
       });
       sbApp.default.getCurrentSession().then(res0 => {
         if (res0.error || !res0.data.session) return;
-        sbApp.getCurrentUserRecord().then(res => {
+        sbApp.default.getCurrentUserRecord().then(res => {
           sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, res.data[0].display_name + " is now online", "userOnline");
           window.onbeforeunload = () => {
               sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, res.data[0].display_name + " is now offline", "userOffline");
