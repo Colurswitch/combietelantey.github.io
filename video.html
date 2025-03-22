@@ -758,6 +758,19 @@
                         format: "xhtml",
                         style: "https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/content/default.min.css",
                     });
+
+                    document.getElementById("btnNewComment").onclick = () => {
+                        const commentText = sceditor.instance("txtNewComment").val();
+                        sceditor.instance("txtNewComment").val("");
+                        if (commentText.trim() === "") {
+                            alert("Comment cannot be empty.");
+                            return;
+                        }
+                        sbApp.default.createComment(video.data[0].id, commentText).then(() => {
+                            renderComments();
+                        });
+                    }
+
                     document.getElementById("btnNewComment").disabled = false;
 
                     // Fetch related videos

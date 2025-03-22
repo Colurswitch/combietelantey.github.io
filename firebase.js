@@ -545,7 +545,7 @@ const sbApp = {
     const { data, error } = await supabase.from("video_comments").insert({
       content: content,
       video: video_id,
-      author: (await this.getCurrentUser()).data.user.id,
+      author: (await this.getCurrentSession()).data.session.user.id,
     });
     return { data, error };
   },
