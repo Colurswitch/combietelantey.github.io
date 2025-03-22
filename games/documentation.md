@@ -22,5 +22,18 @@ When uploading your game, make sure it in the format of a .zip archive. The arch
         - the achievement's rarity (property name: "rare", true or false)
         - the achievement's target (property name: "target", only use if achievement is of type "progress")
         - the achievement's check function (property name: "checkFunc", should contain valid JavaScript code that must return a boolean if the achievement is of type "instant", and must return an integer or float if the achievement is of type "progress")
+        - example:
+        ```json
+            {
+                "title": string,
+                "description": string,
+                "score": integer,
+                "photo": string,
+                "type": "instant" or "progress",
+                "rare": boolean,
+                "target": ?string,
+                "checkFunc": string
+            }
+        ```
 
 Your games will be reviewed by admin prior to submission. If you want to upload a new game, visit [the account page](/account.html)

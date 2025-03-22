@@ -352,18 +352,18 @@ const sbApp = {
     }
     // User is signed in. Insert a new video record into the database.
     // First, upload the video
-    const { data1, error1 } = await this.uploadVideo(
+    const _ = await this.uploadVideo(
       vidSrc,
       title.replace(" ", "_") + "_" + this.randomString(10)
     );
-    if (error1) {
+    if (_.error) {
       console.error("Failed to upload video: ", error);
       return;
     }
     const { data, error } = await supabase.from("videos").insert({
       title: title,
       description: description,
-      video: data1.fullPath,
+      video: (await supabase.storage.from("videos").getPublicUrl(_.data.path)).data.publicUrl,
       thumbnail: thumbnailUrl,
       creator: (await this.getCurrentUser()).data.user.id,
       tracks: tracks,

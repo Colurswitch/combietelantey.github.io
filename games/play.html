@@ -128,20 +128,33 @@
             return achievements.some(a => a.aid === achievement_id && a.gid === game_id);
 		}
 		
-		// Use TVSidebar to instantiate a sidebar
-		TVSidebar.init("mainSide", {
-			title: "Main Menu",
-			items: [
-				{
-					title: "Exit",
-					icon: "exit_to_app",
-					description: "Close the game",
-					callback() {
-						if (confirm("Are you sure you want to close the game?")) history.back()
+		const hidegui = new URLSearchParams(window.location.search).get("hidegui");
+		const optout = new URLSearchParams(window.location.search).get("optout");
+		if (!hidegui) {
+			// Use TVSidebar to instantiate a sidebar
+			TVSidebar.init("mainSide", {
+				title: "Main Menu",
+				items: [
+					{
+						title: "Exit",
+						icon: "exit_to_app",
+						description: "Close the game",
+						callback() {
+							if (confirm("Are you sure you want to close the game?")) history.back()
+						}
+					},
+					{
+						title: "Embed",
+						icon: "insert_link",
+						description: "Embed the game in your website",
+						callback() {
+							prompt("Copy this code to embed the game in your website:", `<iframe src="${window.top.location.href}&hidegui=1&optout=1" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`)
+						}
 					}
-				}
-			]
-		}, true, document.getElementById("mainGameFrame"), "`")
+				]
+			}, true, document.getElementById("mainGameFrame"), "`")
+		}
+		
 		// Get id url parameter
 		const id = new URLSearchParams(window.location.search).get("id")
         if (!id) alert("No game ID was provided.")
@@ -152,15 +165,10 @@
 	    mainGameFrame.src = game.link;
 		window.onload = () => {
 			Toasty.showToast("Game loaded successfully", "")
+			if (optout) return;
 			// Set the history in local storage
 			appendToHistory(id)
 			// Set achievements for the game
-			// First, initialize the UIAchievementSystem.
-			new UIAchievementSystem({
-				colors: ["#980c0c", "#ab0e0e"],
-				enforceUnique: true,
-				enableLogs: true,
-			})
 			achievementInterval = setInterval(() => {
 				game.achievements.forEach(achievement => {
 					var chk = mainGameFrame.contentWindow.eval(achievement.checkFunc); // Is the property true?
