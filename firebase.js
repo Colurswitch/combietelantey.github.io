@@ -356,7 +356,7 @@ const sbApp = {
       vidSrc,
       title.replace(" ", "_") + "_" + this.randomString(10)
     );
-    if (error) {
+    if (error1) {
       console.error("Failed to upload video: ", error);
       return;
     }
