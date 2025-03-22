@@ -846,6 +846,7 @@
                     sbApp.default.sendMessage(document.getElementById("txtNewMsgSubject").value, document.getElementById("selNewMsgRecipients").value, sceditor.instance(document.getElementById("txtNewMsgContent")).val()).then(res => {
                         if (res.error) {
                             alert("Error sending message: " + res.error);
+                            console.log(res)
                         } else {
                             alert("Message sent successfully!");
                             //closeModal(document.getElementById("dlgNewMessage"));

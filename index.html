@@ -432,12 +432,17 @@
         }
       });
       sbApp.default.getCurrentSession().then(res0 => {
-        if (res0.error || !res0.data.session) return;
+        if (res0.error || !res0.data.session) return; // User is not signed in.
         sbApp.default.getCurrentUserRecord().then(res => {
           sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, res.data[0].display_name + " is now online", "userOnline");
           window.onbeforeunload = () => {
               sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, res.data[0].display_name + " is now offline", "userOffline");
           }
+          sbApp.default.subscribeToDatabaseChanges("messages", res1 => {
+            if (res1.payload.new.recipient === res.data[0].id) {
+              Toasty.showToast("You have received a message", res1.payload.new.subject, `<i class="material-icons">mail</i>`);
+            }
+          })
         })
       });
     };

@@ -112,7 +112,7 @@
                     <div class="message">
                         <div class="message-header">
                             <p class="message-author">${payload.payload.username}</p>
-                            <span class="message-timestamp">${new Date().toTimeString()}</span>
+                            <span class="message-timestamp">${new Date().toLocaleTimeString()}</span>
                         </div>
                         <div class="message-body">
                             ${payload.payload.message}
@@ -164,7 +164,10 @@
                         sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, txtMessageText.value, "announcement");
                     });
                 }
-                
+                sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, res.data[0].display_name + " has entered the chat", "userOnline");
+                window.onbeforeunload = () => {
+                    sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, res.data[0].display_name + " has left the chat", "userOffline");
+                }
             })
         }
     </script>

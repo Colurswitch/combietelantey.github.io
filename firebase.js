@@ -192,8 +192,7 @@ const sbApp = {
   },
 
   async isSignedIn() {
-    const { data, error } = await supabase.auth.getUser();
-    return !!data.user;
+    return !!(await this.getCurrentSession()).data.session || !(await this.getCurrentSession()).error
   },
 
   async getCurrentUser() {
@@ -404,7 +403,7 @@ const sbApp = {
   },
 
   b64toBlob(b64Data, contentType = "", sliceSize = 512) {
-    const byteCharacters = atob(b64Data);
+    const byteCharacters = b64Data.includes(",") ? atob(b64Data.split(",")[1]) : atob(b64Data);
     const byteArrays = [];
 
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
@@ -721,7 +720,7 @@ const sbApp = {
       return;
     }
     const { data, error } = await supabase.from("messages").insert({
-      sender: (await this.getCurrentUser()).data.user.id,
+      sender: (await this.getCurrentSession()).data.user.id,
       recipients: recipient_ids,
       content: content,
       subject: subject,
@@ -817,6 +816,10 @@ const sbApp = {
         msgType: type,
       },
     })
+  },
+
+  async subscribeToDatabaseChanges(db_name, callback = () => {}) {
+    supabase.channel("main-chat").on("postgres_changes",{ event: "*", schema: "public", table: db_name }, payload => callback(payload)).subscribe();
   }
 };
 
