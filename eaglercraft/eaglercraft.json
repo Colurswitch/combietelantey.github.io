@@ -32,8 +32,28 @@
         "link": "/eaglercraft/1.5.2/1.5.2OddFutureClient.html"
     },
     {
-        "title": "1.5.2PercisionClientb0.1.8.4",
-        "link": "/eaglercraft/1.5.2/1.5.2PercisionClientb0.1.8.4.html"
+        "title": "1.5.2PrecisionClientb0.1.8.4",
+        "link": "/eaglercraft/1.5.2/1.5.2PrecisionClientb0.1.8.4.html"
+    },
+    {
+        "title": "1.8.8EaglerRebornb1.1",
+        "link": "/eaglercraft/1.8.8/1.8.8EaglerRebornb1.1.html"
+    },
+    {
+        "title": "1.8.8ShadowClient3.0",
+        "link": "/eaglercraft/1.8.8/1.8.8ShadowClient3.0.html"
+    },
+    {
+        "title": "1.8.8u15PiClient",
+        "link": "/eaglercraft/1.8.8/1.8.8u15PiClient.html"
+    },
+    {
+        "title": "1.8.8u18",
+        "link": "/eaglercraft/1.8.8/1.8.8u18.html"
+    },
+    {
+        "title": "1.8.8u18DragonXLite",
+        "link": "/eaglercraft/1.8.8/1.8.8u18DragonXLite.html"
     },
     {
         "title": "1.8.8u18Nebula",
@@ -86,5 +106,13 @@
     {
         "title": "1.9.4u35",
         "link": "/eaglercraft/1.9.4/1.9.4u35.html"
+    },
+    {
+        "title": "1.11.2u35",
+        "link": "/eaglercraft/1.11.2/1.11.2u35.html"
+    },
+    {
+        "title": "1.12.2u1",
+        "link": "/eaglercraft/1.12.2/1.12.2u1.html"
     }
 ]
