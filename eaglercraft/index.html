@@ -15,7 +15,8 @@
             a version, ensure that:
             <ul>
                 <li>
-                    The file extension is <code class="code">.htm</code> and not <code class="code">.html</code>. Some admins prevent you from
+                    The file extension is <code class="code">.htm</code> and not <code class="code">.html</code>, especially after
+                    the file has been downloaded. Some admins prevent you from
                     opening <code class="code">.html</code> files on a school Chromebook.
                 </li>
 
@@ -50,8 +51,9 @@
         // Loop through the versions and add them to the table
         // Sort the versions by title, descending
         eaglercraftVers.sort((a, b) => b.title.localeCompare(a.title));
-        eaglercraftVers.forEach(ver => {
-            document.getElementById("lstVers").innerHTML += `
+        // Add each version to the table row by row
+        document.getElementById("lstVers").innerHTML = eaglercraftVers.map(ver => {
+            return `
                 <tr>
                     <td>${ver.title}</td>
                     <td>
@@ -60,7 +62,7 @@
                     </td>
                 </tr>
             `;
-        })
+        }).join('\n');
     </script>
 </body>
 </html>

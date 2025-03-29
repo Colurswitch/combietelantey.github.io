@@ -1,7 +1,43 @@
 [
     {
+        "title": "1.3b01",
+        "link": "/eaglercraft/1.3/1.3b01"
+    },
+    {
         "title": "1.5.2_ServicePack1",
-        "link": "/eaglercraft/1.5.2/1.5.2_SP1.htm"
+        "link": "/eaglercraft/1.5.2/1.5.2_SP1.html"
+    },
+    {
+        "title": "1.5.2CoderCraft",
+        "link": "/eaglercraft/1.5.2/1.5.2CoderCraft.html"
+    },
+    {
+        "title": "1.5.2FuchsiaX",
+        "link": "/eaglercraft/1.5.2/1.5.2FuchsiaX.html"
+    },
+    {
+        "title": "1.5.2Kerosene",
+        "link": "/eaglercraft/1.5.2/1.5.2Kerosene.html"
+    },
+    {
+        "title": "1.5.2NitClient1.1",
+        "link": "/eaglercraft/1.5.2/1.5.2NitClient1.1.html"
+    },
+    {
+        "title": "1.5.2NovaClient",
+        "link": "/eaglercraft/1.5.2/1.5.2NovaClient.html"
+    },
+    {
+        "title": "1.5.2OddFutureClient",
+        "link": "/eaglercraft/1.5.2/1.5.2OddFutureClient.html"
+    },
+    {
+        "title": "1.5.2PercisionClientb0.1.8.4",
+        "link": "/eaglercraft/1.5.2/1.5.2PercisionClientb0.1.8.4.html"
+    },
+    {
+        "title": "1.8.8u18Nebula",
+        "link": "/eaglercraft/1.8.8/1.8.8u18Nebula.html"
     },
     {
         "title": "1.8.8u22",
