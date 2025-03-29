@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eaglercraft Versions</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <article class="content">
+        <h1 class="title">Eaglercraft Versions</h1>
+        <p>
+            If you are a school Chromebook user and encounter an issue opening
+            a version, ensure that:
+            <ul>
+                <li>
+                    The file extension is <code class="code">.htm</code> and not <code class="code">.html</code>. Some admins prevent you from
+                    opening <code class="code">.html</code> files on a school Chromebook.
+                </li>
+
+            </ul>
+        </p>
+        <!--Table containing all versions-->
+        <table class="table is-striped is-hoverable">
+            <thead>
+                <tr>
+                    <th>Version</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="lstVers">
+                <tr>
+                    <td>1.16.5</td>
+                    <td>
+                        <a href="#" class="button is-primary"><i class="material-icons">play_arrow</i></a>
+                        <a href="#" class="button" download="null.htm"><i class="material-icons">cloud_download</i></a>
+                    </td>
+                </tr>
+                <!-- Add more versions here -->
+            </tbody>
+        </table>
+        <!--Link to official Eaglercraft website-->
+        <p class="has-text-centered">
+            <a href="https://eaglercraft.org/" class="button is-primary">Visit Eaglercraft.org</a>
+        </p>
+    </article>
+    <script type="module">
+        import eaglercraftVers from "./eaglercraft.json" with { type: "json" };
+        // Loop through the versions and add them to the table
+        // Sort the versions by title, descending
+        eaglercraftVers.sort((a, b) => b.title.localeCompare(a.title));
+        eaglercraftVers.forEach(ver => {
+            document.getElementById("lstVers").innerHTML += `
+                <tr>
+                    <td>${ver.title}</td>
+                    <td>
+                        <a href="${ver.link}" class="button is-primary" target="blank"><i class="material-icons">play_arrow</i></a>
+                        <a href="${ver.link}" class="button" download="${ver.title}.htm"><i class="material-icons">cloud_download</i></a>
+                    </td>
+                </tr>
+            `;
+        })
+    </script>
+</body>
+</html>
