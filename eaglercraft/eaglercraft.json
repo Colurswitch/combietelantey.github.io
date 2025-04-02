@@ -1,110 +1,128 @@
-[
-    {
-        "title": "1.3b01",
-        "link": "/eaglercraft/1.3/1.3b01"
-    },
-    {
-        "title": "1.5.2_ServicePack1",
-        "link": "/eaglercraft/1.5.2/1.5.2_SP1.html"
-    },
-    {
-        "title": "1.5.2CoderCraft",
-        "link": "/eaglercraft/1.5.2/1.5.2CoderCraft.html"
-    },
-    {
-        "title": "1.5.2FuchsiaX",
-        "link": "/eaglercraft/1.5.2/1.5.2FuchsiaX.html"
-    },
-    {
-        "title": "1.5.2Kerosene",
-        "link": "/eaglercraft/1.5.2/1.5.2Kerosene.html"
-    },
-    {
-        "title": "1.5.2NitClient1.1",
-        "link": "/eaglercraft/1.5.2/1.5.2NitClient1.1.html"
-    },
-    {
-        "title": "1.5.2NovaClient",
-        "link": "/eaglercraft/1.5.2/1.5.2NovaClient.html"
-    },
-    {
-        "title": "1.5.2OddFutureClient",
-        "link": "/eaglercraft/1.5.2/1.5.2OddFutureClient.html"
-    },
-    {
-        "title": "1.5.2PrecisionClientb0.1.8.4",
-        "link": "/eaglercraft/1.5.2/1.5.2PrecisionClientb0.1.8.4.html"
-    },
-    {
-        "title": "1.8.8EaglerRebornb1.1",
-        "link": "/eaglercraft/1.8.8/1.8.8EaglerRebornb1.1.html"
-    },
-    {
-        "title": "1.8.8ShadowClient3.0",
-        "link": "/eaglercraft/1.8.8/1.8.8ShadowClient3.0.html"
-    },
-    {
-        "title": "1.8.8u15PiClient",
-        "link": "/eaglercraft/1.8.8/1.8.8u15PiClient.html"
-    },
-    {
-        "title": "1.8.8u18",
-        "link": "/eaglercraft/1.8.8/1.8.8u18.html"
-    },
-    {
-        "title": "1.8.8u18DragonXLite",
-        "link": "/eaglercraft/1.8.8/1.8.8u18DragonXLite.html"
-    },
-    {
-        "title": "1.8.8u18Nebula",
-        "link": "/eaglercraft/1.8.8/1.8.8u18Nebula.html"
-    },
-    {
-        "title": "1.8.8u22",
-        "link": "/eaglercraft/1.8.8/1.8.8u22.htm"
-    },
-    {
-        "title": "1.8.8u23",
-        "link": "/eaglercraft/1.8.8/1.8.8u23.htm"
-    },
-    {
-        "title": "1.8.8u27",
-        "link": "/eaglercraft/1.8.8/1.8.8u27.htm"
-    },
-    {
-        "title": "1.8.8u29",
-        "link": "/eaglercraft/1.8.8/1.8.8u29.htm"
-    },
-    {
-        "title": "1.8.8u30",
-        "link": "/eaglercraft/1.8.8/1.8.8u30.htm"
-    },
-    {
-        "title": "1.8.8u31",
-        "link": "/eaglercraft/1.8.8/1.8.8u31.htm"
-    },
-    {
-        "title": "1.8.8u32",
-        "link": "/eaglercraft/1.8.8/1.8.8u32.htm"
-    },
-    {
-        "title": "1.8.8u34",
-        "link": "/eaglercraft/1.8.8/1.8.8u34.htm"
-    },
-    {
-        "title": "1.8.8u35",
-        "link": "/eaglercraft/1.8.8/1.8.8u35.htm"
-    },
-    {
-        "title": "1.8.8u48",
-        "link": "/eaglercraft/1.8.8/1.8.8u48.html"
-    },
-    {
-        "title": "1.8.8u50",
-        "link": "/eaglercraft/1.8.8/1.8.8u50.html"
-    },
-    {
-        "title": "1.9.4u35",
-        "link": "/eaglercraft/1.9.4/1.9.4u35.html"
-    }
-]
+{
+    "versions": [
+        {
+            "title": "1.3b01",
+            "link": "/eaglercraft/1.3/1.3b01"
+        },
+        {
+            "title": "1.5.2_ServicePack1",
+            "link": "/eaglercraft/1.5.2/1.5.2_SP1.html"
+        },
+        {
+            "title": "1.5.2CoderCraft",
+            "link": "/eaglercraft/1.5.2/1.5.2CoderCraft.html"
+        },
+        {
+            "title": "1.5.2FuchsiaX",
+            "link": "/eaglercraft/1.5.2/1.5.2FuchsiaX.html"
+        },
+        {
+            "title": "1.5.2Kerosene",
+            "link": "/eaglercraft/1.5.2/1.5.2Kerosene.html"
+        },
+        {
+            "title": "1.5.2NitClient1.1",
+            "link": "/eaglercraft/1.5.2/1.5.2NitClient1.1.html"
+        },
+        {
+            "title": "1.5.2NovaClient",
+            "link": "/eaglercraft/1.5.2/1.5.2NovaClient.html"
+        },
+        {
+            "title": "1.5.2OddFutureClient",
+            "link": "/eaglercraft/1.5.2/1.5.2OddFutureClient.html"
+        },
+        {
+            "title": "1.5.2PrecisionClientb0.1.8.4",
+            "link": "/eaglercraft/1.5.2/1.5.2PrecisionClientb0.1.8.4.html"
+        },
+        {
+            "title": "1.8.8EaglerRebornb1.1",
+            "link": "/eaglercraft/1.8.8/1.8.8EaglerRebornb1.1.html"
+        },
+        {
+            "title": "1.8.8ShadowClient3.0",
+            "link": "/eaglercraft/1.8.8/1.8.8ShadowClient3.0.html"
+        },
+        {
+            "title": "1.8.8u15PiClient",
+            "link": "/eaglercraft/1.8.8/1.8.8u15PiClient.html"
+        },
+        {
+            "title": "1.8.8u18",
+            "link": "/eaglercraft/1.8.8/1.8.8u18.html"
+        },
+        {
+            "title": "1.8.8u18DragonXLite",
+            "link": "/eaglercraft/1.8.8/1.8.8u18DragonXLite.html"
+        },
+        {
+            "title": "1.8.8u18Nebula",
+            "link": "/eaglercraft/1.8.8/1.8.8u18Nebula.html"
+        },
+        {
+            "title": "1.8.8u22",
+            "link": "/eaglercraft/1.8.8/1.8.8u22.htm"
+        },
+        {
+            "title": "1.8.8u23",
+            "link": "/eaglercraft/1.8.8/1.8.8u23.htm"
+        },
+        {
+            "title": "1.8.8u27",
+            "link": "/eaglercraft/1.8.8/1.8.8u27.htm"
+        },
+        {
+            "title": "1.8.8u29",
+            "link": "/eaglercraft/1.8.8/1.8.8u29.htm"
+        },
+        {
+            "title": "1.8.8u30",
+            "link": "/eaglercraft/1.8.8/1.8.8u30.htm"
+        },
+        {
+            "title": "1.8.8u31",
+            "link": "/eaglercraft/1.8.8/1.8.8u31.htm"
+        },
+        {
+            "title": "1.8.8u32",
+            "link": "/eaglercraft/1.8.8/1.8.8u32.htm"
+        },
+        {
+            "title": "1.8.8u34",
+            "link": "/eaglercraft/1.8.8/1.8.8u34.htm"
+        },
+        {
+            "title": "1.8.8u35",
+            "link": "/eaglercraft/1.8.8/1.8.8u35.htm"
+        },
+        {
+            "title": "1.8.8u48",
+            "link": "/eaglercraft/1.8.8/1.8.8u48.html"
+        },
+        {
+            "title": "1.8.8u48Forge",
+            "link": "https://kpmsztuxrlrtbnxxrhpj.supabase.co/storage/v1/object/public/clmain/eaglercraft/1_8_8/1.8.8u48Forge.html"
+        },
+        {
+            "title": "1.8.8u50",
+            "link": "/eaglercraft/1.8.8/1.8.8u50.html"
+        },
+        {
+            "title": "1.9.4u35",
+            "link": "/eaglercraft/1.9.4/1.9.4u35.html"
+        }
+    ],
+    "mods": [
+        {
+            "title": "CustomItems",
+            "description": "Makes adding mods easier",
+            "link": "/eaglercraft/forgeinjector/examplemods/lib.customitems.js"
+        },
+        {
+            "title": "WorldEdit",
+            "description": "Adds WorldEdit to Eaglercraft (requires CustomItems library)",
+            "link": "/eaglercraft/forgeinjector/examplemods/Worldedit.js"
+        }
+    ]
+}

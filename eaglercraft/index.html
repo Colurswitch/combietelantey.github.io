@@ -8,7 +8,24 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <article class="content">
+    <!-- Navigation bar-->
+    <div class="tabs is-medium">
+        <ul>
+          <li class="is-active page-link" onclick="openPage('versions', event)">
+            <a href="#">
+                <span class="icon"><i class="material-icons">list</i></span>
+                <span>Versions</span>
+            </a>
+          </li>
+          <li class="page-link" onclick="openPage('mods', event)">
+            <a href="#">
+                <span class="icon"><i class="material-icons">extension</i></span>
+                <span>Mods</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    <article class="content page" id="versions">
         <h1 class="title">Eaglercraft Versions</h1>
         <p>
             If you are a school Chromebook user and encounter an issue opening
@@ -46,13 +63,75 @@
             <a href="https://eaglercraft.org/" class="button is-primary">Visit Eaglercraft.org</a>
         </p>
     </article>
+    <article class="content page" id="mods">
+        <h1 class="title">Eaglercraft Mods</h1>
+        <p>
+            Eaglercraft mods use EaglerForge to provide their own plugins. Listed mods only work with forged
+            versions of Eaglercraft.
+        </p>
+        <div id="lstMods">
+            <!-- Add mod cards here -->
+            <div class="box">
+                <article class="media">
+                  <div class="media-left">
+                    <figure class="image is-64x64">
+                      <img src="https://bulma.io/assets/images/placeholders/128x128.png" alt="Image" />
+                    </figure>
+                  </div>
+                  <div class="media-content">
+                    <div class="content">
+                      <p>
+                        <strong>John Smith</strong>
+                        <br />
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+                        efficitur sit amet massa fringilla egestas. Nullam condimentum luctus
+                        turpis.
+                      </p>
+                    </div>
+                    <p class="buttons">
+                        <button href="#" class="button is-primary"><i class="material-icons">content_copy</i></button>
+                        <button href="#" class="button" download="null.htm"><i class="material-icons">cloud_download</i></button>
+                    </p>
+                  </div>
+                </article>
+            </div>
+            <!-- Add more mod cards here -->
+        </div>
+    </article>
+    <script>
+        function openPage(id, evt = event) {
+            const pages = document.getElementsByClassName("page");
+            for (let page of pages) {
+                page.style.display = "none";
+            }
+            document.getElementById(id).style.display = "block";
+            // Remove the active class from all page links
+            const links = document.getElementsByClassName("page-link");
+            for (let link of links) {
+                link.classList.remove("is-active");
+            }
+            // Add the active class to the clicked page link
+            evt.currentTarget.classList.add("is-active");
+        }
+        // Copy a string to the clipboard
+        function copyToClipboard(text) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            textarea.remove();
+        }
+        // Initialize the page with the versions tab
+        openPage("versions");
+    </script>
     <script type="module">
         import eaglercraftVers from "./eaglercraft.json" with { type: "json" };
         // Loop through the versions and add them to the table
         // Sort the versions by title, descending
-        eaglercraftVers.sort((a, b) => b.title.localeCompare(a.title));
+        eaglercraftVers.versions.sort((a, b) => b.title.localeCompare(a.title));
         // Add each version to the table row by row
-        document.getElementById("lstVers").innerHTML = eaglercraftVers.map(ver => {
+        document.getElementById("lstVers").innerHTML = eaglercraftVers.versions.map(ver => {
             return `
                 <tr>
                     <td>${ver.title}</td>
@@ -63,6 +142,33 @@
                 </tr>
             `;
         }).join('\n');
+        // Loop through the mods and add them to the mod card by row
+        document.getElementById("lstMods").innerHTML = eaglercraftVers.mods.map(mod => {
+            return `
+                <div class="box">
+                    <article class="media">
+                    <div class="media-left">
+                        <figure class="image is-64x64">
+                        <img src="${mod.image}" alt="Image" />
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <div class="content">
+                        <p>
+                            <strong>${mod.title}</strong>
+                            <br />
+                            ${mod.description}
+                        </p>
+                        </div>
+                        <p class="buttons">
+                            <button onclick="copyToClipboard('${mod.link}')" class="button is-primary"><i class="material-icons">content_copy</i></button>
+                            <a href="${mod.link}" class="button" download="${mod.title}.js"><i class="material-icons">cloud_download</i></a>
+                        </p>
+                    </div>
+                    </article>
+                </div>
+            `;
+        });
     </script>
 </body>
 </html>
