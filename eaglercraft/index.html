@@ -137,7 +137,7 @@
                     <td>${ver.title}</td>
                     <td>
                         <a href="${ver.link}" class="button is-primary" target="blank"><i class="material-icons">play_arrow</i></a>
-                        <a href="${ver.link}" class="button" download="${ver.title}.htm"><i class="material-icons">cloud_download</i></a>
+                        <a href="${ver.link}" class="button" target="_blank" download="${ver.title}.htm"><i class="material-icons">cloud_download</i></a>
                     </td>
                 </tr>
             `;
@@ -162,7 +162,7 @@
                         </div>
                         <p class="buttons">
                             <button onclick="copyToClipboard('${mod.link}')" class="button is-primary"><i class="material-icons">content_copy</i></button>
-                            <a href="${mod.link}" class="button" download="${mod.title}.js"><i class="material-icons">cloud_download</i></a>
+                            <a href="${mod.link}" class="button" target="_blank" download="${mod.title}.js"><i class="material-icons">cloud_download</i></a>
                         </p>
                     </div>
                     </article>
