@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>CL - Home</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/product-sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="google-spinner.min.css">
+    <style id="CLSettingsStyles">
+        :root {
+            --cl-border-radius: 10px;
+        }
+        body {
+            background:
+                linear-gradient(217deg, rgba(255, 0, 0, 0.8), rgba(255, 0, 0, 0) 70.71%),
+                linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
+                linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
+        }
+    </style>
+    <style>
+        :root {
+            --cl-topbar-color: rgba(0, 0, 0, 0.5);
+            --cl-inverted-topbar-color: rgba(255, 255, 255, 0.5);
+        }
+        * {
+            transition: all .125s linear;
+            color: white;
+            font-family: "Product Sans";
+        }
+        body {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+        .cl-panel {
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            top: 0; left: 0;
+            opacity: 1;
+        }
+        .cl-panel.hidden, .cl-panel .boxed-content.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .cl-panel .content {
+            width: calc(100% - 20px);
+            position: absolute;
+            top: 0; left: 0;
+            overflow: auto;
+            padding-top: 60px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        .cl-panel .boxed-content {
+            width: calc(100% - 20px);
+            height: calc(100vh - 90px);
+            position: absolute;
+            bottom: 10px; left: 10px; right: 10px;
+            border-radius: var(--cl-border-radius);
+            background-color: var(--cl-topbar-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            gap: 10px;
+        }
+        .cl-panel .boxed-content.is-not-centered {
+            align-items: start;
+            justify-content: start;
+            padding: 10px;
+            width: calc(100% - 40px);
+            height: calc(100vh - 110px);
+        }
+        .cl-panel .topbar {
+            width: calc(100% - 20px);
+            height: 60px;
+            position: sticky;
+            top: 10px; left: 10px; right: 10px;
+            border-radius: var(--cl-border-radius);
+            background-color: var(--cl-topbar-color);
+            display: flex;
+            justify-content: space-between;
+        }
+        .cl-panel .topbar .topbar-left, .cl-panel .topbar .topbar-center, .cl-panel .topbar .topbar-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            color: white
+        }
+        .cl-panel .topbar .topbar-left i, .cl-panel .topbar .topbar-center i, .cl-panel .topbar .topbar-right i  {
+            font-size: 30px;
+        }
+        .cl-panel .topbar .topbar-right {
+            width: auto;
+            padding-right: 10px;
+            gap: 10px;
+        }
+        .cl-panel .topbar .topbar-center {
+            width: auto;
+        }
+        .cl-panel .topbar .topbar-center .cl-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 0;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        .cl-panel .topbar .topbar-center .cl-button:not(:hover):not(:active) {
+            background: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            border-bottom: 0px solid;
+        }
+        .cl-panel .topbar .topbar-center .cl-button:hover {
+            border-bottom: 5px solid var(--cl-topbar-color);
+        }
+        .cl-panel .topbar .topbar-center .cl-button.selected {
+            border-bottom: 5px solid white !important;
+        }
+        .cl-input {
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            color: white;
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+        }
+        .cl-input input, .cl-input textarea, .cl-input select {
+            border: none;
+            background: none;
+            font-size: large;
+            color: white;
+        }
+        .cl-input select option {
+            color: black;
+        }
+        .cl-input textarea {
+            resize: none;
+        }
+        .cl-input input::placeholder, .cl-input textarea::placeholder {
+            color: rgba(255, 255, 255, .5)
+        }
+        .cl-input:has(input:invalid) {
+            border: 1px solid red;
+        }
+        .cl-horizontal {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .cl-button {
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            color: white;
+            align-items: center;
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+            border: 0px solid;
+            transition: all .15s ease;
+        }
+        .cl-button:hover:not(:disabled) {
+            background: #00000010;
+        }
+        .cl-button:active:not(:disabled) {
+            background: #00000020;
+        }
+        .cl-button:disabled {
+            cursor: not-allowed;
+            color: var(--cl-topbar-color);
+        }
+        .cl-button.is-loading {
+            cursor: progress;
+            pointer-events: none;
+            color: transparent !important;
+        }
+        .cl-button.is-loading::after {
+            content: " ";
+            display: block;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border-right: 2px solid transparent;
+            border-left: 2px solid transparent;
+            border-bottom: 2px solid white;
+            border-top: 2px solid white;
+            animation: spin 1s linear infinite;
+            position: relative;
+            top: 0%;
+            left: -43%;
+        }
+        .cl-card {
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+            overflow: hidden;
+        }
+        .cl-card .cl-card-top {
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .cl-card .cl-card-bottom {
+            padding: 10px;
+        }
+        .cl-card-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            flex-wrap: wrap;
+            gap: 10px;
+            width: calc(100% - 10px);
+            grid-gap: 10px;
+            margin-left: 5px;
+            justify-items: center;
+        }
+        .cl-card-grid[disabled] > * {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .cl-card-grid > * {
+            width: inherit;
+        }
+        .cl-horizontal-card-display {
+            max-width: 100%;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            
+        }
+        .cl-game {
+            flex: 0 0 auto;
+            border-radius: var(--cl-border-radius);
+            width: 300px;
+            height: 200px;
+            background-blend-mode: darken;
+            background: url("assets/background/game_placeholder.png");
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-items: start;
+            align-items: end;
+            padding: 10px;
+        }
+        .cl-game * {
+            margin: 0;
+            color: rgba(255, 255, 255, .5);
+        }
+        .cl-game h1 {
+            color: white;
+        }
+        .cl-gamescore {
+            color: orange;
+        }
+        .cl-table {
+            width: 100%;
+        }
+        .cl-table thead {
+            background: var(--cl-topbar-color);
+        }
+        .cl-table thead th {
+            text-align: left;
+            padding: 10px;
+            font-weight: bold;
+        }
+        .cl-table tbody tr {
+            border-bottom: 1px solid var(--cl-topbar-color);
+        }
+        .cl-table tbody tr:nth-child(even) {
+            background: var(--cl-topbar-color);
+        }
+        .cl-table tbody tr td {
+            padding: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --cl-topbar-color: rgba(0, 0, 0, 0.5);
+            }
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --cl-topbar-color: rgba(255, 255, 255, 0.5);
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="cl-panel hidden">
+        <div class="topbar">
+            <div class="topbar-left" title="Please wait...">
+                <i class="material-symbols-outlined">sync</i>
+            </div>
+            <div class="topbar-right">
+                
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor" title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content">
+            <div class="spinner">
+                <svg class="circular" viewBox="25 25 50 50">
+                    <circle
+                    class="path"
+                    cx="50"
+                    cy="50"
+                    r="20"
+                    fill="none"
+                    stroke-width="2"
+                    stroke-miterlimit="10"
+                    />
+                </svg>
+            </div>
+        </div>
+    </section>
+    <section class="cl-panel hidden">
+        <div class="topbar">
+            <div class="topbar-left" title="Log In / Sign Up">
+                <i class="material-symbols-outlined">key</i>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor" title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content">
+            <h1>Log In / Sign Up</h1>
+            <div class="cl-input">
+                <i class="material-symbols-outlined">mail</i>
+                <input type="email" placeholder="Email">
+            </div>
+            <div class="cl-input">
+                <i class="material-symbols-outlined">lock</i>
+                <input type="password" placeholder="Password">
+            </div>
+            <div class="cl-input">
+                <i class="material-symbols-outlined">lock</i>
+                <input type="password" placeholder="Confirm password (optional)">
+            </div>
+            <div class="cl-horizontal">
+                <button class="cl-button">
+                    <i class="material-symbols-outlined">check</i>
+                    <span>Log In</span>
+                </button>
+                <button class="cl-button">
+                    <i class="material-symbols-outlined">add</i>
+                    <span>Sign Up</span>
+                </button>
+            </div>
+            <button class="cl-button">
+                <i class="material-symbols-outlined">open_in_new</i>
+                <span>Log In with Google</span>
+            </button>
+            <button class="cl-button">
+                <i class="material-symbols-outlined">close</i>
+                <span>Continue as Guest</span>
+            </button>
+        </div>
+    </section>
+    <section class="cl-panel hidden">
+        <div class="topbar">
+            <div class="topbar-left" title="Home">
+                <i class="material-symbols-outlined">home</i>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor" title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered">
+            <h1>Welcome (back), User!</h1>
+            <div class="cl-card-grid">
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">sports_esports</i>
+                        <span>Games</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        View, play, discover, and create your own games.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">deployed_code</i>
+                        <span>Minecraft</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        View, play and add Minecraft versions, mods, worlds and more.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">forum</i>
+                        <span>Chat</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Chat with other users, or generative AI.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">video_library</i>
+                        <span>Videos</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        View, play, discover, and create your own videos.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">person</i>
+                        <span>Users</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        See all users.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">globe</i>
+                        <span>Web</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Unblock web pages.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">account_circle</i>
+                        <span>Account</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Manage your account.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">shield</i>
+                        <span>Admin</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Moderate users, videos and games.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">settings</i>
+                        <span>Settings</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Change your settings.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">info</i>
+                        <span>About</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Learn more about Chillnet.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="cl-panel hidden">
+        <div class="topbar">
+            <div class="topbar-left" title="Games">
+                <i class="material-symbols-outlined">sports_esports</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="Trending Games">
+                    <span class="material-symbols-outlined">trending_up</span>
+                </button>
+                <button class="cl-button" title="Search Games">
+                    <span class="material-symbols-outlined">search</span>
+                </button>
+                <button class="cl-button" title="Saved Games">
+                    <span class="material-symbols-outlined">bookmarks</span>
+                </button>
+                <button class="cl-button" title="History">
+                    <span class="material-symbols-outlined">history</span>
+                </button>
+                <button class="cl-button" title="Currently Playing">
+                    <span class="material-symbols-outlined">play_arrow</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-GamescoreMonitor cl-gamescore" title="100 gamescore">100</h3>
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor" title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden">
+            <h1>Top 10 Games</h1>
+            <div class="cl-horizontal-card-display">
+                <div class="cl-game">
+                    <div class="cl-game-info">
+                        <h1>Game</h1>
+                        <small>123K plays</small>
+                    </div>
+                </div>
+            </div>
+            <h1>Based on your recommendations</h1>
+            <div class="cl-horizontal-card-display">
+                <div class="cl-game">
+                    <div class="cl-game-info">
+                        <h1>Game</h1>
+                        <small>123K plays</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden">
+            <div class="cl-horizontal">
+                <div class="cl-input">
+                    <i class="material-symbols-outlined">search</i>
+                    <input type="text" placeholder="Search for a game">
+                </div>
+                <div class="cl-input">
+                    <i class="material-symbols-outlined">sort</i>
+                    <select>
+                        <option value="a-to-z">Name (ascending)</option>
+                        <option value="z-to-a">Name (descending)</option>
+                        <option value="most-played">Most Played</option>
+                        <option value="least-played">Least Played</option>
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                    </select>
+                </div>
+            </div>
+            <div class="cl-card-grid">
+                <div class="cl-game">
+                    <div class="cl-game-info">
+                        <h1>Game</h1>
+                        <small>123K plays</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden">
+            <h1>Saved Games</h1>
+            <div class="cl-card-grid">
+                <div class="cl-game">
+                    <div class="cl-game-info">
+                        <h1>Game</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden">
+            <h1>History</h1>
+            <div class="cl-card-grid">
+                <div class="cl-game">
+                    <div class="cl-game-info">
+                        <h1>Game</h1>
+                        <small>01-01-2025</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden">
+            <h1>Currently Playing</h1>
+            <div class="cl-game">
+                    <div class="cl-game-info">
+                        <h1>Game</h1>
+                        <small>01-01-2025</small>
+                    </div>
+                </div>
+            <div class="cl-card-grid">
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">play_arrow</i>
+                        <span>Resume</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Resume the game.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">refresh</i>
+                        <span>Refresh</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Restart the game.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">close</i>
+                        <span>Exit</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Close the game.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="cl-panel hidden">
+        <div class="topbar">
+            <div class="topbar-left" title="Minecraft">
+                <i class="material-symbols-outlined">deployed_code</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="Versions">
+                    <span class="material-symbols-outlined">play_arrow</span>
+                </button>
+                <button class="cl-button" title="Mods">
+                    <span class="material-symbols-outlined">extension</span>
+                </button>
+                <button class="cl-button" title="Worlds">
+                    <span class="material-symbols-outlined">globe</span>
+                </button>
+                <button class="cl-button" title="Resource Packs">
+                    <span class="material-symbols-outlined">texture</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor" title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden">
+            <div class="cl-card-grid">
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">play_arrow</i>
+                        <span>Resume</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Resume the game.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">refresh</i>
+                        <span>Refresh</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Restart the game.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">close</i>
+                        <span>Exit</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Close the game.
+                    </div>
+                </div>
+            </div>
+            <div class="cl-horizontal">
+                <div class="cl-input">
+                    <i class="material-symbols-outlined">difference</i>
+                    <select>
+                        <option value="1.9.7">1.9.7 (EaglercraftL)</option>
+                        <option value="1.9.6">1.9.6 (Eaglercraft)</option>
+                        <option value="1.9.5">1.9.5 (Eaglercraft)</option>
+                        <option value="1.9.4">1.9.4 (Eaglercraft)</option>
+                        <option value="1.9.3">1.9.3 (Eaglercraft)</option>
+                        <option value="1.9.2">1.9.2 (Eaglercraft)</option>
+                        <option value="1.9.1">1.9.1 (Eaglercraft)</option>
+                    </select>
+                </div>
+                <button class="cl-button">
+                    <i class="material-symbols-outlined">play_arrow</i>
+                    <span>Play</span>
+                </button>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mod</td>
+                        <td>Description</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">content_copy</i>
+                                </button>
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">download</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="boxed-content is-not-centered hidden">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>World</td>
+                        <td>Description</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">download</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="boxed-content is-not-centered hidden">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Size (pixels)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mod</td>
+                        <td>Description</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">content_copy</i>
+                                </button>
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">download</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="cl-panel hdden">
+        <div class="topbar">
+            <div class="topbar-left" title="Chat">
+                <i class="material-symbols-outlined">forum</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="With Users">
+                    <span class="material-symbols-outlined">people</span>
+                </button>
+                <button class="cl-button" title="AI">
+                    <span class="material-symbols-outlined">network_intelligence</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor" title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden">
+            <div class="cl-chat-messages">
+                <div class="cl-chat-message">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mod</td>
+                        <td>Description</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">content_copy</i>
+                                </button>
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">download</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
+</html>

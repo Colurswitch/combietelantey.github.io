@@ -360,7 +360,7 @@
                     <label for="tab2">Comments</label>
                     <div id="tab-panel2" class="tab-panel">
                         <div class="content-wrapper content">
-                            <textarea id="txtNewComment" name="txtNewComment"></textarea>
+                            <textarea id="txtNewComment"></textarea>
                             <button class="button is-primary icon-text" id="btnNewComment">
                                 <span class="icon">
                                     <i class="material-icons">add_comment</i>
@@ -701,7 +701,7 @@
                     document.getElementById("vidAuthorName").textContent = user.data[0].display_name;
                     document.getElementById("vidAuthorPicture").src = user.data[0].photo_url.length > 0 ? user.data[0].photo_url : "https://placehold.co/128x128?font=roboto";
                     document.getElementById("vidAuthorHandle").textContent = user.data[0].handle;
-                    document.getElementById("vidAuthorBio").textContent = user.data[0].bio;
+                    document.getElementById("vidAuthorBio").innerHTML = user.data[0].bio;
                     document.getElementById("vidAuthorLink").href = "user?id=" + user.data[0].id;
                     document.getElementById("vidPubDate").textContent = new Date(video.data[0].created_at).toLocaleString();
                     document.getElementById("vidDescContent").innerHTML = video.data[0].description;
@@ -760,7 +760,8 @@
                     });
 
                     document.getElementById("btnNewComment").onclick = () => {
-                        const commentText = sceditor.instance("txtNewComment").val();
+                        sceditor.instance("txtNewComment").updateOriginal();
+                        const commentText = document.getElementById("txtNewComment").value;
                         sceditor.instance("txtNewComment").val("");
                         if (commentText.trim() === "") {
                             alert("Comment cannot be empty.");

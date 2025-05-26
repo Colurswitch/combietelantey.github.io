@@ -67,9 +67,9 @@
 
 <body>
     <progress class="progress is-small is-primary" max="100" id="loadingIndicator"></progress>
-    <figure class="figure" style="display: flex; justify-content: center;">
-        <div class="image is3by1" id="currentUserBanner"></div>
-    </figure>
+    <div style="aspect-ratio: 3/1; margin: 20px; border-radius: 10px; overflow: hidden;">
+        <img src="https://placehold.co/300x100" alt="User Banner" style="width: 100%; object-fit: cover;" id="currentUserBanner">
+    </div>
     <div class="block" style="display: flex; align-items: center; flex-direction: column; padding: 20px">
         <div class="box" style="max-width: 1200px;">
             <article class="media">
@@ -125,10 +125,8 @@
                     <img src="https://placehold.co/1600x900.png?font=roboto" alt="Video thumbnail"
                         class="video-thumbnail">
                     <div class="video-bottom-row">
-                        <img src="https://placehold.co/64x64.png?font=roboto" alt="User" class="video-author-img">
                         <div class="video-bottom-right">
                             <p class="video-title"><strong>Video title</strong></p>
-                            <p class="video-author">Author</p>
                             <p class="video-description"></p>
                         </div>
                     </div>
@@ -159,10 +157,7 @@
                     sbApp.default.getUsersFollowingUser(uid).then(f_users => {
                         sbApp.default.getUsersFollowedByUser(uid).then(fd_users => {
                             // Update user profile data
-                            document.getElementById("currentUserBanner").style.backgroundImage = "url(" + user.data[0].banner_url + ")";
-                            document.getElementById("currentUserBanner").style.backgroundSize = "cover";
-                            document.getElementById("currentUserBanner").style.backgroundPosition = "center";
-                            document.getElementById("currentUserBanner").style.backgroundRepeat = "no-repeat";
+                            document.getElementById("currentUserBanner").src = "url(" + user.data[0].banner_url + ")";
                             document.getElementById("currentUserPhoto").src = user.data[0].photo_url;
                             document.getElementById("currentUserDisplayName").textContent = user.data[0].display_name;
                             document.getElementById("currentUserHandle").textContent = user.data[0].handle;
@@ -174,11 +169,8 @@
                                         <img src="${video.thumbnail.length > 0 ? video.thumbnail : "https://placehold.co/1600x900.png?font=roboto"}" alt="Video thumbnail"
                                             class="video-grid-item-thumbnail">
                                         <div class="video-grid-item-bottom-row">
-                                            <img src="${video.creator.photo_url.length > 0 ? video.creator.photo_url : "https://placehold.co/64x64.png?font=roboto"}" width="50" height="50"
-                                                alt="User" class="video-grid-item-author-img">
                                             <div class="video-grid-item-bottom-right">
                                                 <p class="video-grid-item-title"><strong>${video.title}</strong></p>
-                                                <p class="video-grid-item-author icon-text">${video.creator.display_name} ${video.creator.verified ? '<span class="material-icons">verified</span>' : ''}</p>
                                                 <p class="video-grid-item-description">${truncate(video.description, 40)}</p>
                                             </div>
                                         </div>
@@ -190,6 +182,7 @@
                             document.getElementById("currentUserFollowersLen").textContent = f_users.data.length;
                             // Update user follow button
                             document.getElementById("btnUserFollow").onclick = () => {
+                                document.getElementById("btnUserFollow").classList.add("is-loading");
                                 if (sbApp.default.isSignedIn()) {
                                     if (user.data[0].id == sbApp.default.getCurrentUser().data.user.id) {
                                         alert("Cannot follow yourself");
@@ -209,6 +202,7 @@
                                 } else {
                                     alert("You need to sign in to follow users.");
                                 }
+                                document.getElementById("btnUserFollow").classList.remove("is-loading");
                             }
                             document.getElementById("loadingIndicator").remove();
                         });
