@@ -10,12 +10,13 @@
     <style id="CLSettingsStyles">
         :root {
             --cl-border-radius: 10px;
-        }
-        body {
-            background:
+            --cl-background: 
                 linear-gradient(217deg, rgba(255, 0, 0, 0.8), rgba(255, 0, 0, 0) 70.71%),
                 linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
                 linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
+        }
+        body {
+            background: var(--cl-background);
         }
     </style>
     <style>
@@ -33,6 +34,23 @@
             height: 100vh;
             margin: 0;
             overflow: hidden;
+        }
+        fullscreen {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0; left: 0;
+            overflow: hidden;
+            opacity: 1;
+        }
+        fullscreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        fullscreen video {
+            width: 100%;
+            height: 100%;
+            background: black;
         }
         .material-symbols-outlined {
             font-variation-settings:
@@ -81,6 +99,12 @@
             padding: 10px;
             width: calc(100% - 40px);
             height: calc(100vh - 110px);
+        }
+        .cl-panel .content.fullscreen {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            outline: 1px solid red;
         }
         .cl-panel .topbar {
             width: calc(100% - 20px);
@@ -152,11 +176,32 @@
         .cl-input textarea {
             resize: none;
         }
+        .cl-input.x-resize textarea {
+            resize: horizontal;
+        }
+        .cl-input.y-resize textarea {
+            resize: vertical;
+        }
         .cl-input input::placeholder, .cl-input textarea::placeholder {
-            color: rgba(255, 255, 255, .5)
+            color: rgba(255, 255, 255, .5);
         }
         .cl-input:has(input:invalid) {
             border: 1px solid red;
+        }
+        .cl-input:has(.cl-button) {
+            padding: 0 0 0 10px;
+            gap: 0;
+        }
+        .cl-input .cl-button {
+            border-radius: 0;
+        }
+        .cl-input .cl-button:first-child {
+            border-top-left-radius: var(--cl-border-radius);
+            border-bottom-left-radius: var(--cl-border-radius);
+        }
+        .cl-input .cl-button:last-child {
+            border-top-right-radius: var(--cl-border-radius);
+            border-bottom-right-radius: var(--cl-border-radius);
         }
         .cl-horizontal {
             display: flex;
@@ -236,12 +281,25 @@
         .cl-card-grid > * {
             width: inherit;
         }
+        .cl-card-grid.is-loading * {
+            opacity: 0;
+        }
+        .cl-card-grid.is-loading::before {
+            content: " ";
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border-top: 2px solid white;
+            border-bottom: 2px solid white;
+            border-left: 2px solid transparent;
+            border-right: 2px solid transparent;
+            animation: spin 1s linear infinite;
+        }
         .cl-horizontal-card-display {
             max-width: 100%;
             display: flex;
             gap: 10px;
             overflow-x: auto;
-            
         }
         .cl-game {
             flex: 0 0 auto;
@@ -286,23 +344,75 @@
         .cl-table tbody tr td {
             padding: 10px;
         }
+        .cl-chat-message-container {
+            background-color: var(--cl-topbar-color);
+            border-radius: var(--cl-border-radius);
+            width: calc(100% - 20px);
+            list-style: none;
+            padding: 10px;
+            margin: 0;
+            height: calc(100% - 75px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .cl-chat-message-container > li {
+            background-color: var(--cl-topbar-color);
+            border-radius: var(--cl-border-radius);
+            padding: 10px;
+        }
+        .cl-chat-message-container > li > a {
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .cl-chat-message-container.unlinkable > li > a {
+            pointer-events: none;
+        }
+        .cl-panel .boxed-content:has(.cl-chat-message-container) .cl-input {
+            width: calc(100% - 10px)
+        }
+        .cl-panel .boxed-content:has(.cl-chat-message-container) .cl-input input {
+            width: 100%;
+        }
+        .cl-video {
+            width: 250px;
+            border-radius: var(--cl-border-radius);
+            background-color: var(--cl-topbar-color);
+            text-decoration: none;
+            color: white;
+            overflow: hidden;
+        }
+        .cl-video:hover {
+            background: var(--cl-inverted-topbar-color);
+        }
+        .cl-video .cl-video-thumbnail {
+            width: 250px;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+        .cl-video *:is(h3,h4,small) {
+            margin: 7px;
+        }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --cl-topbar-color: rgba(0, 0, 0, 0.5);
-            }
-        }
-        @media (prefers-color-scheme: light) {
-            :root {
-                --cl-topbar-color: rgba(255, 255, 255, 0.5);
-            }
-        }
     </style>
 </head>
 <body>
+    <fullscreen class="">
+        
+    </fullscreen>
+    <fullscreen class="hidden">
+        <video 
+        src="https://media.istockphoto.com/id/1392471162/video/circles-in-rhythm-four-corners.mp4?s=mp4-640x640-is&k=20&c=IuLstb-CSuP0jqWW6NyCMMNLRu7enZkuue_DwsPzhzk=" 
+        controls playsinline
+        data-poster="">
+
+        </video>
+    </fullscreen>
     <section class="cl-panel hidden">
         <div class="topbar">
             <div class="topbar-left" title="Please wait...">
@@ -393,7 +503,7 @@
                         <span>Games</span>
                     </div>
                     <div class="cl-card-bottom">
-                        View, play, discover, and create your own games.
+                        View, play, and discover games.
                     </div>
                 </div>
                 <div class="cl-card">
@@ -420,7 +530,7 @@
                         <span>Videos</span>
                     </div>
                     <div class="cl-card-bottom">
-                        View, play, discover, and create your own videos.
+                        Play and discover videos.
                     </div>
                 </div>
                 <div class="cl-card">
@@ -452,6 +562,15 @@
                 </div>
                 <div class="cl-card">
                     <div class="cl-card-top">
+                        <i class="material-symbols-outlined">library_books</i>
+                        <span>Content</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Manage your videos, games, and other content that has been uploaded to Chillnet.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
                         <i class="material-symbols-outlined">shield</i>
                         <span>Admin</span>
                     </div>
@@ -470,17 +589,17 @@
                 </div>
                 <div class="cl-card">
                     <div class="cl-card-top">
-                        <i class="material-symbols-outlined">info</i>
-                        <span>About</span>
+                        <i class="material-symbols-outlined">help</i>
+                        <span>Help</span>
                     </div>
                     <div class="cl-card-bottom">
-                        Learn more about Chillnet.
+                        View help articles and other information about Chillnet.
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <section class="cl-panel hidden">
+    <section class="cl-panel hdden">
         <div class="topbar">
             <div class="topbar-left" title="Games">
                 <i class="material-symbols-outlined">sports_esports</i>
@@ -767,7 +886,7 @@
             </table>
         </div>
     </section>
-    <section class="cl-panel hdden">
+    <section class="cl-panel hidden">
         <div class="topbar">
             <div class="topbar-left" title="Chat">
                 <i class="material-symbols-outlined">forum</i>
@@ -785,39 +904,144 @@
                 <span class="material-symbols-outlined CL-BatteryMonitor" title="100%, charging">battery_charging_full</span>
             </div>
         </div>
+        <div class="boxed-content is-not-centered hidden">
+            <ul class="cl-chat-message-container">
+                <li>
+                    <a href="#">User</a>
+                    <p>Message Text</p>
+                </li>
+            </ul>
+            <div class="cl-input">
+                <input type="text" placeholder="Message">
+                <button class="cl-button">
+                    <span class="material-symbols-outlined">send</span>
+                </button>
+            </div>
+        </div>
         <div class="boxed-content is-not-centered hdden">
-            <div class="cl-chat-messages">
-                <div class="cl-chat-message">
-                    
-                </div>
+            <ul class="cl-chat-message-container unlinkable">
+                <li>
+                    <p>You</p>
+                    <p>Message Text</p>
+                </li>
+                <li>
+                    <a>AI</a>
+                    <p>Message Text</p>
+                </li>
+            </ul>
+            <div class="cl-input">
+                <input type="text" placeholder="Message">
+                <button class="cl-button">
+                    <span class="material-symbols-outlined">send</span>
+                </button>
+            </div>
+        </div>
+    </section>
+    <section class="cl-panel hidden">
+        <div class="topbar">
+            <div class="topbar-left" title="Videos">
+                <i class="material-symbols-outlined">video_library</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="All Videos">
+                    <span class="material-symbols-outlined">search</span>
+                </button>
+                <button class="cl-button" title="History">
+                    <span class="material-symbols-outlined">history</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor" title="100%, charging">battery_charging_full</span>
             </div>
         </div>
         <div class="boxed-content is-not-centered hidden">
-            <table class="cl-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Mod</td>
-                        <td>Description</td>
-                        <td>
-                            <div class="cl-horizontal">
-                                <button class="cl-button">
-                                    <i class="material-symbols-outlined">content_copy</i>
-                                </button>
-                                <button class="cl-button">
-                                    <i class="material-symbols-outlined">download</i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="cl-horizontal">
+                <div class="cl-input">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" placeholder="Search for videos">
+                </div>
+                <div class="cl-input">
+                    <span class="material-symbols-outlined">sort</span>
+                    <select>
+                        <option value="most-recent">Newest</option>
+                        <option value="most-oldest">Oldest</option>
+                        <option value="a-to-z">Name (ascending)</option>
+                        <option value="z-to-a">Name (descending)</option>
+                        <option value="most-viewed">Views (descending)</option>
+                        <option value="least-viewed">Views (ascending)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="cl-card-grid">
+                <a href="#" class="cl-video">
+                    <img src="https://placehold.co/1600x900" alt="Video" class="cl-video-thumbnail">
+                    <h3>Video Title</h3>
+                    <h4>Video Author</h4>
+                </a>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden">
+            <h1>History</h1>
+            <div class="cl-card-grid">
+                <a href="#" class="cl-video">
+                    <img src="https://placehold.co/1600x900" alt="Video" class="cl-video-thumbnail">
+                    <h3>Video Title</h3>
+                    <small>01-01-2025</small>
+                    <h4>Video Author</h4>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="cl-panel hidden">
+        <div class="topbar">
+            <div class="topbar-left" title="Videos">
+                <i class="material-symbols-outlined">video_library</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="With Users">
+                    <span class="material-symbols-outlined">people</span>
+                </button>
+                <button class="cl-button" title="AI">
+                    <span class="material-symbols-outlined">network_intelligence</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor" title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden">
+            <ul class="cl-chat-message-container">
+                <li>
+                    <a href="#">User</a>
+                    <p>Message Text</p>
+                </li>
+            </ul>
+            <div class="cl-input">
+                <input type="text" placeholder="Message">
+                <button class="cl-button">
+                    <span class="material-symbols-outlined">send</span>
+                </button>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden">
+            <ul class="cl-chat-message-container unlinkable">
+                <li>
+                    <p>You</p>
+                    <p>Message Text</p>
+                </li>
+                <li>
+                    <a>AI</a>
+                    <p>Message Text</p>
+                </li>
+            </ul>
+            <div class="cl-input">
+                <input type="text" placeholder="Message">
+                <button class="cl-button">
+                    <span class="material-symbols-outlined">send</span>
+                </button>
+            </div>
         </div>
     </section>
 </body>
