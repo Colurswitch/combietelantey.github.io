@@ -3,11 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="google-spinner.min.css">
     <title>Game Loader</title>
     <style>
         body {
             background: black;
             color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        body::before {
+            content: " ";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: url("https://placehold.co/626x126");
+            opacity: .5;
+            background-size: 300px;
+            background-position: center;
+        }
+        body::after {
+            content: " ";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: linear-gradient(transparent, black);
+        }
+        body * {
+            z-index: 1000;
         }
         /* From Uiverse.io by JkHuger */
         @keyframes loader_5191 {
@@ -81,6 +106,19 @@
     </style>
 </head>
 <body>
-    
+    <div class="spinner">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle
+            class="path"
+            cx="50"
+            cy="50"
+            r="20"
+            fill="none"
+            stroke-width="2"
+            stroke-miterlimit="10"
+            />
+        </svg>
+    </div>
+    <h2>Your game is loading...</h2>
 </body>
 </html>
