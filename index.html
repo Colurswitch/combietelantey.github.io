@@ -1,508 +1,3265 @@
 <!DOCTYPE html>
-<html lang="en">
-<!--OLD home page-->
+<html>
+
 <head>
-  <title>Home</title>
-  <meta charset="UTF-8" />
-  <meta name="description" content="Combiete Lantey - Home" />
-  <meta name="keywords" content="combiete, lantey, combiete lantey" />
-  <meta name="author" content="Combiete Lantey" />
-  <meta name="viewport" content="width=device-width" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="stylesheet" href="/toasty.css" />
-  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EFKP3BE1B3"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
+    <meta charset="UTF-8" />
+    <title>CL - Home</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/product-sans" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="google-spinner.min.css">
+    <style id="app.settingsStyles">
+        :root {
+            --cl-border-radius: 10px;
+        }
 
-    gtag("config", "G-EFKP3BE1B3");
-  </script>
-  <style id="settingStyle"></style>
-  <style>
-    @import "https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css";
+        body {
+            background:
+                linear-gradient(217deg, rgba(255, 0, 0, 0.8), rgba(255, 0, 0, 0) 70.71%),
+                linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
+                linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
+        }
+    </style>
+    <style>
+        :root {
+            --cl-topbar-color: rgba(0, 0, 0, 0.5);
+            --cl-inverted-topbar-color: rgba(255, 255, 255, 0.5);
+            --cl-info-color: rgba(0, 0, 255, 0.5);
+            --cl-warn-color: rgba(255, 255, 0, 0.5);
+            --cl-err-color: rgba(255, 0, 0, 0.5);
+        }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgb(158, 24, 24);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: -1000;
-    }
+        * {
+            transition: all .125s ease-out;
+            color: white;
+            font-family: "Product Sans";
+        }
 
-    body {
-      max-height: 100vh;
-      overflow: hidden;
-    }
+        body {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
 
-    .navbar {
-      background-color: rgba(0, 0, 0, 0.2);
-      color: white !important;
-    }
+        fullscreen {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            opacity: 1;
+        }
 
-    .navbar-item {
-      color: white !important;
-    }
+        fullscreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
 
-    .timeanddate {
-      color: white !important;
-      padding: 10px;
-    }
+        fullscreen video {
+            width: 100%;
+            height: 100%;
+            background: black;
+        }
 
-    #currentTime {
-      font-size: 50px;
-    }
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 1,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
 
-    #currentDate {
-      font-size: 30px;
-    }
+        .material-symbols-outlined.no-fill {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
 
-    #lblQod {
-      color: white !important;
-      padding: 10px;
-    }
+        .cl-panel {
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 1;
+        }
 
-    #pages-grid {
-      display: grid !important;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      flex-wrap: wrap;
-      overflow-y: auto;
-      padding: 10px;
-      justify-items: center;
-      max-height: calc(100vh - (54px + 44px + 140px));
-    }
+        .cl-panel.hidden,
+        .cl-panel .boxed-content.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
 
-    #pages-grid .box {
-      display: flex !important;
-      justify-content: center !important;
-      align-items: center;
-      text-align: center;
-      flex-direction: column;
-      padding: 55px;
-      width: 300px;
-      height: 300px;
-      box-shadow: none !important;
-      background-color: rgba(0, 0, 0, 0.2);
-      color: white;
-    }
+        .cl-panel *:is(.content, .boxed-content) *:is(h1, h2, h3, h4, h5, h6, p, caption, blockquote) {
+            margin: 0
+        }
 
-    #page-view {
-      display: flex;
-      height: 100vh;
-    }
+        .cl-panel .content {
+            width: calc(100% - 20px);
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: auto;
+            padding-top: 60px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
 
-    #news {
-      background-color: rgba(0, 0, 0, 0.2);
-      color: white;
-      padding: 10px;
-      text-align: center;
-      width: calc(100%-100px);
-    }
+        .cl-panel .boxed-content {
+            width: calc(100% - 20px);
+            height: calc(100vh - 90px);
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            border-radius: var(--cl-border-radius);
+            background-color: var(--cl-topbar-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            gap: 10px;
+        }
 
-    @keyframes spinner {
-      from {
-        transform: rotate(0deg);
-      }
+        .cl-panel .boxed-content.is-not-centered {
+            align-items: start;
+            justify-content: start;
+            padding: 10px;
+            width: calc(100% - 40px);
+            height: calc(100vh - 110px);
+        }
 
-      to {
-        transform: rotate(360deg);
-      }
-    }
+        .cl-panel .boxed-content.is-not-centered .cl-input {
+            width: calc(100% - 20px);
+        }
 
-    .spinner {
-      animation: spinner 1s linear infinite;
-      border: 4px solid rgba(0, 0, 0, 0);
-      border-radius: 50%;
-      border-top: 4px solid #fff !important;
-      border-bottom: 4px solid #fff !important;
-      height: 60px;
-      width: 60px;
-      color: transparent;
-    }
+        .cl-panel .content.fullscreen {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            outline: 1px solid red;
+        }
 
-    .json-editor-btn-delete.delete::after,
-    .json-editor-btn-delete.delete::before {
-      display: none !important;
-    }
+        .cl-panel .topbar {
+            width: calc(100% - 20px);
+            height: 60px;
+            position: sticky;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            border-radius: var(--cl-border-radius);
+            background-color: var(--cl-topbar-color);
+            display: flex;
+            justify-content: space-between;
+        }
 
-    .json-editor-btn-delete.delete {
-      max-width: none !important;
-      width: auto !important;
-      background-color: transparent !important;
-    }
+        .cl-panel .topbar .topbar-left,
+        .cl-panel .topbar .topbar-center,
+        .cl-panel .topbar .topbar-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            color: white;
+        }
 
-    .page-view-left {
-      height: 100% !important;
-      padding: 5px;
-    }
+        .cl-panel .topbar .topbar-left i,
+        .cl-panel .topbar .topbar-center i,
+        .cl-panel .topbar .topbar-right i {
+            font-size: 30px;
+            opacity: 1;
+        }
 
-    .page-view-left .top .button {
-      border: none;
-      background-color: transparent !important;
-      color: white;
-      box-shadow: none !important;
-    }
+        .cl-panel .topbar .topbar-left i::before {
+            content: "arrow_back";
+            opacity: 0;
+            display: none;
+        }
 
-    .transparent-button {
-      background-color: transparent !important;
-      color: white !important;
-      border: none !important;
-      box-shadow: none !important;
-    }
+        .cl-panel .topbar .topbar-left::before {
+            content: attr(title);
+            position: absolute;
+            bottom: -18px;
+            padding: 5px;
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .125s linear;
+        }
 
-    .page-view-left .bottom img {
-      transform: rotate(-90deg);
-      bottom: 0 !important;
-    }
+        .cl-panel .topbar .topbar-left:hover::before {
+            opacity: 1;
+        }
 
-    .page-view-right iframe {
-      width: calc(100vw - 48px) !important;
-    }
+        .cl-panel .topbar .topbar-left.goes-back:hover i {
+            color: transparent;
+        }
 
-    .page-icon {
-      font-size: 80px;
-      margin-bottom: 10px;
-    }
+        .cl-panel .topbar .topbar-left.goes-back:hover i::before {
+            content: "arrow_back";
+            opacity: 1;
+            display: inline-block;
+            color: white;
+        }
 
-    .page-title {
-      font-size: 30px;
-    }
-  </style>
+        .cl-panel .topbar .topbar-right {
+            width: auto;
+            padding-right: 10px;
+            gap: 10px;
+        }
 
-  <!--Firebase-->
-  <script src="firebase.js" type="module" defer></script>
+        .cl-panel .topbar .topbar-center {
+            width: auto;
+        }
 
-  <script src="qod.js"></script>
-  <script src="pageList.js"></script>
-  <script src="index.js"></script>
-  <script src="timeAndDate.js"></script>
-  <script src="changelog.js"></script>
-  <script src="toasty.js"></script>
+        .cl-panel .topbar .topbar-center .cl-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 0;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .cl-panel .topbar .topbar-center .cl-button:not(:hover):not(:active) {
+            background: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            border-bottom: 0px solid;
+        }
+
+        .cl-panel .topbar .topbar-center .cl-button:hover {
+            border-bottom: 5px solid var(--cl-topbar-color);
+        }
+
+        .cl-panel .topbar .topbar-center .cl-button::before {
+            content: attr(title);
+            position: absolute;
+            bottom: -18px;
+            padding: 5px;
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .125s linear;
+        }
+
+        .cl-panel .topbar .topbar-center .cl-button:hover::before {
+            opacity: 1;
+        }
+
+        .cl-panel .topbar .topbar-center .cl-button.selected {
+            border-bottom: 5px solid white !important;
+        }
+
+        .cl-panel .topbar .topbar-center .cl-input {
+            height: 100%;
+            border-radius: 0;
+            padding: 0;
+        }
+
+        .cl-panel .topbar .topbar-center .cl-input *:is(i, span) {
+            padding: 18px;
+        }
+
+        .cl-panel .topbar .topbar-center .cl-input input {
+            padding: 10px;
+        }
+
+        .cl-input {
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            color: white;
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+        }
+
+        .cl-input input,
+        .cl-input textarea,
+        .cl-input select,
+        input, textarea, select {
+            border: none;
+            background: none;
+            font-size: large;
+            color: white;
+            padding: 0;
+            resize: none;
+        }
+
+        input, textarea, select {
+            background: var(--cl-topbar-color);
+            border-radius: var(--cl-border-radius);
+            padding: 10px;
+            width: calc(100% - 20px);
+        }
+
+        .cl-input input[type=file] {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cl-input input[type=file]::file-selector-button {
+            border: none;
+            padding: 10px;
+            color: white;
+            background: var(--cl-topbar-color);
+            border-radius: var(--cl-border-radius);
+            cursor: pointer;
+            margin-right: 10px;
+            font-family: "Product Sans";
+        }
+
+        .cl-input select option {
+            color: black;
+        }
+
+        .cl-input textarea {
+            resize: none;
+        }
+
+        .cl-input *:is(textarea, input, select) {
+            width: 100%;
+        }
+
+        .cl-input.x-resize textarea,
+        textarea.x-resize {
+            resize: horizontal;
+        }
+
+        .cl-input.y-resize textarea
+        textarea.y-resize {
+            resize: vertical;
+        }
+
+        .cl-input input::placeholder,
+        .cl-input textarea::placeholder,
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(255, 255, 255, .5);
+        }
+
+        .cl-input:has(input:invalid),
+        input:invalid {
+            border: 1px solid red;
+        }
+
+        .cl-input:has(.cl-button) {
+            padding: 0 0 0 10px;
+            gap: 0;
+        }
+
+        .cl-input .cl-button {
+            border-radius: 0;
+        }
+
+        .cl-input .cl-button:first-child {
+            border-top-left-radius: var(--cl-border-radius);
+            border-bottom-left-radius: var(--cl-border-radius);
+        }
+
+        .cl-input .cl-button:last-child {
+            border-top-right-radius: var(--cl-border-radius);
+            border-bottom-right-radius: var(--cl-border-radius);
+        }
+
+        .cl-horizontal {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .cl-horizontal.is-centered {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .cl-horizontal.is-spread {
+            width: 100%;
+            flex-wrap: nowrap;
+        }
+
+        .cl-horizontal.is-spread>* {
+            width: 100%;
+        }
+
+        .cl-button {
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            color: white;
+            align-items: center;
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+            border: 0px solid;
+            transition: all .15s ease;
+            text-align: start;
+            text-decoration: none;
+        }
+
+        .cl-button:hover:not(:disabled) {
+            background: #00000010;
+        }
+
+        .cl-button:active:not(:disabled) {
+            background: #00000020;
+        }
+
+        .cl-button:disabled {
+            cursor: not-allowed;
+            color: var(--cl-topbar-color);
+            opacity: 0.5;
+        }
+
+        .cl-button[interactive=false] {
+            pointer-events: none;
+        }
+
+        .cl-button.is-info {
+            background: var(--cl-info-color);
+        }
+
+        .cl-button.is-warning {
+            background: var(--cl-warn-color);
+        }
+
+        .cl-button.is-error {
+            background: var(--cl-err-color);
+        }
+
+        .cl-button.is-loading {
+            cursor: progress;
+            pointer-events: none;
+            color: transparent !important;
+        }
+
+        .cl-button.is-loading::before {
+            content: " ";
+            display: block;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border-right: 2px solid transparent;
+            border-left: 2px solid transparent;
+            border-bottom: 2px solid white;
+            border-top: 2px solid white;
+            animation: spin 1s linear infinite;
+            position: relative;
+            top: 0%;
+            left: -43%;
+        }
+
+        .cl-card {
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+            overflow: hidden;
+        }
+
+        .cl-card .cl-card-top {
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .cl-card .cl-card-bottom {
+            padding: 10px;
+        }
+
+        .cl-card-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            flex-wrap: wrap;
+            gap: 10px;
+            width: calc(100% - 10px);
+            grid-gap: 10px;
+            margin-left: 5px;
+            justify-items: center;
+        }
+
+        .cl-card-grid[disabled]>* {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .cl-card-grid>* {
+            width: inherit;
+        }
+
+        .cl-card-grid.is-loading {
+            opacity: .5;
+        }
+
+        .cl-card-grid.is-loading * {
+            opacity: 0;
+            color: transparent;
+        }
+
+        .cl-card-grid.is-loading::before {
+            content: " ";
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border-top: 2px solid white;
+            border-bottom: 2px solid white;
+            border-left: 2px solid transparent;
+            border-right: 2px solid transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        .cl-horizontal-card-display {
+            max-width: 100%;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .cl-game {
+            flex: 0 0 auto;
+            border-radius: var(--cl-border-radius);
+            width: 300px;
+            height: 200px;
+            background-blend-mode: darken;
+            background: url("assets/background/game_placeholder.png");
+            background-size: cover;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-items: start;
+            align-items: end;
+            padding: 10px;
+        }
+
+        .cl-game * {
+            margin: 0;
+            color: rgba(255, 255, 255, .5);
+        }
+
+        .cl-game h1 {
+            color: white;
+        }
+
+        .cl-gamescore {
+            color: orange;
+        }
+
+        .cl-table {
+            width: 100%;
+        }
+
+        .cl-table thead {
+            background: var(--cl-topbar-color);
+        }
+
+        .cl-table thead th {
+            text-align: left;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .cl-table tbody tr {
+            border-bottom: 1px solid var(--cl-topbar-color);
+        }
+
+        .cl-table:not(.is-transparent) tbody tr:nth-child(even) {
+            background: var(--cl-topbar-color);
+        }
+
+        .cl-table tbody tr td {
+            padding: 10px;
+        }
+
+        .cl-table tbody:only-child tr td {
+            padding: 0;
+        }
+
+        .cl-chat-message-container {
+            background-color: var(--cl-topbar-color);
+            border-radius: var(--cl-border-radius);
+            width: calc(100% - 20px);
+            list-style: none;
+            padding: 10px;
+            margin: 0;
+            height: calc(100% - 75px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cl-chat-message-container>li {
+            background-color: var(--cl-topbar-color);
+            border-radius: var(--cl-border-radius);
+            padding: 10px;
+        }
+
+        .cl-chat-message-container>li>a {
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .cl-chat-message-container.unlinkable>li>a {
+            pointer-events: none;
+        }
+
+        .cl-panel .boxed-content:has(.cl-chat-message-container) .cl-input {
+            width: calc(100% - 10px)
+        }
+
+        .cl-panel .boxed-content:has(.cl-chat-message-container) .cl-input input {
+            width: 100%;
+        }
+
+        .cl-video {
+            width: 250px;
+            border-radius: var(--cl-border-radius);
+            background-color: var(--cl-topbar-color);
+            text-decoration: none;
+            color: white;
+            overflow: hidden;
+        }
+
+        .cl-video:hover {
+            background: var(--cl-inverted-topbar-color);
+        }
+
+        .cl-video .cl-video-thumbnail {
+            width: 250px;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
+        .cl-video *:is(h3, h4, small) {
+            margin: 8px;
+        }
+
+        .cl-user {
+            width: 250px;
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            overflow: hidden;
+        }
+
+        /*.cl-user .cl-user-thumbnail {
+            
+        }*/
+        .cl-user .cl-user-info-box {
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .cl-user .cl-user-photo {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+        }
+
+        .cl-user h3 {
+            position: absolute;
+            top: 0px;
+            width: 190px;
+            min-height: 15px;
+        }
+
+        .cl-game-page {
+            background: darkslategray;
+            overflow-y: auto;
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cl-game-page .cl-game-info-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 75%;
+            max-width: 550px;
+        }
+
+        .cl-game-page .cl-game-info-box .cl-game-action-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cl-game-page .cl-game-info-box h1 {
+            margin: 0
+        }
+
+        .cl-game-page .cl-game-thumbnail {
+            width: 75%;
+            max-width: 550px;
+            background: var(--cl-topbar-color);
+            border-radius: var(--cl-border-radius);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cl-game-page .cl-game-image {
+            width: 75%;
+            max-width: 550px;
+            aspect-ratio: 9 / 4;
+            border-radius: var(--cl-border-radius);
+            object-fit: cover;
+        }
+
+        .cl-game-notes-container {
+            width: 75%;
+            max-width: 550px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .boxed-content .cl-game-notes-container {
+            width: calc(100%);
+            max-width: none;
+        }
+
+        .cl-game-page p,
+        .cl-paragraph {
+            width: calc(75% - 20px);
+            max-width: 550px;
+            padding: 10px;
+            margin: 0;
+            background: var(--cl-topbar-color);
+            border-radius: var(--cl-border-radius);
+            text-align: left;
+        }
+
+        .cl-paragraph {
+            width: calc(100% - 20px);
+            max-width: none;
+        }
+
+        .cl-container {
+            width: calc(100% - 20px);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cl-comment {
+            padding: 10px;
+            width: 100%;
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+            display: flex;
+            gap: 10px;
+        }
+
+        .cl-comment>img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+        }
+
+        .cl-collapsible .cl-collapsible-arrow {
+            pointer-events: none;
+        }
+
+        .cl-collapsible .cl-collapsible-checkbox {
+            position: absolute;
+            opacity: 0;
+            margin: 6px;
+            transform: scale(2.3);
+        }
+
+        .cl-collapsible:has(.cl-collapsible-checkbox:not(:checked)) .cl-collapsible-arrow {
+            transform: rotate(0deg);
+        }
+
+        .cl-collapsible:has(.cl-collapsible-checkbox:checked) .cl-collapsible-arrow {
+            transform: rotate(90deg);
+        }
+
+        .cl-collapsible:has(.cl-collapsible-checkbox:not(:checked)) .cl-collapsible-content {
+            height: 0;
+            opacity: 0;
+            pointer-events: none;
+            display: none;
+            transition: height .125s ease-out;
+        }
+
+        .cl-collapsible:has(.cl-collapsible-checkbox::checked) .cl-collapsible-content {
+            height: auto;
+        }
+
+        .cl-game-frame {
+            width: 100%;
+            height: 100%;
+            background: black;
+        }
+
+        .cl-banner {
+            border-radius: var(--cl-border-radius);
+            object-fit: cover;
+            width: 100%;
+            max-width: 750px;
+            aspect-ratio: 9 / 3;
+        }
+
+        .cl-circular {
+            border-radius: 50%;
+            background: var(--cl-topbar-color);
+            width: 128px;
+        }
+
+        .cl-toast-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            gap: 10px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .cl-toast-container>* {
+            animation: toast 5s linear;
+            opacity: 0;
+        }
+
+        .charging {
+            color: lightgreen
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes toast {
+            from {
+                opacity: 0;
+            }
+
+            9%,
+            95% {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --cl-topbar-color: rgba(0, 0, 0, 0.5);
+                --cl-inverted-topbar-color: rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --cl-topbar-color: rgba(255, 255, 255, 0.5);
+                --cl-inverted-topbar-color: rgba(0, 0, 0, 0.5);
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <div class="dashboard" id="main-view">
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="#">
-          <img src="./assets/logo/original_logo.png" alt="Combiete Lantey" />
-        </a>
-      </div>
+    <div class="cl-toast-container" id="app.toastContainer">
+        <button class="cl-button">
+            <i class="material-symbols-outlined">delete</i>
+            <span>This is a toast</span>
+        </button>
+    </div>
+    <!--Game Player-->
+    <fullscreen class="hidden" id="app.gamePlayer.page">
+        <iframe src="games/game_loader.html" frameborder="0" class="cl-game-frame" id="app.gamePlayer.page.iframe">
+            Your browser does not support IFrames.
+        </iframe>
+    </fullscreen>
+    <!--Video Player-->
+    <fullscreen class="hidden" id="app.videoPlayer.page">
+        <video
+            src="https://media.istockphoto.com/id/1392471162/video/circles-in-rhythm-four-corners.mp4?s=mp4-640x640-is&k=20&c=IuLstb-CSuP0jqWW6NyCMMNLRu7enZkuue_DwsPzhzk="
+            controls playsinline data-poster id="app.videoPlayer.page.video">
 
-      <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-          <marquee id="news">No new news.</marquee>
-        </div>
-        CL will get a new look this summer!
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="buttons">
-              <button class="button js-modal-trigger transparent-button" data-target="dlgChangelog">
-                <span class="icon">
-                  <span class="material-icons">article</span>
-                </span>
-              </button>
-              <button class="js-modal-trigger button transparent-button" data-target="dlgSettings">
-                <span class="icon">
-                  <span class="material-icons">settings</span>
-                </span>
-              </button>
-              <a class="button transparent-button" href="account">
-                <span class="icon">
-                  <span class="material-icons">person</span>
-                </span>
-              </a>
+        </video>
+    </fullscreen>
+    <!--Please wait...-->
+    <section class="cl-panel hidden" id="app.loaderScreen">
+        <div class="topbar">
+            <div class="topbar-left" title="Please wait...">
+                <i class="material-symbols-outlined">sync</i>
             </div>
-          </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
         </div>
-      </div>
-    </nav>
-    <h1 id="lblQod">None</h1>
-    <div class="timeanddate">
-      <h1 id="currentTime">Time</h1>
-      <h3 id="currentDate">Date</h3>
-    </div>
-    <div id="pages-grid">
-      <div class="box">
-        <h1 class="page-icon material-icons spinner">refresh</h1>
-        <h3 class="page-title">Loading...</h3>
-      </div>
-      <p id="pages-error" style="display: none">
-        No pages found or an error occurred.
-      </p>
-    </div>
-  </div>
-  <div class="dashboard" id="page-view" style="display: none">
-    <div class="page-view-left">
-      <section class="top">
-        <p class="buttons" style="width: 38px">
-          <button class="button"
-            onclick="document.getElementById('main-view').style.display = 'block';document.getElementById('page-view').style.display = 'none';">
-            <span class="icon">
-              <i class="material-icons">menu</i>
-            </span>
-          </button>
-          <!-- Panic button -->
-          <button class="button" onclick="wapp.panic(0);">
-            <span class="icon">
-              <i class="material-icons">error</i>
-            </span>
-          </button>
-          <button class="js-modal-trigger button" data-target="dlgSettings">
-            <span class="icon">
-              <i class="material-icons">settings</i>
-            </span>
-          </button>
+        <div class="boxed-content">
+            <div class="spinner">
+                <svg class="circular" viewBox="25 25 50 50">
+                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+                </svg>
+            </div>
+        </div>
+    </section>
+    <!--Log In/Sign Up-->
+    <section class="cl-panel hidden" id="app.authScreen.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Log In / Sign Up">
+                <i class="material-symbols-outlined">key</i>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content">
+            <h1>Log In / Sign Up</h1>
+            <div class="cl-input">
+                <i class="material-symbols-outlined">mail</i>
+                <input type="email" placeholder="Email" id="app.authScreen.page.emailInput">
+            </div>
+            <div class="cl-input">
+                <i class="material-symbols-outlined">lock</i>
+                <input type="password" placeholder="Password" id="app.authScreen.page.passwordInput">
+            </div>
+            <div class="cl-input">
+                <i class="material-symbols-outlined">lock</i>
+                <input type="password" placeholder="Confirm password (optional)"
+                    id="app.authScreen.page.confirmPasswordInput">
+            </div>
+            <div class="cl-horizontal">
+                <button class="cl-button" id="app.authScreen.page.SIBtn">
+                    <i class="material-symbols-outlined">check</i>
+                    <span>Log In</span>
+                </button>
+                <button class="cl-button" id="app.authScreen.page.SUBtn">
+                    <i class="material-symbols-outlined">add</i>
+                    <span>Sign Up</span>
+                </button>
+            </div>
+            <button class="cl-button" id="app.authScreen.page.continueAsGuestBtn">
+                <i class="material-symbols-outlined">close</i>
+                <span>Continue as Guest</span>
+            </button>
+        </div>
+    </section>
+    <!--Home-->
+    <section class="cl-panel hidden" id="app.homeScreen.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Home">
+                <i class="material-symbols-outlined">home</i>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered">
+            <h1 id="app.homeScreen.page.pageTitle">Welcome (back), User!</h1>
+            <div class="cl-card-grid" id="app.homeScreen.page.pageCardsContainer">
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">sports_esports</i>
+                        <span>Games</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        View, play, and discover games.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">deployed_code</i>
+                        <span>Minecraft</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        View, play and add Minecraft versions, mods, worlds
+                        and more.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">forum</i>
+                        <span>Chat</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Chat with other users, or generative AI.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">video_library</i>
+                        <span>Videos</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Play and discover videos.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">person</i>
+                        <span>Users</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        See all users.
+                    </div>
+                </div>
+                <!--<div class="cl-card">
+                        <div class="cl-card-top">
+                            <i class="material-symbols-outlined">globe</i>
+                            <span>Web</span>
+                        </div>
+                        <div class="cl-card-bottom">
+                            Unblock web pages.
+                        </div>
+                    </div>-->
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">account_circle</i>
+                        <span>Account</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Manage your account.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">library_books</i>
+                        <span>Content</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Manage your videos, games, and other content that
+                        has been uploaded to Chillnet.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">shield</i>
+                        <span>Admin</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Moderate users, videos and games.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">settings</i>
+                        <span>Settings</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Change your settings.
+                    </div>
+                </div>
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">help</i>
+                        <span>Help</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        View help articles and other information about
+                        Chillnet.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Games-->
+    <section class="cl-panel hidden" id="app.gamesScreen.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Games" data-targetPage="home">
+                <i class="material-symbols-outlined">sports_esports</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="Trending Games" id="app.gameScreen.page.trendingGames.btn">
+                    <span class="material-symbols-outlined">trending_up</span>
+                </button>
+                <button class="cl-button" title="Search Games" id="app.gameScreen.page.searchGames.btn">
+                    <span class="material-symbols-outlined">search</span>
+                </button>
+                <button class="cl-button" title="Saved Games" id="app.gameScreen.page.savedGames.btn">
+                    <span class="material-symbols-outlined">bookmarks</span>
+                </button>
+                <button class="cl-button" title="History" id="app.gameScreen.page.history.btn">
+                    <span class="material-symbols-outlined">history</span>
+                </button>
+                <button class="cl-button" title="Achievements" id="app.gameScreen.page.achievements.btn">
+                    <span class="material-symbols-outlined">trophy</span>
+                </button>
+                <button class="cl-button" title="Currently Playing" id="app.gameScreen.page.currentlyPlaying.btn">
+                    <span class="material-symbols-outlined">play_arrow</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-GamescoreMonitor cl-gamescore" title="100 gamescore">100</h3>
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.gameScreen.page.trendingGames.boxedContent">
+            <h1>Top 10 Games</h1>
+            <div class="cl-horizontal-card-display"
+                id="app.gameScreen.page.trendingGames.boxedContent.top10cardsContainer">
+                <div class="cl-game">
+                    <div class="cl-game-info">
+                        <h1>Game</h1>
+                        <small>123K plays</small>
+                    </div>
+                </div>
+            </div>
+            <h1>Based on what you play</h1>
+            <div class="cl-horizontal-card-display"
+                id="app.gameScreen.page.trendingGames.boxedContent.youPlayedCardsContainer">
+                <div class="cl-game">
+                    <div class="cl-game-info">
+                        <h1>Game</h1>
+                        <small>123K plays</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.gameScreen.page.searchGames.boxedContent">
+            <div class="cl-horizontal">
+                <div class="cl-input">
+                    <i class="material-symbols-outlined">search</i>
+                    <input type="text" placeholder="Search for a game" id="app.gameScreen.page.searchGames.input">
+                </div>
+                <div class="cl-input">
+                    <i class="material-symbols-outlined">sort</i>
+                    <select id="app.gameScreen.page.searchGames.sortBySelect">
+                        <option value="a-to-z">Name (ascending)</option>
+                        <option value="z-to-a">Name (descending)</option>
+                        <option value="most-played">Most Played</option>
+                        <option value="least-played">Least Played</option>
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                    </select>
+                </div>
+            </div>
+            <div class="cl-card-grid" id="app.gameScreen.page.searchGames.boxedContent.gamesContainer">
+                <div class="cl-game">
+                    <div class="cl-game-info">
+                        <h1>Game</h1>
+                        <small>123K plays</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.gameScreen.page.savedGames.boxedContent">
+            <h1>Saved Games</h1>
+            <div class="cl-card-grid" id="app.gameScreen.page.savedGames.boxedContent.gamesContainer">
+                <div class="cl-game">
+                    <div class="cl-game-info">
+                        <h1>Game</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.gameScreen.page.history.boxedContent">
+            <h1>History</h1>
+            <div class="cl-card-grid" id="app.gameScreen.page.history.boxedContent.gamesContainer">
+                <div class="cl-game">
+                    <div class="cl-game-info">
+                        <h1>Game</h1>
+                        <small>01-01-2025</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden" id="app.gameScreen.page.achievements.boxedContent">
+            <h1>Achievements</h1>
+            <div class="cl-container" id="app.gameScreen.page.achievements.boxedContent.achievementsContainer">
+                <div class="cl-collapsible cl-container">
+                    <input type="checkbox" class="cl-collapsible-checkbox">
+                    <div class="cl-horizontal cl-collapsible-top">
+                        <span class="material-symbols-outlined cl-collapsible-arrow">arrow_right</span>
+                        <h3>Game</h3>
+                    </div>
+                    <div class="cl-container cl-collapsible-content">
+                        <div class="cl-horizontal">
+                            <span class="material-symbols-outlined">trophy</span>
+                            <span class="cl-gamescore">
+                                100
+                            </span>
+                            <span>
+                                Achievement
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.gameScreen.page.currentlyPlaying.boxedContent">
+            <h1>Currently Playing</h1>
+            <div class="cl-game" id="app.gameScreen.page.currentlyPlaying.boxedContent.game">
+                <div class="cl-game-info">
+                    <h1>Game</h1>
+                    <small>01-01-2025</small>
+                </div>
+            </div>
+            <div class="cl-card-grid" id="app.gameScreen.page.currentlyPlaying.boxedContent.actionBtnsContainer">
+                <div class="cl-card">
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">play_arrow</i>
+                        <span>Resume</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Resume the game.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Game-->
+    <fullscreen class="hidden cl-game-page" id="app.gameScreen.page">
+        <img src="https://placehold.co/900x400" alt="Game Image" class="cl-game-image"
+            id="app.gameScreen.page.gameImage">
+        <div class="cl-game-info-box">
+            <h1 id="app.gameScreen.page.gameTitle">Game Title</h1>
+            <div class="cl-game-action-box">
+                <button class="cl-button" id="app.gameScreen.page.gameStartBtn">
+                    <span class="material-symbols-outlined">play_arrow</span>
+                    <span>Play</span>
+                </button>
+                <button class="cl-button" id="app.gameScreen.page.backBtn">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span>Back</span>
+                </button>
+            </div>
+        </div>
+        <div class="cl-game-notes-container" id="app.gameScreen.page.gameNotesContainer">
+            <button class="cl-button is-info" interactive="false">
+                <span class="material-symbols-outlined">info</span>
+                <span>Game info.</span>
+            </button>
+        </div>
+        <p id="app.gameScreen.page.gameDescription">
+            Game description...
         </p>
-      </section>
-    </div>
-    <div class="page-view-right">
-      <iframe src="#" width="100%" height="100%" id="inner-page-view"></iframe>
-    </div>
-  </div>
-  <div class="modal" id="dlgSettings">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">Settings</p>
-      </header>
-      <section class="modal-card-body">
-        <div id="settings-container"></div>
-      </section>
-      <footer class="modal-card-foot">
-        <div class="buttons">
-          <button class="button">Close</button>
+    </fullscreen>
+    <!--Minecraft (Eaglercraft)-->
+    <section class="cl-panel hidden" id="app.minecraftScreen.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Minecraft" data-targetPage="home">
+                <i class="material-symbols-outlined">deployed_code</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="Versions" id="app.minecraftScreen.page.versions.btn">
+                    <span class="material-symbols-outlined">play_arrow</span>
+                </button>
+                <button class="cl-button" title="Mods" id="app.minecraftScreen.page.mods.btn">
+                    <span class="material-symbols-outlined">extension</span>
+                </button>
+                <button class="cl-button" title="Worlds" id="app.minecraftScreen.page.worlds.btn">
+                    <span class="material-symbols-outlined">globe</span>
+                </button>
+                <button class="cl-button" title="Resource Packs" id="app.minecraftScreen.page.resourcePacks.btn">
+                    <span class="material-symbols-outlined">texture</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
         </div>
-      </footer>
-    </div>
-  </div>
-  <div class="modal" id="dlgChangelog">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">Changelog</p>
-      </header>
-      <section class="modal-card-body" id="changelogContainer">
-        <article class="message">
-          <div class="message-header">
-            <p>Hello World</p>
-          </div>
-          <div class="message-body">
-            <article class="message is-success">
-              <div class="message-body">Added</div>
-            </article>
-            <article class="message is-danger">
-              <div class="message-body">Removed</div>
-            </article>
-            <article class="message is-info">
-              <div class="message-body">Updated</div>
-            </article>
-            <article class="message is-warning">
-              <div class="message-body">Fixed</div>
-            </article>
-          </div>
-        </article>
-      </section>
-      <footer class="modal-card-foot">
-        <div class="buttons">
-          <button class="button">Close</button>
+        <div class="boxed-content is-not-centered hidden" id="app.minecraftScreen.page.versions.boxedContent">
+            <div class="cl-container" id="app.minecraftScreen.page.versions.boxedContent.versionsContainer">
+                <div class="cl-collapsible cl-container">
+                    <input type="checkbox" class="cl-collapsible-checkbox">
+                    <div class="cl-horizontal cl-collapsible-top">
+                        <span class="material-symbols-outlined cl-collapsible-arrow">arrow_right</span>
+                        <h3>EaglercraftX (1.8.x)</h3>
+                    </div>
+                    <div class="cl-container cl-collapsible-content">
+                        <div class="cl-horizontal">
+                            <h3>Version</h3>
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined">play_arrow</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </footer>
-    </div>
-  </div>
-  <script type="module">
-    import * as sbApp from "./firebase.js";
-    import changelog from "./changelog.json" with {type: "json"};
+        <div class="boxed-content is-not-centered hdden" id="app.minecraftScreen.page.mods.boxedContent">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="app.minecraftScreen.page.mods.boxedContent.modsContainer">
+                    <tr>
+                        <td>Mod</td>
+                        <td>Description</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">content_copy</i>
+                                </button>
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">download</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.minecraftScreen.page.worlds.boxedContent">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="app.minecraftScreen.page.worlds.boxedContent.worldsContainer">
+                    <tr>
+                        <td>World</td>
+                        <td>Description</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">download</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.minecraftScreen.page.resourcePacks.boxedContent">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Size (pixels)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="app.minecraftScreen.page.resourcePacks.boxedContent.resourcePacksContainer">
+                    <tr>
+                        <td>Mod</td>
+                        <td>Description</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">content_copy</i>
+                                </button>
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">download</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <!--Chat-->
+    <section class="cl-panel hidden" id="app.chat.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Chat" data-targetPage="home">
+                <i class="material-symbols-outlined">forum</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="With Users" id="app.chat.page.withUsers.btn">
+                    <span class="material-symbols-outlined">people</span>
+                </button>
+                <button class="cl-button" title="AI" id="app.chat.page.ai.btn">
+                    <span class="material-symbols-outlined">network_intelligence</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.chat.page.withUsers.boxedContent">
+            <ul class="cl-chat-message-container" id="app.chat.page.withUsers.boxedContent.messagesContainer">
+                <li>
+                    <a href="#">User</a>
+                    <p>Message Text</p>
+                </li>
+                <li>
+                    <a href="#">User</a>
+                    <p>Message Text</p>
+                </li>
+                <li>
+                    <a href="#">User</a>
+                    <p>Message Text</p>
+                </li>
+                <li>
+                    <a href="#">User</a>
+                    <p>Message Text</p>
+                </li>
+                <li>
+                    <a href="#">User</a>
+                    <p>Message Text</p>
+                </li>
+            </ul>
+            <div class="cl-input">
+                <input type="text" placeholder="Message" id="app.chat.page.withUsers.boxedContent.msgInput">
+                <button class="cl-button" id="app.chat.page.withUsers.boxedContent.sendBtn">
+                    <span class="material-symbols-outlined">send</span>
+                </button>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.chat.page.ai.boxedContent">
+            <ul class="cl-chat-message-container" id="app.chat.page.ai.boxedContent.messagesContainer">
+                <li>
+                    <p>You</p>
+                    <p>Message Text</p>
+                </li>
+                <li>
+                    <a>AI</a>
+                    <p>Message Text</p>
+                </li>
+            </ul>
+            <div class="cl-input">
+                <input type="text" placeholder="Message" id="app.chat.page.ai.boxedContent.msgInput">
+                <button class="cl-button" id="app.chat.page.ai.boxedContent.sendBtn">
+                    <span class="material-symbols-outlined">send</span>
+                </button>
+            </div>
+        </div>
+    </section>
+    <!--Videos-->
+    <section class="cl-panel hidden" id="app.videos.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Videos" data-targetPage="home">
+                <i class="material-symbols-outlined">video_library</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="All Videos" id="app.videos.page.allVideos">
+                    <span class="material-symbols-outlined">search</span>
+                </button>
+                <button class="cl-button" title="History" id="app.videos.page.history">
+                    <span class="material-symbols-outlined">history</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.videos.page.allVideos">
+            <div class="cl-horizontal">
+                <div class="cl-input">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" placeholder="Search for videos" id="app.videos.page.allVideos.searchInput">
+                </div>
+                <div class="cl-input">
+                    <span class="material-symbols-outlined">sort</span>
+                    <select id="app.videos.page.allVideos.sortSelect">
+                        <option value="most-recent">Newest</option>
+                        <option value="most-oldest">Oldest</option>
+                        <option value="a-to-z">Name (ascending)</option>
+                        <option value="z-to-a">Name (descending)</option>
+                        <option value="most-viewed">Views
+                            (descending)</option>
+                        <option value="least-viewed">Views
+                            (ascending)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="cl-card-grid" id="app.videos.page.allVideos.list">
+                <a href="#" class="cl-video">
+                    <img src="https://placehold.co/1600x900" alt="Video" class="cl-video-thumbnail">
+                    <h3>Video Title</h3>
+                    <h4>Video Author</h4>
+                </a>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden" id="app.videos.page.history">
+            <h1>History</h1>
+            <div class="cl-card-grid" id="app.videos.page.history.list">
+                <a href="#" class="cl-video">
+                    <img src="https://placehold.co/1600x900" alt="Video" class="cl-video-thumbnail">
+                    <h3>Video Title</h3>
+                    <small>01-01-2025</small>
+                    <h4>Video Author</h4>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!--Video-->
+    <section class="cl-panel hidden" id="app.video.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Video" data-targetPage="videos">
+                <i class="material-symbols-outlined">slideshow</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="Info" id="app.video.page.info.btn">
+                    <span class="material-symbols-outlined">info</span>
+                </button>
+                <button class="cl-button" title="Comments" id="app.video.page.comments.btn">
+                    <span class="material-symbols-outlined">comment</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.video.page.info">
+            <h1 id="app.video.page.info.title">Video Title</h1>
+            <small id="app.video.page.info.status">Date | Views</small>
+            <div class="cl-horizontal">
+                <button class="cl-button" id="app.video.page.info.playBtn">
+                    <span class="material-symbols-outlined">play_arrow</span>
+                    <span>Play</span>
+                </button>
+                <button class="cl-button" id="app.video.page.info.likeBtn">
+                    <span class="material-symbols-outlined no-fill">thumb_up</span>
+                    <span>0</span>
+                </button>
+                <button class="cl-button" id="app.video.page.info.dislikeBtn">
+                    <span class="material-symbols-outlined no-fill">thumb_down</span>
+                    <span>0</span>
+                </button>
+            </div>
+            <p id="app.video.page.info.description">
+                Video description...
+            </p>
+        </div>
+        <div class="boxed-content is-not-centered hdden" id="app.video.page.comments">
+            <div class="cl-input">
+                <textarea rows="4" placeholder="Commenting as User"
+                    id="app.video.page.comments.commentInput"></textarea>
+            </div>
+            <div class="cl-horizontal">
+                <button class="cl-button" id="app.video.page.comments.sendBtn">
+                    <span class="material-symbols-outlined">send</span>
+                    <span>Submit</span>
+                </button>
+            </div>
+            <h1 id="app.video.page.comments.amountText">Comments (0)</h1>
+            <div class="cl-container" id="app.video.page.comments.commentsContainer">
+                <div class="cl-comment">
+                    <img src="https://placehold.co/512" alt="User Photo" class="cl-user-photo">
+                    <div class="cl-container">
+                        <h3>User Name <small>Date</small></h3>
+                        <p>Comment content...</p>
+                        <div class="cl-horizontal">
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined">reply</span>
+                            </button>
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined no-fill">thumb_up</span>
+                                <span>0</span>
+                            </button>
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined no-fill">thumb_down</span>
+                                <span>0</span>
+                            </button>
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined">edit</span>
+                            </button>
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                        <div class="cl-collapsible cl-container">
+                            <input type="checkbox" class="cl-collapsible-checkbox">
+                            <div class="cl-horizontal cl-collapsible-top">
+                                <span class="material-symbols-outlined cl-collapsible-arrow">arrow_right</span>
+                                <h3>Replies (0)</h3>
+                            </div>
+                            <div class="cl-container cl-collapsible-content">
+                                <div class="cl-comment">
+                                    <img src="https://placehold.co/512" alt="User Photo" class="cl-user-photo">
+                                    <div class="cl-container">
+                                        <h3>User Name <small>Date</small></h3>
+                                        <p>Comment content...</p>
+                                        <div class="cl-horizontal">
+                                            <button class="cl-button">
+                                                <span class="material-symbols-outlined no-fill">thumb_up</span>
+                                                <span>0</span>
+                                            </button>
+                                            <button class="cl-button">
+                                                <span class="material-symbols-outlined no-fill">thumb_down</span>
+                                                <span>0</span>
+                                            </button>
+                                            <button class="cl-button">
+                                                <span class="material-symbols-outlined">edit</span>
+                                            </button>
+                                            <button class="cl-button">
+                                                <span class="material-symbols-outlined">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Users-->
+    <section class="cl-panel hidden" id="app.users.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Users" data-targetPage="home">
+                <i class="material-symbols-outlined">people</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="All Users" id="app.users.page.allUsers.btn">
+                    <span class="material-symbols-outlined">people</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden" id="app.users.page.allUsers.boxedContent">
+            <div class="cl-card-grid" id="app.users.page.usersContainer">
+                <a href="#" class="cl-user">
+                    <img src="https://placehold.co/900x300" alt="User Banner" class="cl-user-thumbnail">
+                    <div class="cl-user-info-box">
+                        <img src="https://placehold.co/512" alt="User Photo" class="cl-user-photo">
+                        <h3>User Name</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!--User-->
+    <section class="cl-panel hidden" id="app.user.page">
+        <div class="topbar">
+            <div class="topbar-left" title="User" data-targetPage="users">
+                <i class="material-symbols-outlined">person</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="Info" id="app.user.page.info.btn">
+                    <span class="material-symbols-outlined">info</span>
+                </button>
+                <button class="cl-button" title="Videos" id="app.user.page.videos.btn">
+                    <span class="material-symbols-outlined">video_library</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden" id="app.user.page.info">
+            <img src="https://placehold.co/900x300" alt="User Banner" class="cl-banner"
+                id="app.user.page.info.userBanner">
+            <div class="cl-horizontal is-centered">
+                <img src="https://placehold.co/512" alt="User Photo" class="cl-circular"
+                    id="app.user.page.info.userPhoto">
+                <h1 id="app.user.page.info.userName">User Name</h1>
+            </div>
+            <p class="cl-paragraph" id="app.user.page.info.userBio">
+                User bio...
+            </p>
+            <div class="cl-game-notes-container" id="app.user.page.info.linksContainer">
+                <a class="cl-button" href="#">
+                    <i class="material-symbols-outlined">link</i>
+                    <span>Link</span>
+                </a>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.user.page.videos">
+            <div class="cl-card-grid" id="app.user.page.videos.videosContainer">
+                <a href="#" class="cl-video">
+                    <img src="https://placehold.co/1600x900" alt="Video" class="cl-video-thumbnail">
+                    <h3>Video Title</h3>
+                    <h4>Video Author</h4>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!--Account-->
+    <section class="cl-panel hidden" id="app.account.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Account" data-targetPage="home">
+                <i class="material-symbols-outlined">account_circle</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="Account Settings" id="app.account.page.accountSettings.btn">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden" id="app.account.page.accountSettings">
+            <img src="https://placehold.co/900x300" alt="User Banner" class="cl-banner"
+                id="app.account.page.accountSettings.userBanner">
+            <div class="cl-horizontal is-centered">
+                <img src="https://placehold.co/512" alt="User Photo" class="cl-circular"
+                    id="app.account.page.accountSettings.userPhoto">
+                <div class="cl-input">
+                    <span class="material-symbols-outlined">badge</span>
+                    <input type="text" placeholder="User Name" minlength="1" maxlength="50"
+                        id="app.account.page.accountSettings.userNameInput">
+                </div>
+            </div>
+            <div class="cl-horizontal">
+                <div class="cl-input">
+                    <span class="material-symbols-outlined">image</span>
+                    <span>Photo</span>
+                    <input type="file" placeholder="Photo" id="app.account.page.accountSettings.userPhotoInput">
+                </div>
+                <div class="cl-input">
+                    <span class="material-symbols-outlined">panorama</span>
+                    <span>Banner</span>
+                    <input type="file" placeholder="Banner" id="app.account.page.accountSettings.userBannerInput">
+                </div>
+            </div>
+            <div class="cl-input">
+                <span class="material-symbols-outlined">article</span>
+                <textarea rows="5" placeholder="Bio" id="app.account.page.accountSettings.userBioInput"></textarea>
+            </div>
+            <div class="cl-input">
+                <span class="material-symbols-outlined">link</span>
+                <textarea rows="5" placeholder="List of links, each on a new line"
+                    id="app.account.page.accountSettings.userLinksInput"></textarea>
+            </div>
+            <div class="cl-horizontal">
+                <button class="cl-button" id="app.account.page.accountSettings.saveBtn">
+                    <span class="material-symbols-outlined">save</span>
+                    <span>Save</span>
+                </button>
+                <button class="cl-button is-error" id="app.account.page.accountSettings.deleteBtn">
+                    <!--Deletes user's account (dangerous action)-->
+                    <span class="material-symbols-outlined">delete</span>
+                    <span>Delete Account</span>
+                </button>
+            </div>
+        </div>
+    </section>
+    <!--Content-->
+    <section class="cl-panel hidden" id="app.content.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Content" data-targetPage="home">
+                <i class="material-symbols-outlined">library_books</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="Videos" id="app.content.page.videos.btn">
+                    <span class="material-symbols-outlined">video_library</span>
+                </button>
+                <button class="cl-button" title="New Video" id="app.content.page.newVideo.btn">
+                    <span class="material-symbols-outlined">video_camera_back_add</span>
+                </button>
+                <button class="cl-button" title="Games" id="app.content.page.games.btn">
+                    <span class="material-symbols-outlined">sports_esports</span>
+                </button>
+                <button class="cl-button" title="New Game" id="app.content.page.newGame.btn">
+                    <span class="material-symbols-outlined">variable_add</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.content.page.videos.boxedContent">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date Posted</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="app.content.page.videos.boxedContent.videosContainer">
+                    <tr>
+                        <td>Video</td>
+                        <td>Date</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">link</i>
+                                </button>
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">delete</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.content.page.newVideo.boxedContent">
+            <div class="cl-input">
+                <span class="material-symbols-outlined">videocam</span>
+                <input type="file" id="app.content.page.newVideo.boxedContent.videoInput" accept="video/*" />
+            </div>
+            <div class="cl-input">
+                <span class="material-symbols-outlined">image</span>
+                <input type="file" id="app.content.page.newVideo.boxedContent.thumbnailInput" accept="image/*" />
+            </div>
+            <div class="cl-button is-warning" interactive="false">
+                <span class="material-symbols-outlined">warning</span>
+                <span>Videos uploaded with extensions other than .mp4, .webm, .mov, .avi, or .ogg may not work
+                    correctly.</span>
+            </div>
+            <div class="cl-input">
+                <span class="material-symbols-outlined">title</span>
+                <input type="text" id="app.content.page.newVideo.boxedContent.titleInput" placeholder="Title">
+            </div>
+            <div class="cl-input">
+                <span class="material-symbols-outlined">description</span>
+                <textarea id="app.content.page.newVideo.boxedContent.descriptionInput" placeholder="Description"
+                    rows="5"></textarea>
+            </div>
+            <button class="cl-button" id="app.content.page.newVideo.boxedContent.addVideoButton">
+                <span class="material-symbols-outlined">add</span>
+                <span>Add Video</span>
+            </button>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.content.page.games.boxedContent">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Game</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">link</i>
+                                </button>
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">delete</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="boxed-content is-not-centered hdden" id="app.contant.page.newGame.boxedContent">
+            <!--<div class="cl-input">
+                <span class="material-symbols-outlined">folder_zip</span>
+                <span>Game archive</span>
+                <input type="file" id="app.content.page.newVideo.boxedContent.videoInput" accept="video/*"/>
+            </div>
+            <div class="cl-button is-info" interactive="false">
+                <span class="material-symbols-outlined">info</span>
+                <span>Upload a </span>
+            </div>
+            <div class="cl-input">
+                <span class="material-symbols-outlined">image</span>
+                <input type="file" id="app.content.page.newVideo.boxedContent.thumbnailInput" accept="image/*"/>
+            </div>-->
+            <a href="#" class="cl-button">
+                <span class="material-symbols-outlined">add</span>
+                <span>Request or upload a game</span>
+            </a>
+        </div>
+    </section>
+    <!--Admin-->
+    <section class="cl-panel hidden" id="app.admin.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Admin" data-targetPage="home">
+                <i class="material-symbols-outlined">shield</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="Users" id="app.admin.page.users.btn">
+                    <span class="material-symbols-outlined">people</span>
+                </button>
+                <button class="cl-button" title="Videos" id="app.admin.page.videos.btn">
+                    <span class="material-symbols-outlined">video_library</span>
+                </button>
+                <button class="cl-button" title="Games" id="app.admin.page.games.btn">
+                    <span class="material-symbols-outlined">sports_esports</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden" id="app.admin.page.users">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Display Name</th>
+                        <th>Created Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="app.admin.page.users.usersContainer">
+                    <tr>
+                        <td>ID</td>
+                        <td>User Name</td>
+                        <td>Date</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">link</i>
+                                </button>
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">person_off</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.admin.page.video">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date Posted</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="app.admin.page.videos.videosContainer">
+                    <tr>
+                        <td>Video</td>
+                        <td>Date</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">link</i>
+                                </button>
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">delete</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.admin.page.games">
+            <table class="cl-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="app.admin.page.games.gamesContainer">
+                    <tr>
+                        <td>Game</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">link</i>
+                                </button>
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">delete</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <!--Settings-->
+    <section class="cl-panel hdden" id="app.settings.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Settings" data-targetPage="home">
+                <i class="material-symbols-outlined">settings</i>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hdden" id="app.settings.page.allSettings">
+            <input type="text">
+            <textarea>test</textarea>
+            <table class="cl-table is-transparent">
+                <tbody>
+                    <tr>
+                        <td>Theme</td>
+                        <td>
+                            <div class="cl-input">
+                                <span class="material-symbols-outlined">list</span>
+                                <select>
+                                    <option value="1">Theme 1</option>
+                                    <option value="2">Theme 2</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mode</td>
+                        <td>
+                            <div class="cl-input">
+                                <span class="material-symbols-outlined">list</span>
+                                <select>
+                                    <option value="light">Light Mode</option>
+                                    <option value="dark">Dark Mode</option>
+                                    <option value="system">System Default</option>
+                                </select>
+                            </div>
+                        </td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+    </section>
+    <!--Help-->
+    <section class="cl-panel hidden" id="app.help.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Help" data-targetPage="home">
+                <i class="material-symbols-outlined">help</i>
+            </div>
+            <div class="topbar-center">
+                <button class="cl-button selected" title="About" id="app.help.page.about.btn">
+                    <span class="material-symbols-outlined">info</span>
+                </button>
+                <button class="cl-button" title="FAQ" id="app.help.page.faq.btn">
+                    <span class="material-symbols-outlined">help</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content hidden" id="app.help.page.about">
+            <img src="https://placehold.co/600x100" alt="Chillnet">
+            <h1>Made by Combiete Lantey</h1>
+        </div>
+        <div class="boxed-content is-not-centered hdden" id="app.help.page.faq">
+            <div class="cl-collapsible cl-container">
+                <input type="checkbox" class="cl-collapsible-checkbox">
+                <div class="cl-horizontal cl-collapsible-top">
+                    <span class="material-symbols-outlined cl-collapsible-arrow">arrow_right</span>
+                    <h3>Will there be any questions here?</h3>
+                </div>
+                <div class="cl-container cl-collapsible-content">
+                    Soon!
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Dialog-->
+    <section class="cl-panel hidden" id="app.dialog">
+        <div class="topbar">
+            <div class="topbar-left" title="Message">
+                <i class="material-symbols-outlined">info</i>
+            </div>
+            <div class="topbar-center" id="app.dialog.optionsContainer">
+                <button class="cl-button" title="Yes">
+                    <span class="material-symbols-outlined">check</span>
+                </button>
+                <button class="cl-button" title="No">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content" id="app.dialog.contentContainer">
+            <h1>Are you sure?</h1>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        var clApp = {
+                config: {
+                    themes: [
+                        {
+                            name: "Default",
+                            code: `
+                                background:
+                                    linear-gradient(217deg, rgba(255, 0, 0, 0.8), rgba(255, 0, 0, 0) 70.71%),
+                                    linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
+                                    linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
+                            `
+                        },
+                        {
+                            name: "Arrows",
+                            code: `
+                                background:
+linear-gradient(45deg, #92baac 45px, transparent 45px)64px 64px,
+linear-gradient(45deg, #92baac 45px, transparent 45px,transparent 91px, #e1ebbd 91px, #e1ebbd 135px, transparent 135px),
+linear-gradient(-45deg, #92baac 23px, transparent 23px, transparent 68px,#92baac 68px,#92baac 113px,transparent 113px,transparent 158px,#92baac 158px);
+background-color:#e1ebbd;
+background-size: 128px 128px;
+                            `
+                        },
+                        {
+                            name: "Upholstery",
+                            code: `background:
+radial-gradient(hsl(0, 100%, 27%) 4%, hsl(0, 100%, 18%) 9%, hsla(0, 100%, 20%, 0) 9%) 0 0,
+radial-gradient(hsl(0, 100%, 27%) 4%, hsl(0, 100%, 18%) 8%, hsla(0, 100%, 20%, 0) 10%) 50px 50px,
+radial-gradient(hsla(0, 100%, 30%, 0.8) 20%, hsla(0, 100%, 20%, 0)) 50px 0,
+radial-gradient(hsla(0, 100%, 30%, 0.8) 20%, hsla(0, 100%, 20%, 0)) 0 50px,
+radial-gradient(hsla(0, 100%, 20%, 1) 35%, hsla(0, 100%, 20%, 0) 60%) 50px 0,
+radial-gradient(hsla(0, 100%, 20%, 1) 35%, hsla(0, 100%, 20%, 0) 60%) 100px 50px,
+radial-gradient(hsla(0, 100%, 15%, 0.7), hsla(0, 100%, 20%, 0)) 0 0,
+radial-gradient(hsla(0, 100%, 15%, 0.7), hsla(0, 100%, 20%, 0)) 50px 50px,
+linear-gradient(45deg, hsla(0, 100%, 20%, 0) 49%, hsla(0, 100%, 0%, 1) 50%, hsla(0, 100%, 20%, 0) 70%) 0 0,
+linear-gradient(-45deg, hsla(0, 100%, 20%, 0) 49%, hsla(0, 100%, 0%, 1) 50%, hsla(0, 100%, 20%, 0) 70%) 0 0;
+background-color: #300;
+background-size: 100px 100px;`
+                        },
+                        {
+                            name: "Marrakesh",
+                            code: `background-color:white;
+background-image:
+radial-gradient(midnightblue 9px, transparent 10px),
+repeating-radial-gradient(midnightblue 0, midnightblue 4px, transparent 5px, transparent 20px, midnightblue 21px, midnightblue 25px, transparent 26px, transparent 50px);
+background-size: 30px 30px, 90px 90px;
+background-position: 0 0;`
+                        },
+                        {
+                            name: "Starry Night",
+                            code: `background-color:black;
+background-image:
+radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
+background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;`
+                        },
+                        {
+                            name: "Yin Yang",
+                            code: `background:
+radial-gradient(circle at 50% 59%, #D2CAAB 3%, #364E27 4%, #364E27 11%, rgba(54,78,39,0) 12%, rgba(54,78,39,0)) 50px 0,
+radial-gradient(circle at 50% 41%, #364E27 3%, #D2CAAB 4%, #D2CAAB 11%, rgba(210,202,171,0) 12%, rgba(210,202,171,0)) 50px 0,
+radial-gradient(circle at 50% 59%, #D2CAAB 3%, #364E27 4%, #364E27 11%, rgba(54,78,39,0) 12%, rgba(54,78,39,0)) 0 50px,
+radial-gradient(circle at 50% 41%, #364E27 3%, #D2CAAB 4%, #D2CAAB 11%, rgba(210,202,171,0) 12%, rgba(210,202,171,0)) 0 50px,
+radial-gradient(circle at 100% 50%, #D2CAAB 16%, rgba(210,202,171,0) 17%),
+radial-gradient(circle at 0% 50%, #364E27 16%, rgba(54,78,39,0) 17%),
+radial-gradient(circle at 100% 50%, #D2CAAB 16%, rgba(210,202,171,0) 17%) 50px 50px,
+radial-gradient(circle at 0% 50%, #364E27 16%, rgba(54,78,39,0) 17%) 50px 50px;
+background-color:#63773F;
+background-size:100px 100px;`
+                        },
+                        {
+                            name: "Brady Bunch",
+                            code: `background-image:
+radial-gradient(closest-side, transparent 0%, transparent 75%, #B6CC66 76%, #B6CC66 85%, #EDFFDB 86%, #EDFFDB 94%, #FFFFFF 95%, #FFFFFF 103%, #D9E6A7 104%, #D9E6A7 112%, #798B3C 113%, #798B3C 121%, #FFFFFF 122%, #FFFFFF 130%, #E0EAD7 131%, #E0EAD7 140%),
+radial-gradient(closest-side, transparent 0%, transparent 75%, #B6CC66 76%, #B6CC66 85%, #EDFFDB 86%, #EDFFDB 94%, #FFFFFF 95%, #FFFFFF 103%, #D9E6A7 104%, #D9E6A7 112%, #798B3C 113%, #798B3C 121%, #FFFFFF 122%, #FFFFFF 130%, #E0EAD7 131%, #E0EAD7 140%);
+background-size: 110px 110px;
+background-color: #C8D3A7;
+background-position: 0 0, 55px 55px;`
+                        },
+                        {
+                            name: "Argyle",
+                            code: `background-color: #6d695c;
+background-image:
+repeating-linear-gradient(120deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+repeating-linear-gradient(60deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+linear-gradient(60deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1)),
+linear-gradient(120deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1));
+background-size: 70px 120px;`
+                        },
+                        {
+                            name: "Stairs",
+                            code: `background-color: #FF7D9D;
+background-size: 58px 58px;
+background-position: 0px 2px, 4px 35px, 29px 31px, 33px 6px,
+0px 36px, 4px 2px, 29px 6px, 33px 30px;
+background-image:
+linear-gradient(335deg, #C90032 23px, transparent 23px),
+linear-gradient(155deg, #C90032 23px, transparent 23px),
+linear-gradient(335deg, #C90032 23px, transparent 23px),
+linear-gradient(155deg, #C90032 23px, transparent 23px),
 
-    window.onload = () => {
-      wapp.setup();
-      qod.create("lblQod");
-      try {
-        pageList.generate("pages-grid", [
-          {
-            icon: "video_library",
-            title: "Video Library",
-            url: "/videos",
-            external: false,
-          },
-          {
-            icon: "sports_esports",
-            title: "Games",
-            url: "/games",
-            external: true,
-          },
-          {
-            icon: "view_in_ar",
-            title: "Eaglercraft",
-            url: "/eaglercraft",
-            external: false,
-          },
-          {
-            icon: "person",
-            title: "Users",
-            url: "/users",
-            external: false,
-          },
-          { 
-            icon: "chat", 
-            title: "Chat", 
-            url: "/chat", 
-            external: false,
-          },
-          {
-            icon: "info",
-            title: "About",
-            url: "/about",
-            external: false,
-          }
-        ]);
-      } catch (error) {
-        document.getElementById("pages-error").style.display = "block";
-      }
-      tad.createTime("currentTime", appValues.am_pm);
-      tad.createDate("currentDate");
-      const editor = new JSONEditor(
-        document.getElementById("settings-container"),
-        {
-          theme: "spectre",
-          showErrors: "change",
-          disable_properties: true,
-          disable_collapse: true,
-          enable_array_copy: true,
-          require_by_default: true,
-          compact: true,
-          startval: appValues,
-          schema: {
-            type: "object",
-            format: "table",
-            properties: {
-              tvmode: {
-                title: "TV Mode",
-                type: "boolean",
-                format: "checkbox",
-              },
-              am_pm: {
-                title: "12-Hour Format",
-                type: "boolean",
-                format: "checkbox",
-              },
-              panicLinks: {
-                title: "Panic Links",
-                type: "array",
-                format: "table",
-                items: {
-                  type: "string",
+linear-gradient(335deg, #C90032 10px, transparent 10px),
+linear-gradient(155deg, #C90032 10px, transparent 10px),
+linear-gradient(335deg, #C90032 10px, transparent 10px),
+linear-gradient(155deg, #C90032 10px, transparent 10px);`
+                        },
+                        {
+                            name: "Shippo",
+                            code: `background-color:#def;
+background-image: radial-gradient(closest-side, transparent 98%, rgba(0,0,0,.3) 99%),
+radial-gradient(closest-side, transparent 98%, rgba(0,0,0,.3) 99%);
+background-size:80px 80px;
+background-position:0 0, 40px 40px;`
+                        },
+                        {
+                            name: "Japanese Cube",
+                            code: `background-color:#556;
+background-image: linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a),
+linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a);
+background-size:80px 140px;
+background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;`
+                        },
+                        {
+                            name: "Polka Dot",
+                            code: `background-color:#001;
+background-image: radial-gradient(white 15%, transparent 16%),
+radial-gradient(white 15%, transparent 16%);
+background-size: 60px 60px;
+background-position: 0 0, 30px 30px;`
+                        },
+                        {
+                            name: "Houndstooth",
+                            code: `background:
+linear-gradient(-45deg, white 25%, transparent 25%, transparent 75%, black 75%, black) 0 0,
+linear-gradient(-45deg, black 25%, transparent 25%, transparent 75%, white 75%, white) 1em 1em,
+linear-gradient(45deg, black 17%, transparent 17%, transparent 25%, black 25%, black 36%, transparent 36%, transparent 64%, black 64%, black 75%, transparent 75%, transparent 83%, black 83%) 1em 1em;
+background-color: white;
+background-size: 2em 2em;`
+                        },
+                        {
+                            name: "Tartan",
+                            code: `background-color: hsl(2, 57%, 40%);
+background-image: repeating-linear-gradient(transparent, transparent 50px, rgba(0,0,0,.4) 50px, rgba(0,0,0,.4) 53px, transparent 53px, transparent 63px, rgba(0,0,0,.4) 63px, rgba(0,0,0,.4) 66px, transparent 66px, transparent 116px, rgba(0,0,0,.5) 116px, rgba(0,0,0,.5) 166px, rgba(255,255,255,.2) 166px, rgba(255,255,255,.2) 169px, rgba(0,0,0,.5) 169px, rgba(0,0,0,.5) 179px, rgba(255,255,255,.2) 179px, rgba(255,255,255,.2) 182px, rgba(0,0,0,.5) 182px, rgba(0,0,0,.5) 232px, transparent 232px),
+repeating-linear-gradient(270deg, transparent, transparent 50px, rgba(0,0,0,.4) 50px, rgba(0,0,0,.4) 53px, transparent 53px, transparent 63px, rgba(0,0,0,.4) 63px, rgba(0,0,0,.4) 66px, transparent 66px, transparent 116px, rgba(0,0,0,.5) 116px, rgba(0,0,0,.5) 166px, rgba(255,255,255,.2) 166px, rgba(255,255,255,.2) 169px, rgba(0,0,0,.5) 169px, rgba(0,0,0,.5) 179px, rgba(255,255,255,.2) 179px, rgba(255,255,255,.2) 182px, rgba(0,0,0,.5) 182px, rgba(0,0,0,.5) 232px, transparent 232px),
+repeating-linear-gradient(125deg, transparent, transparent 2px, rgba(0,0,0,.2) 2px, rgba(0,0,0,.2) 3px, transparent 3px, transparent 5px, rgba(0,0,0,.2) 5px);`
+                        },
+                        {
+                            name: "Madras",
+                            code: `background-color: hsl(34, 53%, 82%);
+background-image: repeating-linear-gradient(45deg, transparent 5px, hsla(197, 62%, 11%, 0.5) 5px, hsla(197, 62%, 11%, 0.5) 10px,
+  hsla(5, 53%, 63%, 0) 10px, hsla(5, 53%, 63%, 0) 35px, hsla(5, 53%, 63%, 0.5) 35px, hsla(5, 53%, 63%, 0.5) 40px,
+  hsla(197, 62%, 11%, 0.5) 40px, hsla(197, 62%, 11%, 0.5) 50px, hsla(197, 62%, 11%, 0) 50px, hsla(197, 62%, 11%, 0) 60px,
+  hsla(5, 53%, 63%, 0.5) 60px, hsla(5, 53%, 63%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 80px,
+  hsla(35, 91%, 65%, 0) 80px, hsla(35, 91%, 65%, 0) 90px, hsla(5, 53%, 63%, 0.5) 90px, hsla(5, 53%, 63%, 0.5) 110px,
+  hsla(5, 53%, 63%, 0) 110px, hsla(5, 53%, 63%, 0) 120px, hsla(197, 62%, 11%, 0.5) 120px, hsla(197, 62%, 11%, 0.5) 140px
+  ),
+repeating-linear-gradient(135deg, transparent 5px, hsla(197, 62%, 11%, 0.5) 5px, hsla(197, 62%, 11%, 0.5) 10px,
+  hsla(5, 53%, 63%, 0) 10px, hsla(5, 53%, 63%, 0) 35px, hsla(5, 53%, 63%, 0.5) 35px, hsla(5, 53%, 63%, 0.5) 40px,
+  hsla(197, 62%, 11%, 0.5) 40px, hsla(197, 62%, 11%, 0.5) 50px, hsla(197, 62%, 11%, 0) 50px, hsla(197, 62%, 11%, 0) 60px,
+  hsla(5, 53%, 63%, 0.5) 60px, hsla(5, 53%, 63%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 80px,
+  hsla(35, 91%, 65%, 0) 80px, hsla(35, 91%, 65%, 0) 90px, hsla(5, 53%, 63%, 0.5) 90px, hsla(5, 53%, 63%, 0.5) 110px,
+  hsla(5, 53%, 63%, 0) 110px, hsla(5, 53%, 63%, 0) 140px, hsla(197, 62%, 11%, 0.5) 140px, hsla(197, 62%, 11%, 0.5) 160px
+);`
+                        },
+                        {
+                            name: "Tablecloth",
+                            code: `background-color:white;
+background-image: linear-gradient(90deg, rgba(200,0,0,.5) 50%, transparent 50%),
+linear-gradient(rgba(200,0,0,.5) 50%, transparent 50%);
+background-size:50px 50px;`
+                        },
+                        {
+                            name: "Cicada Stripes",
+                            code: `background-color: #026873;
+background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),
+linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),
+linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),
+linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+background-size: 13px, 29px, 37px, 53px;`
+                        },
+                        {
+                            name: "Cross Dots",
+                            code: `background:
+    radial-gradient(black 3px, transparent 4px),
+    radial-gradient(black 3px, transparent 4px),
+    linear-gradient(#fff 4px, transparent 0),
+    linear-gradient(45deg, transparent 74px, transparent 75px, #a4a4a4 75px, #a4a4a4 76px, transparent 77px, transparent 109px),
+    linear-gradient(-45deg, transparent 75px, transparent 76px, #a4a4a4 76px, #a4a4a4 77px, transparent 78px, transparent 109px),
+    #fff;
+    background-size: 109px 109px, 109px 109px,100% 6px, 109px 109px, 109px 109px;
+    background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;`
+                        },
+                        {
+                            name: "Christmas Trees",
+                            code: `--s: 75px; /* control the size */
+
+  --_c: #0000, #fff 1deg 79deg, #0000 81deg;
+  --g0: conic-gradient(from 140deg at 50% 87.5%, var(--_c));
+  --g1: conic-gradient(from 140deg at 50% 81.25%, var(--_c));
+  --g2: conic-gradient(from 140deg at 50% 75%, var(--_c));
+  --g3: conic-gradient(at 10% 20%, #0000 75%, #fff 0);
+  background: var(--g0) 0 calc(var(--s) / -4),
+    var(--g0) var(--s) calc(3 * var(--s) / 4), var(--g1),
+    var(--g1) var(--s) var(--s), var(--g2) 0 calc(var(--s) / 4),
+    var(--g2) var(--s) calc(5 * var(--s) / 4),
+    var(--g3) calc(var(--s) / -10) var(--s),
+    var(--g3) calc(9 * var(--s) / 10) calc(2 * var(--s)),
+    repeating-conic-gradient(from 45deg, #a31e39 0 25%, #31570e 0 50%);
+  background-size: calc(2 * var(--s)) calc(2 * var(--s));`
+                        }
+                    ],
+                    elementPageIdMap: {
+                        "gamePlayer": "app.gamePlayer.page",
+                        "videoPlayer": "app.videoPlayer.page",
+                        "loader": "app.loaderScreen",
+                        "auth": "app.authScreen.page",
+                        "home": "app.homeScreen.page",
+                        "games": "app.gamesScreen.page",
+                        "game": "app.gameScreen.page",
+                        "minecraft": "app.minecraftScreen.page",
+                        "chat": "app.chat.page",
+                        "videos": "app.videos.page",
+                        "video": "app.video.page",
+                        "users": "app.users.page",
+                        "user": "app.user.page",
+                        "account": "app.account.page",
+                        "content": "app.content.page",
+                        "admin": "app.admin.page",
+                        "settings": "app.settings.page",
+                        "help": "app.help.page",
+                    },
+                    pageCards: [
+                        {
+                            title: "Games",
+                            icon: "sports_esports",
+                            description: "View, play and discover new games."
+                        },
+                        {
+                            title: "Minecraft",
+                            icon: "deployed_code",
+                            description: "View, play and add Minecraft versions, mods, worlds and more."
+                        },
+                        {
+                            title: "Chat",
+                            icon: "forum",
+                            description: "Chat with other users or generative AI."
+                        },
+                        {
+                            title: "Videos",
+                            icon: "video_library",
+                            description: "Watch and discover new videos."
+                        },
+                        {
+                            title: "Users",
+                            icon: "people",
+                            description: "See all users."
+                        },
+                        {
+                            title: "Account",
+                            icon: "account_circle",
+                            description: "Manage your account."
+                        },
+                        {
+                            title: "Content",
+                            icon: "library_books",
+                            description: "Manage your content."
+                        },
+                        {
+                            title: "Admin",
+                            icon: "shield",
+                            description: "Manage the site.",
+                            isDashboard: true
+                        },
+                        {
+                            title: "Settings",
+                            icon: "settings",
+                            description: "Manage the site settings."
+                        },
+                        {
+                            title: "Help",
+                            icon: "help",
+                            description: "View help articles and other information about Chillnet."
+                        }
+                    ],
+                    dialogElement: {
+                        panelId: "app.dialog",
+                        optionsContainerId: "app.dialog.optionsContainer",
+                        contentContainerId: "app.dialog.contentContainer"
+                    },
+                    pages: [
+                        {
+                            name: "Game Player",
+                            id: clApp.config.elementPageIdMap["gamePlayer"],
+                        },
+                        {
+                            name: "Video Player",
+                            id: clApp.config.elementPageIdMap["videoPlayer"],
+                        },
+                        {
+                            name: "Loader",
+                            id: clApp.config.elementPageIdMap["loader"],
+                        },
+                        {
+                            name: "Auth",
+                            id: clApp.config.elementPageIdMap["auth"],
+                        },
+                        {
+                            name: "Home",
+                            id: clApp.config.elementPageIdMap["home"],
+                        },
+                        {
+                            name: "Games",
+                            id: clApp.config.elementPageIdMap["games"],
+                            subpages: [
+                                {
+                                    name: "Trending Games",
+                                    id: clApp.config.elementPageIdMap["games"] + ".trendingGames.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["games"] + ".trendingGames.btn",
+                                },
+                                {
+                                    name: "Search Games",
+                                    id: clApp.config.elementPageIdMap["games"] + ".searchGames.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["games"] + ".searchGames.btn",
+                                },
+                                {
+                                    name: "Saved Games",
+                                    id: clApp.config.elementPageIdMap["games"] + ".savedGames.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["games"] + ".savedGames.btn",
+                                },
+                                {
+                                    name: "History",
+                                    id: clApp.config.elementPageIdMap["games"] + ".history.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["games"] + ".history.btn",
+                                },
+                                {
+                                    name: "Achievements",
+                                    id: clApp.config.elementPageIdMap["games"] + ".achievements.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["games"] + ".achievements.btn",
+                                },
+                                {
+                                    name: "Currently Playing",
+                                    id: clApp.config.elementPageIdMap["games"] + ".currentlyPlaying.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["games"] + ".currentlyPlaying.btn",
+                                },
+                            ],
+                        },
+                        {
+                            name: "Game",
+                            id: clApp.config.elementPageIdMap["game"]
+                        },
+                        {
+                            name: "Minecraft",
+                            id: clApp.config.elementPageIdMap["minecraft"],
+                            subpages: [
+                                {
+                                    name: "Versions",
+                                    id: clApp.config.elementPageIdMap["minecraft"] + ".versions.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["minecraft"] + ".versions.btn",
+                                },
+                                {
+                                    name: "Mods",
+                                    id: clApp.config.elementPageIdMap["minecraft"] + ".mods.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["minecraft"] + ".mods.btn",
+                                },
+                                {
+                                    name: "Worlds",
+                                    id: clApp.config.elementPageIdMap["minecraft"] + ".worlds.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["minecraft"] + ".worlds.btn",
+                                },
+                                {
+                                    name: "Resource Packs",
+                                    id: clApp.config.elementPageIdMap["minecraft"] + ".resourcePacks.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["minecraft"] + ".resourcePacks.btn",
+                                },
+                            ],
+                        },
+                        {
+                            name: "Chat",
+                            id: clApp.config.elementPageIdMap["chat"],
+                            subpages: [
+                                {
+                                    name: "With Users",
+                                    id: clApp.config.elementPageIdMap["chat"] + ".withUsers.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["chat"] + ".withUsers.btn",
+                                },
+                                {
+                                    name: "With AI",
+                                    id: clApp.config.elementPageIdMap["chat"] + ".withAI.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["chat"] + ".withAI.btn",
+                                },
+                            ],
+                        },
+                        {
+                            name: "Videos",
+                            id: clApp.config.elementPageIdMap["videos"],
+                            subpages: [
+                                {
+                                    name: "All Videos",
+                                    id: clApp.config.elementPageIdMap["videos"] + ".allVideos",
+                                    btn: clApp.config.elementPageIdMap["videos"] + ".allVideos.btn",
+                                },
+                                {
+                                    name: "History",
+                                    id: clApp.config.elementPageIdMap["videos"] + ".history",
+                                    btn: clApp.config.elementPageIdMap["videos"] + ".history.btn",
+                                },
+                            ]
+                        },
+                        {
+                            name: "Video",
+                            id: clApp.config.elementPageIdMap["video"],
+                            subpages: [
+                                {
+                                    name: "Info",
+                                    id: clApp.config.elementPageIdMap["video"] + ".info",
+                                    btn: clApp.config.elementPageIdMap["video"] + ".info.btn",
+                                },
+                                {
+                                    name: "Comments",
+                                    id: clApp.config.elementPageIdMap["video"] + ".comments",
+                                    btn: clApp.config.elementPageIdMap["video"] + ".comments.btn",
+                                },
+                            ],
+                        },
+                        {
+                            name: "Users",
+                            id: clApp.config.elementPageIdMap["users"],
+                            subpages: [
+                                {
+                                    name: "All Users",
+                                    id: clApp.config.elementPageIdMap["users"] + ".allUsers.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["users"] + ".allUsers.btn",
+                                },
+                            ]
+                        },
+                        {
+                            name: "User",
+                            id: clApp.config.elementPageIdMap["user"],
+                            subpages: [
+                                {
+                                    name: "Info",
+                                    id: clApp.config.elementPageIdMap["user"] + ".info",
+                                    btn: clApp.config.elementPageIdMap["user"] + ".info.btn",
+                                },
+                                {
+                                    name: "Video",
+                                    id: clApp.config.elementPageIdMap["user"] + ".video",
+                                    btn: clApp.config.elementPageIdMap["user"] + ".video.btn",
+                                },
+                            ],
+                        },
+                        {
+                            name: "Account",
+                            id: clApp.config.elementPageIdMap["account"],
+                            subpages: [
+                                {
+                                    name: "Account Settings",
+                                    id: clApp.config.elementPageIdMap["account"] + ".accountSettings",
+                                    btn: clApp.config.elementPageIdMap["account"] + ".accountSettings.btn",
+                                },
+                            ],
+                        },
+                        {
+                            name: "Content",
+                            id: clApp.config.elementPageIdMap["content"],
+                            subpages: [
+                                {
+                                    name: "Videos",
+                                    id: clApp.config.elementPageIdMap["content"] + ".videos.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["content"] + ".videos.btn",
+                                },
+                                {
+                                    name: "New Video",
+                                    id: clApp.config.elementPageIdMap["content"] + ".newVideo.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["content"] + ".newVideo.btn",
+                                },
+                                {
+                                    name: "Games",
+                                    id: clApp.config.elementPageIdMap["content"] + ".games.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["content"] + ".games.btn",
+                                },
+                                {
+                                    name: "New Game",
+                                    id: clApp.config.elementPageIdMap["content"] + ".newGame.boxedContent",
+                                    btn: clApp.config.elementPageIdMap["content"] + ".newGame.btn",
+                                },
+                            ],
+                        },
+                        {
+                            name: "Admin",
+                            id: clApp.config.elementPageIdMap["admin"],
+                            subpages: [
+                                {
+                                    name: "Users",
+                                    id: clApp.config.elementPageIdMap["admin"] + ".users",
+                                    btn: clApp.config.elementPageIdMap["admin"] + ".users.btn",
+                                },
+                                {
+                                    name: "Videos",
+                                    id: clApp.config.elementPageIdMap["admin"] + ".videos",
+                                    btn: clApp.config.elementPageIdMap["admin"] + ".videos.btn",
+                                },
+                                {
+                                    name: "Games",
+                                    id: clApp.config.elementPageIdMap["admin"] + ".games",
+                                    btn: clApp.config.elementPageIdMap["admin"] + ".games.btn",
+                                },
+                            ],
+                        },
+                        {
+                            name: "Settings",
+                            id: clApp.config.elementPageIdMap["settings"],
+                        },
+                        {
+                            name: "Help",
+                            id: clApp.config.elementPageIdMap["help"],
+                            subpages: [
+                                {
+                                    name: "About",
+                                    id: clApp.config.elementPageIdMap["help"] + ".about",
+                                    btn: clApp.config.elementPageIdMap["help"] + ".about.btn",
+                                },
+                                {
+                                    name: "FAQ",
+                                    id: clApp.config.elementPageIdMap["help"] + ".faq",
+                                    btn: clApp.config.elementPageIdMap["help"] + ".faq.btn",
+                                },
+                            ],
+                        },
+                    ],
+                    toastContainer: "app.toastContainer",
                 },
-              },
-              background: {
-                title: "Background",
-                type: "string",
-                //format: "image"
-              },
-            },
-          },
-        }
-      );
-      editor.on("change", () => {
-        appValues = editor.getValue();
-        wapp.save();
-        wapp.setup();
-      });
-      changelogGen.generate(document.getElementById("changelogContainer"), changelog);
-      sbApp.default.subscribeToMainChat(res => {
-        switch (res.payload.msgType) {
-          case "announcement":
-            Toasty.showToast(res.payload.message, "", `<i class="material-icons">campaign</i>`); break;
-          case "userOnline":
-            Toasty.showToast(res.payload.message, "", `<i class="material-icons">info</i>`); break;
-          case "userOffline":
-            Toasty.showToast(res.payload.message, "", `<i class="material-icons">info_outline</i>`); break;
-          default:
-            break;
-        }
-      });
-      sbApp.default.getCurrentSession().then(res0 => {
-        if (res0.error || !res0.data.session) return; // User is not signed in.
-        sbApp.default.getCurrentUserRecord().then(res => {
-          sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, res.data[0].display_name + " is now online", "userOnline");
-          window.onbeforeunload = () => {
-              sbApp.default.sendToMainChat(res.data[0].photo_url, res.data[0].display_name, res.data[0].display_name + " is now offline", "userOffline");
-          }
-          sbApp.default.subscribeToDatabaseChanges("messages", res1 => {
-            if (res1.payload.new.recipient === res.data[0].id) {
-              Toasty.showToast("You have received a message", res1.payload.new.subject, `<i class="material-icons">mail</i>`);
-            }
-          })
-        })
-      });
-    };
+                elementUtility: {
+                    /**
+                     * Removes all children from the specified element.
+                     * @param {Element} element - The element to remove all children from.
+                     */
+                    removeAllChildren(element) {
+                        while (element.firstChild) {
+                            element.removeChild(element.firstChild);
+                        }
+                    },
+                },
+                stringUtility: {
+                    /**
+                     * Converts a given number of seconds into a string representation of minutes and seconds.
+                     * 
+                     * The function calculates the number of full minutes and the remaining seconds from the 
+                     * provided total seconds. The seconds are formatted with a leading zero if they are less 
+                     * than 10.
+                     * 
+                     * @param {number} seconds - The total number of seconds to convert.
+                     * @returns {string} The formatted time string in "minutes:seconds" format.
+                     */
+                    secondsToMinuteWithSeconds(seconds) {
+                        const minutes = Math.floor(seconds / 60);
+                        const secs = seconds % 60;
+                        return `${minutes}:${secs < 10 ? '0' + secs : secs}`;
+                    },
+                },
+                button: {
+                    /**
+                     * Creates a new button element with the specified icon and text.
+                     * If `interactive` is true (default), the button will be
+                     * interactive and will have a CSS class of "cl-button". If
+                     * `title` is specified, it will be set as the title attribute
+                     * of the button.
+                     * @param {string} icon - The material symbol icon to use.
+                     * @param {string} [text=null] - The text to display next to the
+                     * icon.
+                     * @param {boolean} [interactive=true] - Whether the button
+                     * should be interactive.
+                     * @param {string} [title=null] - The title to set as the title
+                     * attribute of the button.
+                     * @param {function} [onclick=(e) => {}] - The function to call when
+                     * @returns {HTMLButtonElement} The newly created button element.
+                     */
+                    create(icon, text = null, interactive = true, title = null, onclick = (e) => {}) {
+                        const newBtn = document.createElement("button");
+                        newBtn.innerHTML = `
+                            <span class="material-symbols-outlined">${icon}</span>
+                            ${text && `<span>${text}</span>`}
+                        `;
+                        if (title) newBtn.title = title;
+                        newBtn.onclick = onclick;
+                        newBtn.setAttribute("interactive", interactive);
+                        return newBtn;
+                    }
+                },
+                input: {
+                    /**
+                     * Creates a new input element wrapped in a container with an associated icon.
+                     *
+                     * The input type determines the icon displayed next to it. The container
+                     * will have a CSS class of "cl-input", and the icon will use the "material-symbols-outlined" class.
+                     *
+                     * @param {string} type - The type of the input element, such as "text", "password", "email", "number", or "file".
+                     * @param {string|null} [placeholder=null] - An optional placeholder text for the input element.
+                     * @param {string|null} [value=null] - An optional default value for the input element.
+                     * @param {string|null} [accept=null] - An optional accept attribute, applicable for file inputs.
+                     * @param {function} [onchange=(e) => {}] - The function to call when the input value changes.
+                     * 
+                     * @returns {HTMLDivElement} A container element with the input and icon inside.
+                     */
+                    create(type, placeholder = null, value = null, accept = null, onchange = (e) => {}) {
+                        const container = document.createElement("div");
+                        container.classList.add("cl-input");
+                        const iconSpan = document.createElement("span");
+                        iconSpan.classList.add("material-symbols-outlined");
+                        switch (type) {
+                            case "text":
+                                iconSpan.innerText = "text_fields";
+                                break;
+                            case "password":
+                                iconSpan.innerText = "lock";
+                                break;
+                            case "email":
+                                iconSpan.innerText = "mail";
+                                break;
+                            case "number":
+                                iconSpan.innerText = "123";
+                                break;
+                            case "file":
+                                iconSpan.innerText = "attach_file";
+                                break;
+                            default:
+                                iconSpan.innerText = "edit_note";
+                        }
+                        container.appendChild(iconSpan);
+                        const input = document.createElement("input");
+                        input.type = type;
+                        if (placeholder) input.placeholder = placeholder;
+                        if (value) input.value = value;
+                        if (accept) input.accept = accept;
+                        input.onchange = onchange;
+                        container.appendChild(input);
+                        return container;
+                    }
+                },
+                dialog: {
+                    /**
+                     * Displays a dialog box with the specified message and a single "OK" button to close the dialog.
+                     * The message is displayed in the content container of the dialog element, and the OK button is
+                     * appended to the options container of the dialog element.
+                     * @param {string} message - The message to display in the dialog.
+                     */
+                    alert(message) {
+                        document.getElementById(clApp.config.dialogElement.panelId).classList.remove("hidden");
+                        document.getElementById(clApp.config.dialogElement.contentContainerId).innerHTML = message;
+                        clApp.elementUtility.removeAllChildren(document.getElementById(clApp.config.dialogElement.optionsContainerId));
+                        document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(clApp.button.create("check", null, true, "OK", () => {
+                            document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
+                        }));
+                    },
+                    /**
+                     * Displays a dialog box with the specified message and a single input field to enter a value and
+                     * a single "OK" button to close the dialog. The message is displayed in the content container of
+                     * the dialog element, and the input field and OK button are appended to the options container of
+                     * the dialog element.
+                     *
+                     * The dialog is displayed until the user clicks the OK button or presses Enter while the input
+                     * field is focused. The value entered in the input field is then resolved as a string in the
+                     * returned Promise.
+                     *
+                     * @param {string} message - The message to display in the dialog.
+                     * @param {string} type - The type of the input field to create, one of "text", "password", "email",
+                     * "number", or "file". Defaults to "text" if not specified.
+                     * @returns {Promise<string>} A Promise that resolves with the value entered in the input field.
+                     */
+                    prompt(message, type) {
+                        return new Promise((resolve) => {
+                            document.getElementById(clApp.config.dialogElement.panelId).classList.remove("hidden");
+                            document.getElementById(clApp.config.dialogElement.contentContainerId).innerHTML = message;
+                            clApp.elementUtility.removeAllChildren(document.getElementById(clApp.config.dialogElement.optionsContainerId));
+                            const input = clApp.input.create(type, "Enter value", null, (e) => {
+                                if (e.target.value) {
+                                    resolve(e.target.value);
+                                    document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
+                                }
+                            });
+                            document.getElementById(clApp.config.dialogElement.contentContainerId).appendChild(input);
+                            document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(clApp.button.create("check", null, true, "OK", () => {
+                                if (input.querySelector("input").value) {
+                                    resolve(input.querySelector("input").value);
+                                    document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
+                                }
+                            }));
+                        });
+                    },
+                    /**
+                     * Displays a dialog box with the specified message and two buttons, "OK" and "Cancel".
+                     * The message is displayed in the content container of the dialog element, and the buttons are
+                     * appended to the options container of the dialog element.
+                     * The function returns a Promise that resolves to true if the user clicks the OK button or false
+                     * if the user clicks the Cancel button.
+                     * @param {string} message - The message to display in the dialog.
+                     * @returns {Promise<boolean>} A Promise that resolves to true or false, depending on the user's input.
+                     */
+                    confirm(message) {
+                        return new Promise((resolve) => {
+                            document.getElementById(clApp.config.dialogElement.panelId).classList.remove("hidden");
+                            document.getElementById(clApp.config.dialogElement.contentContainerId).innerHTML = message;
+                            clApp.elementUtility.removeAllChildren(document.getElementById(clApp.config.dialogElement.optionsContainerId));
+                            const okButton = clApp.button.create("check", null, true, "Yes", () => {
+                                document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
+                                resolve(true);
+                            });
+                            const cancelButton = clApp.button.create("close", null, true, "No", () => {
+                                document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
+                                resolve(false);
+                            });
+                            document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(okButton);
+                            document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(cancelButton);
+                        });
+                    }
+                },
+                pages: {
+                    /**
+                     * Hides all main pages and their subpages within the application.
+                     * Each main page and its subpages are assigned the "hidden" class to ensure they are not visible.
+                     * However, the first subpage of each main page remains visible by removing the "hidden" class.
+                     */
+                    resetAll() {
+                        clApp.config.pages.forEach(page => {
+                            const pageElement = document.getElementById(page.id);
+                            if (pageElement) {
+                                pageElement.classList.add("hidden");
+                            }
+                            if (page.subpages) {
+                                page.subpages.forEach((subpage, index) => {
+                                    const subpageElement = document.getElementById(subpage.id);
+                                    if (subpageElement) {
+                                        subpageElement.classList.add("hidden");
+                                        if (index == 0) subpageElement.classList.remove("hidden");
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    init() {
+                        // For each element with the class "topbar-left" (icon), make it clickable to open the home page
+                        const topbarLeftElements = document.querySelectorAll(".topbar-left");
+                        topbarLeftElements.forEach(el => {
+                            if (!el.dataset.targetPage) {
+                                console.warn("Element with class 'topbar-left' does not have a data-target-page attribute.");
+                                return;
+                            }
+                            el.onclick = () => {
+                                clApp.pages.open(clApp.config.elementPageIdMap[el.dataset.targetPage]);
+                            };
+                        });
+                    },
+                    /**
+                     * Opens a specified main page and optionally a subpage within the application.
+                     * 
+                     * This function first hides all main pages and their subpages. It then attempts to find
+                     * and display the main page specified by the `name` parameter. If a `subpageName` is provided and exists,
+                     * it will display that subpage. If no `subpageName` is provided, the first subpage of the main page
+                     * will be displayed if available. If the specified page is not found, an alert is shown.
+                     * 
+                     * @param {string} name - The name of the main page to open.
+                     * @param {string} [subpageName=null] - The name of the subpage to open (optional).
+                     */
+                    open(name, subpageName = null) {
+                        clApp.pages.resetAll();
+                        const page = clApp.config.pages.find(p => p.name === name);
+                        if (page) {
+                            const pageElement = document.getElementById(page.id);
+                            if (pageElement) {
+                                pageElement.classList.remove("hidden");
+                            }
+                            if (subpageName && page.subpages) {
+                                const subpage = page.subpages.find(sp => sp.name === subpageName);
+                                if (subpage) {
+                                    const subpageElement = document.getElementById(subpage.id);
+                                    if (subpageElement) {
+                                        subpageElement.classList.remove("hidden");
+                                    }
+                                }
+                            } else if (page.subpages && page.subpages.length > 0) {
+                                const firstSubpage = page.subpages[0];
+                                const firstSubpageElement = document.getElementById(firstSubpage.id);
+                                if (firstSubpageElement) {
+                                    firstSubpageElement.classList.remove("hidden");
+                                }
+                            }
+                        } else {
+                            clApp.dialog.alert(`Page "${name}" not found.`);
+                        }
+                    },
+                    find(name, subpageName = null) {
+                        const page = clApp.config.pages.find(p => p.name === name);
+                        if (page) {
+                            if (subpageName && page.subpages) {
+                                return page.subpages.find(sp => sp.name === subpageName);
+                            }
+                            return page;
+                        }
+                        return null;
+                    },
+                    /**
+                     * Creates and appends card elements to a specified container element.
+                     * 
+                     * This function clears any existing content within the specified container
+                     * and creates a card for each page in the provided `pages` array. Each card
+                     * displays an icon, title, and description from the page object and attaches
+                     * an `onclick` event to navigate to the respective page when clicked.
+                     * 
+                     * @param {string} container - The ID of the container element where cards will be appended.
+                     * @param {Array} pages - An array of page objects, each containing `icon`, `title`, `description`, and `name` properties.
+                     */
+                    createCards(container, pages) {
+                        const containerElement = document.getElementById(container);
+                        if (!containerElement) {
+                            console.error(`Container with ID "${container}" not found.`);
+                            return;
+                        }
+                        clApp.elementUtility.removeAllChildren(containerElement);
+                        pages.forEach(page => {
+                            const card = document.createElement("div");
+                            card.classList.add("cl-card");
+                            card.innerHTML = `
+                                <div class="cl-card-top">
+                                    <i class="material-symbols-outlined">${page.icon}</i>
+                                    <h3>${page.title}</h3>
+                                </div>
+                                <div class="cl-card-bottom">
+                                    <p>${page.description}</p>
+                                </div>
+                            `;
+                            card.onclick = () => {
+                                clApp.pages.open(page.name);
+                            };
+                            containerElement.appendChild(card);
+                        });
+                    }
+                },
+                battery: {
+                    // Update elements with CL-BatteryMonitor class
+                    init() {
+                        const batteryElements = document.querySelectorAll(".CL-BatteryMonitor");
+                        if (batteryElements.length === 0) return;
+                        navigator.getBattery().then(battery => {
+                            battery.onchargingchange = () => this.update(battery);
+                            battery.onlevelchange = () => this.update(battery);
+                            battery.ondischargingtimechange = () => this.update(battery);
+                            battery.onchargingtimechange = () => this.update(battery);
+                            this.update(battery);
+                        });
+                    },
+                    /**
+                     * Updates all elements with the CL-BatteryMonitor class to display the battery's level and charging status.
+                     * @param {BatteryManager} battery - The battery object to get the data from
+                     */
+                    update(battery){
+                        const batteryElements = document.querySelectorAll(".CL-BatteryMonitor");
+                        batteryElements.forEach(el => {
+                            // Element already has the icon class, so we just update the text
+                            // e.g. "battery_*_bar" where * is the battery level (0-9)
+                            el.innerText = Math.round(battery.level * 7) < 7 ? ("battery_" + Math.round(battery.level * 7) + "_bar") : "battery_full";
+                            el.classList[battery.charging ? "add" : "remove"]("charging");
+                            el.title = (battery.level * 100) + "%, " + (battery.charging ? "Charging" : "Discharging") + ", " +
+                                (battery.charging ? clApp.stringUtility.secondsToMinuteWithSeconds(battery.chargingTime) + " until full" : clApp.stringUtility.secondsToMinuteWithSeconds(battery.dischargingTime) + " left");
+                        });
+                    }
+                },
+                date: {
+                    format: 12, // 12 or 24 hour format
+                    showSeconds: true, // Whether to show seconds in the time display
+                    interval: null, // Interval for updating the time display
+                    init() {
+                        this.update();
+                        this.interval = setInterval(() => {
+                            this.update();
+                        }, 1000);
+                    },
+                    /**
+                     * Updates the time display in the elements with the CL-DateMonitor class.
+                     * The time is formatted based on the specified format (12 or 24 hour).
+                     */
+                    update() {
+                        const dateElements = document.querySelectorAll(".CL-DateMonitor");
+                        const now = new Date();
+                        let hours = now.getHours();
+                        let minutes = now.getMinutes();
+                        let seconds = now.getSeconds();
+                        let ampm = "";
+                        if (this.format === 12) {
+                            ampm = hours >= 12 ? ' PM' : ' AM'; // Determine AM/PM
+                            hours = hours % 12 || 12; // Convert to 12-hour format
+                        } // Convert to 12-hour format
+                        if (!this.showSeconds) seconds = ""; // Remove seconds if not needed
+                        else seconds = `:${seconds < 10 ? '0' + seconds : seconds}`;
+                        const timeString = `${hours}:${minutes < 10 ? '0' + minutes : minutes}${seconds}${ampm}`;
+                        dateElements.forEach(el => {
+                            el.innerText = timeString;
+                        });
+                    },
+                },
+                settings: {
+                    editor: null, // Monaco editor instance for settings
+                    schema: {
+                        title: "Settings",
+                        type: "object",
+                        properties: {
+                            appearance: {
+                                title: "Appearance",
+                                type: "object",
+                                properties: {
+                                    theme: {
+                                        title: "Theme",
+                                        type: "string",
+                                        default: "Default",
+                                        enum: clApp.config.themes.map(t => t.name)
+                                    },
+                                    mode: {
+                                        title: "Mode",
+                                        type: "string",
+                                        default: "Light",
+                                        enum: ["Light", "Dark", "System"]
+                                    },
+                                    borderRadius: {
+                                        title: "Border Radius",
+                                        type: "number",
+                                        default: 10,
+                                        minimum: 0,
+                                        maximum: 20
+                                    },
+                                }
+                            },
+                            timeanddate: {
+                                title: "Time and Date",
+                                type: "object",
+                                properties: {
+                                    format: {
+                                        title: "Time Format",
+                                        type: "number",
+                                        default: 12,
+                                        enum: [12, 24]
+                                    },
+                                    showSeconds: {
+                                        title: "Show Seconds",
+                                        type: "boolean",
+                                        default: true
+                                    }
+                                }
+                            },
+                        }
+                    },
+                    default: {
+                        appearance: {
+                            theme: "Default",
+                            mode: "Light",
+                            borderRadius: 10,
+                        },
+                        timeanddate: {
+                            format: 12,
+                            showSeconds: false,
+                        }
+                    },
+                    /**
+                     * Retrieves the current settings object from localStorage, or returns the default settings
+                     * if no settings are stored in localStorage.
+                     * @returns {Object} The current settings object, or the default settings if none are stored.
+                     */
+                    get() {
+                        return JSON.parse(localStorage.getItem("clAppSettings")) || this.default;
+                    },
+                    /**
+                     * Sets the current settings to the given value and updates the page accordingly.
+                     * @param {Object} settings - The new settings value to set.
+                     */
+                    set(settings) {
+                        localStorage.setItem("clAppSettings", JSON.stringify(settings));
+                        this.update(settings);
+                    },
+                    /**
+                     * Creates a JSONEditor instance for the settings and adds it to the element with id "settingsEditor".
+                     * The editor is configured to use the schema defined in settings.schema, and the initial value is set to
+                     * the current settings value, which is retrieved from localStorage using settings.get().
+                     * When the user changes the value in the editor, the onChange callback is called, which saves the new
+                     * settings value to localStorage using settings.get().
+                     */
+                    createEditor() {
+                        // Create a JSONEditor instance for the settings
+                        this.editor = new JSONEditor(document.getElementById(app.settings.page.allSettings), {
+                            schema: this.schema,
+                            theme: "barebones",
+                            show_errors: "always",
+                            disable_edit_json: true,
+                            disable_properties: true,
+                            disable_collapse: true,
+                            no_additional_properties: true,
+                            compact: true,
+                            object_layout: "table",
+                            startval: this.get(),
+                        });
+                        this.editor.on("change", () => {
+                            // Save the new settings value to localStorage
+                            const newSettings = this.editor.get();
+                            localStorage.setItem("clAppSettings", JSON.stringify(newSettings));
 
-    document.addEventListener("DOMContentLoaded", () => {
-      // Functions to open and close a modal
-      function openModal($el) {
-        $el.classList.add("is-active");
-      }
+                            // Update the application settings
+                            this.update(newSettings);
+                        });
+                    },
+                    update(settings) {
+                        const settingsStyles = document.getElementById("app.settingsStyles");
+                        settingsStyles.innerHTML = ""; // Clear existing styles
+                        switch (settings.appearance.mode) {
+                            case "Light":
+                                settingsStyles.innerHTML += `
+                                    :root {
+                                        --cl-topbar-color: rgba(255, 255, 255, 0.5);
+                                        --cl-inverted-topbar-color: rgba(0, 0, 0, 0.5);
+                                        --cl-border-radius: ${settings.appearance.borderRadius}px;
+                                    }
+                                `;
+                                break;
+                            case "Dark":
+                                settingsStyles.innerHTML += `
+                                    :root {
+                                        --cl-topbar-color: rgba(0, 0, 0, 0.5);
+                                        --cl-inverted-topbar-color: rgba(255, 255, 255, 0.5);
+                                        --cl-border-radius: ${settings.appearance.borderRadius}px;
+                                    }
+                                `;
+                                break;
+                            case "System":
+                                settingsStyles.innerHTML += `
+                                    :root {
+                                        --cl-border-radius: ${settings.appearance.borderRadius}px;
+                                    }
 
-      function closeModal($el) {
-        $el.classList.remove("is-active");
-      }
+                                    @media (prefers-color-scheme: dark) {
+                                        :root {
+                                            --cl-topbar-color: rgba(0, 0, 0, 0.5);
+                                            --cl-inverted-topbar-color: rgba(255, 255, 255, 0.5);
+                                        }
+                                    }
 
-      function closeAllModals() {
-        (document.querySelectorAll(".modal") || []).forEach(($modal) => {
-          closeModal($modal);
-        });
-      }
+                                    @media (prefers-color-scheme: light) {
+                                        :root {
+                                            --cl-topbar-color: rgba(255, 255, 255, 0.5);
+                                            --cl-inverted-topbar-color: rgba(0, 0, 0, 0.5);
+                                        }
+                                    }
+                                `;
+                                break;
+                        }
+                        settingsStyles.innerHTML += `
+                            body {
+                                ${clApp.config.themes.find(t => t.name === settings.appearance.theme).code}
+                            }
+                        `;
+                    }
+                },
+                supabase: {
+                    key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwbXN6dHV4cmxydGJueHhyaHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3OTA1MzYsImV4cCI6MjA1NjM2NjUzNn0.wxYd_XO12CKjUeQZ1_MRPnD5o_S8KBK9XDKL0jh1I1I",
+                    url: "https://kpmsztuxrlrtbnxxrhpj.supabase.co",
+                    client: null, // Supabase client instance
+                    /**
+                     * Initializes the Supabase client with the provided URL and key.
+                     * This function is called to set up the connection to the Supabase backend.
+                     */
+                    init() {
+                        if (this.client) {
+                            console.warn("Supabase client is already initialized.");
+                            return;
+                        }
+                        this.client = supabase.createClient(this.url, this.key);
+                        clApp.toast("info", "Supabase client initialized successfully.");
+                    },
 
-      // Add a click event on buttons to open a specific modal
-      (document.querySelectorAll(".js-modal-trigger") || []).forEach(
-        ($trigger) => {
-          const modal = $trigger.dataset.target;
-          const $target = document.getElementById(modal);
 
-          $trigger.addEventListener("click", () => {
-            openModal($target);
-          });
-        }
-      );
-
-      // Add a click event on various child elements to close the parent modal
-      (
-        document.querySelectorAll(
-          ".modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button"
-        ) || []
-      ).forEach(($close) => {
-        const $target = $close.closest(".modal");
-
-        $close.addEventListener("click", () => {
-          closeModal($target);
-        });
-      });
-
-      // Add a keyboard event to close all modals
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          closeAllModals();
-        }
-      });
-    });
-  </script>
-  <noscript>Please enable JavaScript.</noscript>
+                },
+                /**
+                 * Displays a toast notification with a specified icon and message.
+                 * The toast is appended to the designated toast container and will automatically
+                 * be removed from the DOM after 5.5 seconds.
+                 *
+                 * @param {string} icon - The icon to display in the toast, typically a material symbol.
+                 * @param {string} message - The message text to display within the toast.
+                 */
+                toast(icon, message) {
+                    const toast = document.createElement("div");
+                    toast.classList.add("cl-button");
+                    toast.innerHTML = `
+                        <i class="material-symbols-outlined">${icon}</i>
+                        <span>${message}</span>
+                    `;
+                    document.getElementById(clApp.config.toastContainer).appendChild(toast);
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 5500); // Toast fades out after 5 seconds.
+                },
+                setup() {
+                    // Set up the initial page
+                    clApp.pages.open("Loader");
+                    if (!localStorage.visited) {
+                        // This is the user's first time here
+                        localStorage.visited = true;
+                        clApp.toast("info", "Welcome to Chillnet!");
+                        if ("serviceWorker" in navigator) {
+                            // Service workers are supported, register it
+                            clApp.toast("info", "Service workers are supported! Registering...");
+                            if (Notification.permission !== "granted") Notification.requestPermission().then(perm => {
+                                if (perm === "granted") {
+                                    clApp.toast("info", "Notification permission granted!");
+                                } else {
+                                    clApp.toast("warn", "Notification permission denied!");
+                                }
+                            });
+                            navigator.serviceWorker.register("/serviceWorker.js", { type: "module" });
+                            clApp.toast("info", "Service workers registered!");
+                        } else {
+                            // Service workers are not supported, display a warning
+                            clApp.toast("warn", "Service workers are not supported!");
+                        }
+                    } else {
+                        // This is not the user's first time here
+                        clApp.toast("info", "Welcome back to Chillnet!");
+                    }
+                    clApp.pages.createCards("app.pageCards", clApp.config.pageCards);
+                    clApp.pages.init();
+                    clApp.battery.init();
+                    clApp.date.init();
+                    clApp.settings.createEditor();
+                    clApp.settings.update(clApp.settings.get());
+                    clApp.supabase.init();
+                    clApp.pages.open("Home");
+                },
+            };
+        window.onload = () => {
+            clApp.setup();
+        };
+    </script>
 </body>
 
 </html>
