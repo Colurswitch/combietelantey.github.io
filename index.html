@@ -8,7 +8,7 @@
     <link href="https://fonts.cdnfonts.com/css/product-sans" rel="stylesheet">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="stylesheet" href="google-spinner.min.css">
+    <link rel="stylesheet" href="/google-spinner.min.css">
     <style id="app.settingsStyles">
         :root {
             --cl-border-radius: 10px;
@@ -2116,1146 +2116,1005 @@
     <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        var clApp = {
-                config: {
-                    themes: [
-                        {
-                            name: "Default",
-                            code: `
-                                background:
-                                    linear-gradient(217deg, rgba(255, 0, 0, 0.8), rgba(255, 0, 0, 0) 70.71%),
-                                    linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
-                                    linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
-                            `
-                        },
-                        {
-                            name: "Arrows",
-                            code: `
-                                background:
-linear-gradient(45deg, #92baac 45px, transparent 45px)64px 64px,
-linear-gradient(45deg, #92baac 45px, transparent 45px,transparent 91px, #e1ebbd 91px, #e1ebbd 135px, transparent 135px),
-linear-gradient(-45deg, #92baac 23px, transparent 23px, transparent 68px,#92baac 68px,#92baac 113px,transparent 113px,transparent 158px,#92baac 158px);
-background-color:#e1ebbd;
-background-size: 128px 128px;
-                            `
-                        },
-                        {
-                            name: "Upholstery",
-                            code: `background:
-radial-gradient(hsl(0, 100%, 27%) 4%, hsl(0, 100%, 18%) 9%, hsla(0, 100%, 20%, 0) 9%) 0 0,
-radial-gradient(hsl(0, 100%, 27%) 4%, hsl(0, 100%, 18%) 8%, hsla(0, 100%, 20%, 0) 10%) 50px 50px,
-radial-gradient(hsla(0, 100%, 30%, 0.8) 20%, hsla(0, 100%, 20%, 0)) 50px 0,
-radial-gradient(hsla(0, 100%, 30%, 0.8) 20%, hsla(0, 100%, 20%, 0)) 0 50px,
-radial-gradient(hsla(0, 100%, 20%, 1) 35%, hsla(0, 100%, 20%, 0) 60%) 50px 0,
-radial-gradient(hsla(0, 100%, 20%, 1) 35%, hsla(0, 100%, 20%, 0) 60%) 100px 50px,
-radial-gradient(hsla(0, 100%, 15%, 0.7), hsla(0, 100%, 20%, 0)) 0 0,
-radial-gradient(hsla(0, 100%, 15%, 0.7), hsla(0, 100%, 20%, 0)) 50px 50px,
-linear-gradient(45deg, hsla(0, 100%, 20%, 0) 49%, hsla(0, 100%, 0%, 1) 50%, hsla(0, 100%, 20%, 0) 70%) 0 0,
-linear-gradient(-45deg, hsla(0, 100%, 20%, 0) 49%, hsla(0, 100%, 0%, 1) 50%, hsla(0, 100%, 20%, 0) 70%) 0 0;
-background-color: #300;
-background-size: 100px 100px;`
-                        },
-                        {
-                            name: "Marrakesh",
-                            code: `background-color:white;
-background-image:
-radial-gradient(midnightblue 9px, transparent 10px),
-repeating-radial-gradient(midnightblue 0, midnightblue 4px, transparent 5px, transparent 20px, midnightblue 21px, midnightblue 25px, transparent 26px, transparent 50px);
-background-size: 30px 30px, 90px 90px;
-background-position: 0 0;`
-                        },
-                        {
-                            name: "Starry Night",
-                            code: `background-color:black;
-background-image:
-radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
-background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;`
-                        },
-                        {
-                            name: "Yin Yang",
-                            code: `background:
-radial-gradient(circle at 50% 59%, #D2CAAB 3%, #364E27 4%, #364E27 11%, rgba(54,78,39,0) 12%, rgba(54,78,39,0)) 50px 0,
-radial-gradient(circle at 50% 41%, #364E27 3%, #D2CAAB 4%, #D2CAAB 11%, rgba(210,202,171,0) 12%, rgba(210,202,171,0)) 50px 0,
-radial-gradient(circle at 50% 59%, #D2CAAB 3%, #364E27 4%, #364E27 11%, rgba(54,78,39,0) 12%, rgba(54,78,39,0)) 0 50px,
-radial-gradient(circle at 50% 41%, #364E27 3%, #D2CAAB 4%, #D2CAAB 11%, rgba(210,202,171,0) 12%, rgba(210,202,171,0)) 0 50px,
-radial-gradient(circle at 100% 50%, #D2CAAB 16%, rgba(210,202,171,0) 17%),
-radial-gradient(circle at 0% 50%, #364E27 16%, rgba(54,78,39,0) 17%),
-radial-gradient(circle at 100% 50%, #D2CAAB 16%, rgba(210,202,171,0) 17%) 50px 50px,
-radial-gradient(circle at 0% 50%, #364E27 16%, rgba(54,78,39,0) 17%) 50px 50px;
-background-color:#63773F;
-background-size:100px 100px;`
-                        },
-                        {
-                            name: "Brady Bunch",
-                            code: `background-image:
-radial-gradient(closest-side, transparent 0%, transparent 75%, #B6CC66 76%, #B6CC66 85%, #EDFFDB 86%, #EDFFDB 94%, #FFFFFF 95%, #FFFFFF 103%, #D9E6A7 104%, #D9E6A7 112%, #798B3C 113%, #798B3C 121%, #FFFFFF 122%, #FFFFFF 130%, #E0EAD7 131%, #E0EAD7 140%),
-radial-gradient(closest-side, transparent 0%, transparent 75%, #B6CC66 76%, #B6CC66 85%, #EDFFDB 86%, #EDFFDB 94%, #FFFFFF 95%, #FFFFFF 103%, #D9E6A7 104%, #D9E6A7 112%, #798B3C 113%, #798B3C 121%, #FFFFFF 122%, #FFFFFF 130%, #E0EAD7 131%, #E0EAD7 140%);
-background-size: 110px 110px;
-background-color: #C8D3A7;
-background-position: 0 0, 55px 55px;`
-                        },
-                        {
-                            name: "Argyle",
-                            code: `background-color: #6d695c;
-background-image:
-repeating-linear-gradient(120deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
-repeating-linear-gradient(60deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
-linear-gradient(60deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1)),
-linear-gradient(120deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1));
-background-size: 70px 120px;`
-                        },
-                        {
-                            name: "Stairs",
-                            code: `background-color: #FF7D9D;
-background-size: 58px 58px;
-background-position: 0px 2px, 4px 35px, 29px 31px, 33px 6px,
-0px 36px, 4px 2px, 29px 6px, 33px 30px;
-background-image:
-linear-gradient(335deg, #C90032 23px, transparent 23px),
-linear-gradient(155deg, #C90032 23px, transparent 23px),
-linear-gradient(335deg, #C90032 23px, transparent 23px),
-linear-gradient(155deg, #C90032 23px, transparent 23px),
+        var clApp = {};
+        clApp.config = {
+            themes: [
+                {
+                    name: "Default",
+                    code: `
+                        background:
+                            linear-gradient(217deg, rgba(255, 0, 0, 0.8), rgba(255, 0, 0, 0) 70.71%),
+                            linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%),
+                            linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
+                    `
+                },
+                {
+                    name: "Arrows",
+                    code: `
+                        background:
+        linear-gradient(45deg, #92baac 45px, transparent 45px)64px 64px,
+        linear-gradient(45deg, #92baac 45px, transparent 45px,transparent 91px, #e1ebbd 91px, #e1ebbd 135px, transparent 135px),
+        linear-gradient(-45deg, #92baac 23px, transparent 23px, transparent 68px,#92baac 68px,#92baac 113px,transparent 113px,transparent 158px,#92baac 158px);
+        background-color:#e1ebbd;
+        background-size: 128px 128px;
+                    `
+                },
+                {
+                    name: "Upholstery",
+                    code: `background:
+        radial-gradient(hsl(0, 100%, 27%) 4%, hsl(0, 100%, 18%) 9%, hsla(0, 100%, 20%, 0) 9%) 0 0,
+        radial-gradient(hsl(0, 100%, 27%) 4%, hsl(0, 100%, 18%) 8%, hsla(0, 100%, 20%, 0) 10%) 50px 50px,
+        radial-gradient(hsla(0, 100%, 30%, 0.8) 20%, hsla(0, 100%, 20%, 0)) 50px 0,
+        radial-gradient(hsla(0, 100%, 30%, 0.8) 20%, hsla(0, 100%, 20%, 0)) 0 50px,
+        radial-gradient(hsla(0, 100%, 20%, 1) 35%, hsla(0, 100%, 20%, 0) 60%) 50px 0,
+        radial-gradient(hsla(0, 100%, 20%, 1) 35%, hsla(0, 100%, 20%, 0) 60%) 100px 50px,
+        radial-gradient(hsla(0, 100%, 15%, 0.7), hsla(0, 100%, 20%, 0)) 0 0,
+        radial-gradient(hsla(0, 100%, 15%, 0.7), hsla(0, 100%, 20%, 0)) 50px 50px,
+        linear-gradient(45deg, hsla(0, 100%, 20%, 0) 49%, hsla(0, 100%, 0%, 1) 50%, hsla(0, 100%, 20%, 0) 70%) 0 0,
+        linear-gradient(-45deg, hsla(0, 100%, 20%, 0) 49%, hsla(0, 100%, 0%, 1) 50%, hsla(0, 100%, 20%, 0) 70%) 0 0;
+        background-color: #300;
+        background-size: 100px 100px;`
+                },
+                {
+                    name: "Marrakesh",
+                    code: `background-color:white;
+        background-image:
+        radial-gradient(midnightblue 9px, transparent 10px),
+        repeating-radial-gradient(midnightblue 0, midnightblue 4px, transparent 5px, transparent 20px, midnightblue 21px, midnightblue 25px, transparent 26px, transparent 50px);
+        background-size: 30px 30px, 90px 90px;
+        background-position: 0 0;`
+                },
+                {
+                    name: "Starry Night",
+                    code: `background-color:black;
+        background-image:
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+        radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+        background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
+        background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;`
+                },
+                {
+                    name: "Yin Yang",
+                    code: `background:
+        radial-gradient(circle at 50% 59%, #D2CAAB 3%, #364E27 4%, #364E27 11%, rgba(54,78,39,0) 12%, rgba(54,78,39,0)) 50px 0,
+        radial-gradient(circle at 50% 41%, #364E27 3%, #D2CAAB 4%, #D2CAAB 11%, rgba(210,202,171,0) 12%, rgba(210,202,171,0)) 50px 0,
+        radial-gradient(circle at 50% 59%, #D2CAAB 3%, #364E27 4%, #364E27 11%, rgba(54,78,39,0) 12%, rgba(54,78,39,0)) 0 50px,
+        radial-gradient(circle at 50% 41%, #364E27 3%, #D2CAAB 4%, #D2CAAB 11%, rgba(210,202,171,0) 12%, rgba(210,202,171,0)) 0 50px,
+        radial-gradient(circle at 100% 50%, #D2CAAB 16%, rgba(210,202,171,0) 17%),
+        radial-gradient(circle at 0% 50%, #364E27 16%, rgba(54,78,39,0) 17%),
+        radial-gradient(circle at 100% 50%, #D2CAAB 16%, rgba(210,202,171,0) 17%) 50px 50px,
+        radial-gradient(circle at 0% 50%, #364E27 16%, rgba(54,78,39,0) 17%) 50px 50px;
+        background-color:#63773F;
+        background-size:100px 100px;`
+                },
+                {
+                    name: "Brady Bunch",
+                    code: `background-image:
+        radial-gradient(closest-side, transparent 0%, transparent 75%, #B6CC66 76%, #B6CC66 85%, #EDFFDB 86%, #EDFFDB 94%, #FFFFFF 95%, #FFFFFF 103%, #D9E6A7 104%, #D9E6A7 112%, #798B3C 113%, #798B3C 121%, #FFFFFF 122%, #FFFFFF 130%, #E0EAD7 131%, #E0EAD7 140%),
+        radial-gradient(closest-side, transparent 0%, transparent 75%, #B6CC66 76%, #B6CC66 85%, #EDFFDB 86%, #EDFFDB 94%, #FFFFFF 95%, #FFFFFF 103%, #D9E6A7 104%, #D9E6A7 112%, #798B3C 113%, #798B3C 121%, #FFFFFF 122%, #FFFFFF 130%, #E0EAD7 131%, #E0EAD7 140%);
+        background-size: 110px 110px;
+        background-color: #C8D3A7;
+        background-position: 0 0, 55px 55px;`
+                },
+                {
+                    name: "Argyle",
+                    code: `background-color: #6d695c;
+        background-image:
+        repeating-linear-gradient(120deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+        repeating-linear-gradient(60deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+        linear-gradient(60deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1)),
+        linear-gradient(120deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1));
+        background-size: 70px 120px;`
+                },
+                {
+                    name: "Stairs",
+                    code: `background-color: #FF7D9D;
+        background-size: 58px 58px;
+        background-position: 0px 2px, 4px 35px, 29px 31px, 33px 6px,
+        0px 36px, 4px 2px, 29px 6px, 33px 30px;
+        background-image:
+        linear-gradient(335deg, #C90032 23px, transparent 23px),
+        linear-gradient(155deg, #C90032 23px, transparent 23px),
+        linear-gradient(335deg, #C90032 23px, transparent 23px),
+        linear-gradient(155deg, #C90032 23px, transparent 23px),
 
-linear-gradient(335deg, #C90032 10px, transparent 10px),
-linear-gradient(155deg, #C90032 10px, transparent 10px),
-linear-gradient(335deg, #C90032 10px, transparent 10px),
-linear-gradient(155deg, #C90032 10px, transparent 10px);`
-                        },
-                        {
-                            name: "Shippo",
-                            code: `background-color:#def;
-background-image: radial-gradient(closest-side, transparent 98%, rgba(0,0,0,.3) 99%),
-radial-gradient(closest-side, transparent 98%, rgba(0,0,0,.3) 99%);
-background-size:80px 80px;
-background-position:0 0, 40px 40px;`
-                        },
-                        {
-                            name: "Japanese Cube",
-                            code: `background-color:#556;
-background-image: linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
-linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
-linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
-linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
-linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a),
-linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a);
-background-size:80px 140px;
-background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;`
-                        },
-                        {
-                            name: "Polka Dot",
-                            code: `background-color:#001;
-background-image: radial-gradient(white 15%, transparent 16%),
-radial-gradient(white 15%, transparent 16%);
-background-size: 60px 60px;
-background-position: 0 0, 30px 30px;`
-                        },
-                        {
-                            name: "Houndstooth",
-                            code: `background:
-linear-gradient(-45deg, white 25%, transparent 25%, transparent 75%, black 75%, black) 0 0,
-linear-gradient(-45deg, black 25%, transparent 25%, transparent 75%, white 75%, white) 1em 1em,
-linear-gradient(45deg, black 17%, transparent 17%, transparent 25%, black 25%, black 36%, transparent 36%, transparent 64%, black 64%, black 75%, transparent 75%, transparent 83%, black 83%) 1em 1em;
-background-color: white;
-background-size: 2em 2em;`
-                        },
-                        {
-                            name: "Tartan",
-                            code: `background-color: hsl(2, 57%, 40%);
-background-image: repeating-linear-gradient(transparent, transparent 50px, rgba(0,0,0,.4) 50px, rgba(0,0,0,.4) 53px, transparent 53px, transparent 63px, rgba(0,0,0,.4) 63px, rgba(0,0,0,.4) 66px, transparent 66px, transparent 116px, rgba(0,0,0,.5) 116px, rgba(0,0,0,.5) 166px, rgba(255,255,255,.2) 166px, rgba(255,255,255,.2) 169px, rgba(0,0,0,.5) 169px, rgba(0,0,0,.5) 179px, rgba(255,255,255,.2) 179px, rgba(255,255,255,.2) 182px, rgba(0,0,0,.5) 182px, rgba(0,0,0,.5) 232px, transparent 232px),
-repeating-linear-gradient(270deg, transparent, transparent 50px, rgba(0,0,0,.4) 50px, rgba(0,0,0,.4) 53px, transparent 53px, transparent 63px, rgba(0,0,0,.4) 63px, rgba(0,0,0,.4) 66px, transparent 66px, transparent 116px, rgba(0,0,0,.5) 116px, rgba(0,0,0,.5) 166px, rgba(255,255,255,.2) 166px, rgba(255,255,255,.2) 169px, rgba(0,0,0,.5) 169px, rgba(0,0,0,.5) 179px, rgba(255,255,255,.2) 179px, rgba(255,255,255,.2) 182px, rgba(0,0,0,.5) 182px, rgba(0,0,0,.5) 232px, transparent 232px),
-repeating-linear-gradient(125deg, transparent, transparent 2px, rgba(0,0,0,.2) 2px, rgba(0,0,0,.2) 3px, transparent 3px, transparent 5px, rgba(0,0,0,.2) 5px);`
-                        },
-                        {
-                            name: "Madras",
-                            code: `background-color: hsl(34, 53%, 82%);
-background-image: repeating-linear-gradient(45deg, transparent 5px, hsla(197, 62%, 11%, 0.5) 5px, hsla(197, 62%, 11%, 0.5) 10px,
-  hsla(5, 53%, 63%, 0) 10px, hsla(5, 53%, 63%, 0) 35px, hsla(5, 53%, 63%, 0.5) 35px, hsla(5, 53%, 63%, 0.5) 40px,
-  hsla(197, 62%, 11%, 0.5) 40px, hsla(197, 62%, 11%, 0.5) 50px, hsla(197, 62%, 11%, 0) 50px, hsla(197, 62%, 11%, 0) 60px,
-  hsla(5, 53%, 63%, 0.5) 60px, hsla(5, 53%, 63%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 80px,
-  hsla(35, 91%, 65%, 0) 80px, hsla(35, 91%, 65%, 0) 90px, hsla(5, 53%, 63%, 0.5) 90px, hsla(5, 53%, 63%, 0.5) 110px,
-  hsla(5, 53%, 63%, 0) 110px, hsla(5, 53%, 63%, 0) 120px, hsla(197, 62%, 11%, 0.5) 120px, hsla(197, 62%, 11%, 0.5) 140px
-  ),
-repeating-linear-gradient(135deg, transparent 5px, hsla(197, 62%, 11%, 0.5) 5px, hsla(197, 62%, 11%, 0.5) 10px,
-  hsla(5, 53%, 63%, 0) 10px, hsla(5, 53%, 63%, 0) 35px, hsla(5, 53%, 63%, 0.5) 35px, hsla(5, 53%, 63%, 0.5) 40px,
-  hsla(197, 62%, 11%, 0.5) 40px, hsla(197, 62%, 11%, 0.5) 50px, hsla(197, 62%, 11%, 0) 50px, hsla(197, 62%, 11%, 0) 60px,
-  hsla(5, 53%, 63%, 0.5) 60px, hsla(5, 53%, 63%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 80px,
-  hsla(35, 91%, 65%, 0) 80px, hsla(35, 91%, 65%, 0) 90px, hsla(5, 53%, 63%, 0.5) 90px, hsla(5, 53%, 63%, 0.5) 110px,
-  hsla(5, 53%, 63%, 0) 110px, hsla(5, 53%, 63%, 0) 140px, hsla(197, 62%, 11%, 0.5) 140px, hsla(197, 62%, 11%, 0.5) 160px
-);`
-                        },
-                        {
-                            name: "Tablecloth",
-                            code: `background-color:white;
-background-image: linear-gradient(90deg, rgba(200,0,0,.5) 50%, transparent 50%),
-linear-gradient(rgba(200,0,0,.5) 50%, transparent 50%);
-background-size:50px 50px;`
-                        },
-                        {
-                            name: "Cicada Stripes",
-                            code: `background-color: #026873;
-background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),
-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),
-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),
-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
-background-size: 13px, 29px, 37px, 53px;`
-                        },
-                        {
-                            name: "Cross Dots",
-                            code: `background:
-    radial-gradient(black 3px, transparent 4px),
-    radial-gradient(black 3px, transparent 4px),
-    linear-gradient(#fff 4px, transparent 0),
-    linear-gradient(45deg, transparent 74px, transparent 75px, #a4a4a4 75px, #a4a4a4 76px, transparent 77px, transparent 109px),
-    linear-gradient(-45deg, transparent 75px, transparent 76px, #a4a4a4 76px, #a4a4a4 77px, transparent 78px, transparent 109px),
-    #fff;
-    background-size: 109px 109px, 109px 109px,100% 6px, 109px 109px, 109px 109px;
-    background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;`
-                        },
-                        {
-                            name: "Christmas Trees",
-                            code: `--s: 75px; /* control the size */
+        linear-gradient(335deg, #C90032 10px, transparent 10px),
+        linear-gradient(155deg, #C90032 10px, transparent 10px),
+        linear-gradient(335deg, #C90032 10px, transparent 10px),
+        linear-gradient(155deg, #C90032 10px, transparent 10px);`
+                },
+                {
+                    name: "Shippo",
+                    code: `background-color:#def;
+        background-image: radial-gradient(closest-side, transparent 98%, rgba(0,0,0,.3) 99%),
+        radial-gradient(closest-side, transparent 98%, rgba(0,0,0,.3) 99%);
+        background-size:80px 80px;
+        background-position:0 0, 40px 40px;`
+                },
+                {
+                    name: "Japanese Cube",
+                    code: `background-color:#556;
+        background-image: linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+        linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+        linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+        linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+        linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a),
+        linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a);
+        background-size:80px 140px;
+        background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;`
+                },
+                {
+                    name: "Polka Dot",
+                    code: `background-color:#001;
+        background-image: radial-gradient(white 15%, transparent 16%),
+        radial-gradient(white 15%, transparent 16%);
+        background-size: 60px 60px;
+        background-position: 0 0, 30px 30px;`
+                },
+                {
+                    name: "Houndstooth",
+                    code: `background:
+        linear-gradient(-45deg, white 25%, transparent 25%, transparent 75%, black 75%, black) 0 0,
+        linear-gradient(-45deg, black 25%, transparent 25%, transparent 75%, white 75%, white) 1em 1em,
+        linear-gradient(45deg, black 17%, transparent 17%, transparent 25%, black 25%, black 36%, transparent 36%, transparent 64%, black 64%, black 75%, transparent 75%, transparent 83%, black 83%) 1em 1em;
+        background-color: white;
+        background-size: 2em 2em;`
+                },
+                {
+                    name: "Tartan",
+                    code: `background-color: hsl(2, 57%, 40%);
+        background-image: repeating-linear-gradient(transparent, transparent 50px, rgba(0,0,0,.4) 50px, rgba(0,0,0,.4) 53px, transparent 53px, transparent 63px, rgba(0,0,0,.4) 63px, rgba(0,0,0,.4) 66px, transparent 66px, transparent 116px, rgba(0,0,0,.5) 116px, rgba(0,0,0,.5) 166px, rgba(255,255,255,.2) 166px, rgba(255,255,255,.2) 169px, rgba(0,0,0,.5) 169px, rgba(0,0,0,.5) 179px, rgba(255,255,255,.2) 179px, rgba(255,255,255,.2) 182px, rgba(0,0,0,.5) 182px, rgba(0,0,0,.5) 232px, transparent 232px),
+        repeating-linear-gradient(270deg, transparent, transparent 50px, rgba(0,0,0,.4) 50px, rgba(0,0,0,.4) 53px, transparent 53px, transparent 63px, rgba(0,0,0,.4) 63px, rgba(0,0,0,.4) 66px, transparent 66px, transparent 116px, rgba(0,0,0,.5) 116px, rgba(0,0,0,.5) 166px, rgba(255,255,255,.2) 166px, rgba(255,255,255,.2) 169px, rgba(0,0,0,.5) 169px, rgba(0,0,0,.5) 179px, rgba(255,255,255,.2) 179px, rgba(255,255,255,.2) 182px, rgba(0,0,0,.5) 182px, rgba(0,0,0,.5) 232px, transparent 232px),
+        repeating-linear-gradient(125deg, transparent, transparent 2px, rgba(0,0,0,.2) 2px, rgba(0,0,0,.2) 3px, transparent 3px, transparent 5px, rgba(0,0,0,.2) 5px);`
+                },
+                {
+                    name: "Madras",
+                    code: `background-color: hsl(34, 53%, 82%);
+        background-image: repeating-linear-gradient(45deg, transparent 5px, hsla(197, 62%, 11%, 0.5) 5px, hsla(197, 62%, 11%, 0.5) 10px,
+          hsla(5, 53%, 63%, 0) 10px, hsla(5, 53%, 63%, 0) 35px, hsla(5, 53%, 63%, 0.5) 35px, hsla(5, 53%, 63%, 0.5) 40px,
+          hsla(197, 62%, 11%, 0.5) 40px, hsla(197, 62%, 11%, 0.5) 50px, hsla(197, 62%, 11%, 0) 50px, hsla(197, 62%, 11%, 0) 60px,
+          hsla(5, 53%, 63%, 0.5) 60px, hsla(5, 53%, 63%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 80px,
+          hsla(35, 91%, 65%, 0) 80px, hsla(35, 91%, 65%, 0) 90px, hsla(5, 53%, 63%, 0.5) 90px, hsla(5, 53%, 63%, 0.5) 110px,
+          hsla(5, 53%, 63%, 0) 110px, hsla(5, 53%, 63%, 0) 120px, hsla(197, 62%, 11%, 0.5) 120px, hsla(197, 62%, 11%, 0.5) 140px
+          ),
+        repeating-linear-gradient(135deg, transparent 5px, hsla(197, 62%, 11%, 0.5) 5px, hsla(197, 62%, 11%, 0.5) 10px,
+          hsla(5, 53%, 63%, 0) 10px, hsla(5, 53%, 63%, 0) 35px, hsla(5, 53%, 63%, 0.5) 35px, hsla(5, 53%, 63%, 0.5) 40px,
+          hsla(197, 62%, 11%, 0.5) 40px, hsla(197, 62%, 11%, 0.5) 50px, hsla(197, 62%, 11%, 0) 50px, hsla(197, 62%, 11%, 0) 60px,
+          hsla(5, 53%, 63%, 0.5) 60px, hsla(5, 53%, 63%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 70px, hsla(35, 91%, 65%, 0.5) 80px,
+          hsla(35, 91%, 65%, 0) 80px, hsla(35, 91%, 65%, 0) 90px, hsla(5, 53%, 63%, 0.5) 90px, hsla(5, 53%, 63%, 0.5) 110px,
+          hsla(5, 53%, 63%, 0) 110px, hsla(5, 53%, 63%, 0) 140px, hsla(197, 62%, 11%, 0.5) 140px, hsla(197, 62%, 11%, 0.5) 160px
+        );`
+                },
+                {
+                    name: "Tablecloth",
+                    code: `background-color:white;
+        background-image: linear-gradient(90deg, rgba(200,0,0,.5) 50%, transparent 50%),
+        linear-gradient(rgba(200,0,0,.5) 50%, transparent 50%);
+        background-size:50px 50px;`
+                },
+                {
+                    name: "Cicada Stripes",
+                    code: `background-color: #026873;
+        background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),
+        linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),
+        linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),
+        linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+        background-size: 13px, 29px, 37px, 53px;`
+                },
+                {
+                    name: "Cross Dots",
+                    code: `background:
+            radial-gradient(black 3px, transparent 4px),
+            radial-gradient(black 3px, transparent 4px),
+            linear-gradient(#fff 4px, transparent 0),
+            linear-gradient(45deg, transparent 74px, transparent 75px, #a4a4a4 75px, #a4a4a4 76px, transparent 77px, transparent 109px),
+            linear-gradient(-45deg, transparent 75px, transparent 76px, #a4a4a4 76px, #a4a4a4 77px, transparent 78px, transparent 109px),
+            #fff;
+            background-size: 109px 109px, 109px 109px,100% 6px, 109px 109px, 109px 109px;
+            background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;`
+                },
+                {
+                    name: "Christmas Trees",
+                    code: `--s: 75px; /* control the size */
 
-  --_c: #0000, #fff 1deg 79deg, #0000 81deg;
-  --g0: conic-gradient(from 140deg at 50% 87.5%, var(--_c));
-  --g1: conic-gradient(from 140deg at 50% 81.25%, var(--_c));
-  --g2: conic-gradient(from 140deg at 50% 75%, var(--_c));
-  --g3: conic-gradient(at 10% 20%, #0000 75%, #fff 0);
-  background: var(--g0) 0 calc(var(--s) / -4),
-    var(--g0) var(--s) calc(3 * var(--s) / 4), var(--g1),
-    var(--g1) var(--s) var(--s), var(--g2) 0 calc(var(--s) / 4),
-    var(--g2) var(--s) calc(5 * var(--s) / 4),
-    var(--g3) calc(var(--s) / -10) var(--s),
-    var(--g3) calc(9 * var(--s) / 10) calc(2 * var(--s)),
-    repeating-conic-gradient(from 45deg, #a31e39 0 25%, #31570e 0 50%);
-  background-size: calc(2 * var(--s)) calc(2 * var(--s));`
-                        }
+          --_c: #0000, #fff 1deg 79deg, #0000 81deg;
+          --g0: conic-gradient(from 140deg at 50% 87.5%, var(--_c));
+          --g1: conic-gradient(from 140deg at 50% 81.25%, var(--_c));
+          --g2: conic-gradient(from 140deg at 50% 75%, var(--_c));
+          --g3: conic-gradient(at 10% 20%, #0000 75%, #fff 0);
+          background: var(--g0) 0 calc(var(--s) / -4),
+            var(--g0) var(--s) calc(3 * var(--s) / 4), var(--g1),
+            var(--g1) var(--s) var(--s), var(--g2) 0 calc(var(--s) / 4),
+            var(--g2) var(--s) calc(5 * var(--s) / 4),
+            var(--g3) calc(var(--s) / -10) var(--s),
+            var(--g3) calc(9 * var(--s) / 10) calc(2 * var(--s)),
+            repeating-conic-gradient(from 45deg, #a31e39 0 25%, #31570e 0 50%);
+          background-size: calc(2 * var(--s)) calc(2 * var(--s));`
+                }
+            ],
+            elementPageIdMap: {
+                "gamePlayer": "app.gamePlayer.page",
+                "videoPlayer": "app.videoPlayer.page",
+                "loader": "app.loaderScreen",
+                "auth": "app.authScreen.page",
+                "home": "app.homeScreen.page",
+                "games": "app.gamesScreen.page",
+                "game": "app.gameScreen.page",
+                "minecraft": "app.minecraftScreen.page",
+                "chat": "app.chat.page",
+                "videos": "app.videos.page",
+                "video": "app.video.page",
+                "users": "app.users.page",
+                "user": "app.user.page",
+                "account": "app.account.page",
+                "content": "app.content.page",
+                "admin": "app.admin.page",
+                "settings": "app.settings.page",
+                "help": "app.help.page",
+            },
+            pageCards: [
+                {
+                    title: "Games",
+                    icon: "sports_esports",
+                    description: "View, play and discover new games."
+                },
+                {
+                    title: "Minecraft",
+                    icon: "deployed_code",
+                    description: "View, play and add Minecraft versions, mods, worlds and more."
+                },
+                {
+                    title: "Chat",
+                    icon: "forum",
+                    description: "Chat with other users or generative AI."
+                },
+                {
+                    title: "Videos",
+                    icon: "video_library",
+                    description: "Watch and discover new videos."
+                },
+                {
+                    title: "Users",
+                    icon: "people",
+                    description: "See all users."
+                },
+                {
+                    title: "Account",
+                    icon: "account_circle",
+                    description: "Manage your account."
+                },
+                {
+                    title: "Content",
+                    icon: "library_books",
+                    description: "Manage your content."
+                },
+                {
+                    title: "Admin",
+                    icon: "shield",
+                    description: "Manage the site.",
+                    isDashboard: true
+                },
+                {
+                    title: "Settings",
+                    icon: "settings",
+                    description: "Manage the site settings."
+                },
+                {
+                    title: "Help",
+                    icon: "help",
+                    description: "View help articles and other information about Chillnet."
+                }
+            ],
+            dialogElement: {
+                panelId: "app.dialog",
+                optionsContainerId: "app.dialog.optionsContainer",
+                contentContainerId: "app.dialog.contentContainer"
+            },
+            pages: [
+                {
+                    name: "Game Player",
+                    id: "app.gamePlayer.page",
+                },
+                {
+                    name: "Video Player",
+                    id: "app.videoPlayer.page",
+                },
+                {
+                    name: "Loader",
+                    id: "app.loaderScreen",
+                },
+                {
+                    name: "Auth",
+                    id: "app.authScreen.page",
+                },
+                {
+                    name: "Home",
+                    id: "app.homeScreen.page",
+                },
+                {
+                    name: "Games",
+                    id: "app.gamesScreen.page",
+                    subpages: [
+                        {
+                            name: "Trending Games",
+                            id: "app.gamesScreen.page.trendingGames.boxedContent",
+                            btn: "app.gamesScreen.page.trendingGames.btn",
+                        },
+                        {
+                            name: "Search Games",
+                            id: "app.gamesScreen.page.searchGames.boxedContent",
+                            btn: "app.gamesScreen.page.searchGames.btn",
+                        },
+                        {
+                            name: "Saved Games",
+                            id: "app.gamesScreen.page.savedGames.boxedContent",
+                            btn: "app.gamesScreen.page.savedGames.btn",
+                        },
+                        {
+                            name: "History",
+                            id: "app.gamesScreen.page.history.boxedContent",
+                            btn: "app.gamesScreen.page.history.btn",
+                        },
+                        {
+                            name: "Achievements",
+                            id: "app.gamesScreen.page.achievements.boxedContent",
+                            btn: "app.gamesScreen.page.achievements.btn",
+                        },
+                        {
+                            name: "Currently Playing",
+                            id: "app.gamesScreen.page.currentlyPlaying.boxedContent",
+                            btn: "app.gamesScreen.page.currentlyPlaying.btn",
+                        },
                     ],
-                    elementPageIdMap: {
-                        "gamePlayer": "app.gamePlayer.page",
-                        "videoPlayer": "app.videoPlayer.page",
-                        "loader": "app.loaderScreen",
-                        "auth": "app.authScreen.page",
-                        "home": "app.homeScreen.page",
-                        "games": "app.gamesScreen.page",
-                        "game": "app.gameScreen.page",
-                        "minecraft": "app.minecraftScreen.page",
-                        "chat": "app.chat.page",
-                        "videos": "app.videos.page",
-                        "video": "app.video.page",
-                        "users": "app.users.page",
-                        "user": "app.user.page",
-                        "account": "app.account.page",
-                        "content": "app.content.page",
-                        "admin": "app.admin.page",
-                        "settings": "app.settings.page",
-                        "help": "app.help.page",
-                    },
-                    pageCards: [
+                },
+                {
+                    name: "Game",
+                    id: "app.gameScreen.page"
+                },
+                {
+                    name: "Minecraft",
+                    id: "app.minecraftScreen.page",
+                    subpages: [
                         {
-                            title: "Games",
-                            icon: "sports_esports",
-                            description: "View, play and discover new games."
+                            name: "Versions",
+                            id: "app.minecraftScreen.page.versions.boxedContent",
+                            btn: "app.minecraftScreen.page.versions.btn",
                         },
                         {
-                            title: "Minecraft",
-                            icon: "deployed_code",
-                            description: "View, play and add Minecraft versions, mods, worlds and more."
+                            name: "Mods",
+                            id: "app.minecraftScreen.page.mods.boxedContent",
+                            btn: "app.minecraftScreen.page.mods.btn",
                         },
                         {
-                            title: "Chat",
-                            icon: "forum",
-                            description: "Chat with other users or generative AI."
+                            name: "Worlds",
+                            id: "app.minecraftScreen.page.worlds.boxedContent",
+                            btn: "app.minecraftScreen.page.worlds.btn",
                         },
                         {
-                            title: "Videos",
-                            icon: "video_library",
-                            description: "Watch and discover new videos."
+                            name: "Resource Packs",
+                            id: "app.minecraftScreen.page.resourcePacks.boxedContent",
+                            btn: "app.minecraftScreen.page.resourcePacks.btn",
                         },
-                        {
-                            title: "Users",
-                            icon: "people",
-                            description: "See all users."
-                        },
-                        {
-                            title: "Account",
-                            icon: "account_circle",
-                            description: "Manage your account."
-                        },
-                        {
-                            title: "Content",
-                            icon: "library_books",
-                            description: "Manage your content."
-                        },
-                        {
-                            title: "Admin",
-                            icon: "shield",
-                            description: "Manage the site.",
-                            isDashboard: true
-                        },
-                        {
-                            title: "Settings",
-                            icon: "settings",
-                            description: "Manage the site settings."
-                        },
-                        {
-                            title: "Help",
-                            icon: "help",
-                            description: "View help articles and other information about Chillnet."
-                        }
                     ],
-                    dialogElement: {
-                        panelId: "app.dialog",
-                        optionsContainerId: "app.dialog.optionsContainer",
-                        contentContainerId: "app.dialog.contentContainer"
-                    },
-                    pages: [
+                },
+                {
+                    name: "Chat",
+                    id: "app.chat.page",
+                    subpages: [
                         {
-                            name: "Game Player",
-                            id: clApp.config.elementPageIdMap["gamePlayer"],
+                            name: "With Users",
+                            id: "app.chat.page.withUsers.boxedContent",
+                            btn: "app.chat.page.withUsers.btn",
                         },
                         {
-                            name: "Video Player",
-                            id: clApp.config.elementPageIdMap["videoPlayer"],
+                            name: "With AI",
+                            id: "app.chat.page.withAI.boxedContent",
+                            btn: "app.chat.page.withAI.btn",
+                        },
+                    ],
+                },
+                {
+                    name: "Videos",
+                    id: "app.videos.page",
+                    subpages: [
+                        {
+                            name: "All Videos",
+                            id: "app.videos.page.allVideos",
+                            btn: "app.videos.page.allVideos.btn",
                         },
                         {
-                            name: "Loader",
-                            id: clApp.config.elementPageIdMap["loader"],
+                            name: "History",
+                            id: "app.videos.page.history",
+                            btn: "app.videos.page.history.btn",
+                        },
+                    ]
+                },
+                {
+                    name: "Video",
+                    id: "app.video.page",
+                    subpages: [
+                        {
+                            name: "Info",
+                            id: "app.video.page.info",
+                            btn: "app.video.page.info.btn",
                         },
                         {
-                            name: "Auth",
-                            id: clApp.config.elementPageIdMap["auth"],
+                            name: "Comments",
+                            id: "app.video.page.comments",
+                            btn: "app.video.page.comments.btn",
                         },
+                    ],
+                },
+                {
+                    name: "Users",
+                    id: "app.users.page",
+                    subpages: [
                         {
-                            name: "Home",
-                            id: clApp.config.elementPageIdMap["home"],
+                            name: "All Users",
+                            id: "app.users.page.allUsers.boxedContent",
+                            btn: "app.users.page.allUsers.btn",
                         },
+                    ]
+                },
+                {
+                    name: "User",
+                    id: "app.user.page",
+                    subpages: [
                         {
-                            name: "Games",
-                            id: clApp.config.elementPageIdMap["games"],
-                            subpages: [
-                                {
-                                    name: "Trending Games",
-                                    id: clApp.config.elementPageIdMap["games"] + ".trendingGames.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["games"] + ".trendingGames.btn",
-                                },
-                                {
-                                    name: "Search Games",
-                                    id: clApp.config.elementPageIdMap["games"] + ".searchGames.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["games"] + ".searchGames.btn",
-                                },
-                                {
-                                    name: "Saved Games",
-                                    id: clApp.config.elementPageIdMap["games"] + ".savedGames.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["games"] + ".savedGames.btn",
-                                },
-                                {
-                                    name: "History",
-                                    id: clApp.config.elementPageIdMap["games"] + ".history.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["games"] + ".history.btn",
-                                },
-                                {
-                                    name: "Achievements",
-                                    id: clApp.config.elementPageIdMap["games"] + ".achievements.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["games"] + ".achievements.btn",
-                                },
-                                {
-                                    name: "Currently Playing",
-                                    id: clApp.config.elementPageIdMap["games"] + ".currentlyPlaying.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["games"] + ".currentlyPlaying.btn",
-                                },
-                            ],
-                        },
-                        {
-                            name: "Game",
-                            id: clApp.config.elementPageIdMap["game"]
-                        },
-                        {
-                            name: "Minecraft",
-                            id: clApp.config.elementPageIdMap["minecraft"],
-                            subpages: [
-                                {
-                                    name: "Versions",
-                                    id: clApp.config.elementPageIdMap["minecraft"] + ".versions.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["minecraft"] + ".versions.btn",
-                                },
-                                {
-                                    name: "Mods",
-                                    id: clApp.config.elementPageIdMap["minecraft"] + ".mods.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["minecraft"] + ".mods.btn",
-                                },
-                                {
-                                    name: "Worlds",
-                                    id: clApp.config.elementPageIdMap["minecraft"] + ".worlds.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["minecraft"] + ".worlds.btn",
-                                },
-                                {
-                                    name: "Resource Packs",
-                                    id: clApp.config.elementPageIdMap["minecraft"] + ".resourcePacks.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["minecraft"] + ".resourcePacks.btn",
-                                },
-                            ],
-                        },
-                        {
-                            name: "Chat",
-                            id: clApp.config.elementPageIdMap["chat"],
-                            subpages: [
-                                {
-                                    name: "With Users",
-                                    id: clApp.config.elementPageIdMap["chat"] + ".withUsers.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["chat"] + ".withUsers.btn",
-                                },
-                                {
-                                    name: "With AI",
-                                    id: clApp.config.elementPageIdMap["chat"] + ".withAI.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["chat"] + ".withAI.btn",
-                                },
-                            ],
-                        },
-                        {
-                            name: "Videos",
-                            id: clApp.config.elementPageIdMap["videos"],
-                            subpages: [
-                                {
-                                    name: "All Videos",
-                                    id: clApp.config.elementPageIdMap["videos"] + ".allVideos",
-                                    btn: clApp.config.elementPageIdMap["videos"] + ".allVideos.btn",
-                                },
-                                {
-                                    name: "History",
-                                    id: clApp.config.elementPageIdMap["videos"] + ".history",
-                                    btn: clApp.config.elementPageIdMap["videos"] + ".history.btn",
-                                },
-                            ]
+                            name: "Info",
+                            id: "app.user.page.info",
+                            btn: "app.user.page.info.btn",
                         },
                         {
                             name: "Video",
-                            id: clApp.config.elementPageIdMap["video"],
-                            subpages: [
-                                {
-                                    name: "Info",
-                                    id: clApp.config.elementPageIdMap["video"] + ".info",
-                                    btn: clApp.config.elementPageIdMap["video"] + ".info.btn",
-                                },
-                                {
-                                    name: "Comments",
-                                    id: clApp.config.elementPageIdMap["video"] + ".comments",
-                                    btn: clApp.config.elementPageIdMap["video"] + ".comments.btn",
-                                },
-                            ],
-                        },
-                        {
-                            name: "Users",
-                            id: clApp.config.elementPageIdMap["users"],
-                            subpages: [
-                                {
-                                    name: "All Users",
-                                    id: clApp.config.elementPageIdMap["users"] + ".allUsers.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["users"] + ".allUsers.btn",
-                                },
-                            ]
-                        },
-                        {
-                            name: "User",
-                            id: clApp.config.elementPageIdMap["user"],
-                            subpages: [
-                                {
-                                    name: "Info",
-                                    id: clApp.config.elementPageIdMap["user"] + ".info",
-                                    btn: clApp.config.elementPageIdMap["user"] + ".info.btn",
-                                },
-                                {
-                                    name: "Video",
-                                    id: clApp.config.elementPageIdMap["user"] + ".video",
-                                    btn: clApp.config.elementPageIdMap["user"] + ".video.btn",
-                                },
-                            ],
-                        },
-                        {
-                            name: "Account",
-                            id: clApp.config.elementPageIdMap["account"],
-                            subpages: [
-                                {
-                                    name: "Account Settings",
-                                    id: clApp.config.elementPageIdMap["account"] + ".accountSettings",
-                                    btn: clApp.config.elementPageIdMap["account"] + ".accountSettings.btn",
-                                },
-                            ],
-                        },
-                        {
-                            name: "Content",
-                            id: clApp.config.elementPageIdMap["content"],
-                            subpages: [
-                                {
-                                    name: "Videos",
-                                    id: clApp.config.elementPageIdMap["content"] + ".videos.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["content"] + ".videos.btn",
-                                },
-                                {
-                                    name: "New Video",
-                                    id: clApp.config.elementPageIdMap["content"] + ".newVideo.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["content"] + ".newVideo.btn",
-                                },
-                                {
-                                    name: "Games",
-                                    id: clApp.config.elementPageIdMap["content"] + ".games.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["content"] + ".games.btn",
-                                },
-                                {
-                                    name: "New Game",
-                                    id: clApp.config.elementPageIdMap["content"] + ".newGame.boxedContent",
-                                    btn: clApp.config.elementPageIdMap["content"] + ".newGame.btn",
-                                },
-                            ],
-                        },
-                        {
-                            name: "Admin",
-                            id: clApp.config.elementPageIdMap["admin"],
-                            subpages: [
-                                {
-                                    name: "Users",
-                                    id: clApp.config.elementPageIdMap["admin"] + ".users",
-                                    btn: clApp.config.elementPageIdMap["admin"] + ".users.btn",
-                                },
-                                {
-                                    name: "Videos",
-                                    id: clApp.config.elementPageIdMap["admin"] + ".videos",
-                                    btn: clApp.config.elementPageIdMap["admin"] + ".videos.btn",
-                                },
-                                {
-                                    name: "Games",
-                                    id: clApp.config.elementPageIdMap["admin"] + ".games",
-                                    btn: clApp.config.elementPageIdMap["admin"] + ".games.btn",
-                                },
-                            ],
-                        },
-                        {
-                            name: "Settings",
-                            id: clApp.config.elementPageIdMap["settings"],
-                        },
-                        {
-                            name: "Help",
-                            id: clApp.config.elementPageIdMap["help"],
-                            subpages: [
-                                {
-                                    name: "About",
-                                    id: clApp.config.elementPageIdMap["help"] + ".about",
-                                    btn: clApp.config.elementPageIdMap["help"] + ".about.btn",
-                                },
-                                {
-                                    name: "FAQ",
-                                    id: clApp.config.elementPageIdMap["help"] + ".faq",
-                                    btn: clApp.config.elementPageIdMap["help"] + ".faq.btn",
-                                },
-                            ],
+                            id: "app.user.page.video",
+                            btn: "app.user.page.video.btn",
                         },
                     ],
-                    toastContainer: "app.toastContainer",
                 },
-                elementUtility: {
-                    /**
-                     * Removes all children from the specified element.
-                     * @param {Element} element - The element to remove all children from.
-                     */
-                    removeAllChildren(element) {
-                        while (element.firstChild) {
-                            element.removeChild(element.firstChild);
-                        }
-                    },
+                {
+                    name: "Account",
+                    id: "app.account.page",
+                    subpages: [
+                        {
+                            name: "Account Settings",
+                            id: "app.account.page.accountSettings",
+                            btn: "app.account.page.accountSettings.btn",
+                        },
+                    ],
                 },
-                stringUtility: {
-                    /**
-                     * Converts a given number of seconds into a string representation of minutes and seconds.
-                     * 
-                     * The function calculates the number of full minutes and the remaining seconds from the 
-                     * provided total seconds. The seconds are formatted with a leading zero if they are less 
-                     * than 10.
-                     * 
-                     * @param {number} seconds - The total number of seconds to convert.
-                     * @returns {string} The formatted time string in "minutes:seconds" format.
-                     */
-                    secondsToMinuteWithSeconds(seconds) {
-                        const minutes = Math.floor(seconds / 60);
-                        const secs = seconds % 60;
-                        return `${minutes}:${secs < 10 ? '0' + secs : secs}`;
-                    },
+                {
+                    name: "Content",
+                    id: "app.content.page",
+                    subpages: [
+                        {
+                            name: "Videos",
+                            id: "app.content.page.videos.boxedContent",
+                            btn: "app.content.page.videos.btn",
+                        },
+                        {
+                            name: "New Video",
+                            id: "app.content.page.newVideo.boxedContent",
+                            btn: "app.content.page.newVideo.btn",
+                        },
+                        {
+                            name: "Games",
+                            id: "app.content.page.games.boxedContent",
+                            btn: "app.content.page.games.btn",
+                        },
+                        {
+                            name: "New Game",
+                            id: "app.content.page.newGame.boxedContent",
+                            btn: "app.content.page.newGame.btn",
+                        },
+                    ],
                 },
-                button: {
-                    /**
-                     * Creates a new button element with the specified icon and text.
-                     * If `interactive` is true (default), the button will be
-                     * interactive and will have a CSS class of "cl-button". If
-                     * `title` is specified, it will be set as the title attribute
-                     * of the button.
-                     * @param {string} icon - The material symbol icon to use.
-                     * @param {string} [text=null] - The text to display next to the
-                     * icon.
-                     * @param {boolean} [interactive=true] - Whether the button
-                     * should be interactive.
-                     * @param {string} [title=null] - The title to set as the title
-                     * attribute of the button.
-                     * @param {function} [onclick=(e) => {}] - The function to call when
-                     * @returns {HTMLButtonElement} The newly created button element.
-                     */
-                    create(icon, text = null, interactive = true, title = null, onclick = (e) => {}) {
-                        const newBtn = document.createElement("button");
-                        newBtn.innerHTML = `
-                            <span class="material-symbols-outlined">${icon}</span>
-                            ${text && `<span>${text}</span>`}
-                        `;
-                        if (title) newBtn.title = title;
-                        newBtn.onclick = onclick;
-                        newBtn.setAttribute("interactive", interactive);
-                        return newBtn;
-                    }
+                {
+                    name: "Admin",
+                    id: "app.admin.page",
+                    subpages: [
+                        {
+                            name: "Users",
+                            id: "app.admin.page.users",
+                            btn: "app.admin.page.users.btn",
+                        },
+                        {
+                            name: "Videos",
+                            id: "app.admin.page.videos",
+                            btn: "app.admin.page.videos.btn",
+                        },
+                        {
+                            name: "Games",
+                            id: "app.admin.page.games",
+                            btn: "app.admin.page.games.btn",
+                        },
+                    ],
                 },
-                input: {
-                    /**
-                     * Creates a new input element wrapped in a container with an associated icon.
-                     *
-                     * The input type determines the icon displayed next to it. The container
-                     * will have a CSS class of "cl-input", and the icon will use the "material-symbols-outlined" class.
-                     *
-                     * @param {string} type - The type of the input element, such as "text", "password", "email", "number", or "file".
-                     * @param {string|null} [placeholder=null] - An optional placeholder text for the input element.
-                     * @param {string|null} [value=null] - An optional default value for the input element.
-                     * @param {string|null} [accept=null] - An optional accept attribute, applicable for file inputs.
-                     * @param {function} [onchange=(e) => {}] - The function to call when the input value changes.
-                     * 
-                     * @returns {HTMLDivElement} A container element with the input and icon inside.
-                     */
-                    create(type, placeholder = null, value = null, accept = null, onchange = (e) => {}) {
-                        const container = document.createElement("div");
-                        container.classList.add("cl-input");
-                        const iconSpan = document.createElement("span");
-                        iconSpan.classList.add("material-symbols-outlined");
-                        switch (type) {
-                            case "text":
-                                iconSpan.innerText = "text_fields";
-                                break;
-                            case "password":
-                                iconSpan.innerText = "lock";
-                                break;
-                            case "email":
-                                iconSpan.innerText = "mail";
-                                break;
-                            case "number":
-                                iconSpan.innerText = "123";
-                                break;
-                            case "file":
-                                iconSpan.innerText = "attach_file";
-                                break;
-                            default:
-                                iconSpan.innerText = "edit_note";
-                        }
-                        container.appendChild(iconSpan);
-                        const input = document.createElement("input");
-                        input.type = type;
-                        if (placeholder) input.placeholder = placeholder;
-                        if (value) input.value = value;
-                        if (accept) input.accept = accept;
-                        input.onchange = onchange;
-                        container.appendChild(input);
-                        return container;
-                    }
+                {
+                    name: "Settings",
+                    id: "app.settings.page",
                 },
-                dialog: {
-                    /**
-                     * Displays a dialog box with the specified message and a single "OK" button to close the dialog.
-                     * The message is displayed in the content container of the dialog element, and the OK button is
-                     * appended to the options container of the dialog element.
-                     * @param {string} message - The message to display in the dialog.
-                     */
-                    alert(message) {
-                        document.getElementById(clApp.config.dialogElement.panelId).classList.remove("hidden");
-                        document.getElementById(clApp.config.dialogElement.contentContainerId).innerHTML = message;
-                        clApp.elementUtility.removeAllChildren(document.getElementById(clApp.config.dialogElement.optionsContainerId));
-                        document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(clApp.button.create("check", null, true, "OK", () => {
+                {
+                    name: "Help",
+                    id: "app.help.page",
+                    subpages: [
+                        {
+                            name: "About",
+                            id: "app.help.page.about",
+                            btn: "app.help.page.about.btn",
+                        },
+                        {
+                            name: "FAQ",
+                            id: "app.help.page.faq",
+                            btn: "app.help.page.faq.btn",
+                        },
+                    ],
+                },
+            ],
+            toastContainer: "app.toastContainer",
+        };
+
+        clApp.elementUtility = {
+            removeAllChildren(element) {
+                while (element.firstChild) {
+                    element.removeChild(element.firstChild);
+                }
+            },
+        };
+
+        clApp.stringUtility = {
+            secondsToMinuteWithSeconds(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${minutes}:${secs < 10 ? '0' + secs : secs}`;
+            },
+        };
+
+        clApp.button = {
+            create(icon, text = null, interactive = true, title = null, onclick = (e) => {}) {
+                const newBtn = document.createElement("button");
+                newBtn.innerHTML = `
+                    <span class="material-symbols-outlined">${icon}</span>
+                    ${text && `<span>${text}</span>`}
+                `;
+                if (title) newBtn.title = title;
+                newBtn.onclick = onclick;
+                newBtn.setAttribute("interactive", interactive);
+                return newBtn;
+            }
+        };
+
+        clApp.input = {
+            create(type, placeholder = null, value = null, accept = null, onchange = (e) => {}) {
+                const container = document.createElement("div");
+                container.classList.add("cl-input");
+                const iconSpan = document.createElement("span");
+                iconSpan.classList.add("material-symbols-outlined");
+                switch (type) {
+                    case "text":
+                        iconSpan.innerText = "text_fields";
+                        break;
+                    case "password":
+                        iconSpan.innerText = "lock";
+                        break;
+                    case "email":
+                        iconSpan.innerText = "mail";
+                        break;
+                    case "number":
+                        iconSpan.innerText = "123";
+                        break;
+                    case "file":
+                        iconSpan.innerText = "attach_file";
+                        break;
+                    default:
+                        iconSpan.innerText = "edit_note";
+                }
+                container.appendChild(iconSpan);
+                const input = document.createElement("input");
+                input.type = type;
+                if (placeholder) input.placeholder = placeholder;
+                if (value) input.value = value;
+                if (accept) input.accept = accept;
+                input.onchange = onchange;
+                container.appendChild(input);
+                return container;
+            }
+        };
+
+        clApp.dialog = {
+            alert(message) {
+                document.getElementById(clApp.config.dialogElement.panelId).classList.remove("hidden");
+                document.getElementById(clApp.config.dialogElement.contentContainerId).innerHTML = message;
+                clApp.elementUtility.removeAllChildren(document.getElementById(clApp.config.dialogElement.optionsContainerId));
+                document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(clApp.button.create("check", null, true, "OK", () => {
+                    document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
+                }));
+            },
+            prompt(message, type) {
+                return new Promise((resolve) => {
+                    document.getElementById(clApp.config.dialogElement.panelId).classList.remove("hidden");
+                    document.getElementById(clApp.config.dialogElement.contentContainerId).innerHTML = message;
+                    clApp.elementUtility.removeAllChildren(document.getElementById(clApp.config.dialogElement.optionsContainerId));
+                    const input = clApp.input.create(type, "Enter value", null, (e) => {
+                        if (e.target.value) {
+                            resolve(e.target.value);
                             document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
-                        }));
-                    },
-                    /**
-                     * Displays a dialog box with the specified message and a single input field to enter a value and
-                     * a single "OK" button to close the dialog. The message is displayed in the content container of
-                     * the dialog element, and the input field and OK button are appended to the options container of
-                     * the dialog element.
-                     *
-                     * The dialog is displayed until the user clicks the OK button or presses Enter while the input
-                     * field is focused. The value entered in the input field is then resolved as a string in the
-                     * returned Promise.
-                     *
-                     * @param {string} message - The message to display in the dialog.
-                     * @param {string} type - The type of the input field to create, one of "text", "password", "email",
-                     * "number", or "file". Defaults to "text" if not specified.
-                     * @returns {Promise<string>} A Promise that resolves with the value entered in the input field.
-                     */
-                    prompt(message, type) {
-                        return new Promise((resolve) => {
-                            document.getElementById(clApp.config.dialogElement.panelId).classList.remove("hidden");
-                            document.getElementById(clApp.config.dialogElement.contentContainerId).innerHTML = message;
-                            clApp.elementUtility.removeAllChildren(document.getElementById(clApp.config.dialogElement.optionsContainerId));
-                            const input = clApp.input.create(type, "Enter value", null, (e) => {
-                                if (e.target.value) {
-                                    resolve(e.target.value);
-                                    document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
-                                }
-                            });
-                            document.getElementById(clApp.config.dialogElement.contentContainerId).appendChild(input);
-                            document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(clApp.button.create("check", null, true, "OK", () => {
-                                if (input.querySelector("input").value) {
-                                    resolve(input.querySelector("input").value);
-                                    document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
-                                }
-                            }));
-                        });
-                    },
-                    /**
-                     * Displays a dialog box with the specified message and two buttons, "OK" and "Cancel".
-                     * The message is displayed in the content container of the dialog element, and the buttons are
-                     * appended to the options container of the dialog element.
-                     * The function returns a Promise that resolves to true if the user clicks the OK button or false
-                     * if the user clicks the Cancel button.
-                     * @param {string} message - The message to display in the dialog.
-                     * @returns {Promise<boolean>} A Promise that resolves to true or false, depending on the user's input.
-                     */
-                    confirm(message) {
-                        return new Promise((resolve) => {
-                            document.getElementById(clApp.config.dialogElement.panelId).classList.remove("hidden");
-                            document.getElementById(clApp.config.dialogElement.contentContainerId).innerHTML = message;
-                            clApp.elementUtility.removeAllChildren(document.getElementById(clApp.config.dialogElement.optionsContainerId));
-                            const okButton = clApp.button.create("check", null, true, "Yes", () => {
-                                document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
-                                resolve(true);
-                            });
-                            const cancelButton = clApp.button.create("close", null, true, "No", () => {
-                                document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
-                                resolve(false);
-                            });
-                            document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(okButton);
-                            document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(cancelButton);
+                        }
+                    });
+                    document.getElementById(clApp.config.dialogElement.contentContainerId).appendChild(input);
+                    document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(clApp.button.create("check", null, true, "OK", () => {
+                        if (input.querySelector("input").value) {
+                            resolve(input.querySelector("input").value);
+                            document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
+                        }
+                    }));
+                });
+            },
+            confirm(message) {
+                return new Promise((resolve) => {
+                    document.getElementById(clApp.config.dialogElement.panelId).classList.remove("hidden");
+                    document.getElementById(clApp.config.dialogElement.contentContainerId).innerHTML = message;
+                    clApp.elementUtility.removeAllChildren(document.getElementById(clApp.config.dialogElement.optionsContainerId));
+                    const okButton = clApp.button.create("check", null, true, "Yes", () => {
+                        document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
+                        resolve(true);
+                    });
+                    const cancelButton = clApp.button.create("close", null, true, "No", () => {
+                        document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
+                        resolve(false);
+                    });
+                    document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(okButton);
+                    document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(cancelButton);
+                });
+            }
+        };
+
+        clApp.pages = {
+            resetAll() {
+                clApp.config.pages.forEach(page => {
+                    const pageElement = document.getElementById(page.id);
+                    if (pageElement) {
+                        pageElement.classList.add("hidden");
+                    }
+                    if (page.subpages) {
+                        page.subpages.forEach((subpage, index) => {
+                            const subpageElement = document.getElementById(subpage.id);
+                            if (subpageElement) {
+                                subpageElement.classList.add("hidden");
+                                if (index == 0) subpageElement.classList.remove("hidden");
+                            }
                         });
                     }
-                },
-                pages: {
-                    /**
-                     * Hides all main pages and their subpages within the application.
-                     * Each main page and its subpages are assigned the "hidden" class to ensure they are not visible.
-                     * However, the first subpage of each main page remains visible by removing the "hidden" class.
-                     */
-                    resetAll() {
-                        clApp.config.pages.forEach(page => {
-                            const pageElement = document.getElementById(page.id);
-                            if (pageElement) {
-                                pageElement.classList.add("hidden");
-                            }
-                            if (page.subpages) {
-                                page.subpages.forEach((subpage, index) => {
-                                    const subpageElement = document.getElementById(subpage.id);
-                                    if (subpageElement) {
-                                        subpageElement.classList.add("hidden");
-                                        if (index == 0) subpageElement.classList.remove("hidden");
-                                    }
-                                });
-                            }
-                        });
-                    },
-                    init() {
-                        // For each element with the class "topbar-left" (icon), make it clickable to open the home page
-                        const topbarLeftElements = document.querySelectorAll(".topbar-left");
-                        topbarLeftElements.forEach(el => {
-                            if (!el.dataset.targetPage) {
-                                console.warn("Element with class 'topbar-left' does not have a data-target-page attribute.");
-                                return;
-                            }
-                            el.onclick = () => {
-                                clApp.pages.open(clApp.config.elementPageIdMap[el.dataset.targetPage]);
-                            };
-                        });
-                    },
-                    /**
-                     * Opens a specified main page and optionally a subpage within the application.
-                     * 
-                     * This function first hides all main pages and their subpages. It then attempts to find
-                     * and display the main page specified by the `name` parameter. If a `subpageName` is provided and exists,
-                     * it will display that subpage. If no `subpageName` is provided, the first subpage of the main page
-                     * will be displayed if available. If the specified page is not found, an alert is shown.
-                     * 
-                     * @param {string} name - The name of the main page to open.
-                     * @param {string} [subpageName=null] - The name of the subpage to open (optional).
-                     */
-                    open(name, subpageName = null) {
-                        clApp.pages.resetAll();
-                        const page = clApp.config.pages.find(p => p.name === name);
-                        if (page) {
-                            const pageElement = document.getElementById(page.id);
-                            if (pageElement) {
-                                pageElement.classList.remove("hidden");
-                            }
-                            if (subpageName && page.subpages) {
-                                const subpage = page.subpages.find(sp => sp.name === subpageName);
-                                if (subpage) {
-                                    const subpageElement = document.getElementById(subpage.id);
-                                    if (subpageElement) {
-                                        subpageElement.classList.remove("hidden");
-                                    }
-                                }
-                            } else if (page.subpages && page.subpages.length > 0) {
-                                const firstSubpage = page.subpages[0];
-                                const firstSubpageElement = document.getElementById(firstSubpage.id);
-                                if (firstSubpageElement) {
-                                    firstSubpageElement.classList.remove("hidden");
-                                }
-                            }
-                        } else {
-                            clApp.dialog.alert(`Page "${name}" not found.`);
-                        }
-                    },
-                    find(name, subpageName = null) {
-                        const page = clApp.config.pages.find(p => p.name === name);
-                        if (page) {
-                            if (subpageName && page.subpages) {
-                                return page.subpages.find(sp => sp.name === subpageName);
-                            }
-                            return page;
-                        }
-                        return null;
-                    },
-                    /**
-                     * Creates and appends card elements to a specified container element.
-                     * 
-                     * This function clears any existing content within the specified container
-                     * and creates a card for each page in the provided `pages` array. Each card
-                     * displays an icon, title, and description from the page object and attaches
-                     * an `onclick` event to navigate to the respective page when clicked.
-                     * 
-                     * @param {string} container - The ID of the container element where cards will be appended.
-                     * @param {Array} pages - An array of page objects, each containing `icon`, `title`, `description`, and `name` properties.
-                     */
-                    createCards(container, pages) {
-                        const containerElement = document.getElementById(container);
-                        if (!containerElement) {
-                            console.error(`Container with ID "${container}" not found.`);
-                            return;
-                        }
-                        clApp.elementUtility.removeAllChildren(containerElement);
-                        pages.forEach(page => {
-                            const card = document.createElement("div");
-                            card.classList.add("cl-card");
-                            card.innerHTML = `
-                                <div class="cl-card-top">
-                                    <i class="material-symbols-outlined">${page.icon}</i>
-                                    <h3>${page.title}</h3>
-                                </div>
-                                <div class="cl-card-bottom">
-                                    <p>${page.description}</p>
-                                </div>
-                            `;
-                            card.onclick = () => {
-                                clApp.pages.open(page.name);
-                            };
-                            containerElement.appendChild(card);
-                        });
+                });
+            },
+            init() {
+                const topbarLeftElements = document.querySelectorAll(".topbar-left");
+                topbarLeftElements.forEach(el => {
+                    if (!el.dataset.targetPage) {
+                        console.warn("Element with class 'topbar-left' does not have a data-target-page attribute.");
+                        return;
                     }
-                },
-                battery: {
-                    // Update elements with CL-BatteryMonitor class
-                    init() {
-                        const batteryElements = document.querySelectorAll(".CL-BatteryMonitor");
-                        if (batteryElements.length === 0) return;
-                        navigator.getBattery().then(battery => {
-                            battery.onchargingchange = () => this.update(battery);
-                            battery.onlevelchange = () => this.update(battery);
-                            battery.ondischargingtimechange = () => this.update(battery);
-                            battery.onchargingtimechange = () => this.update(battery);
-                            this.update(battery);
-                        });
-                    },
-                    /**
-                     * Updates all elements with the CL-BatteryMonitor class to display the battery's level and charging status.
-                     * @param {BatteryManager} battery - The battery object to get the data from
-                     */
-                    update(battery){
-                        const batteryElements = document.querySelectorAll(".CL-BatteryMonitor");
-                        batteryElements.forEach(el => {
-                            // Element already has the icon class, so we just update the text
-                            // e.g. "battery_*_bar" where * is the battery level (0-9)
-                            el.innerText = Math.round(battery.level * 7) < 7 ? ("battery_" + Math.round(battery.level * 7) + "_bar") : "battery_full";
-                            el.classList[battery.charging ? "add" : "remove"]("charging");
-                            el.title = (battery.level * 100) + "%, " + (battery.charging ? "Charging" : "Discharging") + ", " +
-                                (battery.charging ? clApp.stringUtility.secondsToMinuteWithSeconds(battery.chargingTime) + " until full" : clApp.stringUtility.secondsToMinuteWithSeconds(battery.dischargingTime) + " left");
-                        });
+                    el.onclick = () => {
+                        clApp.pages.open(clApp.config.elementPageIdMap[el.dataset.targetPage]);
+                    };
+                });
+            },
+            open(name, subpageName = null) {
+                clApp.pages.resetAll();
+                const page = clApp.config.pages.find(p => p.name === name);
+                if (page) {
+                    const pageElement = document.getElementById(page.id);
+                    if (pageElement) {
+                        pageElement.classList.remove("hidden");
                     }
-                },
-                date: {
-                    format: 12, // 12 or 24 hour format
-                    showSeconds: true, // Whether to show seconds in the time display
-                    interval: null, // Interval for updating the time display
-                    init() {
-                        this.update();
-                        this.interval = setInterval(() => {
-                            this.update();
-                        }, 1000);
-                    },
-                    /**
-                     * Updates the time display in the elements with the CL-DateMonitor class.
-                     * The time is formatted based on the specified format (12 or 24 hour).
-                     */
-                    update() {
-                        const dateElements = document.querySelectorAll(".CL-DateMonitor");
-                        const now = new Date();
-                        let hours = now.getHours();
-                        let minutes = now.getMinutes();
-                        let seconds = now.getSeconds();
-                        let ampm = "";
-                        if (this.format === 12) {
-                            ampm = hours >= 12 ? ' PM' : ' AM'; // Determine AM/PM
-                            hours = hours % 12 || 12; // Convert to 12-hour format
-                        } // Convert to 12-hour format
-                        if (!this.showSeconds) seconds = ""; // Remove seconds if not needed
-                        else seconds = `:${seconds < 10 ? '0' + seconds : seconds}`;
-                        const timeString = `${hours}:${minutes < 10 ? '0' + minutes : minutes}${seconds}${ampm}`;
-                        dateElements.forEach(el => {
-                            el.innerText = timeString;
-                        });
-                    },
-                },
-                settings: {
-                    editor: null, // Monaco editor instance for settings
-                    schema: {
-                        title: "Settings",
+                    if (subpageName && page.subpages) {
+                        const subpage = page.subpages.find(sp => sp.name === subpageName);
+                        if (subpage) {
+                            const subpageElement = document.getElementById(subpage.id);
+                            if (subpageElement) {
+                                subpageElement.classList.remove("hidden");
+                            }
+                        }
+                    } else if (page.subpages && page.subpages.length > 0) {
+                        const firstSubpage = page.subpages[0];
+                        const firstSubpageElement = document.getElementById(firstSubpage.id);
+                        if (firstSubpageElement) {
+                            firstSubpageElement.classList.remove("hidden");
+                        }
+                    }
+                } else {
+                    clApp.dialog.alert(`Page "${name}" not found.`);
+                }
+            },
+            find(name, subpageName = null) {
+                const page = clApp.config.pages.find(p => p.name === name);
+                if (page) {
+                    if (subpageName && page.subpages) {
+                        return page.subpages.find(sp => sp.name === subpageName);
+                    }
+                    return page;
+                }
+                return null;
+            },
+            createCards(container, pages) {
+                const containerElement = document.getElementById(container);
+                if (!containerElement) {
+                    console.error(`Container with ID "${container}" not found.`);
+                    return;
+                }
+                clApp.elementUtility.removeAllChildren(containerElement);
+                pages.forEach(page => {
+                    const card = document.createElement("div");
+                    card.classList.add("cl-card");
+                    card.innerHTML = `
+                        <div class="cl-card-top">
+                            <i class="material-symbols-outlined">${page.icon}</i>
+                            <h3>${page.title}</h3>
+                        </div>
+                        <div class="cl-card-bottom">
+                            <p>${page.description}</p>
+                        </div>
+                    `;
+                    card.onclick = () => {
+                        clApp.pages.open(page.name);
+                    };
+                    containerElement.appendChild(card);
+                });
+            }
+        };
+
+        clApp.battery = {
+            init() {
+                const batteryElements = document.querySelectorAll(".CL-BatteryMonitor");
+                if (batteryElements.length === 0) return;
+                navigator.getBattery().then(battery => {
+                    battery.onchargingchange = () => this.update(battery);
+                    battery.onlevelchange = () => this.update(battery);
+                    battery.ondischargingtimechange = () => this.update(battery);
+                    battery.onchargingtimechange = () => this.update(battery);
+                    this.update(battery);
+                });
+            },
+            update(battery){
+                const batteryElements = document.querySelectorAll(".CL-BatteryMonitor");
+                batteryElements.forEach(el => {
+                    el.innerText = Math.round(battery.level * 7) < 7 ? ("battery_" + Math.round(battery.level * 7) + "_bar") : "battery_full";
+                    el.classList[battery.charging ? "add" : "remove"]("charging");
+                    el.title = (battery.level * 100) + "%, " + (battery.charging ? "Charging" : "Discharging") + ", " +
+                        (battery.charging ? clApp.stringUtility.secondsToMinuteWithSeconds(battery.chargingTime) + " until full" : clApp.stringUtility.secondsToMinuteWithSeconds(battery.dischargingTime) + " left");
+                });
+            }
+        };
+
+        clApp.date = {
+            format: 12,
+            showSeconds: true,
+            interval: null,
+            init() {
+                this.update();
+                this.interval = setInterval(() => {
+                    this.update();
+                }, 1000);
+            },
+            update() {
+                const dateElements = document.querySelectorAll(".CL-DateMonitor");
+                const now = new Date();
+                let hours = now.getHours();
+                let minutes = now.getMinutes();
+                let seconds = now.getSeconds();
+                let ampm = "";
+                if (this.format === 12) {
+                    ampm = hours >= 12 ? ' PM' : ' AM';
+                    hours = hours % 12 || 12;
+                }
+                if (!this.showSeconds) seconds = "";
+                else seconds = `:${seconds < 10 ? '0' + seconds : seconds}`;
+                const timeString = `${hours}:${minutes < 10 ? '0' + minutes : minutes}${seconds}${ampm}`;
+                dateElements.forEach(el => {
+                    el.innerText = timeString;
+                });
+            },
+        };
+
+        clApp.settings = {
+            editor: null,
+            schema: {
+                title: "Settings",
+                type: "object",
+                properties: {
+                    appearance: {
+                        title: "Appearance",
                         type: "object",
                         properties: {
-                            appearance: {
-                                title: "Appearance",
-                                type: "object",
-                                properties: {
-                                    theme: {
-                                        title: "Theme",
-                                        type: "string",
-                                        default: "Default",
-                                        enum: clApp.config.themes.map(t => t.name)
-                                    },
-                                    mode: {
-                                        title: "Mode",
-                                        type: "string",
-                                        default: "Light",
-                                        enum: ["Light", "Dark", "System"]
-                                    },
-                                    borderRadius: {
-                                        title: "Border Radius",
-                                        type: "number",
-                                        default: 10,
-                                        minimum: 0,
-                                        maximum: 20
-                                    },
-                                }
+                            theme: {
+                                title: "Theme",
+                                type: "string",
+                                default: "Default",
+                                enum: clApp.config.themes.map(t => t.name)
                             },
-                            timeanddate: {
-                                title: "Time and Date",
-                                type: "object",
-                                properties: {
-                                    format: {
-                                        title: "Time Format",
-                                        type: "number",
-                                        default: 12,
-                                        enum: [12, 24]
-                                    },
-                                    showSeconds: {
-                                        title: "Show Seconds",
-                                        type: "boolean",
-                                        default: true
-                                    }
-                                }
+                            mode: {
+                                title: "Mode",
+                                type: "string",
+                                default: "Light",
+                                enum: ["Light", "Dark", "System"]
+                            },
+                            borderRadius: {
+                                title: "Border Radius",
+                                type: "number",
+                                default: 10,
+                                minimum: 0,
+                                maximum: 20
                             },
                         }
                     },
-                    default: {
-                        appearance: {
-                            theme: "Default",
-                            mode: "Light",
-                            borderRadius: 10,
-                        },
-                        timeanddate: {
-                            format: 12,
-                            showSeconds: false,
+                    timeanddate: {
+                        title: "Time and Date",
+                        type: "object",
+                        properties: {
+                            format: {
+                                title: "Time Format",
+                                type: "number",
+                                default: 12,
+                                enum: [12, 24]
+                            },
+                            showSeconds: {
+                                title: "Show Seconds",
+                                type: "boolean",
+                                default: true
+                            }
                         }
                     },
-                    /**
-                     * Retrieves the current settings object from localStorage, or returns the default settings
-                     * if no settings are stored in localStorage.
-                     * @returns {Object} The current settings object, or the default settings if none are stored.
-                     */
-                    get() {
-                        return JSON.parse(localStorage.getItem("clAppSettings")) || this.default;
-                    },
-                    /**
-                     * Sets the current settings to the given value and updates the page accordingly.
-                     * @param {Object} settings - The new settings value to set.
-                     */
-                    set(settings) {
-                        localStorage.setItem("clAppSettings", JSON.stringify(settings));
-                        this.update(settings);
-                    },
-                    /**
-                     * Creates a JSONEditor instance for the settings and adds it to the element with id "settingsEditor".
-                     * The editor is configured to use the schema defined in settings.schema, and the initial value is set to
-                     * the current settings value, which is retrieved from localStorage using settings.get().
-                     * When the user changes the value in the editor, the onChange callback is called, which saves the new
-                     * settings value to localStorage using settings.get().
-                     */
-                    createEditor() {
-                        // Create a JSONEditor instance for the settings
-                        this.editor = new JSONEditor(document.getElementById(app.settings.page.allSettings), {
-                            schema: this.schema,
-                            theme: "barebones",
-                            show_errors: "always",
-                            disable_edit_json: true,
-                            disable_properties: true,
-                            disable_collapse: true,
-                            no_additional_properties: true,
-                            compact: true,
-                            object_layout: "table",
-                            startval: this.get(),
-                        });
-                        this.editor.on("change", () => {
-                            // Save the new settings value to localStorage
-                            const newSettings = this.editor.get();
-                            localStorage.setItem("clAppSettings", JSON.stringify(newSettings));
-
-                            // Update the application settings
-                            this.update(newSettings);
-                        });
-                    },
-                    update(settings) {
-                        const settingsStyles = document.getElementById("app.settingsStyles");
-                        settingsStyles.innerHTML = ""; // Clear existing styles
-                        switch (settings.appearance.mode) {
-                            case "Light":
-                                settingsStyles.innerHTML += `
-                                    :root {
-                                        --cl-topbar-color: rgba(255, 255, 255, 0.5);
-                                        --cl-inverted-topbar-color: rgba(0, 0, 0, 0.5);
-                                        --cl-border-radius: ${settings.appearance.borderRadius}px;
-                                    }
-                                `;
-                                break;
-                            case "Dark":
-                                settingsStyles.innerHTML += `
-                                    :root {
-                                        --cl-topbar-color: rgba(0, 0, 0, 0.5);
-                                        --cl-inverted-topbar-color: rgba(255, 255, 255, 0.5);
-                                        --cl-border-radius: ${settings.appearance.borderRadius}px;
-                                    }
-                                `;
-                                break;
-                            case "System":
-                                settingsStyles.innerHTML += `
-                                    :root {
-                                        --cl-border-radius: ${settings.appearance.borderRadius}px;
-                                    }
-
-                                    @media (prefers-color-scheme: dark) {
-                                        :root {
-                                            --cl-topbar-color: rgba(0, 0, 0, 0.5);
-                                            --cl-inverted-topbar-color: rgba(255, 255, 255, 0.5);
-                                        }
-                                    }
-
-                                    @media (prefers-color-scheme: light) {
-                                        :root {
-                                            --cl-topbar-color: rgba(255, 255, 255, 0.5);
-                                            --cl-inverted-topbar-color: rgba(0, 0, 0, 0.5);
-                                        }
-                                    }
-                                `;
-                                break;
-                        }
+                }
+            },
+            default: {
+                appearance: {
+                    theme: "Default",
+                    mode: "Light",
+                    borderRadius: 10,
+                },
+                timeanddate: {
+                    format: 12,
+                    showSeconds: false,
+                }
+            },
+            get() {
+                return JSON.parse(localStorage.getItem("clAppSettings")) || this.default;
+            },
+            set(settings) {
+                localStorage.setItem("clAppSettings", JSON.stringify(settings));
+                this.update(settings);
+            },
+            createEditor() {
+                this.editor = new JSONEditor(document.getElementById(app.settings.page.allSettings), {
+                    schema: this.schema,
+                    theme: "barebones",
+                    show_errors: "always",
+                    disable_edit_json: true,
+                    disable_properties: true,
+                    disable_collapse: true,
+                    no_additional_properties: true,
+                    compact: true,
+                    object_layout: "table",
+                    startval: this.get(),
+                });
+                this.editor.on("change", () => {
+                    const newSettings = this.editor.get();
+                    localStorage.setItem("clAppSettings", JSON.stringify(newSettings));
+                    this.update(newSettings);
+                });
+            },
+            update(settings) {
+                const settingsStyles = document.getElementById("app.settingsStyles");
+                settingsStyles.innerHTML = "";
+                switch (settings.appearance.mode) {
+                    case "Light":
                         settingsStyles.innerHTML += `
-                            body {
-                                ${clApp.config.themes.find(t => t.name === settings.appearance.theme).code}
+                            :root {
+                                --cl-topbar-color: rgba(255, 255, 255, 0.5);
+                                --cl-inverted-topbar-color: rgba(0, 0, 0, 0.5);
+                                --cl-border-radius: ${settings.appearance.borderRadius}px;
                             }
                         `;
-                    }
-                },
-                supabase: {
-                    key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwbXN6dHV4cmxydGJueHhyaHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3OTA1MzYsImV4cCI6MjA1NjM2NjUzNn0.wxYd_XO12CKjUeQZ1_MRPnD5o_S8KBK9XDKL0jh1I1I",
-                    url: "https://kpmsztuxrlrtbnxxrhpj.supabase.co",
-                    client: null, // Supabase client instance
-                    /**
-                     * Initializes the Supabase client with the provided URL and key.
-                     * This function is called to set up the connection to the Supabase backend.
-                     */
-                    init() {
-                        if (this.client) {
-                            console.warn("Supabase client is already initialized.");
-                            return;
-                        }
-                        this.client = supabase.createClient(this.url, this.key);
-                        clApp.toast("info", "Supabase client initialized successfully.");
-                    },
+                        break;
+                    case "Dark":
+                        settingsStyles.innerHTML += `
+                            :root {
+                                --cl-topbar-color: rgba(0, 0, 0, 0.5);
+                                --cl-inverted-topbar-color: rgba(255, 255, 255, 0.5);
+                                --cl-border-radius: ${settings.appearance.borderRadius}px;
+                            }
+                        `;
+                        break;
+                    case "System":
+                        settingsStyles.innerHTML += `
+                            :root {
+                                --cl-border-radius: ${settings.appearance.borderRadius}px;
+                            }
 
-
-                },
-                /**
-                 * Displays a toast notification with a specified icon and message.
-                 * The toast is appended to the designated toast container and will automatically
-                 * be removed from the DOM after 5.5 seconds.
-                 *
-                 * @param {string} icon - The icon to display in the toast, typically a material symbol.
-                 * @param {string} message - The message text to display within the toast.
-                 */
-                toast(icon, message) {
-                    const toast = document.createElement("div");
-                    toast.classList.add("cl-button");
-                    toast.innerHTML = `
-                        <i class="material-symbols-outlined">${icon}</i>
-                        <span>${message}</span>
-                    `;
-                    document.getElementById(clApp.config.toastContainer).appendChild(toast);
-                    setTimeout(() => {
-                        toast.remove();
-                    }, 5500); // Toast fades out after 5 seconds.
-                },
-                setup() {
-                    // Set up the initial page
-                    clApp.pages.open("Loader");
-                    if (!localStorage.visited) {
-                        // This is the user's first time here
-                        localStorage.visited = true;
-                        clApp.toast("info", "Welcome to Chillnet!");
-                        if ("serviceWorker" in navigator) {
-                            // Service workers are supported, register it
-                            clApp.toast("info", "Service workers are supported! Registering...");
-                            if (Notification.permission !== "granted") Notification.requestPermission().then(perm => {
-                                if (perm === "granted") {
-                                    clApp.toast("info", "Notification permission granted!");
-                                } else {
-                                    clApp.toast("warn", "Notification permission denied!");
+                            @media (prefers-color-scheme: dark) {
+                                :root {
+                                    --cl-topbar-color: rgba(0, 0, 0, 0.5);
+                                    --cl-inverted-topbar-color: rgba(255, 255, 255, 0.5);
                                 }
-                            });
-                            navigator.serviceWorker.register("/serviceWorker.js", { type: "module" });
-                            clApp.toast("info", "Service workers registered!");
-                        } else {
-                            // Service workers are not supported, display a warning
-                            clApp.toast("warn", "Service workers are not supported!");
-                        }
-                    } else {
-                        // This is not the user's first time here
-                        clApp.toast("info", "Welcome back to Chillnet!");
+                            }
+
+                            @media (prefers-color-scheme: light) {
+                                :root {
+                                    --cl-topbar-color: rgba(255, 255, 255, 0.5);
+                                    --cl-inverted-topbar-color: rgba(0, 0, 0, 0.5);
+                                }
+                            }
+                        `;
+                        break;
+                }
+                settingsStyles.innerHTML += `
+                    body {
+                        ${clApp.config.themes.find(t => t.name === settings.appearance.theme).code}
                     }
-                    clApp.pages.createCards("app.pageCards", clApp.config.pageCards);
-                    clApp.pages.init();
-                    clApp.battery.init();
-                    clApp.date.init();
-                    clApp.settings.createEditor();
-                    clApp.settings.update(clApp.settings.get());
-                    clApp.supabase.init();
-                    clApp.pages.open("Home");
-                },
-            };
+                `;
+            }
+        };
+
+        clApp.supabase = {
+            key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwbXN6dHV4cmxydGJueHhyaHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3OTA1MzYsImV4cCI6MjA1NjM2NjUzNn0.wxYd_XO12CKjUeQZ1_MRPnD5o_S8KBK9XDKL0jh1I1I",
+            url: "https://kpmsztuxrlrtbnxxrhpj.supabase.co",
+            client: null,
+            init() {
+                if (this.client) {
+                    console.warn("Supabase client is already initialized.");
+                    return;
+                }
+                this.client = supabase.createClient(this.url, this.key);
+                clApp.toast("info", "Supabase client initialized successfully.");
+            },
+        };
+
+        clApp.toast = function(icon, message) {
+            const toast = document.createElement("div");
+            toast.classList.add("cl-button");
+            toast.innerHTML = `
+                <i class="material-symbols-outlined">${icon}</i>
+                <span>${message}</span>
+            `;
+            document.getElementById(clApp.config.toastContainer).appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 5500);
+        };
+
+        clApp.setup = () => {
+            clApp.pages.open("Loader");
+            if (!localStorage.visited) {
+                localStorage.visited = true;
+                clApp.toast("info", "Welcome to Chillnet!");
+                if ("serviceWorker" in navigator) {
+                    clApp.toast("info", "Service workers are supported! Registering...");
+                    if (Notification.permission !== "granted") Notification.requestPermission().then(perm => {
+                        if (perm === "granted") {
+                            clApp.toast("info", "Notification permission granted!");
+                        } else {
+                            clApp.toast("warn", "Notification permission denied!");
+                        }
+                    });
+                    navigator.serviceWorker.register("/serviceWorker.js", { type: "module" });
+                    clApp.toast("info", "Service workers registered!");
+                } else {
+                    clApp.toast("warn", "Service workers are not supported!");
+                }
+            } else {
+                clApp.toast("info", "Welcome back to Chillnet!");
+            }
+            clApp.pages.createCards("app.pageCards", clApp.config.pageCards);
+            clApp.pages.init();
+            clApp.battery.init();
+            clApp.date.init();
+            clApp.settings.createEditor();
+            clApp.settings.update(clApp.settings.get());
+            clApp.supabase.init();
+            clApp.pages.open("Home");
+        };
         window.onload = () => {
             clApp.setup();
         };
