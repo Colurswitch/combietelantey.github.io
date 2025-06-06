@@ -31,7 +31,7 @@
         }
 
         * {
-            transition: all .125s ease-out;
+            transition: all .125s linear;
             color: white;
             font-family: "Product Sans";
         }
@@ -346,6 +346,33 @@
         input::placeholder,
         textarea::placeholder {
             color: rgba(255, 255, 255, .5);
+        }
+
+        input[type=checkbox] {
+            width: 40px !important;
+            height: 40px;
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+            border: none;
+            cursor: pointer;
+            appearance: none;
+            flex-direction: column;
+        }
+
+        input[type=checkbox]::before {
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            transition: all .125s ease-out;
+        }
+
+        input[type=checkbox]:checked::before {
+            content: "✓";
+            
         }
 
         .cl-input:has(input:invalid),
@@ -827,7 +854,7 @@
             position: fixed;
             top: 0;
             right: 0;
-            width: 200px;
+            width: 450px;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -835,11 +862,15 @@
             gap: 10px;
             z-index: 1000;
             pointer-events: none;
+            overflow: hidden;
         }
 
         .cl-toast-container>* {
             animation: toast 5s linear;
             opacity: 0;
+            text-overflow: clip;
+            overflow: hidden;
+            flex: 0 0 auto;
         }
 
         .charging {
@@ -861,7 +892,7 @@
                 opacity: 0;
             }
 
-            9%,
+            5%,
             95% {
                 opacity: 1;
             }
@@ -889,10 +920,7 @@
 
 <body>
     <div class="cl-toast-container" id="app.toastContainer">
-        <button class="cl-button">
-            <i class="material-symbols-outlined">delete</i>
-            <span>This is a toast</span>
-        </button>
+        <!--Toasts will be added here dynamically-->
     </div>
     <!--Game Player-->
     <fullscreen class="hidden" id="app.gamePlayer.page">
@@ -1094,7 +1122,7 @@
     <!--Games-->
     <section class="cl-panel hidden" id="app.gamesScreen.page">
         <div class="topbar">
-            <div class="topbar-left" title="Games" data-targetPage="home">
+            <div class="topbar-left" title="Games" data-targetPage="Home">
                 <i class="material-symbols-outlined">sports_esports</i>
             </div>
             <div class="topbar-center">
@@ -1268,7 +1296,7 @@
     <!--Minecraft (Eaglercraft)-->
     <section class="cl-panel hidden" id="app.minecraftScreen.page">
         <div class="topbar">
-            <div class="topbar-left" title="Minecraft" data-targetPage="home">
+            <div class="topbar-left" title="Minecraft" data-targetPage="Home">
                 <i class="material-symbols-outlined">deployed_code</i>
             </div>
             <div class="topbar-center">
@@ -1392,7 +1420,7 @@
     <!--Chat-->
     <section class="cl-panel hidden" id="app.chat.page">
         <div class="topbar">
-            <div class="topbar-left" title="Chat" data-targetPage="home">
+            <div class="topbar-left" title="Chat" data-targetPage="Home">
                 <i class="material-symbols-outlined">forum</i>
             </div>
             <div class="topbar-center">
@@ -1461,7 +1489,7 @@
     <!--Videos-->
     <section class="cl-panel hidden" id="app.videos.page">
         <div class="topbar">
-            <div class="topbar-left" title="Videos" data-targetPage="home">
+            <div class="topbar-left" title="Videos" data-targetPage="Home">
                 <i class="material-symbols-outlined">video_library</i>
             </div>
             <div class="topbar-center">
@@ -1521,7 +1549,7 @@
     <!--Video-->
     <section class="cl-panel hidden" id="app.video.page">
         <div class="topbar">
-            <div class="topbar-left" title="Video" data-targetPage="videos">
+            <div class="topbar-left" title="Video" data-targetPage="Videos">
                 <i class="material-symbols-outlined">slideshow</i>
             </div>
             <div class="topbar-center">
@@ -1636,7 +1664,7 @@
     <!--Users-->
     <section class="cl-panel hidden" id="app.users.page">
         <div class="topbar">
-            <div class="topbar-left" title="Users" data-targetPage="home">
+            <div class="topbar-left" title="Users" data-targetPage="Home">
                 <i class="material-symbols-outlined">people</i>
             </div>
             <div class="topbar-center">
@@ -1665,7 +1693,7 @@
     <!--User-->
     <section class="cl-panel hidden" id="app.user.page">
         <div class="topbar">
-            <div class="topbar-left" title="User" data-targetPage="users">
+            <div class="topbar-left" title="User" data-targetPage="Users">
                 <i class="material-symbols-outlined">person</i>
             </div>
             <div class="topbar-center">
@@ -1713,7 +1741,7 @@
     <!--Account-->
     <section class="cl-panel hidden" id="app.account.page">
         <div class="topbar">
-            <div class="topbar-left" title="Account" data-targetPage="home">
+            <div class="topbar-left" title="Account" data-targetPage="Home">
                 <i class="material-symbols-outlined">account_circle</i>
             </div>
             <div class="topbar-center">
@@ -1776,7 +1804,7 @@
     <!--Content-->
     <section class="cl-panel hidden" id="app.content.page">
         <div class="topbar">
-            <div class="topbar-left" title="Content" data-targetPage="home">
+            <div class="topbar-left" title="Content" data-targetPage="Home">
                 <i class="material-symbols-outlined">library_books</i>
             </div>
             <div class="topbar-center">
@@ -1902,7 +1930,7 @@
     <!--Admin-->
     <section class="cl-panel hidden" id="app.admin.page">
         <div class="topbar">
-            <div class="topbar-left" title="Admin" data-targetPage="home">
+            <div class="topbar-left" title="Admin" data-targetPage="Home">
                 <i class="material-symbols-outlined">shield</i>
             </div>
             <div class="topbar-center">
@@ -2007,7 +2035,7 @@
     <!--Settings-->
     <section class="cl-panel hdden" id="app.settings.page">
         <div class="topbar">
-            <div class="topbar-left" title="Settings" data-targetPage="home">
+            <div class="topbar-left" title="Settings" data-targetPage="Home">
                 <i class="material-symbols-outlined">settings</i>
             </div>
             <div class="topbar-right">
@@ -2055,7 +2083,7 @@
     <!--Help-->
     <section class="cl-panel hidden" id="app.help.page">
         <div class="topbar">
-            <div class="topbar-left" title="Help" data-targetPage="home">
+            <div class="topbar-left" title="Help" data-targetPage="Home">
                 <i class="material-symbols-outlined">help</i>
             </div>
             <div class="topbar-center">
@@ -2668,7 +2696,12 @@
             secondsToMinuteWithSeconds(seconds) {
                 const minutes = Math.floor(seconds / 60);
                 const secs = seconds % 60;
-                return `${minutes}:${secs < 10 ? '0' + secs : secs}`;
+                return `${minutes}m:${secs < 10 ? '0' + secs : secs}s`;
+            },
+            secondsToHourWithMinutes(seconds) {
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                return `${hours}h:${minutes < 10 ? '0' + minutes : minutes}m`;
             },
         };
 
@@ -2677,10 +2710,11 @@
                 const newBtn = document.createElement("button");
                 newBtn.innerHTML = `
                     <span class="material-symbols-outlined">${icon}</span>
-                    ${text && `<span>${text}</span>`}
+                    ${text ? `<span>${text}</span>` : ""}
                 `;
                 if (title) newBtn.title = title;
                 newBtn.onclick = onclick;
+                newBtn.classList.add("cl-button");
                 newBtn.setAttribute("interactive", interactive);
                 return newBtn;
             }
@@ -2792,12 +2826,12 @@
             init() {
                 const topbarLeftElements = document.querySelectorAll(".topbar-left");
                 topbarLeftElements.forEach(el => {
-                    if (!el.dataset.targetPage) {
+                    if (!el.getAttribute("data-targetPage")) {
                         console.warn("Element with class 'topbar-left' does not have a data-target-page attribute.");
                         return;
                     }
                     el.onclick = () => {
-                        clApp.pages.open(clApp.config.elementPageIdMap[el.dataset.targetPage]);
+                        clApp.pages.open(el.getAttribute("data-targetPage"));
                     };
                 });
             },
@@ -2858,7 +2892,7 @@
                         </div>
                     `;
                     card.onclick = () => {
-                        clApp.pages.open(page.name);
+                        clApp.pages.open(page.title);
                     };
                     containerElement.appendChild(card);
                 });
@@ -2867,6 +2901,11 @@
 
         clApp.battery = {
             init() {
+                // Check if the Battery Status API is supported
+                if (!navigator.getBattery) {
+                    console.warn("Battery Status API is not supported in this browser.");
+                    return;
+                }
                 const batteryElements = document.querySelectorAll(".CL-BatteryMonitor");
                 if (batteryElements.length === 0) return;
                 navigator.getBattery().then(battery => {
@@ -2882,8 +2921,8 @@
                 batteryElements.forEach(el => {
                     el.innerText = Math.round(battery.level * 7) < 7 ? ("battery_" + Math.round(battery.level * 7) + "_bar") : "battery_full";
                     el.classList[battery.charging ? "add" : "remove"]("charging");
-                    el.title = (battery.level * 100) + "%, " + (battery.charging ? "Charging" : "Discharging") + ", " +
-                        (battery.charging ? clApp.stringUtility.secondsToMinuteWithSeconds(battery.chargingTime) + " until full" : clApp.stringUtility.secondsToMinuteWithSeconds(battery.dischargingTime) + " left");
+                    el.title = (battery.level * 100) + "%, " + (battery.charging ? "charging, " : "") + "" +
+                        (battery.charging ? clApp.stringUtility.secondsToHourWithMinutes(battery.chargingTime) + " until full" : clApp.stringUtility.secondsToMinuteWithSeconds(battery.dischargingTime) + " left");
                 });
             }
         };
@@ -2896,7 +2935,7 @@
                 this.update();
                 this.interval = setInterval(() => {
                     this.update();
-                }, 1000);
+                }, 100);
             },
             update() {
                 const dateElements = document.querySelectorAll(".CL-DateMonitor");
@@ -2962,6 +3001,7 @@
                             showSeconds: {
                                 title: "Show Seconds",
                                 type: "boolean",
+                                format: "checkbox",
                                 default: true
                             }
                         }
@@ -2987,7 +3027,8 @@
                 this.update(settings);
             },
             createEditor() {
-                this.editor = new JSONEditor(document.getElementById(app.settings.page.allSettings), {
+                clApp.elementUtility.removeAllChildren(document.getElementById("app.settings.page.allSettings"));
+                this.editor = new JSONEditor(document.getElementById("app.settings.page.allSettings"), {
                     schema: this.schema,
                     theme: "barebones",
                     show_errors: "always",
@@ -3000,7 +3041,7 @@
                     startval: this.get(),
                 });
                 this.editor.on("change", () => {
-                    const newSettings = this.editor.get();
+                    const newSettings = this.editor.getValue();
                     localStorage.setItem("clAppSettings", JSON.stringify(newSettings));
                     this.update(newSettings);
                 });
@@ -3081,7 +3122,7 @@
             document.getElementById(clApp.config.toastContainer).appendChild(toast);
             setTimeout(() => {
                 toast.remove();
-            }, 5500);
+            }, 5000);
         };
 
         clApp.setup = () => {
@@ -3106,15 +3147,18 @@
             } else {
                 clApp.toast("info", "Welcome back to Chillnet!");
             }
-            clApp.pages.createCards("app.pageCards", clApp.config.pageCards);
+            clApp.pages.createCards("app.homeScreen.page.pageCardsContainer", clApp.config.pageCards);
             clApp.pages.init();
             clApp.battery.init();
             clApp.date.init();
             clApp.settings.createEditor();
             clApp.settings.update(clApp.settings.get());
             clApp.supabase.init();
-            clApp.pages.open("Home");
+            clApp.pages.open("Settings");
         };
+        window.onerror = (message, src, lineno, colno, error) => {
+            clApp.toast("error", `Error: ${message} \n at ${src}:${lineno}:${colno}`);
+        }
         window.onload = () => {
             clApp.setup();
         };
