@@ -1,8 +1,8 @@
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 const CACHE_NAME = 'cn-site-cache';
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwbXN6dHV4cmxydGJueHhyaHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA3OTA1MzYsImV4cCI6MjA1NjM2NjUzNn0.wxYd_XO12CKjUeQZ1_MRPnD5o_S8KBK9XDKL0jh1I1I";
 const SUPABASE_URL = "https://kpmsztuxrlrtbnxxrhpj.supabase.co";
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+importScripts("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2");
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const urlsToCache = [
     "https://fonts.googleapis.com/icon?family=Material+Icons",
     "https://fonts.cdnfonts.com/css/product-sans",
