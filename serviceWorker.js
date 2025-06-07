@@ -31,7 +31,13 @@ self.addEventListener('install', event => {
         .then((cache) => {
             return cache.addAll(urlsToCache)
         })
-    )
+    );
+    event.waitUntil(
+        self.registration.backgroundFetch.fetch('new-updates', ['/fetch-updates'], {
+            title: "Checking for New Data...",
+            icons: [{ src: "/assets/logo/profile.png", sizes: "192x192", type: "image/png" }]
+        })
+    );
 })
 
 self.addEventListener('fetch', event => {
@@ -49,6 +55,19 @@ self.addEventListener('notificationclick', event => {
     event.waitUntil(
         clients.openWindow(url) // Opens the specified URL
     );
+});
+
+self.addEventListener('backgroundfetchsuccess', event => {
+    event.fetches.forEach(fetch => {
+        fetch.responseReady.then(response => {
+            response.json().then(data => {
+                self.registration.showNotification(`New Data in ${data.table}!`, {
+                    body: JSON.stringify(data.data), // Display inserted row
+                    icon: "/icon.png"
+                });
+            });
+        });
+    });
 });
 
 
@@ -92,10 +111,4 @@ supabaseClient
             });
         }
     })
-    .subscribe((status) => {
-        if (status === "SUBSCRIBED") {
-            console.log("Subscribed to Supabase channel");
-        } else {
-            console.error("Failed to subscribe to Supabase channel");
-        }
-    });
+    //.subscribe();

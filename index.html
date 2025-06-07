@@ -897,6 +897,10 @@
             color: lightgreen
         }
 
+        .danger {
+            color: red;
+        }
+
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
@@ -2964,8 +2968,10 @@
                 batteryElements.forEach(el => {
                     el.innerText = Math.round(battery.level * 7) < 7 ? ("battery_" + Math.round(battery.level * 7) + "_bar") : "battery_full";
                     el.classList[battery.charging ? "add" : "remove"]("charging");
-                    el.title = (battery.level * 100) + "%, " + (battery.charging ? "charging, " : "") + "" +
-                        (battery.charging ? clApp.stringUtility.secondsToHourWithMinutes(battery.chargingTime) + " until full" : clApp.stringUtility.secondsToMinuteWithSeconds(battery.dischargingTime) + " left");
+                    el.classList[battery.level * 100 < 10 && !battery.charging ? "add" : "remove"]("danger");
+                    el.title = Math.round(battery.level * 100) + "%, " + (battery.charging ? "charging, " : "") +
+                        (battery.charging ? clApp.stringUtility.secondsToHourWithMinutes(battery.chargingTime) + " until full" : clApp.stringUtility.secondsToHourWithMinutes(battery.dischargingTime) + " left") + "." +
+                        (battery.level * 100 < 10 && !battery.charging ? "Battery level is critically low. Please plug device to power." : "");
                 });
             }
         };
@@ -2994,8 +3000,11 @@
                 if (!this.showSeconds) seconds = "";
                 else seconds = `:${seconds < 10 ? '0' + seconds : seconds}`;
                 const timeString = `${hours}:${minutes < 10 ? '0' + minutes : minutes}${seconds}${ampm}`;
+                const dateString = timeString + ` on ${["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][now.getDay()]}, ` +
+                    `${now.getDate()} ${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][now.getMonth()]} ${now.getFullYear()}`;
                 dateElements.forEach(el => {
                     el.innerText = timeString;
+                    el.title = dateString;
                 });
             },
         };
