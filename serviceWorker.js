@@ -52,7 +52,7 @@ self.addEventListener('notificationclick', event => {
 });
 
 
-supabase
+supabaseClient
     .channel("main")
     .on("postgres_changes", { event: "INSERT", schema: "public", table: "main_chat" }, (payload) => {
         if (payload.new.is_announcement && Notification.permission === "granted") {
