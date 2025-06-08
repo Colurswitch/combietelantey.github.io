@@ -3125,6 +3125,64 @@
                 this.client = supabase.createClient(this.url, this.key);
                 clApp.toast("info", "Supabase client initialized successfully.");
             },
+
+            async getUser() {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return null;
+                }
+                const { data, error } = await this.client.auth.getUser();
+                if (error) {
+                    clApp.toast("error", `Error getting user: ${error.message}`);
+                    return null;
+                }
+                return data.user;
+            },
+            async signIn(email, password) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return null;
+                }
+                const { data, error } = await this.client.auth.signInWithPassword({ email, password });
+                if (error) {
+                    clApp.toast("error", `Error signing in: ${error.message}`);
+                    return null;
+                }
+                clApp.toast("info", "Signed in successfully.");
+                return data.user;
+            },
+
+            async signUp(email, password) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return null;
+                }
+                const res0 = await this.client.auth.signUp({ email, password });
+                if (res0.error) {
+                    clApp.toast("error", `Error signing up: ${error.message}`);
+                    return null;
+                }
+                clApp.toast("info", "Signed up successfully.");
+                const res1 = await this.client.from("users").insert({
+                    email: email,
+                    display_name: email,
+                });
+                return res0.data.user;
+            },
+
+            async signOut() {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return null;
+                }
+                const { error } = await this.client.auth.signOut();
+                if (error) {
+                    clApp.toast("error", `Error signing out: ${error.message}`);
+                    return null;
+                }
+                clApp.toast("info", "Signed out successfully.");
+                return true;
+            },
         };
 
         clApp.toast = function(icon, message) {
@@ -3149,7 +3207,7 @@
             if (!localStorage.visited) {
                 localStorage.visited = true;
                 clApp.toast("info", "Welcome to Chillnet!");
-                if ("serviceWorker" in navigator) {
+                /*if ("serviceWorker" in navigator) {
                     clApp.toast("info", "Service workers are supported! Registering...");
                     if (Notification.permission !== "granted") Notification.requestPermission().then(perm => {
                         if (perm === "granted") {
@@ -3177,7 +3235,7 @@
                     //clApp.toast("info", "Service workers registered!");
                 } else {
                     clApp.toast("warning", "Service workers are not supported!");
-                }
+                }*/
             } else {
                 clApp.toast("info", "Welcome back to Chillnet!");
             }
