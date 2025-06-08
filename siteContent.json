@@ -1,0 +1,8 @@
+{
+    "games": [
+        {
+            "name": "2048",
+            "description": "A sliding block puzzle game where the objective is to combine tiles with the same number to reach 2048."
+        }
+    ]
+}

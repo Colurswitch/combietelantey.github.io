@@ -894,7 +894,7 @@
         }
 
         .charging {
-            color: lightgreen
+            color: lightgreen;
         }
 
         .danger {
@@ -1150,8 +1150,8 @@
                 <i class="material-symbols-outlined">sports_esports</i>
             </div>
             <div class="topbar-center">
-                <button class="cl-button selected" title="Trending Games" id="app.gamesScreen.page.trendingGames.btn">
-                    <span class="material-symbols-outlined">trending_up</span>
+                <button class="cl-button selected" title="New Releases" id="app.gamesScreen.page.newReleases.btn">
+                    <span class="material-symbols-outlined">star</span>
                 </button>
                 <button class="cl-button" title="Search Games" id="app.gamesScreen.page.searchGames.btn">
                     <span class="material-symbols-outlined">search</span>
@@ -1176,37 +1176,18 @@
                     title="100%, charging">battery_charging_full</span>
             </div>
         </div>
-        <div class="boxed-content is-not-centered hidden" id="app.gamesScreen.page.trendingGames.boxedContent">
-            <h1>Top 10 Games</h1>
-            <div class="cl-horizontal-card-display"
-                id="app.gamesScreen.page.trendingGames.boxedContent.top10cardsContainer">
-                <div class="cl-game">
-                    <div class="cl-game-info">
-                        <h1>Game</h1>
-                        <small>123K plays</small>
-                    </div>
-                </div>
-            </div>
-            <h1>Based on what you play</h1>
-            <div class="cl-horizontal-card-display"
-                id="app.gamesScreen.page.trendingGames.boxedContent.youPlayedCardsContainer">
-                <div class="cl-game">
-                    <div class="cl-game-info">
-                        <h1>Game</h1>
-                        <small>123K plays</small>
-                    </div>
-                </div>
-            </div>
+        <div class="boxed-content is-not-centered hidden" id="app.gamesScreen.page.newReleases.boxedContent">
+            <div class="cl-card-grid" id="app.gamesScreen.newReleases.boxedContent.cardsContainer"></div>
         </div>
         <div class="boxed-content is-not-centered hidden" id="app.gamesScreen.page.searchGames.boxedContent">
             <div class="cl-horizontal">
                 <div class="cl-input">
                     <i class="material-symbols-outlined">search</i>
-                    <input type="text" placeholder="Search for a game" id="app.gamesScreen.page.searchGames.input">
+                    <input type="text" placeholder="Search for a game" id="app.gamesScreen.page.searchGames.boxedContent.searchInput">
                 </div>
                 <div class="cl-input">
                     <i class="material-symbols-outlined">sort</i>
-                    <select id="app.gamesScreen.page.searchGames.sortBySelect">
+                    <select id="app.gamesScreen.page.searchGames.boxedContent.sortBySelect">
                         <option value="a-to-z">Name (ascending)</option>
                         <option value="z-to-a">Name (descending)</option>
                         <option value="most-played">Most Played</option>
@@ -1921,7 +1902,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="boxed-content is-not-centered hdden" id="app.contant.page.newGame.boxedContent">
+        <div class="boxed-content is-not-centered hdden" id="app.content.page.newGame.boxedContent">
             <!--<div class="cl-input">
                 <span class="material-symbols-outlined">folder_zip</span>
                 <span>Game archive</span>
@@ -2501,9 +2482,9 @@
                     id: "app.gamesScreen.page",
                     subpages: [
                         {
-                            name: "Trending Games",
-                            id: "app.gamesScreen.page.trendingGames.boxedContent",
-                            btn: "app.gamesScreen.page.trendingGames.btn",
+                            name: "New Releases",
+                            id: "app.gamesScreen.page.newReleases.boxedContent",
+                            btn: "app.gamesScreen.page.newReleases.btn",
                         },
                         {
                             name: "Search Games",
@@ -2943,7 +2924,7 @@
                     };
                     containerElement.appendChild(card);
                 });
-            }
+            },
         };
 
         clApp.battery = {
@@ -3125,7 +3106,6 @@
                 this.client = supabase.createClient(this.url, this.key);
                 clApp.toast("info", "Supabase client initialized successfully.");
             },
-
             async getUser() {
                 if (!this.client) {
                     console.error("Supabase client is not initialized.");
@@ -3151,7 +3131,6 @@
                 clApp.toast("info", "Signed in successfully.");
                 return data.user;
             },
-
             async signUp(email, password) {
                 if (!this.client) {
                     console.error("Supabase client is not initialized.");
@@ -3167,9 +3146,13 @@
                     email: email,
                     display_name: email,
                 });
+                if (res1.error) {
+                    clApp.toast("error", `Error creating user profile: ${res1.error.message}`);
+                    return null;
+                }
+                clApp.toast("info", "User profile created successfully.");
                 return res0.data.user;
             },
-
             async signOut() {
                 if (!this.client) {
                     console.error("Supabase client is not initialized.");
@@ -3183,6 +3166,95 @@
                 clApp.toast("info", "Signed out successfully.");
                 return true;
             },
+            async getUser() {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return null;
+                }
+                const { data, error } = await this.client.auth.getUser();
+                if (error) {
+                    clApp.toast("error", `Error getting user: ${error.message}`);
+                    return null;
+                }
+                return data.user;
+            },
+            async getUserProfile(userId = null) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return null;
+                }
+                if (!userId) {
+                    const user = await this.getUser();
+                    if (!user) {
+                        clApp.toast("error", "No user is signed in.");
+                        return null;
+                    }
+                    userId = user.id;
+                }
+                const { data, error } = await this.client.from("users").select("*").eq("id", userId).single();
+                if (error) {
+                    clApp.toast("error", `Error getting user profile: ${error.message}`);
+                    return null;
+                }
+                return data;
+            },
+            async updateUserProfile(userId = null, profileData) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return null;
+                }
+                if (!userId) {
+                    const user = await this.getUser();
+                    if (!user) {
+                        clApp.toast("error", "No user is signed in.");
+                        return null;
+                    }
+                    userId = user.id;
+                }
+                const { data, error } = await this.client.from("users").update(profileData).eq("id", userId);
+                if (error) {
+                    clApp.toast("error", `Error updating user profile: ${error.message}`);
+                    return null;
+                }
+                clApp.toast("info", "User profile updated successfully.");
+                return data;
+            },
+            async getGames() {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return null;
+                }
+                const { data, error } = await this.client.from("games").select();
+                if (error) {
+                    clApp.toast("error", `Error getting games: ${error.message}`);
+                    return null;
+                }
+                return data;
+            },
+            async getGame(gid) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return null;
+                }
+                const { data, error } = await this.client.from("games").select().eq("id", gid).single();
+                if (error) {
+                    clApp.toast("error", `Error getting game: ${error.message}`);
+                    return null;
+                }
+                return data;
+            }
+        };
+
+        clApp.games = {
+            newReleasesCardsContainer: "app.gamesScreen.page.newReleases.boxedContent.cardsContainer",
+            searchInput: "app.gamesScreen.page.searchInput",
+            searchSortSelect: "app.gamesScreen.page.searchSortSelect",
+            searchResultsContainer: "app.gamesScreen.page.searchResultsContainer",
+            init() {
+                clApp.supabase.getGames().then(games => {
+                    
+                })
+            }
         };
 
         clApp.toast = function(icon, message) {
