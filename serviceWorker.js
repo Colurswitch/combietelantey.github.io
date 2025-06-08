@@ -61,9 +61,11 @@ self.addEventListener('backgroundfetchsuccess', event => {
     event.fetches.forEach(fetch => {
         fetch.responseReady.then(response => {
             response.json().then(data => {
-                self.registration.showNotification(`New Data in ${data.table}!`, {
-                    body: JSON.stringify(data.data), // Display inserted row
-                    icon: "/icon.png"
+                navigator.serviceWorker.ready.then((registration) => {
+                    registration.showNotification(payload.new.username, {
+                        body: JSON.stringify(data),
+                        icon: "/assets/logo/profile.png",
+                    });
                 });
             });
         });
