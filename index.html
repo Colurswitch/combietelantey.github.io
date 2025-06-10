@@ -870,7 +870,7 @@
             position: fixed;
             top: 0;
             right: 0;
-            width: 450px;
+            width: 550px;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -895,6 +895,10 @@
 
         .charging {
             color: lightgreen;
+        }
+
+        .warning {
+            color: yellow;
         }
 
         .danger {
@@ -1190,8 +1194,6 @@
                     <select id="app.gamesScreen.page.searchGames.boxedContent.sortBySelect">
                         <option value="a-to-z">Name (ascending)</option>
                         <option value="z-to-a">Name (descending)</option>
-                        <option value="most-played">Most Played</option>
-                        <option value="least-played">Least Played</option>
                         <option value="newest">Newest</option>
                         <option value="oldest">Oldest</option>
                     </select>
@@ -1201,7 +1203,6 @@
                 <div class="cl-game">
                     <div class="cl-game-info">
                         <h1>Game</h1>
-                        <small>123K plays</small>
                     </div>
                 </div>
             </div>
@@ -1277,14 +1278,13 @@
             id="app.gameScreen.page.gameImage">
         <div class="cl-game-info-box">
             <h1 id="app.gameScreen.page.gameTitle">Game Title</h1>
-            <div class="cl-game-action-box">
-                <button class="cl-button" id="app.gameScreen.page.gameStartBtn">
+            <div class="cl-game-action-box" id="app.gameScreen.page.gameActionBox">
+                <button class="cl-button">
                     <span class="material-symbols-outlined">play_arrow</span>
                     <span>Play</span>
                 </button>
-                <button class="cl-button" id="app.gameScreen.page.backBtn">
+                <button class="cl-button">
                     <span class="material-symbols-outlined">arrow_back</span>
-                    <span>Back</span>
                 </button>
             </div>
         </div>
@@ -2139,7 +2139,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        var clApp = {};
+        const clApp = {};
         clApp.config = {
             parameters: {}, // Key:value pairs of URL parameters.
             persistData: true, // Whether to save data in localStorage. If false, resets settings (dangerous.)
@@ -2683,6 +2683,28 @@
                     ],
                 },
             ],
+            content: {
+                games: [
+                    {
+                        title: "2048",
+                        description: "A simple and addictive puzzle game where you combine tiles to reach 2048.",
+                        photo: "/games/static/2048/meta/apple-touch-icon.png",
+                        link: "/games/static/2048/index.html",
+                        achievements: [
+                            {
+                                name: "2048!",
+                                description: "Reach the 2048 tile.",
+                                score: 2048,
+                                rare: false,
+                                id: "1",
+                            },
+                        ],
+                        download: "/games/static/2048/2048.zip",
+                        date: new Date("2025-06-09"),
+                        id: "1",
+                    },
+                ],
+            },
             toastContainer: "app.toastContainer",
         };
 
@@ -2694,6 +2716,14 @@
             },
         };
 
+        clApp.dateUtility = {
+            isWithinPastMonth(date) {
+                const now = new Date();
+                const pastMonth = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                return date >= pastMonth && date <= now;
+            },
+        }
+
         clApp.stringUtility = {
             secondsToMinuteWithSeconds(seconds) {
                 const minutes = Math.floor(seconds / 60);
@@ -2704,6 +2734,19 @@
                 const hours = Math.floor(seconds / 3600);
                 const minutes = Math.floor((seconds % 3600) / 60);
                 return `${hours}h:${minutes < 10 ? '0' + minutes : minutes}m`;
+            },
+            truncate(str, length) {
+                if (str.length <= length) return str;
+                return str.substring(0, length - 3) + "...";
+            },
+            copyToClipboard(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                clApp.toast("info", "Text copied to clipboard!");
             },
         };
 
@@ -2949,10 +2992,14 @@
                 batteryElements.forEach(el => {
                     el.innerText = Math.round(battery.level * 7) < 7 ? ("battery_" + Math.round(battery.level * 7) + "_bar") : "battery_full";
                     el.classList[battery.charging ? "add" : "remove"]("charging");
-                    el.classList[battery.level * 100 < 10 && !battery.charging ? "add" : "remove"]("danger");
+                    el.classList[battery.level * 100 <= 10 && !battery.charging ? "add" : "remove"]("danger");
+                    el.classList[battery.level * 100 <= 20 && !battery.charging ? "add" : "remove"]("warning");
                     el.title = Math.round(battery.level * 100) + "%, " + (battery.charging ? "charging, " : "") +
                         (battery.charging ? clApp.stringUtility.secondsToHourWithMinutes(battery.chargingTime) + " until full" : clApp.stringUtility.secondsToHourWithMinutes(battery.dischargingTime) + " left") + "." +
-                        (battery.level * 100 < 10 && !battery.charging ? " Battery level is critically low. Please plug device to power." : "");
+                        (
+                            battery.level * 100 <= 10 && !battery.charging ? " Battery level is critically low. Please plug device to power." : 
+                            (battery.level * 100 <= 20 && !battery.charging ? " Battery level is low. Please plug device to power." : "")
+                        );
                 });
             }
         };
@@ -3246,15 +3293,173 @@
         };
 
         clApp.games = {
-            newReleasesCardsContainer: "app.gamesScreen.page.newReleases.boxedContent.cardsContainer",
-            searchInput: "app.gamesScreen.page.searchInput",
-            searchSortSelect: "app.gamesScreen.page.searchSortSelect",
-            searchResultsContainer: "app.gamesScreen.page.searchResultsContainer",
+            newReleasesCardsContainer: "app.gamesScreen.newReleases.boxedContent.cardsContainer",
+            searchInput: "app.gamesScreen.page.searchGames.boxedContent.searchInput",
+            searchSortSelect: "app.gamesScreen.page.searchGames.boxedContent.sortBySelect",
+            searchResultsContainer: "app.gamesScreen.page.searchGames.boxedContent.gamesContainer",
+            savedGamesContainer: "app.gamesScreen.page.savedGames.boxedContent.gamesContainer",
+            historyContainer: "app.gamesScreen.page.history.boxedContent.gamesContainer",
+            gameImage: "app.gameScreen.page.gameImage",
+            gameTitle: "app.gameScreen.page.gameTitle",
+            gameActionBox: "app.gameScreen.page.gameActionBox",
+            gameNotesContainer: "app.gameScreen.page.gameNotesContainer",
+            gameDescription: "app.gameScreen.page.gameDescription",
             init() {
-                clApp.supabase.getGames().then(games => {
-                    
-                })
-            }
+                // Sort clApp.config.content.games by date, and get only the items that have a date within the last month.
+                const newReleases = clApp.config.content.games.filter(game => clApp.dateUtility.isWithinPastMonth(new Date(game.date)));
+                newReleases.sort((a, b) => new Date(b.date) - new Date(a.date));
+                const newReleasesContainer = document.getElementById(this.newReleasesCardsContainer);
+                clApp.elementUtility.removeAllChildren(newReleasesContainer);
+                newReleases.forEach(game => {
+                    const card = document.createElement("div");
+                    card.classList.add("cl-game");
+                    card.innerHTML = `
+                        <div class="cl-game-info">
+                            <h1>${game.title}</h1>
+                            <p>${clApp.stringUtility.truncate(game.description, 200)}</p>
+                        </div>
+                    `;
+                    card.onclick = () => this.open(game.id);
+                    card.style.backgroundImage = `url(${game.photo || "/assets/background/game_placeholder.png"})`;
+                    newReleasesContainer.appendChild(card);
+                });
+
+                const searchInput = document.getElementById(this.searchInput);
+                const searchSortSelect = document.getElementById(this.searchSortSelect);
+                searchInput.oninput = () => {
+                    const query = searchInput.value.toLowerCase();
+                    const sortBy = searchSortSelect.value;
+                    this.searchGames(query, sortBy);
+                };
+                searchSortSelect.onchange = () => {
+                    const query = searchInput.value.toLowerCase();
+                    const sortBy = searchSortSelect.value;
+                    this.searchGames(query, sortBy);
+                };
+                // Initial search with empty query
+                clApp.games.searchGames("", searchSortSelect.value);
+                // Load saved games
+                this.fetchSavedGames();
+            },
+            searchGames(query, sortBy) {
+                // sortBy can be "a-to-z", "z-to-a", "newest", "oldest"
+                const searchResultsContainer = document.getElementById(this.searchResultsContainer);
+                clApp.elementUtility.removeAllChildren(searchResultsContainer);
+                const games = clApp.config.content.games.filter(game => game.title.toLowerCase().includes(query)); 
+                if (sortBy === "a-to-z") {
+                    games.sort((a, b) => a.title.localeCompare(b.title));
+                } else if (sortBy === "z-to-a") {
+                    games.sort((a, b) => b.title.localeCompare(a.title));
+                } else if (sortBy === "newest") {
+                    games.sort((a, b) => new Date(b.date) - new Date(a.date));
+                } else if (sortBy === "oldest") {
+                    games.sort((a, b) => new Date(a.date) - new Date(b.date));
+                }
+                if (games.length === 0) {
+                    searchResultsContainer.innerHTML = "<p>No games found.</p>";
+                    return;
+                }
+                games.forEach(game => {
+                    const card = document.createElement("div");
+                    card.classList.add("cl-game");
+                    card.innerHTML = `
+                        <div class="cl-game-info">
+                            <h1>${game.title}</h1>
+                            <p>${clApp.stringUtility.truncate(game.description, 200)}</p>
+                        </div>
+                    `;
+                    card.onclick = () => this.open(game.id);
+                    card.style.backgroundImage = `url(${game.photo || "/assets/background/game_placeholder.png"})`;
+                    searchResultsContainer.appendChild(card);
+                });
+            },
+            open(gid) {
+                const game = clApp.config.content.games.find(g => g.id === gid);
+                if (!game) {
+                    clApp.toast("error", "Game not found.");
+                    return;
+                }
+                clApp.pages.open("Game");
+                const gameImage = document.getElementById(this.gameImage);
+                const gameTitle = document.getElementById(this.gameTitle);
+                const gameActionBox = document.getElementById(this.gameActionBox);
+                const gameNotesContainer = document.getElementById(this.gameNotesContainer);
+                const gameDescription = document.getElementById(this.gameDescription);
+                
+                gameImage.src = game.photo || "/assets/background/game_placeholder.png";
+                gameTitle.innerHTML = game.title;
+                
+                const playBtn = document.createElement("button");
+                playBtn.innerHTML = '<i class="material-symbols-outlined">play_arrow</i>';
+                playBtn.classList.add("cl-button");
+                const downloadBtn = document.createElement("button");
+                downloadBtn.innerHTML = '<i class="material-symbols-outlined">download</i>';
+                downloadBtn.onclick = () => window.open(game.download, "_blank");
+                downloadBtn.classList.add("cl-button");
+                const shareBtn = document.createElement("button");
+                shareBtn.innerHTML = '<i class="material-symbols-outlined">share</i>';
+                shareBtn.onclick = () => clApp.stringUtility.copyToClipboard(location.hostname + "/?mode=game&id=" + game.id)
+                shareBtn.classList.add("cl-button");
+                const saveBtn = document.createElement("button");
+                saveBtn.innerHTML = '<i class="material-symbols-outlined">bookmark_'+(this.isSaved(game.id)?"remove":"add")+'</i>';
+                saveBtn.onclick = () => {
+                    this[this.isSaved(game.id)?"unsave":"save"](game.id);
+                    saveBtn.innerHTML = '<i class="material-symbols-outlined">bookmark_'+(this.isSaved(game.id)?"remove":"add")+'</i>';
+                };
+                saveBtn.classList.add("cl-button");
+                const backBtn = document.createElement("button");
+                backBtn.innerHTML = '<i class="material-symbols-outlined">arrow_back</i>';
+                backBtn.onclick = () => clApp.pages.open("Games");
+                backBtn.classList.add("cl-button");
+
+                clApp.elementUtility.removeAllChildren(gameActionBox);
+                gameActionBox.appendChild(playBtn);
+                if (game.download) gameActionBox.appendChild(downloadBtn);
+                gameActionBox.appendChild(saveBtn);
+                gameActionBox.appendChild(shareBtn);
+                gameActionBox.appendChild(backBtn);
+
+                gameNotesContainer.innerHTML = (game.notes || []).map(n => {
+                    return `
+                        <button class="cl-button is-info" interactive="false">
+                            <span class="material-symbols-outlined">info</span>
+                            <span>${n}</span>
+                        </button>`;
+                }).join('');
+
+                gameDescription.innerHTML = game.description;
+            },
+            save(gid) {
+                const savedGames = JSON.parse(localStorage.getItem("clAppSavedGames")) || [];
+                if (!savedGames.includes(gid)) savedGames.push(gid);
+                localStorage.setItem("clAppSavedGames", JSON.stringify(savedGames));
+            },
+            unsave(gid) {
+                const savedGames = JSON.parse(localStorage.getItem("clAppSavedGames")) || [];
+                localStorage.setItem("clAppSavedGames", JSON.stringify(savedGames.filter(g => g.id !== gid)));
+            },
+            isSaved(gid) {
+                return (JSON.parse(localStorage.getItem("clAppSavedGames")) || []).includes(gid);
+            },
+            fetchSavedGames() {
+                const savedGamesContainer = document.getElementById(this.savedGamesContainer);
+                clApp.elementUtility.removeAllChildren(savedGamesContainer);
+                const savedGames = JSON.parse(localStorage.getItem("clAppSavedGames")) || [];
+                savedGames.forEach(game => {
+                    const card = document.createElement("div");
+                    card.classList.add("cl-game");
+                    card.innerHTML = `
+                        <div class="cl-game-info">
+                            <h1>${game.title}</h1>
+                            <p>${clApp.stringUtility.truncate(game.description, 200)}</p>
+                        </div>
+                    `;
+                    card.onclick = () => this.open(game.id);
+                    card.style.backgroundImage = `url(${game.photo || "/assets/background/game_placeholder.png"})`;
+                    savedGamesContainer.appendChild(card);
+                });
+                if (savedGames.length == 0) savedGamesContainer.innerHTML = "<p>You have not saved any games.</p>";
+            },
         };
 
         clApp.toast = function(icon, message) {
@@ -3318,8 +3523,12 @@
             clApp.settings.createEditor();
             clApp.settings.update(clApp.settings.get());
             clApp.supabase.init();
+            clApp.games.init();
             clApp.pages.open("Home");
-            if (clApp.config.parameters.resetAll) {
+            if (clApp.config.parameters.mode && clApp.config.parameters.id) {
+                if (clApp.config.parameters.mode == "game")
+                    clApp.games.open(clApp.config.parameters.id);
+            } else if (clApp.config.parameters.resetAll) {
                 clApp.dialog.confirm("Do you want to reset all settings?").then((result) => {
                     if (result) {
                         localStorage.removeItem("clAppSettings");
@@ -3331,7 +3540,7 @@
             }
         };
         window.onerror = (message, src, lineno, colno, error) => {
-            clApp.toast("error", `Error: ${message} \n at ${src}:${lineno}:${colno}`);
+            clApp.toast("error", `Error: ${message} <br> at ${src}:${lineno}:${colno}`);
         }
         window.onload = () => {
             clApp.setup();
