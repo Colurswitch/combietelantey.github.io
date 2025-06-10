@@ -3436,6 +3436,7 @@
             },
             unsave(gid) {
                 const savedGames = JSON.parse(localStorage.getItem("clAppSavedGames")) || [];
+                clApp.toast("info",gid+", "+savedGames.includes(gid)+", "+savedGames.toString())
                 localStorage.setItem("clAppSavedGames", JSON.stringify(savedGames.filter(g => g.id !== gid)));
             },
             isSaved(gid) {
@@ -3444,7 +3445,7 @@
             fetchSavedGames() {
                 const savedGamesContainer = document.getElementById(this.savedGamesContainer);
                 clApp.elementUtility.removeAllChildren(savedGamesContainer);
-                const savedGames = JSON.parse(localStorage.getItem("clAppSavedGames")) || [];
+                const savedGames = clApp.config.content.games.filter(g => (JSON.parse(localStorage.getItem("clAppSavedGames")) || []).includes(g.id));
                 savedGames.forEach(game => {
                     const card = document.createElement("div");
                     card.classList.add("cl-game");
