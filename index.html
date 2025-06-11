@@ -3293,6 +3293,8 @@
             gameDescription: "app.gameScreen.page.gameDescription",
             gameFrameContainer: "app.gamePlayer.page",
             gameFrame: "app.gamePlayer.page.iframe",
+            currentGameCardContainer: "app.gamesScreen.page.currentlyPlaying.boxedContent.game",
+            currentGameActionBtnsContainer: "app.gamesScreen.page.currentlyPlaying.boxedContent.actionBtnsContainer",
             currentGid: null,
             init() {
                 // Sort clApp.config.content.games by date, and get only the items that have a date within the last month.
@@ -3382,7 +3384,8 @@
                 
                 const playBtn = document.createElement("button");
                 playBtn.innerHTML = '<i class="material-symbols-outlined">play_arrow</i>';
-                playBtn.onclick = () => this.play(gid)
+                playBtn.onclick = () => this.play(gid);
+                if (this.currentGid) playBtn.disabled = true;
                 playBtn.classList.add("cl-button");
                 const downloadBtn = document.createElement("button");
                 downloadBtn.innerHTML = '<i class="material-symbols-outlined">download</i>';
@@ -3470,6 +3473,8 @@
                 const gameFrameContainer = document.getElementById(this.gameFrameContainer);
                 /** @type {HTMLIFrameElement} */
                 const gameFrame = document.getElementById(this.gameFrame);
+                const currentGameCardContainer = document.getElementById(this.currentGameCardContainer);
+                const currentGameActionBtnsContainer = document.getElementById(this.currentGameActionBtnsContainer);
                 gameFrameContainer.classList.remove("hidden");
                 gameFrame.src = game.link;
                 gameFrame.focus();
@@ -3477,10 +3482,68 @@
                     gameFrame.contentDocument.addEventListener("keydown", (evt) => {
                         if (evt.key == "Escape") {
                             evt.preventDefault();
-                            clApp.toast("info", "Escaped!");
+                            clApp.pages.show("Games", "Currently Playing");
+                        }
+                    });
+                };
+                currentGameCardContainer.innerHTML = `
+                    <div class="cl-game-info">
+                        <h1>${game.title}</h1>
+                        <p>${clApp.stringUtility.truncate(game.description, 200)}</p>
+                    </div>
+                `;
+                currentGameCardContainer.style.backgroundImage = game.photo || "/assets/background/game_placeholder.png";
+                const resumeBtn = document.createElement("div");
+                resumeBtn.classList.add("cl-card");
+                resumeBtn.onclick = () => clApp.pages.resetAll();
+                resumeBtn.innerHTML = `
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">play_arrow</i>
+                        <span>Resume</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Resume the game.
+                    </div>
+                `;
+                const restartBtn = document.createElement("div");
+                restartBtn.classList.add("cl-card");
+                restartBtn.onclick = () => {
+                    clApp.pages.resetAll();
+                    gameFrame.contentWindow.location.reload();
+                }
+                restartBtn.innerHTML = `
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">refresh</i>
+                        <span>Refresh</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Restart the game.
+                    </div>
+                `;
+                const exitBtn = document.createElement("div");
+                exitBtn.classList.add("cl-card");
+                exitBtn.onclick = () => {""
+                    clApp.dialog.confirm("Are you sure you want to close \"" + game.title + "\"?").then(answer => {
+                        if (answer) {
+                            clApp.pages.resetAll();
+                            gameFrame.src = "/games/game_loader.html";
+                            gameFrameContainer.classList.add("hidden");
+                            clApp.pages.open("Games");
                         }
                     });
                 }
+                exitBtn.innerHTML = `
+                    <div class="cl-card-top">
+                        <i class="material-symbols-outlined">close</i>
+                        <span>Exit</span>
+                    </div>
+                    <div class="cl-card-bottom">
+                        Close the game.
+                    </div>
+                `;
+                currentGameActionBtnsContainer.appendChild(resumeBtn);
+                currentGameActionBtnsContainer.appendChild(restartBtn);
+                currentGameActionBtnsContainer.appendChild(exitBtn);
             },
             history: {
                 historyContainer: "app.gamesScreen.page.history.boxedContent.gamesContainer",
