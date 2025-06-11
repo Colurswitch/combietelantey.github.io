@@ -34,6 +34,10 @@
             font-family: "Product Sans";
         }
 
+        *.hidden {
+            display: none;
+        }
+
         body {
             width: 100%;
             height: 100vh;
@@ -451,6 +455,10 @@
             text-decoration: none;
         }
 
+        .cl-button.hidden {
+            display: none;
+        }
+
         .cl-button:hover:not(:disabled) {
             background: #00000010;
         }
@@ -577,6 +585,7 @@
             background-blend-mode: darken;
             background: url("assets/background/game_placeholder.png");
             background-size: cover;
+            background-position: center;
             background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             justify-items: start;
@@ -848,8 +857,9 @@
 
         .cl-game-frame {
             width: 100%;
-            height: 100%;
+            height: 100vh;
             background: black;
+            outline: 1px solid red;
         }
 
         .cl-banner {
@@ -952,7 +962,7 @@
     </div>
     <!--Game Player-->
     <fullscreen class="hidden" id="app.gamePlayer.page">
-        <iframe src="games/game_loader.html" frameborder="0" class="cl-game-frame" id="app.gamePlayer.page.iframe">
+        <iframe src="/games/game_loader.html" frameborder="0" class="cl-game-frame" id="app.gamePlayer.page.iframe">
             Your browser does not support IFrames.
         </iframe>
     </fullscreen>
@@ -965,7 +975,7 @@
         </video>
     </fullscreen>
     <!--Please wait...-->
-    <section class="cl-panel hidden" id="app.loaderScreen">
+    <section class="cl-panel hdden" id="app.loaderScreen">
         <div class="topbar">
             <div class="topbar-left" title="Please wait...">
                 <i class="material-symbols-outlined">sync</i>
@@ -1166,15 +1176,11 @@
                 <button class="cl-button" title="History" id="app.gamesScreen.page.history.btn">
                     <span class="material-symbols-outlined">history</span>
                 </button>
-                <button class="cl-button" title="Achievements" id="app.gamesScreen.page.achievements.btn">
-                    <span class="material-symbols-outlined">trophy</span>
-                </button>
                 <button class="cl-button" title="Currently Playing" id="app.gamesScreen.page.currentlyPlaying.btn">
                     <span class="material-symbols-outlined">play_arrow</span>
                 </button>
             </div>
             <div class="topbar-right">
-                <h3 class="CL-GamescoreMonitor cl-gamescore" title="100 gamescore">100</h3>
                 <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
                 <span class="material-symbols-outlined CL-BatteryMonitor"
                     title="100%, charging">battery_charging_full</span>
@@ -1224,29 +1230,6 @@
                     <div class="cl-game-info">
                         <h1>Game</h1>
                         <small>01-01-2025</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="boxed-content is-not-centered hdden" id="app.gamesScreen.page.achievements.boxedContent">
-            <h1>Achievements</h1>
-            <div class="cl-container" id="app.gamesScreen.page.achievements.boxedContent.achievementsContainer">
-                <div class="cl-collapsible cl-container">
-                    <input type="checkbox" class="cl-collapsible-checkbox">
-                    <div class="cl-horizontal cl-collapsible-top">
-                        <span class="material-symbols-outlined cl-collapsible-arrow">arrow_right</span>
-                        <h3>Game</h3>
-                    </div>
-                    <div class="cl-container cl-collapsible-content">
-                        <div class="cl-horizontal">
-                            <span class="material-symbols-outlined">trophy</span>
-                            <span class="cl-gamescore">
-                                100
-                            </span>
-                            <span>
-                                Achievement
-                            </span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -2028,7 +2011,7 @@
         </div>
     </section>
     <!--Settings-->
-    <section class="cl-panel hdden" id="app.settings.page">
+    <section class="cl-panel hidden" id="app.settings.page">
         <div class="topbar">
             <div class="topbar-left" title="Settings" data-targetPage="Home">
                 <i class="material-symbols-outlined">settings</i>
@@ -2458,14 +2441,6 @@
             },
             pages: [
                 {
-                    name: "Game Player",
-                    id: "app.gamePlayer.page",
-                },
-                {
-                    name: "Video Player",
-                    id: "app.videoPlayer.page",
-                },
-                {
                     name: "Loader",
                     id: "app.loaderScreen",
                 },
@@ -2500,11 +2475,6 @@
                             name: "History",
                             id: "app.gamesScreen.page.history.boxedContent",
                             btn: "app.gamesScreen.page.history.btn",
-                        },
-                        {
-                            name: "Achievements",
-                            id: "app.gamesScreen.page.achievements.boxedContent",
-                            btn: "app.gamesScreen.page.achievements.btn",
                         },
                         {
                             name: "Currently Playing",
@@ -2943,6 +2913,23 @@
                 }
                 return null;
             },
+            hide(name, subpageName) {
+                const page = clApp.config.pages.find(p => p.name === name);
+                if (page) {
+                    const subpage = document.getElementById(page.subpages.find(s => s.name === subpageName).id);
+                    const subpageBtn = document.getElementById(page.subpages.find(s => s.name === subpageName).btn);
+                    subpageBtn.classList.add("hidden");
+                    this.open(name);
+                }
+            },
+            show(name, subpageName) {
+                const page = clApp.config.pages.find(p => p.name === name);
+                if (page) {
+                    const subpage = document.getElementById(page.subpages.find(s => s.name === subpageName).id);
+                    const subpageBtn = document.getElementById(page.subpages.find(s => s.name === subpageName).btn);
+                    subpageBtn.classList.remove("hidden");
+                }
+            },
             createCards(container, pages) {
                 const containerElement = document.getElementById(container);
                 if (!containerElement) {
@@ -3304,6 +3291,9 @@
             gameActionBox: "app.gameScreen.page.gameActionBox",
             gameNotesContainer: "app.gameScreen.page.gameNotesContainer",
             gameDescription: "app.gameScreen.page.gameDescription",
+            gameFrameContainer: "app.gamePlayer.page",
+            gameFrame: "app.gamePlayer.page.iframe",
+            currentGid: null,
             init() {
                 // Sort clApp.config.content.games by date, and get only the items that have a date within the last month.
                 const newReleases = clApp.config.content.games.filter(game => clApp.dateUtility.isWithinPastMonth(new Date(game.date)));
@@ -3340,6 +3330,7 @@
                 clApp.games.searchGames("", searchSortSelect.value);
                 // Load saved games
                 this.fetchSavedGames();
+                this.history.fetch();
             },
             searchGames(query, sortBy) {
                 // sortBy can be "a-to-z", "z-to-a", "newest", "oldest"
@@ -3391,6 +3382,7 @@
                 
                 const playBtn = document.createElement("button");
                 playBtn.innerHTML = '<i class="material-symbols-outlined">play_arrow</i>';
+                playBtn.onclick = () => this.play(gid)
                 playBtn.classList.add("cl-button");
                 const downloadBtn = document.createElement("button");
                 downloadBtn.innerHTML = '<i class="material-symbols-outlined">download</i>';
@@ -3433,11 +3425,16 @@
                 const savedGames = JSON.parse(localStorage.getItem("clAppSavedGames")) || [];
                 if (!savedGames.includes(gid)) savedGames.push(gid);
                 localStorage.setItem("clAppSavedGames", JSON.stringify(savedGames));
+                this.fetchSavedGames();
             },
             unsave(gid) {
                 const savedGames = JSON.parse(localStorage.getItem("clAppSavedGames")) || [];
-                clApp.toast("info",gid+", "+savedGames.includes(gid)+", "+savedGames.toString())
-                localStorage.setItem("clAppSavedGames", JSON.stringify(savedGames.filter(g => g.id !== gid)));
+                const idx = savedGames.indexOf(gid);
+                if (idx > -1) {
+                    savedGames.splice(idx, 1)
+                    localStorage.setItem("clAppSavedGames", JSON.stringify(savedGames));
+                }
+                this.fetchSavedGames();
             },
             isSaved(gid) {
                 return (JSON.parse(localStorage.getItem("clAppSavedGames")) || []).includes(gid);
@@ -3461,7 +3458,60 @@
                 });
                 if (savedGames.length == 0) savedGamesContainer.innerHTML = "<p>You have not saved any games.</p>";
             },
+            play(gid) {
+                const game = clApp.config.content.games.find(g => g.id === gid);
+                if (!game) {
+                    clApp.toast("error", "Game not found.");
+                    return;
+                }
+                this.currentGid = gid;
+                clApp.pages.resetAll();
+                clApp.pages.show("Games", "Currently Playing");
+                const gameFrameContainer = document.getElementById(this.gameFrameContainer);
+                /** @type {HTMLIFrameElement} */
+                const gameFrame = document.getElementById(this.gameFrame);
+                gameFrameContainer.classList.remove("hidden");
+                gameFrame.src = game.link;
+                gameFrame.focus();
+                gameFrame.contentDocument.addEventListener("keydown", (evt) => {
+                    if (evt.key == "Escape") {
+                        evt.preventDefault();
+                        clApp.toast("info", "Escaped!");
+                    }
+                });
+            },
+            history: {
+                historyContainer: "app.gamesScreen.page.history.boxedContent.gamesContainer",
+                fetch() {
+                    const historyContainer = document.getElementById(this.historyContainer);
+                    var historyItems = JSON.parse(localStorage.getItem("clAppGameHistory")) || [];
+                    historyItems = historyItems.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    historyItems.forEach(item => {
+                        const game = clApp.config.content.games.find(g => g.id == item.gid);
+                        const card = document.createElement("div");
+                        card.classList.add("cl-game");
+                        card.innerHTML = `
+                            <div class="cl-game-info">
+                                <h1>${game.title}</h1>
+                                <p>${item.date}</p>
+                            </div>
+                        `;
+                        card.onclick = () => this.open(game.id);
+                        card.style.backgroundImage = `url(${game.photo || "/assets/background/game_placeholder.png"})`;
+                        historyContainer.appendChild(card);
+                    });
+                    if (historyItems.length == 0) historyContainer.innerHTML = "<p>You have not played any games.</p>";
+                },
+                add(gid) {
+                    const historyItems = JSON.parse(localStorage.getItem("clAppGameHistory")) || [];
+                    historyItems.push({gid: gid, date: new Date().toISOString()});
+                    localStorage.setItem("clAppGameHistory", historyItems);
+                    this.fetch();
+                },
+            },
         };
+
+        clApp.minecraft = {}
 
         clApp.toast = function(icon, message) {
             const toast = document.createElement("div");
@@ -3485,7 +3535,7 @@
             if (!localStorage.visited) {
                 localStorage.visited = true;
                 clApp.toast("info", "Welcome to Chillnet!");
-                /*if ("serviceWorker" in navigator) {
+                if ("serviceWorker" in navigator) {
                     clApp.toast("info", "Service workers are supported! Registering...");
                     if (Notification.permission !== "granted") Notification.requestPermission().then(perm => {
                         if (perm === "granted") {
@@ -3513,12 +3563,13 @@
                     //clApp.toast("info", "Service workers registered!");
                 } else {
                     clApp.toast("warning", "Service workers are not supported!");
-                }*/
+                }
             } else {
                 clApp.toast("info", "Welcome back to Chillnet!");
             }
             clApp.pages.createCards("app.homeScreen.page.pageCardsContainer", clApp.config.pageCards);
             clApp.pages.init();
+            clApp.pages.hide("Games", "Currently Playing");
             clApp.battery.init();
             clApp.date.init();
             clApp.settings.createEditor();
