@@ -3473,12 +3473,14 @@
                 gameFrameContainer.classList.remove("hidden");
                 gameFrame.src = game.link;
                 gameFrame.focus();
-                gameFrame.contentDocument.addEventListener("keydown", (evt) => {
-                    if (evt.key == "Escape") {
-                        evt.preventDefault();
-                        clApp.toast("info", "Escaped!");
-                    }
-                });
+                gameFrame.onload = () => {
+                    gameFrame.contentDocument.addEventListener("keydown", (evt) => {
+                        if (evt.key == "Escape") {
+                            evt.preventDefault();
+                            clApp.toast("info", "Escaped!");
+                        }
+                    });
+                }
             },
             history: {
                 historyContainer: "app.gamesScreen.page.history.boxedContent.gamesContainer",
