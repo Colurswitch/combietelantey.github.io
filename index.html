@@ -1008,6 +1008,10 @@
         </div>
         <div class="boxed-content">
             <h1>Log In / Sign Up</h1>
+            <div class="cl-button is-info" interactive="false">
+                <span class="material-symbols-outlined">info</span>
+                <span>If you created your account before June 2025, you'll need to recreate your account due to a database change.</span>
+            </div>
             <div class="cl-input">
                 <i class="material-symbols-outlined">mail</i>
                 <input type="email" placeholder="Email" id="app.authScreen.page.emailInput">
@@ -1792,12 +1796,6 @@
                 <button class="cl-button" title="New Video" id="app.content.page.newVideo.btn">
                     <span class="material-symbols-outlined">video_camera_back_add</span>
                 </button>
-                <button class="cl-button" title="Games" id="app.content.page.games.btn">
-                    <span class="material-symbols-outlined">sports_esports</span>
-                </button>
-                <button class="cl-button" title="New Game" id="app.content.page.newGame.btn">
-                    <span class="material-symbols-outlined">variable_add</span>
-                </button>
             </div>
             <div class="topbar-right">
                 <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
@@ -1860,50 +1858,6 @@
                 <span>Add Video</span>
             </button>
         </div>
-        <div class="boxed-content is-not-centered hidden" id="app.content.page.games.boxedContent">
-            <table class="cl-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Game</td>
-                        <td>
-                            <div class="cl-horizontal">
-                                <button class="cl-button">
-                                    <i class="material-symbols-outlined">link</i>
-                                </button>
-                                <button class="cl-button">
-                                    <i class="material-symbols-outlined">delete</i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="boxed-content is-not-centered hdden" id="app.content.page.newGame.boxedContent">
-            <!--<div class="cl-input">
-                <span class="material-symbols-outlined">folder_zip</span>
-                <span>Game archive</span>
-                <input type="file" id="app.content.page.newVideo.boxedContent.videoInput" accept="video/*"/>
-            </div>
-            <div class="cl-button is-info" interactive="false">
-                <span class="material-symbols-outlined">info</span>
-                <span>Upload a </span>
-            </div>
-            <div class="cl-input">
-                <span class="material-symbols-outlined">image</span>
-                <input type="file" id="app.content.page.newVideo.boxedContent.thumbnailInput" accept="image/*"/>
-            </div>-->
-            <a href="#" class="cl-button">
-                <span class="material-symbols-outlined">add</span>
-                <span>Request or upload a game</span>
-            </a>
-        </div>
     </section>
     <!--Admin-->
     <section class="cl-panel hidden" id="app.admin.page">
@@ -1917,9 +1871,6 @@
                 </button>
                 <button class="cl-button" title="Videos" id="app.admin.page.videos.btn">
                     <span class="material-symbols-outlined">video_library</span>
-                </button>
-                <button class="cl-button" title="Games" id="app.admin.page.games.btn">
-                    <span class="material-symbols-outlined">sports_esports</span>
                 </button>
             </div>
             <div class="topbar-right">
@@ -1970,31 +1921,6 @@
                     <tr>
                         <td>Video</td>
                         <td>Date</td>
-                        <td>
-                            <div class="cl-horizontal">
-                                <button class="cl-button">
-                                    <i class="material-symbols-outlined">link</i>
-                                </button>
-                                <button class="cl-button">
-                                    <i class="material-symbols-outlined">delete</i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="boxed-content is-not-centered hidden" id="app.admin.page.games">
-            <table class="cl-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="app.admin.page.games.gamesContainer">
-                    <tr>
-                        <td>Game</td>
                         <td>
                             <div class="cl-horizontal">
                                 <button class="cl-button">
@@ -2599,16 +2525,6 @@
                             id: "app.content.page.newVideo.boxedContent",
                             btn: "app.content.page.newVideo.btn",
                         },
-                        {
-                            name: "Games",
-                            id: "app.content.page.games.boxedContent",
-                            btn: "app.content.page.games.btn",
-                        },
-                        {
-                            name: "New Game",
-                            id: "app.content.page.newGame.boxedContent",
-                            btn: "app.content.page.newGame.btn",
-                        },
                     ],
                 },
                 {
@@ -2624,11 +2540,6 @@
                             name: "Videos",
                             id: "app.admin.page.videos",
                             btn: "app.admin.page.videos.btn",
-                        },
-                        {
-                            name: "Games",
-                            id: "app.admin.page.games",
-                            btn: "app.admin.page.games.btn",
                         },
                     ],
                 },
@@ -2660,20 +2571,194 @@
                         description: "A simple and addictive puzzle game where you combine tiles to reach 2048.",
                         photo: "/games/static/2048/meta/apple-touch-icon.png",
                         link: "/games/static/2048/index.html",
-                        achievements: [
-                            {
-                                name: "2048!",
-                                description: "Reach the 2048 tile.",
-                                score: 2048,
-                                rare: false,
-                                id: "1",
-                            },
-                        ],
                         download: "/games/static/2048/2048.zip",
                         date: new Date("2025-06-09"),
                         id: "1",
                     },
+                    {
+                        title: "BitLife",
+                        description: "BitLife is a text-based game that lets you control a virtual character's life from birth to death. You can make choices that influence your career, relationships, education, crime, health, and more.",
+                        photo: "/games/static/bitlife/logo.png",
+                        link: "/games/static/bitlife/index.html",
+                        download: "/games/static/bitlife/bitlife.zip",
+                        date: new Date("2025-6-11"),
+                        id: "2",
+                    },
                 ],
+                minecraft: {
+                    versions: [
+                        {
+                            title: "Early Betas",
+                            vers: [
+                                {
+                                    name: "1.3 Beta 1",
+                                    link: "/eaglercraft/1.3/1.3b01.html",
+                                },
+                            ],
+                        },
+                        {
+                            title: "Eaglercraft (1.5.x)",
+                            vers: [
+                                {
+                                    name: "1.5.2 Service Pack 1",
+                                    link: "/eaglercraft/1.5.2/1.5.2_SP1.html",
+                                },
+                                {
+                                    name: "1.5.2 CoderCraft",
+                                    link: "/eaglercraft/1.5.2/1.5.2CoderCraft.html",
+                                },
+                                {
+                                    name: "1.5.2 FuchsiaX",
+                                    link: "/eaglercraft/1.5.2/1.5.2FuchsiaX.html",
+                                },
+                                {
+                                    name: "1.5.2 Kerosene",
+                                    link: "/eaglercraft/1.5.2/1.5.2Kerosene.html",
+                                },
+                                {
+                                    name: "1.5.2 Nit Client 1.1",
+                                    link: "/eaglercraft/1.5.2/1.5.2NitClient1.1.html",
+                                },
+                                {
+                                    name: "1.5.2 Nova Client",
+                                    link: "/eaglercraft/1.5.2/1.5.2NovaClient.html",
+                                },
+                                {
+                                    name: "1.5.2 OddFuture Client",
+                                    link: "/eaglercraft/1.5.2/1.5.2OddFutureClient.html",
+                                },
+                                {
+                                    name: "1.5.2 Precision Client 0.1.8.4 Beta",
+                                    link: "/eaglercraft/1.5.2/1.5.2PrecisionClientb0.1.8.4.html",
+                                },
+                            ],
+                        },
+                        {
+                            title: "EaglercraftX (1.8.x)",
+                            vers: [
+                                {
+                                    name: "1.8.8 Eagler Reborn 1.1 Beta",
+                                    link: "/eaglercraft/1.8.8/1.8.8EaglerRebornb1.1.html",
+                                },
+                                {
+                                    name: "1.8.8 Shadow Client 3.0",
+                                    link: "/eaglercraft/1.8.8/1.8.8ShadowClient3.0.html",
+                                },
+                                {
+                                    name: "1.8.8 u15 Pi Client",
+                                    link: "/eaglercraft/1.8.8/1.8.8u15PiClient.html",
+                                },
+                                {
+                                    name: "1.8.8 u18",
+                                    link: "/eaglercraft/1.8.8/1.8.8u18.html",
+                                },
+                                {
+                                    name: "1.8.8 u18 DragonX Lite",
+                                    link: "/eaglercraft/1.8.8/1.8.8u18DragonXLite.html",
+                                },
+                                {
+                                    name: "1.8.8 u18 Nebula",
+                                    link: "/eaglercraft/1.8.8/1.8.8u18Nebula.html",
+                                },
+                                {
+                                    name: "1.8.8 u22",
+                                    link: "/eaglercraft/1.8.8/1.8.8u22.htm",
+                                },
+                                {
+                                    name: "1.8.8 u23",
+                                    link: "/eaglercraft/1.8.8/1.8.8u23.htm",
+                                },
+                                {
+                                    name: "1.8.8 u27",
+                                    link: "/eaglercraft/1.8.8/1.8.8u27.htm",
+                                },
+                                {
+                                    name: "1.8.8 u29",
+                                    link: "/eaglercraft/1.8.8/1.8.8u29.htm",
+                                },
+                                {
+                                    name: "1.8.8 u30",
+                                    link: "/eaglercraft/1.8.8/1.8.8u30.htm",
+                                },
+                                {
+                                    name: "1.8.8 u31",
+                                    link: "/eaglercraft/1.8.8/1.8.8u31.htm",
+                                },
+                                {
+                                    name: "1.8.8 u32",
+                                    link: "/eaglercraft/1.8.8/1.8.8u32.htm",
+                                },
+                                {
+                                    name: "1.8.8 u33",
+                                    link: "/eaglercraft/1.8.8/1.8.8u33.htm",
+                                },
+                                {
+                                    name: "1.8.8 u34",
+                                    link: "/eaglercraft/1.8.8/1.8.8u34.htm",
+                                },
+                                {
+                                    name: "1.8.8 u35",
+                                    link: "/eaglercraft/1.8.8/1.8.8u35.htm",
+                                },
+                                {
+                                    name: "1.8.8 u39",
+                                    link: "/eaglercraft/1.8.8/1.8.8u39.html",
+                                },
+                                {
+                                    name: "1.8.8 u48",
+                                    link: "/eaglercraft/1.8.8/1.8.8u48.html",
+                                },
+                                {
+                                    name: "1.8.8 u50",
+                                    link: "/eaglercraft/1.8.8/1.8.8u50.html",
+                                },
+                                {
+                                    name: "1.8.8 u50 (EFI)",
+                                    link: "/eaglercraft/1.8.8/1.8.8u50Forge.html"
+                                }
+                            ],
+                        },
+                        {
+                            title: "EaglercraftL (1.9.x)",
+                            vers: [
+                                {
+                                    name: "1.9.4 u35",
+                                    link: "/eaglercraft/1.9.4/1.9.4u35.html",
+                                },
+                            ],
+                        },
+                    ],
+                    mods: [
+                        {
+                            name: "CustomItems",
+                            description: "Library to make adding custom items easier",
+                            link: "/eaglercraft/forgeinjector/examplemods/lib.customitems.js",
+                        },
+                        {
+                            name: "WorldEdit",
+                            description: "Easy world editing using //set and //walls",
+                            link: "/eaglercraft/forgeinjector/examplemods/Worldedit.js",
+                        },
+                    ],
+                    maps: [
+                        /*
+                        {
+                            name: "Map",
+                            description: "Description.",
+                            link: "relative/path/to/file",
+                        }
+                        */
+                    ],
+                    resourcePacks: [
+                        /*
+                        {
+                            name: "Resource / Texture Pack",
+                            size: 16,
+                            link: "relative/path/to/file",
+                        }
+                        */
+                    ],
+                },
             },
             toastContainer: "app.toastContainer",
         };
@@ -3485,6 +3570,7 @@
                             clApp.pages.show("Games", "Currently Playing");
                         }
                     });
+                    this.history.add(gid)
                 };
                 currentGameCardContainer.innerHTML = `
                     <div class="cl-game-info">
@@ -3528,6 +3614,7 @@
                             clApp.pages.resetAll();
                             gameFrame.src = "/games/game_loader.html";
                             gameFrameContainer.classList.add("hidden");
+                            this.currentGid = null;
                             clApp.pages.open("Games");
                         }
                     });
@@ -3576,7 +3663,87 @@
             },
         };
 
-        clApp.minecraft = {}
+        clApp.minecraft = {
+            versionsContainer: "app.minecraftScreen.page.versions.boxedContent.versionsContainer",
+            modsContainer: "app.minecraftScreen.page.mods.boxedContent.modsContainer",
+            worldsContainer: "app.minecraftScreen.page.worlds.boxedContent.worldsContainer",
+            resourcePacksContainer: "app.minecraftScreen.page.resourcePacks.boxedContent.resourcePacksContainer",
+            fetch() {
+                const versionsContainer = document.getElementById(this.versionsContainer);
+                const modsContainer = document.getElementById(this.modsContainer);
+                const worldsContainer = document.getElementById(this.worldsContainer);
+                const resourcePacksContainer = document.getElementById(this.resourcePacksContainer);
+
+                versionsContainer.innerHTML = clApp.config.content.minecraft.versions.map(version => {
+                    return `
+                        <div class="cl-collapsible cl-container">
+                            <input type="checkbox" class="cl-collapsible-checkbox">
+                            <div class="cl-horizontal cl-collapsible-top">
+                                <span class="material-symbols-outlined cl-collapsible-arrow">arrow_right</span>
+                                <h3>${version.title}</h3>
+                            </div>
+                            <div class="cl-container cl-collapsible-content">
+                                ${version.vers.map(ver => {
+                                    return `
+                                        <div class="cl-horizontal">
+                                            <h3>${ver.name}</h3>
+                                            <a class="cl-button" href="${ver.link}">
+                                                <span class="material-symbols-outlined">play_arrow</span>
+                                            </a>
+                                        </div>
+                                    `;
+                                }).join("")}
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+                modsContainer.innerHTML = clApp.config.content.minecraft.mods.map(mod => {
+                    return `
+                        <tr>
+                            <td>${mod.name}</td>
+                            <td>${mod.description || ""}</td>
+                            <td>
+                                <div class="cl-horizontal">
+                                    <a class="cl-button" href="${mod.link}">
+                                        <i class="material-symbols-outlined">download</i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join("");
+                worldsContainer.innerHTML = clApp.config.content.minecraft.maps.map(map => {
+                    return `
+                        <tr>
+                            <td>${map.name}</td>
+                            <td>${map.description || ""}</td>
+                            <td>
+                                <div class="cl-horizontal">
+                                    <a class="cl-button" href="${map.link}">
+                                        <i class="material-symbols-outlined">download</i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join("");
+                resourcePacksContainer.innerHTML = clApp.config.content.minecraft.resourcePacks.map(resourcePack => {
+                    return `
+                        <tr>
+                            <td>${resourcePack.name}</td>
+                            <td>${resourcePack.size}</td>
+                            <td>
+                                <div class="cl-horizontal">
+                                    <a class="cl-button" href="${resourcePack.link}">
+                                        <i class="material-symbols-outlined">download</i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join("");
+            }
+        }
 
         clApp.toast = function(icon, message) {
             const toast = document.createElement("div");
@@ -3641,6 +3808,7 @@
             clApp.settings.update(clApp.settings.get());
             clApp.supabase.init();
             clApp.games.init();
+            clApp.minecraft.fetch();
             clApp.pages.open("Home");
             if (clApp.config.parameters.mode && clApp.config.parameters.id) {
                 if (clApp.config.parameters.mode == "game")
@@ -3657,7 +3825,7 @@
             }
         };
         window.onerror = (message, src, lineno, colno, error) => {
-            clApp.toast("error", `Error: ${message} <br> at ${src}:${lineno}:${colno}`);
+            clApp.toast("error", `Error: ${message}<br>at ${src}:${lineno}:${colno}`);
         }
         window.onload = () => {
             clApp.setup();
