@@ -3683,7 +3683,7 @@
                 add(gid) {
                     const historyItems = JSON.parse(localStorage.getItem("clAppGameHistory")) || [];
                     historyItems.push({gid: gid, date: new Date().toISOString()});
-                    localStorage.setItem("clAppGameHistory", historyItems);
+                    localStorage.setItem("clAppGameHistory", JSON.stringify(historyItems));
                     this.fetch();
                 },
             },
