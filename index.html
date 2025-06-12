@@ -3635,7 +3635,7 @@
                 `;
                 const exitBtn = document.createElement("div");
                 exitBtn.classList.add("cl-card");
-                exitBtn.onclick = () => {""
+                exitBtn.onclick = () => {
                     clApp.dialog.confirm("Are you sure you want to close \"" + game.title + "\"?").then(answer => {
                         if (answer) {
                             clApp.pages.resetAll();
@@ -3657,6 +3657,7 @@
                         Close the game.
                     </div>
                 `;
+                clApp.elementUtility.removeAllChildren(currentGameActionBtnsContainer);
                 currentGameActionBtnsContainer.appendChild(resumeBtn);
                 currentGameActionBtnsContainer.appendChild(restartBtn);
                 currentGameActionBtnsContainer.appendChild(exitBtn);
