@@ -3605,7 +3605,10 @@
                 currentGameCardContainer.style.backgroundImage = game.photo || "/assets/background/game_placeholder.png";
                 const resumeBtn = document.createElement("div");
                 resumeBtn.classList.add("cl-card");
-                resumeBtn.onclick = () => clApp.pages.resetAll();
+                resumeBtn.onclick = () => {
+                    clApp.elementUtility.enterFullscreen(document.body);
+                    clApp.pages.resetAll();
+                };
                 resumeBtn.innerHTML = `
                     <div class="cl-card-top">
                         <i class="material-symbols-outlined">play_arrow</i>
