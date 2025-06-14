@@ -29,13 +29,9 @@
         }
 
         * {
-            transition: all .125s linear;
+            transition: all .125s ease-out;
             color: white;
             font-family: "Product Sans";
-        }
-
-        *.hidden {
-            display: none;
         }
 
         body {
@@ -142,9 +138,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: start;
             overflow-y: auto;
             gap: 10px;
+        }
+
+        .cl-panel .boxed-content:not(.is-centered) .cl-horizontal {
+            width: auto;
         }
 
         .cl-panel .boxed-content.is-not-centered {
@@ -492,6 +492,7 @@
         .cl-button.is-loading {
             cursor: progress;
             pointer-events: none;
+            opacity: 0.5;
             color: transparent !important;
         }
 
@@ -506,9 +507,6 @@
             border-bottom: 2px solid white;
             border-top: 2px solid white;
             animation: spin 1s linear infinite;
-            position: relative;
-            top: 0%;
-            left: -43%;
         }
 
         .cl-card {
@@ -648,6 +646,7 @@
             scrollbar-width: thin;
             display: flex;
             flex-direction: column;
+            justify-content: end;
             gap: 10px;
         }
 
@@ -1454,8 +1453,11 @@
             </ul>
             <div class="cl-input">
                 <input type="text" placeholder="Message" id="app.chat.page.withUsers.boxedContent.msgInput">
-                <button class="cl-button" id="app.chat.page.withUsers.boxedContent.sendBtn">
+                <button class="cl-button" id="app.chat.page.withUsers.boxedContent.sendBtn" disabled>
                     <span class="material-symbols-outlined">send</span>
+                </button>
+                <button class="cl-button" id="app.chat.page.withUsers.boxedContent.announceBtn" disabled>
+                    <span class="material-symbols-outlined">campaign</span>
                 </button>
             </div>
         </div>
@@ -1737,7 +1739,11 @@
                     title="100%, charging">battery_charging_full</span>
             </div>
         </div>
-        <div class="boxed-content is-not-centered hdden" id="app.account.page.accountSettings">
+        <div class="boxed-content hdden" id="app.account.page.accountSettings">
+            <button class="cl-button">
+                <span class="material-symbols-outlined">logout</span>
+                <span>Log Out</span>
+            </button>
             <img src="https://placehold.co/900x300" alt="User Banner" class="cl-banner"
                 id="app.account.page.accountSettings.userBanner">
             <div class="cl-horizontal is-centered">
@@ -1749,25 +1755,26 @@
                         id="app.account.page.accountSettings.userNameInput">
                 </div>
             </div>
+            <div class="cl-input">
+                <span class="material-symbols-outlined">image</span>
+                <span>Photo</span>
+                <input type="file" placeholder="Photo" id="app.account.page.accountSettings.userPhotoInput">
+            </div>
+            <div class="cl-input">
+                <span class="material-symbols-outlined">panorama</span>
+                <span>Banner</span>
+                <input type="file" placeholder="Banner" id="app.account.page.accountSettings.userBannerInput">
+            </div>
             <div class="cl-horizontal">
-                <div class="cl-input">
-                    <span class="material-symbols-outlined">image</span>
-                    <span>Photo</span>
-                    <input type="file" placeholder="Photo" id="app.account.page.accountSettings.userPhotoInput">
-                </div>
-                <div class="cl-input">
-                    <span class="material-symbols-outlined">panorama</span>
-                    <span>Banner</span>
-                    <input type="file" placeholder="Banner" id="app.account.page.accountSettings.userBannerInput">
-                </div>
+                
             </div>
             <div class="cl-input">
                 <span class="material-symbols-outlined">article</span>
-                <textarea rows="5" placeholder="Bio" id="app.account.page.accountSettings.userBioInput"></textarea>
+                <textarea rows="5" cols="45" placeholder="Bio" id="app.account.page.accountSettings.userBioInput"></textarea>
             </div>
             <div class="cl-input">
                 <span class="material-symbols-outlined">link</span>
-                <textarea rows="5" placeholder="List of links, each on a new line"
+                <textarea rows="5" cols="45" placeholder="List of links, each on a new line"
                     id="app.account.page.accountSettings.userLinksInput"></textarea>
             </div>
             <div class="cl-horizontal">
@@ -2047,6 +2054,7 @@
     </section>
     <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://js.puter.com/v2/"></script>
     <script>
         const clApp = {};
         clApp.config = {
@@ -2321,7 +2329,8 @@
                 {
                     title: "Chat",
                     icon: "forum",
-                    description: "Chat with other users or generative AI."
+                    description: "Chat with other users or generative AI.",
+                    requiresAccount: true,
                 },
                 {
                     title: "Videos",
@@ -2336,7 +2345,8 @@
                 {
                     title: "Account",
                     icon: "account_circle",
-                    description: "Manage your account."
+                    description: "Manage your account.",
+                    requiresAccount: true
                 },
                 {
                     title: "Content",
@@ -2347,7 +2357,8 @@
                     title: "Admin",
                     icon: "shield",
                     description: "Manage the site.",
-                    isDashboard: true
+                    isDashboard: true,
+                    requiresAccount: true,
                 },
                 {
                     title: "Settings",
@@ -2736,7 +2747,7 @@
                         },
                         {
                             name: "WorldEdit",
-                            description: "Easy world editing using //set and //walls",
+                            description: "Easy world editing using //set and //walls (requires CustomItems library)",
                             link: "/eaglercraft/forgeinjector/examplemods/Worldedit.js",
                         },
                     ],
@@ -3057,7 +3068,20 @@
                         </div>
                     `;
                     card.onclick = () => {
-                        clApp.pages.open(page.title);
+                        if (page.requiresAccount) {
+                            clApp.pages.open("Loader");
+                            clApp.supabase.getUserProfile().then(profile => {
+                                if (profile) {
+                                    if (page.isDashboard) {
+                                        if (profile.is_admin) clApp.pages.open(page.title);
+                                        else {
+                                            clApp.toast("error", "You do not have permission to perform this action.");
+                                            clApp.pages.open("Home");
+                                        }
+                                    } else clApp.pages.open(page.title);
+                                } else clApp.pages.open("Auth");
+                            });
+                        } else clApp.pages.open(page.title);
                     };
                     containerElement.appendChild(card);
                 });
@@ -3246,6 +3270,13 @@
                 }
                 this.client = supabase.createClient(this.url, this.key);
                 clApp.toast("info", "Supabase client initialized successfully.");
+                this.getUserProfile().then(user => {
+                    if (user) {
+                        clApp.toast("person", "Now signed in as " + user.display_name);
+                    } else {
+                        clApp.toast("info", "Not signed in.");
+                    }
+                });
             },
             async getUser() {
                 if (!this.client) {
@@ -3383,7 +3414,59 @@
                     return null;
                 }
                 return data;
-            }
+            },
+            async getChatMessages() {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return [];
+                }
+                const { data, error } = await this.client.from("main_chat").select();
+                if (error) {
+                    clApp.toast("error", `Error getting chat messages: ${error.message}`);
+                    return [];
+                }
+                return data;
+            },
+            async sendChatMessage(message, isAnnouncement) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                const user = await this.getUserProfile();
+                if (!user) {
+                    clApp.toast("error", "No user is signed in.");
+                    return;
+                } else if (user && isAnnouncement && !user.is_admin) {
+                    clApp.toast("error", "You do not have permission to send announcements.");
+                    return;
+                }
+                const { data, error } = await this.client.from("main_chat").insert({
+                    username: isAnnouncement ? "" : user.display_name,
+                    content: message,
+                    is_announcement: isAnnouncement,
+                });
+                if (error) {
+                    clApp.toast("error", `Error sending chat message: ${error.message}`);
+                    return;
+                }
+            },
+            subscribe() {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                this.client.channel("main")
+                    .on("postgres_changes", { event: "INSERT", schema: "public", table: "main_chat" }, (payload) => {
+                        if (payload.new.is_announcement) {
+                            clApp.toast("campaign", payload.new.content);
+                        }
+                        clApp.chat.addUserMessage(payload.new.username, payload.new.content, payload.new.is_announcement);
+                    })
+                    .on("postgres_changes", { event: "INSERT", schema: "public", table: "videos"}, (payload) => {
+                        clApp.toast("video_library", payload.new.title);
+                    })
+                    .subscribe();
+            },
         };
 
         clApp.games = {
@@ -3645,6 +3728,7 @@
                             gameFrameContainer.classList.add("hidden");
                             this.currentGid = null;
                             clApp.pages.open("Games");
+                            clApp.pages.hide("Games", "Currently Playing")
                         }
                     });
                 }
@@ -3775,6 +3859,157 @@
             }
         }
 
+        clApp.auth = {
+            emailInput: "app.authScreen.page.emailInput",
+            passwordInput: "app.authScreen.page.passwordInput",
+            confirmPasswordInput: "app.authScreen.page.confirmPasswordInput",
+            SIBtn: "app.authScreen.page.SIBtn",
+            SUBtn: "app.authScreen.page.SUBtn",
+            continueAsGuestBtn: "app.authScreen.page.continueAsGuestBtn",
+            init() {
+                const emailInput = document.getElementById(this.emailInput);
+                const passwordInput = document.getElementById(this.passwordInput);
+                const confirmPasswordInput = document.getElementById(this.confirmPasswordInput);
+                const SIBtn = document.getElementById(this.SIBtn);
+                const SUBtn = document.getElementById(this.SUBtn);
+                const continueAsGuestBtn = document.getElementById(this.continueAsGuestBtn);
+
+                SIBtn.onclick = () => {
+                    SIBtn.classList.add("is-loading");
+                    clApp.supabase.signIn(emailInput.value, passwordInput.value).then(user => {
+                        SIBtn.classList.remove("is-loading");
+                        // The sign in was successful!
+                        emailInput.value = "";
+                        passwordInput.value = "";
+                        confirmPasswordInput.value = "";
+                        clApp.toast("person", "Now logged in as " + user.email);
+                        clApp.pages.open("Home");
+                    });
+                }
+                SUBtn.onclick = () => {
+                    if (confirmPasswordInput.value != passwordInput.value) {
+                        clApp.toast("error", "Passwords do not match");
+                        return;
+                    }
+                    SUBtn.classList.add("is-loading");
+                    clApp.supabase.signUp(emailInput.value, passwordInput.value).then(user => {
+                        SUBtn.classList.remove("is-loading");
+                        // The sign up was successful!
+                        emailInput.value = "";
+                        passwordInput.value = "";
+                        confirmPasswordInput.value = "";
+                        clApp.toast("person", "Now logged in as " + user.email);
+                        clApp.pages.open("Home");
+                    });
+                }
+                continueAsGuestBtn.onclick = () => {
+                    clApp.pages.open("Home");
+                }
+            },
+        }
+
+        clApp.chat = {
+            userMessagesContainer: "app.chat.page.withUsers.boxedContent.messagesContainer",
+            userMessageInput: "app.chat.page.withUsers.boxedContent.msgInput",
+            userMessageSendBtn: "app.chat.page.withUsers.boxedContent.sendBtn",
+            userMessageAnnounceBtn: "app.chat.page.withUsers.boxedContent.announceBtn",
+            aiMessagesContainer: "app.chat.page.ai.boxedContent.messagesContainer",
+            aiMessageInput: "app.chat.page.ai.boxedContent.msgInput",
+            aiMessageSendBtn: "app.chat.page.ai.boxedContent.sendBtn",
+            aiMessages: [],
+            init() {
+                const userMessagesContainer = document.getElementById(this.userMessagesContainer);
+                const userMessageInput = document.getElementById(this.userMessageInput);
+                const userMessageSendBtn = document.getElementById(this.userMessageSendBtn);
+                const userMessageAnnounceBtn = document.getElementById(this.userMessageAnnounceBtn);
+                const aiMessagesContainer = document.getElementById(this.aiMessagesContainer);
+                const aiMessageInput = document.getElementById(this.aiMessageInput);
+                const aiMessageSendBtn = document.getElementById(this.aiMessageSendBtn);
+
+                clApp.elementUtility.removeAllChildren(userMessagesContainer);
+                clApp.elementUtility.removeAllChildren(aiMessagesContainer);
+                userMessageSendBtn.onclick = () => {
+                    userMessageSendBtn.disabled = true;
+                    userMessageAnnounceBtn.disabled = true;
+                    if (userMessageInput.value.trim() === "") {
+                        clApp.toast("error", "Please enter a message");
+                        return;
+                    }
+                    clApp.supabase.sendChatMessage(userMessageInput.value.trim(), false).then(() => {
+                        userMessageInput.value = "";
+                        userMessageSendBtn.disabled = false;
+                        userMessageAnnounceBtn.disabled = false;
+                    });
+                }
+                userMessageAnnounceBtn.onclick = () => {
+                    userMessageSendBtn.disabled = true;
+                    userMessageAnnounceBtn.disabled = true;
+                    if (userMessageInput.value.trim() === "") {
+                        clApp.toast("error", "Please enter a message");
+                        return;
+                    }
+                    clApp.supabase.sendChatMessage(userMessageInput.value.trim(), true).then(() => {
+                        userMessageInput.value = "";
+                        userMessageSendBtn.disabled = false;
+                        userMessageAnnounceBtn.disabled = false;
+                    });
+                }
+                userMessageInput.onkeydown = (e) => {
+                    if (e.key === "Enter" && !e.shiftKey) userMessageSendBtn.click();
+                    else if (e.key === "Enter" && e.shiftKey) userMessageAnnounceBtn.click();
+                }
+                aiMessageSendBtn.onclick = () => {
+                    const message = aiMessageInput.value.trim();
+                    if (message) {
+                        aiMessageSendBtn.disabled = true;
+                        this.addAIMessage(message, true);
+                        aiMessageInput.value = "";
+                        this.aiMessages.push({
+                            content: message,
+                            role: "user",
+                        });
+                        puter.ai.chat(this.aiMessages).then(res => {
+                            this.addAIMessage(res, false);
+                            this.aiMessages.push(res.message);
+                            aiMessageSendBtn.disabled = false;
+                        }).catch(err => {
+                            clApp.toast("error", "AI response error: " + err);
+                            aiMessageSendBtn.disabled = false;
+                        });
+                    }
+                }
+                aiMessageInput.onkeydown = (e) => {
+                    if (e.key === "Enter") aiMessageSendBtn.click();
+                }
+            
+                clApp.supabase.getChatMessages().then(res => {
+                    res.forEach(msg => {
+                        this.addUserMessage(msg.username, msg.content, msg.is_announcement);
+                    });
+                    userMessageSendBtn.disabled = false;
+                    userMessageAnnounceBtn.disabled = false;
+                });
+            },
+            addUserMessage(username, message, isAnnouncement) {
+                const userMessagesContainer = document.getElementById(this.userMessagesContainer);
+                userMessagesContainer.innerHTML += `
+                    <li>
+                        <a href="#">${username}</a>
+                        <p${isAnnouncement ? ` class="warning"` : ""}>${message}</p>
+                    </li>
+                `;
+            },
+            addAIMessage(message, isUser) {
+                const aiMessagesContainer = document.getElementById(this.aiMessagesContainer);
+                aiMessagesContainer.innerHTML += `
+                    <li>
+                        <a href="#">${isUser ? `User` : `AI`}</a>
+                        <p>${message}</p>
+                    </li>
+                `;
+            },
+        }
+
         clApp.toast = function(icon, message) {
             const toast = document.createElement("div");
             toast.classList.add("cl-button");
@@ -3839,6 +4074,9 @@
             clApp.supabase.init();
             clApp.games.init();
             clApp.minecraft.fetch();
+            clApp.auth.init();
+            clApp.chat.init();
+            clApp.supabase.subscribe();
             clApp.pages.open("Home");
             if (clApp.config.parameters.mode && clApp.config.parameters.id) {
                 if (clApp.config.parameters.mode == "game")
