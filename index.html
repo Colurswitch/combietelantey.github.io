@@ -8,6 +8,7 @@
     <link href="https://fonts.cdnfonts.com/css/product-sans" rel="stylesheet">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link rel="stylesheet" href="/google-spinner.min.css">
     <style id="app.settingsStyles">
         :root {
@@ -26,6 +27,8 @@
             --cl-info-color: rgba(0, 0, 255, 0.5);
             --cl-warn-color: rgba(255, 255, 0, 0.5);
             --cl-err-color: rgba(255, 0, 0, 0.5);
+
+            --plyr-color-main: #df0000;
         }
 
         * {
@@ -112,7 +115,7 @@
         }
 
         .cl-panel *:is(.content, .boxed-content) *:is(h1, h2, h3, h4, h5, h6, p, caption, blockquote) {
-            margin: 0
+            margin: 0;
         }
 
         .cl-panel .content {
@@ -642,26 +645,25 @@
             padding: 10px;
             margin: 0;
             height: calc(100% - 75px);
-            overflow-y: auto;
+            overflow-y: scroll;
             scrollbar-width: thin;
             display: flex;
             flex-direction: column;
-            justify-content: end;
             gap: 10px;
         }
 
-        .cl-chat-message-container>li {
+        .cl-chat-message-container>div {
             background-color: var(--cl-topbar-color);
             border-radius: var(--cl-border-radius);
             padding: 10px;
         }
 
-        .cl-chat-message-container>li>a {
+        .cl-chat-message-container>div>a {
             font-weight: bold;
             text-decoration: none;
         }
 
-        .cl-chat-message-container.unlinkable>li>a {
+        .cl-chat-message-container.unlinkable>div>a {
             pointer-events: none;
         }
 
@@ -693,7 +695,7 @@
         }
 
         .cl-video *:is(h3, h4, small) {
-            margin: 8px;
+            margin: 8px !important;
         }
 
         .cl-user {
@@ -951,6 +953,11 @@
                 --cl-topbar-color: rgba(255, 255, 255, 0.5);
                 --cl-inverted-topbar-color: rgba(0, 0, 0, 0.5);
             }
+        }
+
+        fullscreen video {
+            width: 100%;
+            height: 100vh;
         }
     </style>
 </head>
@@ -1429,7 +1436,7 @@
             </div>
         </div>
         <div class="boxed-content is-not-centered hidden" id="app.chat.page.withUsers.boxedContent">
-            <ul class="cl-chat-message-container" id="app.chat.page.withUsers.boxedContent.messagesContainer">
+            <div class="cl-chat-message-container" id="app.chat.page.withUsers.boxedContent.messagesContainer">
                 <li>
                     <a href="#">User</a>
                     <p>Message Text</p>
@@ -1450,7 +1457,7 @@
                     <a href="#">User</a>
                     <p>Message Text</p>
                 </li>
-            </ul>
+            </div>
             <div class="cl-input">
                 <input type="text" placeholder="Message" id="app.chat.page.withUsers.boxedContent.msgInput">
                 <button class="cl-button" id="app.chat.page.withUsers.boxedContent.sendBtn" disabled>
@@ -1462,7 +1469,7 @@
             </div>
         </div>
         <div class="boxed-content is-not-centered hidden" id="app.chat.page.ai.boxedContent">
-            <ul class="cl-chat-message-container" id="app.chat.page.ai.boxedContent.messagesContainer">
+            <div class="cl-chat-message-container" id="app.chat.page.ai.boxedContent.messagesContainer">
                 <li>
                     <p>You</p>
                     <p>Message Text</p>
@@ -1471,9 +1478,9 @@
                     <a>AI</a>
                     <p>Message Text</p>
                 </li>
-            </ul>
+            </div>
             <div class="cl-input">
-                <input type="text" placeholder="Message" id="app.chat.page.ai.boxedContent.msgInput">
+                <input type="text" placeholder="Note: AI chat requires a Puter account." id="app.chat.page.ai.boxedContent.msgInput">
                 <button class="cl-button" id="app.chat.page.ai.boxedContent.sendBtn">
                     <span class="material-symbols-outlined">send</span>
                 </button>
@@ -1492,6 +1499,9 @@
                 </button>
                 <button class="cl-button" title="History" id="app.videos.page.history.btn">
                     <span class="material-symbols-outlined">history</span>
+                </button>
+                <button class="cl-button" title="Currently Playing" id="app.videos.page.currentlyPlaying.btn">
+                    <span class="material-symbols-outlined">play_arrow</span>
                 </button>
             </div>
             <div class="topbar-right">
@@ -1513,10 +1523,6 @@
                         <option value="most-oldest">Oldest</option>
                         <option value="a-to-z">Name (ascending)</option>
                         <option value="z-to-a">Name (descending)</option>
-                        <option value="most-viewed">Views
-                            (descending)</option>
-                        <option value="least-viewed">Views
-                            (ascending)</option>
                     </select>
                 </div>
             </div>
@@ -1537,6 +1543,78 @@
                     <small>01-01-2025</small>
                     <h4>Video Author</h4>
                 </a>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered hidden" id="app.videos.page.currentlyPlaying">
+            <h1 id="app.video.page.info.title">Video Title</h1>
+            <small id="app.video.page.info.status">Date | Views</small>
+            <div class="cl-horizontal">
+                <button class="cl-button" id="app.video.page.info.closeBtn">
+                    <span class="material-symbols-outlined">close</span>
+                    <span>Close</span>
+                </button>
+                <button class="cl-button" id="app.video.page.info.resumeBtn">
+                    <span class="material-symbols-outlined">play_arrow</span>
+                    <span>Resume</span>
+                </button>
+            </div>
+            <p id="app.video.page.info.description" class="cl-paragraph">
+                Video description...
+            </p>
+            <div class="cl-input">
+                <textarea rows="4" placeholder="Commenting as User"
+                    id="app.video.page.comments.commentInput"></textarea>
+            </div>
+            <div class="cl-horizontal">
+                <button class="cl-button" id="app.video.page.comments.sendBtn">
+                    <span class="material-symbols-outlined">send</span>
+                    <span>Submit</span>
+                </button>
+            </div>
+            <h1 id="app.video.page.comments.amountText">Comments (0)</h1>
+            <div class="cl-container" id="app.video.page.comments.commentsContainer">
+                <div class="cl-comment">
+                    <img src="https://placehold.co/512" alt="User Photo" class="cl-user-photo">
+                    <div class="cl-container">
+                        <h3>User Name <small>Date</small></h3>
+                        <p>Comment content...</p>
+                        <div class="cl-horizontal">
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined">reply</span>
+                            </button>
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined">edit</span>
+                            </button>
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                        <div class="cl-collapsible cl-container">
+                            <input type="checkbox" class="cl-collapsible-checkbox">
+                            <div class="cl-horizontal cl-collapsible-top">
+                                <span class="material-symbols-outlined cl-collapsible-arrow">arrow_right</span>
+                                <h3>Replies (0)</h3>
+                            </div>
+                            <div class="cl-container cl-collapsible-content">
+                                <div class="cl-comment">
+                                    <img src="https://placehold.co/512" alt="User Photo" class="cl-user-photo">
+                                    <div class="cl-container">
+                                        <h3>User Name <small>Date</small></h3>
+                                        <p>Comment content...</p>
+                                        <div class="cl-horizontal">
+                                            <button class="cl-button">
+                                                <span class="material-symbols-outlined">edit</span>
+                                            </button>
+                                            <button class="cl-button">
+                                                <span class="material-symbols-outlined">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1580,6 +1658,77 @@
             <p id="app.video.page.info.description">
                 Video description...
             </p>
+            <div class="cl-input">
+                <textarea rows="4" placeholder="Commenting as User"
+                    id="app.video.page.comments.commentInput"></textarea>
+            </div>
+            <div class="cl-horizontal">
+                <button class="cl-button" id="app.video.page.comments.sendBtn">
+                    <span class="material-symbols-outlined">send</span>
+                    <span>Submit</span>
+                </button>
+            </div>
+            <h1 id="app.video.page.comments.amountText">Comments (0)</h1>
+            <div class="cl-container" id="app.video.page.comments.commentsContainer">
+                <div class="cl-comment">
+                    <img src="https://placehold.co/512" alt="User Photo" class="cl-user-photo">
+                    <div class="cl-container">
+                        <h3>User Name <small>Date</small></h3>
+                        <p>Comment content...</p>
+                        <div class="cl-horizontal">
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined">reply</span>
+                            </button>
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined no-fill">thumb_up</span>
+                                <span>0</span>
+                            </button>
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined no-fill">thumb_down</span>
+                                <span>0</span>
+                            </button>
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined">edit</span>
+                            </button>
+                            <button class="cl-button">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                        <div class="cl-collapsible cl-container">
+                            <input type="checkbox" class="cl-collapsible-checkbox">
+                            <div class="cl-horizontal cl-collapsible-top">
+                                <span class="material-symbols-outlined cl-collapsible-arrow">arrow_right</span>
+                                <h3>Replies (0)</h3>
+                            </div>
+                            <div class="cl-container cl-collapsible-content">
+                                <div class="cl-comment">
+                                    <img src="https://placehold.co/512" alt="User Photo" class="cl-user-photo">
+                                    <div class="cl-container">
+                                        <h3>User Name <small>Date</small></h3>
+                                        <p>Comment content...</p>
+                                        <div class="cl-horizontal">
+                                            <button class="cl-button">
+                                                <span class="material-symbols-outlined no-fill">thumb_up</span>
+                                                <span>0</span>
+                                            </button>
+                                            <button class="cl-button">
+                                                <span class="material-symbols-outlined no-fill">thumb_down</span>
+                                                <span>0</span>
+                                            </button>
+                                            <button class="cl-button">
+                                                <span class="material-symbols-outlined">edit</span>
+                                            </button>
+                                            <button class="cl-button">
+                                                <span class="material-symbols-outlined">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="boxed-content is-not-centered hdden" id="app.video.page.comments">
             <div class="cl-input">
@@ -2055,6 +2204,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://js.puter.com/v2/"></script>
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script>
         const clApp = {};
         clApp.config = {
@@ -2480,23 +2630,12 @@
                             id: "app.videos.page.history",
                             btn: "app.videos.page.history.btn",
                         },
+                        {
+                            name: "Currently Playing",
+                            id: "app.videos.page.currentlyPlaying",
+                            btn: "app.videos.page.currentlyPlaying.btn",
+                        },
                     ]
-                },
-                {
-                    name: "Video",
-                    id: "app.video.page",
-                    subpages: [
-                        {
-                            name: "Info",
-                            id: "app.video.page.info",
-                            btn: "app.video.page.info.btn",
-                        },
-                        {
-                            name: "Comments",
-                            id: "app.video.page.comments",
-                            btn: "app.video.page.comments.btn",
-                        },
-                    ],
                 },
                 {
                     name: "Users",
@@ -3467,6 +3606,55 @@
                     })
                     .subscribe();
             },
+            async getVideos() {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return [];
+                }
+                const { data, error } = await this.client.from("videos").select("*, creator(*)");
+                if (error) {
+                    clApp.toast("error", `Error getting videos: ${error.message}`);
+                    return [];
+                }
+                return data;
+            },
+            async getVideo(videoId) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return null;
+                }
+                const { data, error } = await this.client.from("videos").select(`
+                    *(*)
+                `).eq("id", videoId);
+                if (error) {
+                    clApp.toast("error", `Error getting video data: ${error.message}`);
+                    return null;
+                }
+                return data;
+            },
+            async getCommentsByVideo(videoId) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return [];
+                }
+                const { data, error } = await this.client.from("video_comments").select(`
+                    *, author(*)
+                `).eq("video", videoId);
+            },
+            async getRepliesByComment(commentId) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return [];
+                }
+                const { data, error } = await this.client.from("video_comments").select(`
+                    *, author(*)
+                `).eq("parent", commentId);
+                if (error) {
+                    clApp.toast("error", `Error getting comments: ${error.message}`);
+                    return [];
+                }
+                return data;
+            },
         };
 
         clApp.games = {
@@ -3511,20 +3699,20 @@
                 searchInput.oninput = () => {
                     const query = searchInput.value.toLowerCase();
                     const sortBy = searchSortSelect.value;
-                    this.searchGames(query, sortBy);
+                    this.search(query, sortBy);
                 };
                 searchSortSelect.onchange = () => {
                     const query = searchInput.value.toLowerCase();
                     const sortBy = searchSortSelect.value;
-                    this.searchGames(query, sortBy);
+                    this.search(query, sortBy);
                 };
                 // Initial search with empty query
-                clApp.games.searchGames("", searchSortSelect.value);
+                clApp.games.search("", searchSortSelect.value);
                 // Load saved games
                 this.fetchSavedGames();
                 this.history.fetch();
             },
-            searchGames(query, sortBy) {
+            search(query, sortBy) {
                 // sortBy can be "a-to-z", "z-to-a", "newest", "oldest"
                 const searchResultsContainer = document.getElementById(this.searchResultsContainer);
                 clApp.elementUtility.removeAllChildren(searchResultsContainer);
@@ -3661,7 +3849,6 @@
                 clApp.pages.resetAll();
                 clApp.pages.show("Games", "Currently Playing");
                 const gameFrameContainer = document.getElementById(this.gameFrameContainer);
-                /** @type {HTMLIFrameElement} */
                 const gameFrame = document.getElementById(this.gameFrame);
                 const currentGameCardContainer = document.getElementById(this.currentGameCardContainer);
                 const currentGameActionBtnsContainer = document.getElementById(this.currentGameActionBtnsContainer);
@@ -3704,7 +3891,6 @@
                 const restartBtn = document.createElement("div");
                 restartBtn.classList.add("cl-card");
                 restartBtn.onclick = () => {
-                    clApp.pages.resetAll();
                     gameFrame.contentWindow.location.reload();
                 }
                 restartBtn.innerHTML = `
@@ -3750,6 +3936,7 @@
                 historyContainer: "app.gamesScreen.page.history.boxedContent.gamesContainer",
                 fetch() {
                     const historyContainer = document.getElementById(this.historyContainer);
+                    clApp.elementUtility.removeAllChildren(historyContainer);
                     var historyItems = JSON.parse(localStorage.getItem("clAppGameHistory")) || [];
                     historyItems = historyItems.sort((a, b) => new Date(b.date) - new Date(a.date));
                     historyItems.forEach(item => {
@@ -3759,10 +3946,10 @@
                         card.innerHTML = `
                             <div class="cl-game-info">
                                 <h1>${game.title}</h1>
-                                <p>${item.date}</p>
+                                <p>${new Intl.DateTimeFormat("en-US", { timeStyle: "short", dateStyle: "short" }).format(new Date(item.date))}</p>
                             </div>
                         `;
-                        card.onclick = () => this.open(game.id);
+                        card.onclick = () => clApp.games.open(game.id);
                         card.style.backgroundImage = `url(${game.photo || "/assets/background/game_placeholder.png"})`;
                         historyContainer.appendChild(card);
                     });
@@ -3958,6 +4145,7 @@
                     if (e.key === "Enter" && !e.shiftKey) userMessageSendBtn.click();
                     else if (e.key === "Enter" && e.shiftKey) userMessageAnnounceBtn.click();
                 }
+                userMessageInput.onclick = () => userMessagesContainer.scrollTop = userMessagesContainer.scrollHeight;
                 aiMessageSendBtn.onclick = () => {
                     const message = aiMessageInput.value.trim();
                     if (message) {
@@ -3981,6 +4169,7 @@
                 aiMessageInput.onkeydown = (e) => {
                     if (e.key === "Enter") aiMessageSendBtn.click();
                 }
+                aiMessageInput.onclick = () => aiMessagesContainer.scrollTop = aiMessagesContainer.scrollHeight;
             
                 clApp.supabase.getChatMessages().then(res => {
                     res.forEach(msg => {
@@ -3993,20 +4182,213 @@
             addUserMessage(username, message, isAnnouncement) {
                 const userMessagesContainer = document.getElementById(this.userMessagesContainer);
                 userMessagesContainer.innerHTML += `
-                    <li>
+                    <div>
                         <a href="#">${username}</a>
                         <p${isAnnouncement ? ` class="warning"` : ""}>${message}</p>
-                    </li>
+                    </div>
                 `;
+                userMessagesContainer.scrollTop = userMessagesContainer.scrollHeight;
             },
             addAIMessage(message, isUser) {
                 const aiMessagesContainer = document.getElementById(this.aiMessagesContainer);
                 aiMessagesContainer.innerHTML += `
-                    <li>
+                    <div>
                         <a href="#">${isUser ? `User` : `AI`}</a>
                         <p>${message}</p>
-                    </li>
+                    </div>
                 `;
+                aiMessagesContainer.scrollTop = aiMessagesContainer.scrollHeight;
+            },
+        }
+
+        clApp.videos = {
+            searchInput: "app.videos.page.allVideos.searchInput",
+            searchSortSelect: "app.videos.page.allVideos.sortSelect",
+            searchResultsContainer: "app.videos.page.allVideos.list",
+            videoPlayerPage: "app.videoPlayer.page",
+            videoPlayer: "app.videoPlayer.page.video",
+            videoTitle: "app.video.page.info.title",
+            videoStatus: "app.video.page.info.status",
+            videoCloseBtn: "app.video.page.info.closeBtn",
+            videoResumeBtn: "app.video.page.info.resumeBtn",
+            videos: [],
+            currentVideo: null,
+            init() {
+                clApp.supabase.getVideos().then(res => {
+                    this.videos = res;
+                    const searchInput = document.getElementById(clApp.videos.searchInput);
+                    const searchSortSelect = document.getElementById(clApp.videos.searchSortSelect);
+                    const searchResultsContainer = document.getElementById(clApp.videos.searchResultsContainer);
+                    searchInput.oninput = () => {
+                        const query = searchInput.value.toLowerCase();
+                        const sortBy = searchSortSelect.value;
+                        this.search(query, sortBy);
+                    }
+                    searchSortSelect.onchange = () => {
+                        const query = searchInput.value.toLowerCase();
+                        const sortBy = searchSortSelect.value;
+                        this.search(query, sortBy);
+                    }
+                    this.search("", "newest");
+                    this.history.fetch();
+                });
+            },
+            search(query, sortBy) {
+                // sortBy can be "newest", "oldest", "a-to-z" or "z-to-a"
+                const searchInput = document.getElementById(clApp.videos.searchInput);
+                const searchSortSelect = document.getElementById(clApp.videos.searchSortSelect);
+                const searchResultsContainer = document.getElementById(clApp.videos.searchResultsContainer);
+                const videos = this.videos.filter(v => v.title.toLowerCase().includes(query));
+                if (sortBy === "newest") {
+                    videos.sort((a, b) => b.created_at - a.created_at);
+                } else if (sortBy === "oldest") {
+                    videos.sort((a, b) => a.created_at - b.created_at);
+                } else if (sortBy === "a-to-z") {
+                    videos.sort((a, b) => a.title.localeCompare(b.title));
+                } else if (sortBy === "z-to-a") {
+                    videos.sort((a, b) => b.title.localeCompare(a.title));
+                }
+                if (videos.length === 0) {
+                    searchResultsContainer.innerHTML = `<p>No videos found.</p>`;
+                    return;
+                }
+                searchResultsContainer.innerHTML = "";
+                videos.forEach(video => {
+                    const videoElement = document.createElement("div");
+                    videoElement.classList.add("cl-video");
+                    videoElement.innerHTML = `
+                        <img src="${video.thumbnail || "https://placehold.co/1600x900?text=No+Image"}" alt="${video.title}" class="cl-video-thumbnail">
+                        <h3>${video.title}</h3>
+                        <h4>${video.creator.display_name} | ${new Intl.DateTimeFormat("en-US", { timeStyle: "short", dateStyle: "short" }).format(new Date(video.created_at))}</h4>
+                    `;
+                    videoElement.onclick = () => this.play(video.id);
+                    searchResultsContainer.appendChild(videoElement);
+                })
+            },
+            play(id) {
+                const video = this.videos.find(v => v.id === id);
+                if (!video) {
+                    clApp.toast("error", "Video not found.")
+                }
+                this.currentVideo = id;
+                clApp.pages.resetAll();
+                const videoPlayerPage = document.getElementById(this.videoPlayerPage);
+                const videoPlayer = document.getElementById(this.videoPlayer);
+                videoPlayerPage.classList.remove("hidden");
+                videoPlayer.src = video.video;
+                const player = new Plyr(videoPlayer, {
+                    title: video.title,
+                    controls: `
+                        <h1>${video.title}</h1>
+                        <button class="cl-button" onclick="clApp.pages.open('Videos', 'Currently Playing');">
+                            <span class="material-symbols-outlined">menu</span>
+                        </button>
+                        <div class="plyr__controls">
+                            <button type="button" class="plyr__control" data-plyr="restart">
+                                <svg role="presentation"><use xlink:href="#plyr-restart"></use></svg>
+                                <span class="plyr__tooltip" role="tooltip">Restart</span>
+                            </button>
+                            <button type="button" class="plyr__control" data-plyr="rewind">
+                                <svg role="presentation"><use xlink:href="#plyr-rewind"></use></svg>
+                                <span class="plyr__tooltip" role="tooltip">Rewind {seektime} secs</span>
+                            </button>
+                            <button type="button" class="plyr__control" aria-label="Play, {title}" data-plyr="play">
+                                <svg class="icon--pressed" role="presentation"><use xlink:href="#plyr-pause"></use></svg>
+                                <svg class="icon--not-pressed" role="presentation"><use xlink:href="#plyr-play"></use></svg>
+                                <span class="label--pressed plyr__tooltip" role="tooltip">Pause</span>
+                                <span class="label--not-pressed plyr__tooltip" role="tooltip">Play</span>
+                            </button>
+                            <button type="button" class="plyr__control" data-plyr="fast-forward">
+                                <svg role="presentation"><use xlink:href="#plyr-fast-forward"></use></svg>
+                                <span class="plyr__tooltip" role="tooltip">Forward {seektime} secs</span>
+                            </button>
+                            <div class="plyr__progress">
+                                <input data-plyr="seek" type="range" min="0" max="100" step="0.01" value="0" aria-label="Seek">
+                                <progress class="plyr__progress__buffer" min="0" max="100" value="0">% buffered</progress>
+                                <span role="tooltip" class="plyr__tooltip">00:00</span>
+                            </div>
+                            <div class="plyr__time plyr__time--current" aria-label="Current time">00:00</div>
+                            <div class="plyr__time plyr__time--duration" aria-label="Duration">00:00</div>
+                            <button type="button" class="plyr__control" aria-label="Mute" data-plyr="mute">
+                                <svg class="icon--pressed" role="presentation"><use xlink:href="#plyr-muted"></use></svg>
+                                <svg class="icon--not-pressed" role="presentation"><use xlink:href="#plyr-volume"></use></svg>
+                                <span class="label--pressed plyr__tooltip" role="tooltip">Unmute</span>
+                                <span class="label--not-pressed plyr__tooltip" role="tooltip">Mute</span>
+                            </button>
+                            <div class="plyr__volume">
+                                <input data-plyr="volume" type="range" min="0" max="1" step="0.05" value="1" autocomplete="off" aria-label="Volume">
+                            </div>
+                            <button type="button" class="plyr__control" data-plyr="captions">
+                                <svg class="icon--pressed" role="presentation"><use xlink:href="#plyr-captions-on"></use></svg>
+                                <svg class="icon--not-pressed" role="presentation"><use xlink:href="#plyr-captions-off"></use></svg>
+                                <span class="label--pressed plyr__tooltip" role="tooltip">Disable captions</span>
+                                <span class="label--not-pressed plyr__tooltip" role="tooltip">Enable captions</span>
+                            </button>
+                            <button type="button" class="plyr__control" data-plyr="fullscreen">
+                                <svg class="icon--pressed" role="presentation"><use xlink:href="#plyr-exit-fullscreen"></use></svg>
+                                <svg class="icon--not-pressed" role="presentation"><use xlink:href="#plyr-enter-fullscreen"></use></svg>
+                                <span class="label--pressed plyr__tooltip" role="tooltip">Exit fullscreen</span>
+                                <span class="label--not-pressed plyr__tooltip" role="tooltip">Enter fullscreen</span>
+                            </button>
+                        </div>
+                    `,
+                    settings: ['captions', 'quality', 'speed', 'loop'],
+                });
+                player.on("ready", () => {
+                    this.history.add(id);
+                });
+                clApp.pages.show("Videos", "Currently Playing");
+                const videoTitle = document.getElementById(this.videoTitle);
+                const videoStatus = document.getElementById(this.videoStatus);
+                const videoCloseBtn = document.getElementById(this.videoCloseBtn);
+                const videoResumeBtn = document.getElementById(this.videoResumeBtn);
+                videoTitle.innerHTML = video.title;
+                videoStatus.innerHTML = `${video.creator.display_name} | ${new Intl.DateTimeFormat("en-US", { timeStyle: "short", dateStyle: "short" }).format(new Date(video.created_at))} | ${video.views} views`;
+                videoCloseBtn.onclick = () => {
+                    clApp.dialog.confirm("Are you sure you want to close the video player?").then(ans => {
+                        if (ans) {
+                            clApp.pages.hide("Videos", "Currently Playing");
+                            player.destroy();
+                            videoPlayerPage.classList.add("hidden")
+                            clApp.pages.open("Videos");
+                        }
+                    });
+                }
+                videoResumeBtn.onclick = () => {
+                    clApp.pages.resetAll();
+                }
+            },
+            history: {
+                historyContainer: "app.videos.page.history.list",
+                fetch() {
+                    const historyContainer = document.getElementById(clApp.videos.history.historyContainer);
+                    historyContainer.innerHTML = "";
+                    var history = JSON.parse(localStorage.getItem("clAppVideoHistory")) || [];
+                    if (history.length === 0) {
+                        historyContainer.innerHTML = `<p>No videos watched.</p>`;
+                        return;
+                    }
+                    history.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by most recently watched.
+                    history.forEach(item => {
+                        const video = clApp.videos.videos.find(v => v.id === item.id);
+                        const videoElement = document.createElement("div");
+                        videoElement.classList.add("cl-video");
+                        videoElement.innerHTML = `
+                            <img src="${video.thumbnail || "https://placehold.co/1600x900?text=No+Image"}" alt="${video.title}" class="cl-video-thumbnail">
+                            <h3>${video.title || "Unavailable"}</h3>
+                            <small>${new Intl.DateTimeFormat("en-US", { timeStyle: "short", dateStyle: "short" }).format(new Date(item.date))}</small>
+                            <h4>${video.creator.display_name || "Unavailable"}</h4>
+                        `;
+                        videoElement.onclick = () => clApp.videos.play(video.id);
+                        historyContainer.appendChild(videoElement);
+                    });
+                },
+                add(id) {
+                    const history = JSON.parse(localStorage.getItem("clAppVideoHistory")) || [];
+                    history.push({ id: id, date: new Date().toISOString() });
+                    localStorage.setItem("clAppVideoHistory", JSON.stringify(history));
+                    this.fetch();
+                }
             },
         }
 
@@ -4067,6 +4449,7 @@
             clApp.pages.createCards("app.homeScreen.page.pageCardsContainer", clApp.config.pageCards);
             clApp.pages.init();
             clApp.pages.hide("Games", "Currently Playing");
+            clApp.pages.hide("Videos", "Currently Playing");
             clApp.battery.init();
             clApp.date.init();
             clApp.settings.createEditor();
@@ -4077,10 +4460,13 @@
             clApp.auth.init();
             clApp.chat.init();
             clApp.supabase.subscribe();
+            clApp.videos.init();
             clApp.pages.open("Home");
             if (clApp.config.parameters.mode && clApp.config.parameters.id) {
                 if (clApp.config.parameters.mode == "game")
                     clApp.games.open(clApp.config.parameters.id);
+                if (clApp.config.parameters.mode == "video")
+                    clApp.videos.play(clApp.config.parameters.id);
             } else if (clApp.config.parameters.resetAll) {
                 clApp.dialog.confirm("Do you want to reset all settings?").then((result) => {
                     if (result) {
