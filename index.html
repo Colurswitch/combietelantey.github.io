@@ -52,6 +52,7 @@
             left: 0;
             overflow: hidden;
             opacity: 1;
+            background: black;
         }
 
         fullscreen.hidden {
@@ -967,7 +968,7 @@
             margin: 0;
             top: 10px;
             left: 20px;
-            width: calc(100% - 40px);
+            width: calc(100% - 80px);
             z-index: 1;
         }
 
@@ -975,12 +976,21 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            z-index: 1;
+            z-index: 2;
         }
 
         .plyr--hide-controls *:is(h1, .cl-button) {
             opacity: 0;
             pointer-events: none;
+        }
+
+        .plyr__time+.plyr__time::before {
+            margin: 5px;
+        }
+
+        .plyr__progress {
+            margin-right: 20px;
+            flex: 1;
         }
     </style>
 </head>
@@ -3025,6 +3035,9 @@
                     case "text":
                         iconSpan.innerText = "text_fields";
                         break;
+                    case "textarea":
+                        iconSpan.innerText = "text_fields";
+                        break;
                     case "password":
                         iconSpan.innerText = "lock";
                         break;
@@ -3041,6 +3054,15 @@
                         iconSpan.innerText = "edit_note";
                 }
                 container.appendChild(iconSpan);
+                if (type === "textarea") {
+                    const textarea = document.createElement("textarea");
+                    textarea.placeholder = placeholder || "";
+                    textarea.value = value || "";
+                    textarea.rows = 5;
+                    textarea.cols = 50;
+                    container.appendChild(textarea);
+                    return container;
+                }
                 const input = document.createElement("input");
                 input.type = type;
                 if (placeholder) input.placeholder = placeholder;
@@ -3065,12 +3087,12 @@
                     document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(okButton);
                 });
             },
-            prompt(message, type) {
+            prompt(message, type, value = null) {
                 return new Promise((resolve) => {
                     document.getElementById(clApp.config.dialogElement.panelId).classList.remove("hidden");
                     document.getElementById(clApp.config.dialogElement.contentContainerId).innerHTML = message;
                     clApp.elementUtility.removeAllChildren(document.getElementById(clApp.config.dialogElement.optionsContainerId));
-                    const input = clApp.input.create(type, "Enter value", null, (e) => {
+                    const input = clApp.input.create(type, "Enter value", value || "", (e) => {
                         if (e.target.value) {
                             resolve(e.target.value);
                             document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
@@ -3078,10 +3100,14 @@
                     });
                     document.getElementById(clApp.config.dialogElement.contentContainerId).appendChild(input);
                     document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(clApp.button.create("check", null, true, "OK", () => {
-                        if (input.querySelector("input").value) {
-                            resolve(input.querySelector("input").value);
+                        if (input.querySelector("textarea").value) {
+                            resolve(input.querySelector("textarea").value);
                             document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
                         }
+                    }));
+                    document.getElementById(clApp.config.dialogElement.optionsContainerId).appendChild(clApp.button.create("close", null, true, "Cancel", () => {
+                        document.getElementById(clApp.config.dialogElement.panelId).classList.add("hidden");
+                        resolve(null);
                     }));
                 });
             },
@@ -3663,6 +3689,25 @@
                 const { data, error } = await this.client.from("video_comments").select(`
                     *, author(*)
                 `).eq("video", videoId);
+                if (error) {
+                    clApp.toast("error", `Error getting comments: ${error.message}`);
+                    return [];
+                }
+                return data;
+            },
+            async getCommentById(commentId) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return null;
+                }
+                const { data, error } = await this.client.from("video_comments").select(`
+                    *, author(*)
+                `).eq("id", commentId).single();
+                if (error) {
+                    clApp.toast("error", `Error getting comment: ${error.message}`);   
+                    return null;
+                }
+                return data;
             },
             async getRepliesByComment(commentId) {
                 if (!this.client) {
@@ -3678,6 +3723,38 @@
                 }
                 return data;
             },
+            async addCommentToVideo(videoId, content, parent = null) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                const { data, error } = await this.client.from("video_comments").insert({
+                    video: videoId,
+                    content: content,
+                    parent: parent,
+                });
+            },
+            async editComment(commentId, newContent) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                const { data, error } = await this.client.from("video_comments").update({
+                    content: newContent,
+                }).eq("id", commentId);
+                if (error) {
+                    clApp.toast("error", `Error editing comment: ${error.message}`);
+                } else {
+                    clApp.toast("success", "Comment edited successfully!");
+                }
+            },
+            async deleteComment(commentId) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                const res = await this.client.from("video_comments").delete().eq('id', commentId);
+            }
         };
 
         clApp.games = {
@@ -4234,6 +4311,11 @@
             videoStatus: "app.video.page.info.status",
             videoCloseBtn: "app.video.page.info.closeBtn",
             videoResumeBtn: "app.video.page.info.resumeBtn",
+            videoDescription: "app.video.page.info.description",
+            videoCommentInput: "app.video.page.comments.commentInput",
+            videoCommentSubmitBtn: "app.video.page.comments.sendBtn",
+            videoCommentsAmountText: "app.video.page.comments.amountText",
+            videoCommentsContainer: "app.video.page.comments.commentsContainer",
             videos: [],
             currentVideo: null,
             init() {
@@ -4365,6 +4447,11 @@
                 const videoStatus = document.getElementById(this.videoStatus);
                 const videoCloseBtn = document.getElementById(this.videoCloseBtn);
                 const videoResumeBtn = document.getElementById(this.videoResumeBtn);
+                const videoDescription = document.getElementById(this.videoDescription);
+                const videoCommentInput = document.getElementById(this.videoCommentInput);
+                const videoCommentSubmitBtn = document.getElementById(this.videoCommentSubmitBtn);
+                const videoCommentsAmountText = document.getElementById(this.videoCommentsAmountText);
+                const videoCommentsContainer = document.getElementById(this.videoCommentsContainer);
                 videoTitle.innerHTML = video.title;
                 videoStatus.innerHTML = `${video.creator.display_name} | ${new Intl.DateTimeFormat("en-US", { timeStyle: "short", dateStyle: "short" }).format(new Date(video.created_at))} | ${video.views} views`;
                 videoCloseBtn.onclick = () => {
@@ -4380,6 +4467,164 @@
                 videoResumeBtn.onclick = () => {
                     clApp.pages.resetAll();
                 }
+                videoDescription.innerHTML = video.description;
+                clApp.supabase.getUserProfile().then(res => {
+                    videoCommentInput.placeholder = "Commenting as " + res.display_name;
+                    videoCommentSubmitBtn.onclick = () => this.createComment(videoCommentInput.value);
+                    this.renderComments();
+                });
+            },
+            renderComments() {
+                if (!this.currentVideo) {
+                    console.error("No video to render comments for");
+                    return;
+                }
+                const videoCommentsAmountText = document.getElementById(this.videoCommentsAmountText);
+                const videoCommentsContainer = document.getElementById(this.videoCommentsContainer);
+                videoCommentsContainer.innerHTML = "";
+                clApp.supabase.getCommentsByVideo(this.currentVideo).then(comments => {
+                    videoCommentsAmountText.innerHTML = `Comments (${comments.length})`;
+                    comments.forEach(comment => {
+                        if (comment.parent) return; // Prevent showing replies at top level
+                        const commentElement = document.createElement("div");
+                        commentElement.classList.add("cl-comment");
+                        commentElement.innerHTML = `
+                            <img src="${comment.author.photo_url || "https://placehold.co/512"}" alt="User Photo" class="cl-user-photo">
+                            <div class="cl-container">
+                                <h3>${comment.author.display_name} <small>${new Intl.DateTimeFormat("en-US", { timeStyle: "short", dateStyle: "short" }).format(new Date(comment.created_at))}</small></h3>
+                                <p>${comment.content}</p>
+                                <div class="cl-horizontal">
+                                    <button class="cl-button" onclick="clApp.videos.replyToComment('${comment.id}')">
+                                        <span class="material-symbols-outlined">reply</span>
+                                    </button>
+                                    <button class="cl-button" onclick="clApp.videos.editComment('${comment.id}')">
+                                        <span class="material-symbols-outlined">edit</span>
+                                    </button>
+                                    <button class="cl-button" onclick="clApp.videos.deleteComment('${comment.id}')">
+                                        <span class="material-symbols-outlined">delete</span>
+                                    </button>
+                                </div>
+                                ${comments.filter(c => c.parent == comment.id).length > 0 ? `
+                                    <div class="cl-collapsible cl-container">
+                                        <input type="checkbox" class="cl-collapsible-checkbox">
+                                        <div class="cl-horizontal cl-collapsible-top">
+                                            <span class="material-symbols-outlined cl-collapsible-arrow">arrow_right</span>
+                                            <h3>Replies (${comments.filter(c => c.parent == comment.id).length})</h3>
+                                        </div>
+                                        <div class="cl-container cl-collapsible-content">
+                                            ${comments.filter(c => c.parent == comment.id).map(reply => {
+                                                return `
+                                                    <div class="cl-comment">
+                                                        <img src="${reply.author.photo_url || "https://placehold.co/512"}" alt="User Photo" class="cl-user-photo">
+                                                        <div class="cl-container">
+                                                            <h3>${reply.author.display_name} <small>${new Intl.DateTimeFormat("en-US", { timeStyle: "short", dateStyle: "short" }).format(new Date(reply.created_at))}</small></h3>
+                                                            <p>${reply.content}</p>
+                                                            <div class="cl-horizontal">
+                                                                <button class="cl-button" onclick="clApp.videos.editComment('${reply.id}')">
+                                                                    <span class="material-symbols-outlined">edit</span>
+                                                                </button>
+                                                                <button class="cl-button" onclick="clApp.videos.deleteComment('${reply.id}')">
+                                                                    <span class="material-symbols-outlined">delete</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                            }).join("")}
+                                        </div>
+                                    </div>
+                                ` : ""}
+                            </div>
+                        `;
+                        videoCommentsContainer.appendChild(commentElement);
+                    });
+                });
+            },
+            replyToComment(commentId, content) {
+                clApp.pages.open("Loader")
+                clApp.supabase.getUserProfile().then(user => {
+                    if (!user) {
+                        clApp.toast("info","You must be logged in to comment.");
+                        clApp.pages.open("Videos", "Currently Playing")
+                        return;
+                    }
+                    clApp.dialog.prompt("Reply to comment", "textarea").then(ans => {
+                        if (ans && ans.trim() !== "") {
+                            clApp.supabase.addCommentToVideo(this.currentVideo, ans, commentId).then(() => {
+                                clApp.pages.open("Videos", "Currently Playing");
+                                clApp.toast("info","Comment posted.");
+                                this.renderComments();
+                            });
+                        } else {
+                            clApp.toast("info","Comment cannot be empty.");
+                        }
+                    });
+                })
+            },
+            editComment(commentId) {
+                clApp.pages.open("Loader");
+                clApp.supabase.getUserProfile().then(user => {
+                    if (!user) {
+                        clApp.toast("info","You must be logged in to edit a comment.");
+                        clApp.pages.open("Videos", "Currently Playing");
+                        return;
+                    }
+                    clApp.supabase.getCommentById(commentId).then(comment => {
+                        if (comment.author.id !== user.id) {
+                            clApp.toast("info","You cannot edit a comment that is not yours.");
+                            clApp.pages.open("Videos", "Currently Playing")
+                            return;
+                        }
+                        clApp.dialog.prompt("Edit comment", "textarea", comment.content).then(ans => {
+                            if (ans && ans.trim() !== "") {
+                                clApp.supabase.editComment(commentId, ans).then(() => {
+                                    clApp.pages.open("Videos", "Currently Playing");
+                                    clApp.toast("info","Comment edited.");
+                                    this.renderComments();
+                                });
+                            } else {
+                                clApp.toast("info","Comment cannot be empty.");
+                            }
+                        });
+                    });
+                });
+            },
+            deleteComment(commentId) {
+                clApp.pages.open("Loader");
+                clApp.supabase.getUserProfile().then(user => {
+                    if (!user) {
+                        clApp.toast("info","You must be logged in to delete a comment.");
+                        clApp.pages.open("Videos", "Currently Playing");
+                        return;
+                    }
+                    clApp.supabase.getCommentById(commentId).then(comment => {
+                        if (comment.author.id !== user.id) {
+                            clApp.toast("info","You cannot delete a comment that is not yours.");
+                            clApp.pages.open("Videos", "Currently Playing")
+                            return;
+                        }
+                        clApp.supabase.deleteComment(commentId).then(() => {
+                            clApp.pages.open("Videos", "Currently Playing");
+                            clApp.toast("info","Comment deleted.");
+                            this.renderComments();
+                        });
+                    });
+                });
+            },
+            createComment(content) {
+                clApp.pages.open("Loader");
+                clApp.supabase.getUserProfile().then(user => {
+                    if (!user) {
+                        clApp.toast("info","You must be logged in to create a comment.");
+                        clApp.pages.open("Videos", "Currently Playing");
+                        return;
+                    }
+                    clApp.supabase.addCommentToVideo(this.currentVideo, content).then(() => {
+                        clApp.pages.open("Videos", "Currently Playing");
+                        clApp.toast("info","Comment created.");
+                        this.renderComments();
+                    });
+                });
             },
             history: {
                 historyContainer: "app.videos.page.history.list",
