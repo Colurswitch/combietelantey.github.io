@@ -38,7 +38,7 @@
         }
 
         body {
-            width: 100%;
+            width: 100vw;
             height: 100vh;
             margin: 0;
             overflow: hidden;
@@ -955,9 +955,32 @@
             }
         }
 
-        fullscreen video {
+        fullscreen .plyr {
             width: 100%;
             height: 100vh;
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        .plyr h1 {
+            position: absolute;
+            margin: 0;
+            top: 10px;
+            left: 20px;
+            width: calc(100% - 40px);
+            z-index: 1;
+        }
+
+        .plyr .cl-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+        }
+
+        .plyr--hide-controls *:is(h1, .cl-button) {
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -4369,8 +4392,12 @@
                         return;
                     }
                     history.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by most recently watched.
-                    history.forEach(item => {
+                    history.forEach((item, index) => {
                         const video = clApp.videos.videos.find(v => v.id === item.id);
+                        /*if (!video) {
+                            setTimeout(() => history.splice(index, 1), 100);
+                            return;
+                        }*/
                         const videoElement = document.createElement("div");
                         videoElement.classList.add("cl-video");
                         videoElement.innerHTML = `
@@ -4479,7 +4506,7 @@
             }
         };
         window.onerror = (message, src, lineno, colno, error) => {
-            clApp.toast("error", `Error: ${message}<br>at ${src}:${lineno}:${colno}`);
+            clApp.toast("error", `Error: ${message.toString()}<br>at ${src}:${lineno}:${colno}`);
         }
         window.onload = () => {
             clApp.setup();
