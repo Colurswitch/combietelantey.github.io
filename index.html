@@ -1894,7 +1894,10 @@
             <div class="cl-horizontal is-centered">
                 <img src="https://placehold.co/512" alt="User Photo" class="cl-circular"
                     id="app.user.page.info.userPhoto">
-                <h1 id="app.user.page.info.userName">User Name</h1>
+                <div>
+                    <h1 id="app.user.page.info.userName">User Name</h1>
+                    <p id="app.user.page.info.userJoinDate">Joined on January 1, 2025</p>
+                </div>
             </div>
             <p class="cl-paragraph" id="app.user.page.info.userBio">
                 User bio...
@@ -3556,22 +3559,17 @@
                     console.error("Supabase client is not initialized.");
                     return;
                 }
-                const { error } = await this.client.auth.signOut();
-                if (error) {
-                    clApp.toast("error", `Error deleting user: ${error.message}`);
+                const id = (await this.getUserProfile()).id;
+                if (!id) {
+                    clApp.toast("error", "User ID not found.");
                     return;
                 }
-                const res = await this.client.functions.invoke("delete-user", {
-                    body: {
-                        userId: (await this.getUser()).id
-                    },
-                })
+                const { data, error } = await this.client.rpc("delete_user");
                 if (error) {
                     clApp.toast("error", `Error deleting user: ${error.message}`);
                     return;
                 }
                 clApp.toast("info", "User deleted successfully.");
-
             },
             async getUserProfile(userId = null) {
                 if (!this.client) {
@@ -3598,7 +3596,7 @@
                     console.error("Supabase client is not initialized.");
                     return [];
                 }
-                const { data, error } = await this.client.from("users").select("*").order("id", "desc").limit(100);
+                const { data, error } = await this.client.from("users").select("*").order("display_name");
                 if (error) {
                     clApp.toast("error", `Error getting user profiles: ${error.message}`);
                     return [];
@@ -3745,7 +3743,7 @@
                     console.error("Supabase client is not initialized.");
                     return [];
                 }
-                const { data, error } = await this.client.from("videos").select("*, creator(*)").eq("creator.id", userUid);
+                const { data, error } = await this.client.from("videos").select("*, creator(*)").eq("creator", userUid);
                 if (error) {
                     clApp.toast("error", `Error getting videos: ${error.message}`);
                     return [];
@@ -4256,6 +4254,7 @@
                         confirmPasswordInput.value = "";
                         clApp.toast("person", "Now logged in as " + user.email);
                         clApp.pages.open("Home");
+                        clApp.account.init();
                     });
                 }
                 SUBtn.onclick = () => {
@@ -4272,6 +4271,7 @@
                         confirmPasswordInput.value = "";
                         clApp.toast("person", "Now logged in as " + user.email);
                         clApp.pages.open("Home");
+                        clApp.account.init();
                     });
                 }
                 continueAsGuestBtn.onclick = () => {
@@ -4755,6 +4755,7 @@
 
         clApp.users = {
             usersContainer: "app.users.page.usersContainer",
+            userJoinDate: "app.user.page.info.userJoinDate",
             userBanner: "app.user.page.info.userBanner",
             userPhoto: "app.user.page.info.userPhoto",
             userName: "app.user.page.info.userName",
@@ -4783,15 +4784,17 @@
             open(uid) {
                 clApp.pages.open("Loader");
                 clApp.supabase.getUserProfile(uid).then(user => {
+                    const userJoinDate = document.getElementById(this.userJoinDate);
                     const userBanner = document.getElementById(this.userBanner);
                     const userPhoto = document.getElementById(this.userPhoto);
                     const userName = document.getElementById(this.userName);
                     const userBio = document.getElementById(this.userBio);
                     const userLinksContainer = document.getElementById(this.userLinksContainer);
                     const userVideosContainer = document.getElementById(this.userVideosContainer);
+                    userJoinDate.innerHTML = "Joined on "+ new Intl.DateTimeFormat("en-US", {dateStyle: "medium"}).format(new Date(user.created_at));
                     userBanner.src = user.banner_url || "https://placehold.co/900x300?text=No+Image";
                     userPhoto.src = user.photo_url || "https://placehold.co/512";
-                    userName.innerHTML = user.display_name || "User";
+                    userName.innerHTML = (user.display_name || "User") + (user.is_admin ? "<span class='material-symbols-outlined'>shield</span>" : "");
                     userBio.innerHTML = user.bio || "No Bio";
                     userLinksContainer.innerHTML = user.links.map(link => {
                         return `
@@ -4800,7 +4803,7 @@
                                 <span>${link}</span>
                             </a>
                         `;
-                    });
+                    }).join("");
                     clApp.supabase.getVideosByUser(uid).then(videos => {
                         userVideosContainer.innerHTML = "";
                         videos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // sort videos by most recent first
@@ -4830,6 +4833,7 @@
             deleteBtn: "app.account.page.accountSettings.deleteBtn",
             profileEditor: null,
             init() {
+                if (this.profileEditor) this.profileEditor.destroy();
                 const logoutBtn = document.getElementById(this.logoutBtn);
                 const userBanner = document.getElementById(this.userBanner);
                 const userPhoto = document.getElementById(this.userPhoto);
@@ -4837,7 +4841,7 @@
                 const saveBtn = document.getElementById(this.saveBtn);
                 const deleteBtn = document.getElementById(this.deleteBtn);
                 JSONEditor.defaults.callbacks.upload = {
-                    userBannerUpload(jseditor, type, file, cbs) {
+                    "userBannerUpload": function(jseditor, type, file, cbs) {
                         if (!file.type.startsWith("image/")) cbs.failure("File must be an image");
                         clApp.supabase.updateUserBanner(file).then(url => {
                             cbs.updateProgress(50);
@@ -4846,7 +4850,7 @@
                             cbs.success(url);
                         });
                     },
-                    userPhotoUpload(jseditor, type, file, cbs) {
+                    "userPhotoUpload": function(jseditor, type, file, cbs) {
                         if (!file.type.startsWith("image/")) cbs.failure("File must be an image");
                         clApp.supabase.updateUserPhoto(file).then(url => {
                             cbs.updateProgress(50);
@@ -4922,12 +4926,12 @@
                         object_layout: "table",
                         startval: profile,
                     });
-                    userBanner.src = profile.banner_url;
+                    userBanner.src = profile.banner_url || "https://placehold.co/900x300?text=No+Image";
                     userBanner.alt = profile.display_name;
-                    userPhoto.src = profile.photo_url;
+                    userPhoto.src = profile.photo_url || "https://placehold.co/512?text=No+Image";
                     userPhoto.alt = profile.display_name;
                     saveBtn.onclick = () => {
-                        if (this.profileEditor.getValue().display_name.trim() !== "") {
+                        if (this.profileEditor.getValue().display_name.trim() === "") {
                             clApp.toast("error", "Profile name cannot be empty");
                             return;
                         }
@@ -4991,7 +4995,7 @@
                 clApp.toast("info", "Welcome to Chillnet!");
                 if ("serviceWorker" in navigator) {
                     clApp.toast("info", "Service workers are supported! Registering...");
-                    if (Notification.permission !== "granted") Notification.requestPermission().then(perm => {
+                    if (Notification && Notification.permission !== "granted") Notification.requestPermission().then(perm => {
                         if (perm === "granted") {
                             clApp.toast("info", "Notification permission granted!");
                         } else {
