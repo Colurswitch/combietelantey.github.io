@@ -327,7 +327,7 @@
             width: calc(100%);
         }
 
-        .form-control, .row, .je-object__container, .je-intended-panel {
+        .form-control, .row, .je-object__container, .je-indented-panel {
             width: 100%;
         }
 
@@ -2062,7 +2062,7 @@
                 <textarea id="app.content.page.newVideo.boxedContent.descriptionInput" placeholder="Description"
                     rows="5"></textarea>
             </div>-->
-            <div class="cl-horizontal" id="app.content.page.newVideo.boxedContent.videoEditorContainer"></div>
+            <div id="app.content.page.newVideo.boxedContent.videoEditorContainer"></div>
             <button class="cl-button" id="app.content.page.newVideo.boxedContent.addVideoButton">
                 <span class="material-symbols-outlined">add</span>
                 <span>Add Video</span>
@@ -3840,6 +3840,11 @@
                     content: content,
                     parent: parent,
                 });
+                if (error) {
+                    clApp.toast("error", `Error adding comment: ${error.message}`);
+                } else {
+                    clApp.toast("success", "Comment added successfully!");
+                }
             },
             async editComment(commentId, newContent) {
                 if (!this.client) {
@@ -3868,6 +3873,18 @@
                     return;
                 }
                 const res = await this.client.from("videos").delete().eq('id', videoId);
+            },
+            async createVideo(data) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                const { data, error } = await this.client.from("videos").insert(data);
+                if (error) {
+                    clApp.toast("error", `Error creating video: ${error.message}`);
+                } else {
+                    clApp.toast("success", "Video created successfully!");
+                }
             },
         };
 
@@ -4490,6 +4507,8 @@
                 const video = this.videos.find(v => v.id === id);
                 if (!video) {
                     clApp.toast("error", "Video not found.");
+                    clApp.pages.open("Videos");
+                    return;
                 }
                 this.currentVideo = id;
                 clApp.pages.resetAll();
@@ -5033,7 +5052,7 @@
                                 <td>${new Intl.DateTimeFormat("en-US", { timeStyle: "short", dateStyle: "short" }).format(new Date(video.created_at))}</td>
                                 <td>
                                     <div class="cl-horizontal">
-                                        <button class="cl-button" onclick="clApp.videos.play('${video.id}')">
+                                        <button class="cl-button" onclick="clApp.videos.play(${video.id})">
                                             <i class="material-symbols-outlined">play_arrow</i>
                                         </button>
                                         <button class="cl-button" onclick="clApp.stringUtility.copyToClipboard('${location.origin}/?mode=video&id=${video.id}')">
@@ -5122,7 +5141,7 @@
                                 type: "string",
                                 format: "url",
                                 title: "Video",
-                                description: "The video file.",
+                                description: "The video file. May take a while to upload.",
                                 options: {
                                     upload: {
                                         upload_handler: "videoUpload",
@@ -5209,7 +5228,14 @@
                     no_additional_properties: true,
                     compact: true,
                     object_layout: "table",
-                })
+                });
+                videoEditorSubmitBtn.onclick = () => {
+                    clApp.supabase.createVideo(this.videoEditor.getValue()).then(() => {
+                        clApp.toast("info", "Video created!");
+                        this.videoEditor.setValue(defaultValue);
+                        this.fetchVideos();
+                    });
+                }
             },
         }
 
