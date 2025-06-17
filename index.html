@@ -324,7 +324,11 @@
             background: var(--cl-topbar-color);
             border-radius: var(--cl-border-radius);
             padding: 10px;
-            width: calc(100% - 20px);
+            width: calc(100%);
+        }
+
+        .form-control, .row, .je-object__container, .je-intended-panel {
+            width: 100%;
         }
 
         .cl-input input[type=file] {
@@ -725,8 +729,6 @@
         }
 
         .cl-user h3 {
-            position: absolute;
-            top: 0px;
             width: 190px;
             min-height: 15px;
         }
@@ -1058,19 +1060,21 @@
                 <span class="material-symbols-outlined">info</span>
                 <span>If you created your account before June 2025, you'll need to recreate your account due to a database change.</span>
             </div>
-            <div class="cl-input">
-                <i class="material-symbols-outlined">mail</i>
-                <input type="email" placeholder="Email" id="app.authScreen.page.emailInput">
-            </div>
-            <div class="cl-input">
-                <i class="material-symbols-outlined">lock</i>
-                <input type="password" placeholder="Password" id="app.authScreen.page.passwordInput">
-            </div>
-            <div class="cl-input">
-                <i class="material-symbols-outlined">lock</i>
-                <input type="password" placeholder="Confirm password (optional)"
-                    id="app.authScreen.page.confirmPasswordInput">
-            </div>
+            <form>
+                <div class="cl-input">
+                    <i class="material-symbols-outlined">mail</i>
+                    <input type="email" placeholder="Email" id="app.authScreen.page.emailInput">
+                </div>
+                <div class="cl-input">
+                    <i class="material-symbols-outlined">lock</i>
+                    <input type="password" placeholder="Password" id="app.authScreen.page.passwordInput">
+                </div>
+                <div class="cl-input">
+                    <i class="material-symbols-outlined">lock</i>
+                    <input type="password" placeholder="Confirm password (optional)"
+                        id="app.authScreen.page.confirmPasswordInput">
+                </div>
+            </form>
             <div class="cl-horizontal">
                 <button class="cl-button" id="app.authScreen.page.SIBtn">
                     <i class="material-symbols-outlined">check</i>
@@ -1897,6 +1901,7 @@
                 <div>
                     <h1 id="app.user.page.info.userName">User Name</h1>
                     <p id="app.user.page.info.userJoinDate">Joined on January 1, 2025</p>
+                    <div class="cl-horizontal" id="app.user.page.info.userActionsContainer"></div>
                 </div>
             </div>
             <p class="cl-paragraph" id="app.user.page.info.userBio">
@@ -2035,7 +2040,7 @@
             </table>
         </div>
         <div class="boxed-content is-not-centered hidden" id="app.content.page.newVideo.boxedContent">
-            <div class="cl-input">
+            <!--<div class="cl-input">
                 <span class="material-symbols-outlined">videocam</span>
                 <input type="file" id="app.content.page.newVideo.boxedContent.videoInput" accept="video/*" />
             </div>
@@ -2056,7 +2061,8 @@
                 <span class="material-symbols-outlined">description</span>
                 <textarea id="app.content.page.newVideo.boxedContent.descriptionInput" placeholder="Description"
                     rows="5"></textarea>
-            </div>
+            </div>-->
+            <div class="cl-horizontal" id="app.content.page.newVideo.boxedContent.videoEditorContainer"></div>
             <button class="cl-button" id="app.content.page.newVideo.boxedContent.addVideoButton">
                 <span class="material-symbols-outlined">add</span>
                 <span>Add Video</span>
@@ -2549,7 +2555,8 @@
                 {
                     title: "Content",
                     icon: "library_books",
-                    description: "Manage your content."
+                    description: "Manage your content.",
+                    requiresAccount: true,
                 },
                 {
                     title: "Admin",
@@ -3629,26 +3636,40 @@
                     console.error("Supabase client is not initialized.");
                     return;
                 }
-                const { data, error } = await this.client.storage.from("cl-main").upload(`cms_uploads/banner_${userId}_${Date.now()}`, file);
+                const user = (await this.getUserProfile()).id;
+                const { data, error } = await this.client.storage.from("clmain").upload(`cms_uploads/banner_${userId}_${Date.now()}`, file);
                 if (error) {
                     clApp.toast("error", `Error uploading banner: ${error.message}`);
                     return;
                 }
-                await this.updateUserProfile(null, { banner_url: this.client.storage.from("cl-main").getPublicUrl(data.path) });
-                return this.client.storage.from("cl-main").getPublicUrl(data.path);
+                await this.updateUserProfile(null, { banner_url: this.client.storage.from("clmain").getPublicUrl(data.path).data.publicUrl });
+                return this.client.storage.from("clmain").getPublicUrl(data.path);
             },
             async updateUserPhoto(file) {
                 if (!this.client) {
                     console.error("Supabase client is not initialized.");
                     return;
                 }
-                const { data, error } = await this.client.storage.from("cl-main").upload(`cms_uploads/photo_${userId}_${Date.now()}`, file);
+                const userId = (await this.getUserProfile()).id;
+                const { data, error } = await this.client.storage.from("clmain").upload(`cms_uploads/photo_${userId}_${Date.now()}`, file);
                 if (error) {
                     clApp.toast("error", `Error uploading photo: ${error.message}`);
                     return;
                 }
-                await this.updateUserProfile(null, { photo_url: this.client.storage.from("cl-main").getPublicUrl(data.path) });
-                return this.client.storage.from("cl-main").getPublicUrl(data.path);
+                await this.updateUserProfile(null, { photo_url: this.client.storage.from("clmain").getPublicUrl(data.path).data.publicUrl });
+                return this.client.storage.from("clmain").getPublicUrl(data.path);
+            },
+            async uploadFile(file) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                const { data, error } = await this.client.storage.from("clmain").upload(`cms_uploads/${Date.now()}${file.name}`, file);
+                if (error) {
+                    clApp.toast("error", `Error uploading file: ${error.message}`);
+                    return;
+                }
+                return this.client.storage.from("clmain").getPublicUrl(data.path);
             },
             async getGames() {
                 if (!this.client) {
@@ -3738,10 +3759,13 @@
                 }
                 return data;
             },
-            async getVideosByUser(userUid) {
+            async getVideosByUser(userUid = null) {
                 if (!this.client) {
                     console.error("Supabase client is not initialized.");
                     return [];
+                }
+                if (!userUid) {
+                    userUid = (await this.getUserProfile()).id;
                 }
                 const { data, error } = await this.client.from("videos").select("*, creator(*)").eq("creator", userUid);
                 if (error) {
@@ -3837,7 +3861,14 @@
                     return;
                 }
                 const res = await this.client.from("video_comments").delete().eq('id', commentId);
-            }
+            },
+            async deleteVideo(videoId) {
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                const res = await this.client.from("videos").delete().eq('id', videoId);
+            },
         };
 
         clApp.games = {
@@ -4458,7 +4489,7 @@
             play(id) {
                 const video = this.videos.find(v => v.id === id);
                 if (!video) {
-                    clApp.toast("error", "Video not found.")
+                    clApp.toast("error", "Video not found.");
                 }
                 this.currentVideo = id;
                 clApp.pages.resetAll();
@@ -4762,6 +4793,7 @@
             userBio: "app.user.page.info.userBio",
             userLinksContainer: "app.user.page.info.linksContainer",
             userVideosContainer: "app.user.page.videos.videosContainer",
+            userActionsContainer: "app.user.page.info.userActionsContainer",
             fetch() {
                 const usersContainer = document.getElementById(clApp.users.usersContainer);
                 usersContainer.innerHTML = "";
@@ -4791,6 +4823,7 @@
                     const userBio = document.getElementById(this.userBio);
                     const userLinksContainer = document.getElementById(this.userLinksContainer);
                     const userVideosContainer = document.getElementById(this.userVideosContainer);
+                    const userActionsContainer = document.getElementById(this.userActionsContainer);
                     userJoinDate.innerHTML = "Joined on "+ new Intl.DateTimeFormat("en-US", {dateStyle: "medium"}).format(new Date(user.created_at));
                     userBanner.src = user.banner_url || "https://placehold.co/900x300?text=No+Image";
                     userPhoto.src = user.photo_url || "https://placehold.co/512";
@@ -4804,6 +4837,11 @@
                             </a>
                         `;
                     }).join("");
+                    userActionsContainer.innerHTML = `
+                        <button class="cl-button" onclick="clApp.stringUtility.copyToClipboard('${location.origin}/?mode=user&id=${uid}')">
+                            <span class="material-symbols-outlined">share</span>
+                        </button>
+                    `;
                     clApp.supabase.getVideosByUser(uid).then(videos => {
                         userVideosContainer.innerHTML = "";
                         videos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // sort videos by most recent first
@@ -4845,18 +4883,21 @@
                         if (!file.type.startsWith("image/")) cbs.failure("File must be an image");
                         clApp.supabase.updateUserBanner(file).then(url => {
                             cbs.updateProgress(50);
-                            userBanner.src = url;
+                            userBanner.src = url.data.publicUrl;
                             cbs.updateProgress();
-                            cbs.success(url);
+                            clApp.users.fetch();
+                            cbs.success(url.data.publicUrl);
                         });
                     },
                     "userPhotoUpload": function(jseditor, type, file, cbs) {
                         if (!file.type.startsWith("image/")) cbs.failure("File must be an image");
+                        cbs.updateProgress(33);
                         clApp.supabase.updateUserPhoto(file).then(url => {
-                            cbs.updateProgress(50);
-                            userPhoto.src = url;
+                            cbs.updateProgress(66);
+                            userPhoto.src = url.data.publicUrl;
                             cbs.updateProgress();
-                            cbs.success(url);
+                            clApp.users.fetch();
+                            cbs.success(url.data.publicUrl);
                         });
                     },
                 }
@@ -4971,6 +5012,207 @@
             },
         }
 
+        clApp.content = {
+            videosContainer: "app.content.page.videos.boxedContent.videosContainer",
+            videoEditorContainer: "app.content.page.newVideo.boxedContent.videoEditorContainer",
+            videoEditorSubmitBtn: "app.content.page.newVideo.boxedContent.addVideoButton",
+            videoEditor: null,
+            init() {
+                this.fetchVideos();
+                this.createEditor();
+            },
+            fetchVideos() {
+                const videosContainer = document.getElementById(this.videosContainer);
+                const videoEditorContainer = document.getElementById(this.videoEditorContainer);
+                const videoEditorSubmitBtn = document.getElementById(this.videoEditorSubmitBtn);
+                clApp.supabase.getVideosByUser().then(videos => {
+                    videosContainer.innerHTML = videos.map(video => {
+                        return `
+                            <tr>
+                                <td>${video.title}</td>
+                                <td>${new Intl.DateTimeFormat("en-US", { timeStyle: "short", dateStyle: "short" }).format(new Date(video.created_at))}</td>
+                                <td>
+                                    <div class="cl-horizontal">
+                                        <button class="cl-button" onclick="clApp.videos.play('${video.id}')">
+                                            <i class="material-symbols-outlined">play_arrow</i>
+                                        </button>
+                                        <button class="cl-button" onclick="clApp.stringUtility.copyToClipboard('${location.origin}/?mode=video&id=${video.id}')">
+                                            <i class="material-symbols-outlined">share</i>
+                                        </button>
+                                        <button class="cl-button" onclick="clApp.content.deleteVideo('${video.id}')">
+                                            <i class="material-symbols-outlined">delete</i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    })
+                });
+            },
+            deleteVideo(videoId) {
+                clApp.pages.open("Loader")
+                clApp.supabase.getVideo(videoId).then(video => {
+                    clApp.supabase.getUserProfile().then(user => {
+                        if (user.id !== video.creator.id) {
+                            clApp.toast("error", "You cannot delete a video that is not yours.");
+                            clApp.pages.open("Content");
+                            return;
+                        }
+                        clApp.supabase.deleteVideo(videoId).then(() => {
+                            clApp.toast("success", "Video deleted successfully.");
+                            clApp.pages.open("Content");
+                            clApp.content.fetchVideos();
+                        });
+                    });
+                });
+            },
+            createEditor() {
+                const videosContainer = document.getElementById(this.videos);
+                const videoEditorContainer = document.getElementById(this.videoEditorContainer);
+                const videoEditorSubmitBtn = document.getElementById(this.videoEditorSubmitBtn);
+                const defaultValue = {
+                    video: "",
+                    thumbnail: "",
+                    title: "New Video",
+                    description: "",
+                    tracks: [],
+                }
+                JSONEditor.defaults.callbacks.upload.videoUpload = (jseditor, type, file, cbs) => {
+                    if (!file.type.startsWith("video/")) cbs.failure("File must be a video.");
+                    cbs.updateProgress(50);
+                    clApp.supabase.uploadFile(file).then(url => {
+                        if (url.data.publicUrl) {
+                            cbs.updateProgress();
+                            cbs.success(url.data.publicUrl);
+                        } else {
+                            cbs.failure("File upload failed.");
+                        }
+                    });
+                }
+                JSONEditor.defaults.callbacks.upload.thumbnailUpload = (jseditor, type, file, cbs) => {
+                    if (!file.type.startsWith("image/")) cbs.failure("File must be an image.");
+                    cbs.updateProgress(50);
+                    clApp.supabase.uploadFile(file).then(url => {
+                        if (url.data.publicUrl) {
+                            cbs.updateProgress();
+                            cbs.success(url.data.publicUrl);
+                        } else {
+                            cbs.failure("File upload failed.");
+                        }
+                    });
+                }
+                JSONEditor.defaults.callbacks.upload.subtitleUpload = (jseditor, type, file, cbs) => {
+                    if (file.type !== "text/vtt") cbs.failure("File must be a WebVTT (.vtt) subtitle file.");
+                    cbs.updateProgress(50);
+                    clApp.supabase.uploadFile(file).then(url => {
+                        if (url.data.publicUrl) {
+                            cbs.updateProgress();
+                            cbs.success(url.data.publicUrl);
+                        } else {
+                            cbs.failure("File upload failed.");
+                        }
+                    });
+                }
+                this.videoEditor = new JSONEditor(videoEditorContainer, {
+                    schema: {
+                        type: "object",
+                        title: "Video",
+                        properties: {
+                            video: {
+                                type: "string",
+                                format: "url",
+                                title: "Video",
+                                description: "The video file.",
+                                options: {
+                                    upload: {
+                                        upload_handler: "videoUpload",
+                                    }
+                                },
+                                links: [
+                                    {
+                                        href: "{{self}}",
+                                    },
+                                ],
+                            },
+                            thumbnail: {
+                                type: "string",
+                                format: "url",
+                                title: "Thumbnail",
+                                description: "The video thumbnail.",
+                                options: {
+                                    upload: {
+                                        upload_handler: "thumbnailUpload",
+                                    },
+                                },
+                                links: [
+                                    {
+                                        href: "{{self}}",
+                                    },
+                                ],
+                            },
+                            title: {
+                                type: "string",
+                                title: "Title",
+                                description: "The video title.",
+                            },
+                            description: {
+                                type: "string",
+                                title: "Description",
+                                description: "The video description.",
+                                format: "textarea",
+                            },
+                            tracks: {
+                                type: "array",
+                                title: "Tracks",
+                                description: "The video's subtitle tracks.",
+                                items: {
+                                    type: "object",
+                                    title: "Track",
+                                    properties: {
+                                        language: {
+                                            type: "string",
+                                            title: "Language",
+                                            description: "The track's language.",
+                                            enum: ["en", "ar", "fr", "de", "es", "it", "pt", "ru", "zh"],
+                                        },
+                                        label: {
+                                            type: "string",
+                                            title: "Label",
+                                            description: "The track's name.",
+                                        },
+                                        src: {
+                                            type: "string",
+                                            format: "url",
+                                            title: "WebVTT (.vtt) file",
+                                            description: "The track's WebVTT subtitle file.",
+                                            options: {
+                                                upload: {
+                                                    upload_handler: "subtitleUpload",
+                                                },
+                                            },
+                                            links: [
+                                                {
+                                                    href: "{{self}}",
+                                                },
+                                            ],
+                                        },
+                                    }
+                                },
+                            },
+                        },
+                    },
+                    theme: "barebones",
+                    show_errors: "always",
+                    disable_edit_json: true,
+                    disable_properties: true,
+                    disable_collapse: true,
+                    no_additional_properties: true,
+                    compact: true,
+                    object_layout: "table",
+                })
+            },
+        }
+
         clApp.toast = function(icon, message) {
             const toast = document.createElement("div");
             toast.classList.add("cl-button");
@@ -5042,6 +5284,7 @@
             clApp.videos.init();
             clApp.users.fetch();
             clApp.account.init();
+            clApp.content.init();
             clApp.pages.open("Home");
             if (clApp.config.parameters.mode && clApp.config.parameters.id) {
                 if (clApp.config.parameters.mode == "game")
