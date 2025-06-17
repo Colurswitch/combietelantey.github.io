@@ -3874,12 +3874,12 @@
                 }
                 const res = await this.client.from("videos").delete().eq('id', videoId);
             },
-            async createVideo(data) {
+            async createVideo(newData) {
                 if (!this.client) {
                     console.error("Supabase client is not initialized.");
                     return;
                 }
-                const { data, error } = await this.client.from("videos").insert(data);
+                const { data, error } = await this.client.from("videos").insert(newData);
                 if (error) {
                     clApp.toast("error", `Error creating video: ${error.message}`);
                 } else {
