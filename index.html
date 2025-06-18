@@ -37,6 +37,13 @@
             font-family: "Product Sans";
         }
 
+        pre,code {
+            border-radius: var(--cl-border-radius);
+            padding: 10px;
+            background: var(--cl-topbar-color);
+            font-family: monospace;
+        }
+
         body {
             width: 100vw;
             height: 100vh;
@@ -5394,10 +5401,10 @@
                                         <td>${new Intl.DateTimeFormat("en-US", {dateStyle: "medium"}).format(new Date(user.created_at))}</td>
                                         <td>
                                             <div class="cl-horizontal">
-                                                <button class="cl-button" onclick="clApp.users.open(${user.id})">
+                                                <button class="cl-button" onclick="clApp.users.open('${user.id}')">
                                                     <i class="material-symbols-outlined">open_in_new</i>
                                                 </button>
-                                                <button class="cl-button" onclick="clApp.admin.unban(${user.id})">
+                                                <button class="cl-button" onclick="clApp.admin.unban('${user.id}')">
                                                     <i class="material-symbols-outlined">check</i>
                                                 </button>
                                             </div>
@@ -5412,7 +5419,7 @@
                                         <td>${new Intl.DateTimeFormat("en-US", {dateStyle: "medium"}).format(new Date(user.created_at))}</td>
                                         <td>
                                             <div class="cl-horizontal">
-                                                <button class="cl-button" onclick="clApp.users.open(${user.id})">
+                                                <button class="cl-button" onclick="clApp.users.open('${user.id}')">
                                                     <i class="material-symbols-outlined">open_in_new</i>
                                                 </button>
                                             </div>
