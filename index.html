@@ -3557,13 +3557,13 @@
                     return null;
                 }
                 const { data, error } = await this.client.auth.signInWithPassword({ email: email, password: password });
-                const ban = await this.getBan((await this.getUserProfile()).id);
+                const ban = await this.getBan(data.user.id);
                 if (ban && new Date(ban.lift_date) > new Date()) {
                     await this.signOut();
-                    clApp.dialog.alert("You cannot sign in because you are banned.<br>Reason: " + ban.reason);
+                    clApp.dialog.alert("You cannot sign in because you are banned.<br>Reason:<br><pre>" + ban.reason + "</pre>");
                     return null;
-                } else if (new Date(ban.lift_date) < new Date()) {
-                    await this.unbanUser(await this.getUserProfile().id);
+                } else if (ban && new Date(ban.lift_date) < new Date()) {
+                    await this.unbanUser(data.user.id);
                 }
                 if (error) {
                     clApp.toast("error", `Error signing in: ${error.message}`);
