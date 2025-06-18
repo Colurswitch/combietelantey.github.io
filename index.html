@@ -2090,6 +2090,24 @@
             </div>
         </div>
         <div class="boxed-content is-not-centered hdden" id="app.admin.page.users">
+            <p>Ban User</p>
+            <div class="cl-input">
+                <i class="material-symbols-outlined">person</i>
+                <select id="app.admin.page.users.banSelect">
+                    <option value="uid">User</option>
+                </select>
+            </div>
+            <div class="cl-input">
+                <i class="material-symbols-outlined">calendar_month</i>
+                <input type="date" id="app.admin.page.users.banLiftDateInput">
+            </div>
+            <div class="cl-input">
+                <i class="material-symbols-outlined">help</i>
+                <textarea id="app.admin.page.users.banReasonInput" placeholder="Ban Reason" rows="5"></textarea>
+            </div>
+            <button class="cl-button" id="app.admin.page.users.banButton">
+                <span>Ban</span>
+            </button>
             <table class="cl-table">
                 <thead>
                     <tr>
@@ -2099,6 +2117,28 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
+                <tbody id="app.admin.page.users.bannedUsersContainer">
+                    <tr>
+                        <td>ID</td>
+                        <td>User Name</td>
+                        <td>Date</td>
+                        <td>
+                            <div class="cl-horizontal">
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">link</i>
+                                </button>
+                                <button class="cl-button">
+                                    <i class="material-symbols-outlined">person_off</i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><strong>Unbanned Users</strong></td>
+                    </tr>
+                </tbody>
                 <tbody id="app.admin.page.users.usersContainer">
                     <tr>
                         <td>ID</td>
@@ -3483,6 +3523,17 @@
                 this.getUserProfile().then(user => {
                     if (user) {
                         clApp.toast("person", "Now signed in as " + user.display_name);
+                        this.getBan(user.id).then(ban => {
+                            if (ban && new Date(ban.lift_date).getTime() > new Date().getTime()) {
+                                this.signOut().then(() => {
+                                    clApp.dialog.alert("You cannot sign in because you are banned.<br>Reason: " + ban.reason);
+                                });
+                            } else if (ban && new Date(ban.lift_date).getTime() < new Date().getTime()) {
+                                this.unbanUser(user.id).then(() => {
+                                    clApp.toast("info", "Unbanned.");
+                                });
+                            }
+                        });
                     } else {
                         clApp.toast("info", "Not signed in.");
                     }
@@ -3506,6 +3557,14 @@
                     return null;
                 }
                 const { data, error } = await this.client.auth.signInWithPassword({ email: email, password: password });
+                const ban = await this.getBan((await this.getUserProfile()).id);
+                if (ban && new Date(ban.lift_date) > new Date()) {
+                    await this.signOut();
+                    clApp.dialog.alert("You cannot sign in because you are banned.<br>Reason: " + ban.reason);
+                    return null;
+                } else if (new Date(ban.lift_date) < new Date()) {
+                    await this.unbanUser(await this.getUserProfile().id);
+                }
                 if (error) {
                     clApp.toast("error", `Error signing in: ${error.message}`);
                     return null;
@@ -3885,6 +3944,44 @@
                 } else {
                     clApp.toast("success", "Video created successfully!");
                 }
+            },
+            async banUser(userId, liftDate, reason) {
+                // Requires admin permissions. Ensure signed in user is admin.
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                const res = await this.client.from("bans").insert({
+                    user: userId,
+                    lift_date: new Date(liftDate),
+                    reason: reason,
+                });
+            },
+            async getBan(userId) {
+                // Requires admin permissions. Ensure signed in user is admin.
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                const res = await this.client.from("bans").select().eq('user', userId).maybeSingle();
+                return res.data;
+            },
+            async getBans() {
+                // Requires admin permissions. Ensure signed in user is admin.
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                const res = await this.client.from("bans").select();
+                return res.data;
+            },
+            async unbanUser(userId) {
+                // Requires admin permissions. Ensure signed in user is admin.
+                if (!this.client) {
+                    console.error("Supabase client is not initialized.");
+                    return;
+                }
+                const res = await this.client.from("bans").delete().eq('user', userId);
             },
         };
 
@@ -4303,6 +4400,7 @@
                         clApp.toast("person", "Now logged in as " + user.email);
                         clApp.pages.open("Home");
                         clApp.account.init();
+                        clApp.admin.fetch();
                     });
                 }
                 SUBtn.onclick = () => {
@@ -4320,6 +4418,7 @@
                         clApp.toast("person", "Now logged in as " + user.email);
                         clApp.pages.open("Home");
                         clApp.account.init();
+                        clApp.admin.fetch();
                     });
                 }
                 continueAsGuestBtn.onclick = () => {
@@ -5072,7 +5171,7 @@
                 clApp.pages.open("Loader")
                 clApp.supabase.getVideo(videoId).then(video => {
                     clApp.supabase.getUserProfile().then(user => {
-                        if (user.id !== video.creator.id) {
+                        if (user.id !== video.creator.id && !user.is_admin) {
                             clApp.toast("error", "You cannot delete a video that is not yours.");
                             clApp.pages.open("Content");
                             return;
@@ -5239,6 +5338,126 @@
             },
         }
 
+        clApp.admin = {
+            usersContainer: "app.admin.page.users.usersContainer",
+            bannedUsersContainer: "app.admin.page.users.bannedUsersContainer",
+            videosContainer: "app.admin.page.videos.videosContainer",
+            banSelect: "app.admin.page.users.banSelect",
+            banLiftDateInput: "app.admin.page.users.banLiftDateInput",
+            banReasonInput: "app.admin.page.users.banReasonInput",
+            banBtn: "app.admin.page.users.banButton",
+            init() {
+                const usersContainer = document.getElementById(this.usersContainer);
+                const bannedUsersContainer = document.getElementById(this.bannedUsersContainer);
+                const videosContainer = document.getElementById(this.videosContainer);
+                const banSelect = document.getElementById(this.banSelect);
+                const banLiftDateInput = document.getElementById(this.banLiftDateInput);
+                const banReasonInput = document.getElementById(this.banReasonInput);
+                const banBtn = document.getElementById(this.banBtn);
+                clApp.supabase.getUserProfiles().then(users => {
+                    banSelect.innerHTML = users.map(user => {
+                        return `<option value="${user.id}">${user.display_name} (${user.id})</option>`
+                    }).join("");
+                    banBtn.onclick = () => {
+                        clApp.pages.open("Loader");
+                        clApp.supabase.banUser(banSelect.value, banLiftDateInput.value, banReasonInput.value).then(() => {
+                            clApp.toast("info", "User banned!");
+                            this.fetch();
+                            clApp.pages.open("Admin");
+                        });
+                    }
+                    this.fetch();
+                });
+            },
+            fetch() {
+                const usersContainer = document.getElementById(this.usersContainer);
+                const bannedUsersContainer = document.getElementById(this.bannedUsersContainer);
+                const videosContainer = document.getElementById(this.videosContainer);
+                const banSelect = document.getElementById(this.banSelect);
+                const banLiftDateInput = document.getElementById(this.banLiftDateInput);
+                const banReasonInput = document.getElementById(this.banReasonInput);
+                const banBtn = document.getElementById(this.banBtn);
+                usersContainer.innerHTML = "";
+                bannedUsersContainer.innerHTML = "";
+                videosContainer.innerHTML = "";
+                clApp.supabase.getUserProfiles().then(users => {
+                    banSelect.innerHTML = users.map(user => {
+                        return `<option value="${user.id}">${user.display_name} (${user.id})</option>`
+                    }).join("");
+                    clApp.supabase.getBans().then(bans => {
+                        users.forEach(user => {
+                            if (bans.map(x => x.user).includes(user.id)) {
+                                bannedUsersContainer.innerHTML += `
+                                    <tr>
+                                        <td>${user.id}</td>
+                                        <td>${user.display_name}</td>
+                                        <td>${new Intl.DateTimeFormat("en-US", {dateStyle: "medium"}).format(new Date(user.created_at))}</td>
+                                        <td>
+                                            <div class="cl-horizontal">
+                                                <button class="cl-button" onclick="clApp.users.open(${user.id})">
+                                                    <i class="material-symbols-outlined">open_in_new</i>
+                                                </button>
+                                                <button class="cl-button" onclick="clApp.admin.unban(${user.id})">
+                                                    <i class="material-symbols-outlined">check</i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `;
+                            } else {
+                                usersContainer.innerHTML += `
+                                    <tr>
+                                        <td>${user.id}</td>
+                                        <td>${user.display_name}</td>
+                                        <td>${new Intl.DateTimeFormat("en-US", {dateStyle: "medium"}).format(new Date(user.created_at))}</td>
+                                        <td>
+                                            <div class="cl-horizontal">
+                                                <button class="cl-button" onclick="clApp.users.open(${user.id})">
+                                                    <i class="material-symbols-outlined">open_in_new</i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `;
+                            }
+                        });
+                    });
+                });
+                clApp.supabase.getVideos().then(videos => {
+                    videosContainer.innerHTML = videos.map(video => {
+                        return `
+                            <tr>
+                                <td>${video.title}</td>
+                                <td>${new Intl.DateTimeFormat("en-US", { timeStyle: "short", dateStyle: "short" }).format(new Date(video.created_at))}</td>
+                                <td>
+                                    <div class="cl-horizontal">
+                                        <button class="cl-button" onclick="clApp.videos.play(${video.id})">
+                                            <i class="material-symbols-outlined">open_in_new</i>
+                                        </button>
+                                        <button class="cl-button" onclick="clApp.content.deleteVideo(${video.id})">
+                                            <i class="material-symbols-outlined">delete</i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    }).join("");
+                });
+            },
+            unban(userId) {
+                clApp.supabase.unbanUser(userId).then(() => {
+                    clApp.toast("check_circle", "User unbanned");
+                    this.fetch();
+                });
+            },
+            ban(userId, liftDate, reason) {
+                clApp.supabase.banUser(userId, liftDate, reason).then(() => {
+                    clApp.toast("check_circle", "User banned");
+                    this.fetch();
+                });
+            },
+        }
+
         clApp.toast = function(icon, message) {
             const toast = document.createElement("div");
             toast.classList.add("cl-button");
@@ -5311,6 +5530,7 @@
             clApp.users.fetch();
             clApp.account.init();
             clApp.content.init();
+            clApp.admin.init();
             clApp.pages.open("Home");
             if (clApp.config.parameters.mode && clApp.config.parameters.id) {
                 if (clApp.config.parameters.mode == "game")
