@@ -10,6 +10,8 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link rel="stylesheet" href="/google-spinner.min.css">
+    <link rel="icon" href="/assets/logo/chillnet_favicon.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="/assets/logo/chillnet_favicon_white.png" media="(prefers-color-scheme: dark)">
     <style id="app.settingsStyles">
         :root {
             --cl-border-radius: 10px;
@@ -2257,7 +2259,7 @@
             </div>
         </div>
         <div class="boxed-content hidden" id="app.help.page.about">
-            <img src="https://placehold.co/600x100" alt="Chillnet">
+            <img src="/assets/logo/chillnet_logo_white.svg" alt="Chillnet">
             <h1>Made by Combiete Lantey</h1>
         </div>
         <div class="boxed-content is-not-centered hdden" id="app.help.page.faq">
@@ -2265,10 +2267,23 @@
                 <input type="checkbox" class="cl-collapsible-checkbox">
                 <div class="cl-horizontal cl-collapsible-top">
                     <span class="material-symbols-outlined cl-collapsible-arrow">arrow_right</span>
-                    <h3>Will there be any questions here?</h3>
+                    <h3>What is this?</h3>
                 </div>
                 <div class="cl-container cl-collapsible-content">
-                    Soon!
+                    You are currently using a curated social platform called Chillnet. Chat with
+                    other people around the world*, upload some eye candy with Videos*, or just play 
+                    games with your friends, all in one place.
+                    <small>*Requires an internet connection.</small>
+                </div>
+            </div>
+            <div class="cl-collapsible cl-container">
+                <input type="checkbox" class="cl-collapsible-checkbox">
+                <div class="cl-horizontal cl-collapsible-top">
+                    <span class="material-symbols-outlined cl-collapsible-arrow">arrow_right</span>
+                    <h3></h3>
+                </div>
+                <div class="cl-container cl-collapsible-content">
+                    
                 </div>
             </div>
         </div>
@@ -3632,7 +3647,7 @@
                         this.getBan(user.id).then(ban => {
                             if (ban && new Date(ban.lift_date).getTime() > new Date().getTime()) {
                                 this.signOut().then(() => {
-                                    clApp.dialog.alert("You cannot sign in because you are banned.<br>Reason: " + ban.reason);
+                                    clApp.dialog.alert("You cannot sign in because you are banned.<br>Reason: <pre>" + ban.reason + "</pre><br>Ban will lift on " + new Intl.DateTimeFormat("en-US",{dateStyle: "full"}).format(new Date(ban.lift_date)));
                                 });
                             } else if (ban && new Date(ban.lift_date).getTime() < new Date().getTime()) {
                                 this.unbanUser(user.id).then(() => {
@@ -3666,7 +3681,7 @@
                 const ban = await this.getBan(data.user.id);
                 if (ban && new Date(ban.lift_date) > new Date()) {
                     await this.signOut();
-                    clApp.dialog.alert("You cannot sign in because you are banned.<br>Reason:<br><pre>" + ban.reason + "</pre>");
+                    clApp.dialog.alert("You cannot sign in because you are banned.<br>Reason: <pre>" + ban.reason + "</pre><br>Ban will lift on " + new Intl.DateTimeFormat("en-US",{dateStyle: "full"}).format(new Date(ban.lift_date)));
                     return null;
                 } else if (ban && new Date(ban.lift_date) < new Date()) {
                     await this.unbanUser(data.user.id);
