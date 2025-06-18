@@ -331,11 +331,10 @@
             background: var(--cl-topbar-color);
             border-radius: var(--cl-border-radius);
             padding: 10px;
-            width: calc(100%);
         }
 
         .form-control, .row, .je-object__container, .je-indented-panel {
-            width: 100%;
+            
         }
 
         .cl-input input[type=file] {
@@ -4622,6 +4621,7 @@
                 const videoPlayer = document.getElementById(this.videoPlayer);
                 videoPlayerPage.classList.remove("hidden");
                 videoPlayer.src = video.video;
+                videoPlayer.dataset.poster = video.thumbnail || "";
                 const player = new Plyr(videoPlayer, {
                     title: video.title,
                     controls: `
@@ -5088,6 +5088,7 @@
                         disable_properties: true,
                         disable_collapse: true,
                         no_additional_properties: true,
+                        prompt_before_delete: false,
                         compact: true,
                         object_layout: "table",
                         startval: profile,
@@ -5332,6 +5333,7 @@
                     disable_properties: true,
                     disable_collapse: true,
                     no_additional_properties: true,
+                    prompt_before_delete: false,
                     compact: true,
                     object_layout: "table",
                 });
