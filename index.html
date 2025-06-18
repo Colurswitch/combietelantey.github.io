@@ -333,10 +333,6 @@
             padding: 10px;
         }
 
-        .form-control, .row, .je-object__container, .je-indented-panel {
-            
-        }
-
         .cl-input input[type=file] {
             display: flex;
             gap: 10px;
@@ -4710,7 +4706,15 @@
                 }
                 videoDescription.innerHTML = video.description;
                 clApp.supabase.getUserProfile().then(res => {
+                    if (!res) {
+                        videoCommentInput.placeholder = "Please log in to comment";
+                        videoCommentInput.disabled = true;
+                        videoCommentSubmitBtn.disabled = true;
+                        return;
+                    }
                     videoCommentInput.placeholder = "Commenting as " + res.display_name;
+                    videoCommentSubmitBtn.disabled = false;
+                    videoCommentInput.disabled = false;
                     videoCommentSubmitBtn.onclick = () => this.createComment(videoCommentInput.value);
                     this.renderComments();
                 });
@@ -4839,7 +4843,7 @@
                         return;
                     }
                     clApp.supabase.getCommentById(commentId).then(comment => {
-                        if (comment.author.id !== user.id) {
+                        if (comment.author.id !== user.id && !user.is_admin) {
                             clApp.toast("info","You cannot delete a comment that is not yours.");
                             clApp.pages.open("Videos", "Currently Playing")
                             return;
@@ -5557,6 +5561,11 @@
                         clApp.toast("info", "Settings reset to default.");
                     }
                 });
+            }
+            window.onbeforeunload = (e) => {
+                e.preventDefault();
+                e.returnValue = "Are you sure you want to leave?"; // For modern browsers
+                return "Are you sure you want to leave?" // For older browsers
             }
         };
         window.onerror = (message, src, lineno, colno, error) => {
