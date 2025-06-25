@@ -3,15 +3,18 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>CL - Home</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Chillnet</title>
     <link href="https://fonts.cdnfonts.com/css/product-sans" rel="stylesheet">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link rel="stylesheet" href="/google-spinner.min.css">
-    <link rel="icon" href="/assets/logo/chillnet_favicon.png" media="(prefers-color-scheme: light)">
+    <div id="app.settingsIcons">
+        <link rel="icon" href="/assets/logo/chillnet_favicon.png" media="(prefers-color-scheme: light)">
     <link rel="icon" href="/assets/logo/chillnet_favicon_white.png" media="(prefers-color-scheme: dark)">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
     <style id="app.settingsStyles">
         :root {
             --cl-border-radius: 10px;
@@ -351,7 +354,7 @@
             font-family: "Product Sans";
         }
 
-        .cl-input select option {
+        .cl-input select option, select option {
             color: black;
         }
 
@@ -404,7 +407,6 @@
 
         input[type=checkbox]:checked::before {
             content: "✓";
-            
         }
 
         .cl-input:has(input:invalid),
@@ -778,7 +780,7 @@
             max-width: 550px;
             aspect-ratio: 9 / 4;
             border-radius: var(--cl-border-radius);
-            object-fit: cover;
+            object-fit: contain;
         }
 
         .cl-game-notes-container {
@@ -1004,6 +1006,24 @@
         .plyr__progress {
             margin-right: 20px;
             flex: 1;
+        }
+
+        .cl-app {
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: var(--cl-border-radius);
+            background: var(--cl-topbar-color);
+        }
+
+        .cl-app-icon {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--cl-border-radius);
         }
     </style>
 </head>
@@ -1339,6 +1359,47 @@
             Game description...
         </p>
     </fullscreen>
+    <!--Apps-->
+    <section class="cl-panel hidden" id="app.appsScreen.page">
+        <div class="topbar">
+            <div class="topbar-left" title="Apps" data-targetPage="Home">
+                <i class="material-symbols-outlined">apps</i>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered">
+            <h1>Apps</h1>
+            <div class="cl-card-grid" id="app.appsScreen.page.appsContainer">
+                <div class="cl-app">
+                    <img src="https://placehold.co/2048" class="cl-app-icon" alt="App Icon">
+                    <h3>App Name</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--App-->
+    <section class="cl-panel hidden" id="app.appScreen.page">
+        <div class="topbar">
+            <div class="topbar-left" title="App" data-targetPage="Home">
+                <i class="material-symbols-outlined">apps</i>
+            </div>
+            <div class="topbar-right">
+                <h3 class="CL-DateMonitor" title="12:00 PM on January 1, 2025">12:00 PM</h3>
+                <span class="material-symbols-outlined CL-BatteryMonitor"
+                    title="100%, charging">battery_charging_full</span>
+            </div>
+        </div>
+        <div class="boxed-content is-not-centered">
+            <h1 id="app.appScreen.page.title">App Name</h1>
+            <img src="https://placehold.co/2048" alt="App Icon" class="cl-app-icon" id="app.appScreen.page.icon">
+            <div class="cl-horizontal" id="app.appScreen.page.actionBtnsContainer"></div>
+            <p class="cl-paragraph" id="app.appScreen.page.description">App description...</p>
+        </div>
+    </section>
     <!--Minecraft (Eaglercraft)-->
     <section class="cl-panel hidden" id="app.minecraftScreen.page">
         <div class="topbar">
@@ -2583,6 +2644,11 @@
                     description: "View, play and discover new games."
                 },
                 {
+                    title: "Apps",
+                    icon: "apps",
+                    description: "View and use apps."
+                },
+                {
                     title: "Minecraft",
                     icon: "deployed_code",
                     description: "View, play and add Minecraft versions, mods, worlds and more."
@@ -2685,6 +2751,14 @@
                 {
                     name: "Game",
                     id: "app.gameScreen.page"
+                },
+                {
+                    name: "Apps",
+                    id: "app.appsScreen.page"
+                },
+                {
+                    name: "App",
+                    id: "app.appScreen.page",
                 },
                 {
                     name: "Minecraft",
@@ -2949,7 +3023,878 @@
                         download: "/games/static/Chrome Dino.htm",
                         date: new Date("2025-6-18"),
                         id: "11",
-                    }
+                    },
+                    {
+                        title: "Achievement Unlocked",
+                        description: "A platformer game where you unlock achievements by completing various tasks.",
+                        photo: "/games/static/achievementunlocked/achievementunlocked.png",
+                        link: "/games/static/achievementunlocked/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "12",
+                    },
+                    {
+                        title: "Adrenaline Challenge",
+                        description: "Your objective is to collect all the tags and go to exit as fast as possible while avoiding to collide your head with any walls.",
+                        photo: "/games/static/adrenalinechallenge/adrenalinechallenge.jpg",
+                        link: "/games/static/adrenalinechallenge/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "13",
+                    },
+                    {
+                        title: "Avalanche!",
+                        description: "Avalanche is a free platform puzzle game. Are you a towelette, or maybe a marshmallow? Whatever the case, there are huge, square bolts to dodge. Can you avoid this avalanche?",
+                        photo: "/games/static/avalanche/avalanche.png",
+                        link: "/games/static/avalanche/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "14",
+                    },
+                    {
+                        title: "Basketball Stars",
+                        description: "<strong>Basketball Stars</strong> is a <strong>basketball</strong> game where you join in thrilling matches right on your device. Choose your favorite legendary and kick off all opponents!",
+                        photo: "/games/static/basketball-stars/assets/images/basketball-stars.png",
+                        link: "/games/static/basketball-stars/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "15",
+                    },
+                    {
+                        title: "Battle for Gondor",
+                        description: "Do you have what it takes to save <strong>Gondor</strong> and Middle Earth? Take part in 20 epic <strong>battles</strong> to defeat the orcs once and for all. Use troops such as archers, dwarves, knights, priests, gryphons and even Gandalf!",
+                        photo: "/games/static/battleforgondor/battleforgondor.png",
+                        link: "/games/static/battleforgondor/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "16",
+                    },
+                    {
+                        title: "Big Red Button",
+                        description: "You shall not press the big red button! Or will you?",
+                        photo: "/games/static/bigredbutton/bigredbutton.png",
+                        link: "/games/static/bigredbutton/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "17",
+                    },
+                    {
+                        title: "Black Knight",
+                        description: "The Black Knight is a free platformer game. Inside birds there are coins--who knew? Smash them and grab the money, along with the peasants and shops. Can you grab enough gold to appease the king?",
+                        photo: "/games/static/blackknight/blackknight.png",
+                        link: "/games/static/blackknight/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "18",
+                    },
+                    {
+                        title: "Bloons Tower Defense",
+                        description: "Bloons Tower Defense is a free tower defense game. Place your towers and pop the bloons before they reach the end of the track.",
+                        photo: "/games/static/bloonstd/bloonstd.png",
+                        link: "/games/static/bloonstd/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "19",
+                    },
+                    {
+                        title: "Bloons Tower Defense 2",
+                        description: "Bloons Tower Defense 2 is a free tower defense game. Place your towers and pop the bloons before they reach the end of the track.",
+                        photo: "/games/static/bloonstd2/bloonstd2.png",
+                        link: "/games/static/bloonstd2/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "20",
+                    },
+                    {
+                        title: "Bloxorz",
+                        description: "Bloxorz is a free puzzle game. Your goal is to get the block to the end of the level by moving it around and flipping it over.",
+                        // Note: Wile importing games this game's folder is named "bloxors" instead of "bloxorz".
+                        photo: "/games/static/bloxors/block.png",
+                        link: "/games/static/bloxors/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "21",
+                    },
+                    {
+                        title: "Boxhead 2Play",
+                        description: "Boxhead 2Play is a free top-down shooter game. Fight against zombies and other players in various game modes.",
+                        photo: "/games/static/boxhead2play/boxhead2play.jpg",
+                        link: "/games/static/boxhead2play/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "22",
+                    },
+                    {
+                        title: "Breaking The Bank",
+                        description: "Breaking The Bank is the first installment of the Henry Stickmin series. In this game, you play as Henry Stickmin, a stick figure who is trying to break into a bank.",
+                        photo: "/games/static/breakingthebank/breakingthebank.png",
+                        link: "/games/static/breakingthebank/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "23",
+                    },
+                    {
+                        title: "Cannon Basketball 4",
+                        description: "Cannon Basketball 4 is a free physics-based puzzle game. Use your cannon to shoot the basketball into the hoop.",
+                        photo: "/games/static/cannon-basketball-4/img/splash.png",
+                        link: "/games/static/cannon-basketball-4/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "24",
+                    },
+                    {
+                        title: "Canyon Defense",
+                        description: `In the world of Canyon Defense game, there's a peaceful town beside a winding canyon. But there's a problem! On the other side of the canyon, there are enemies who want to invade the town. Luckily, you're here to save the day! It's up to you to build towers and keep those enemies far away from the town's gates.
+                        <br><br>
+                        Your big job is to create the ultimate defense system. Make sure to hold strong until the very last wave of enemies, ensuring they never reach your base.`,
+                        photo: "/games/static/canyondefense/canyondefense.png",
+                        link: "/games/static/canyondefense/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "25",
+                    },
+                    {
+                        title: "Cell Machine",
+                        description: `Arrange cells. Build machines. Destroy enemies.
+                        <br><br>
+                        Each cell on its own has a simple function, like moving or spawning other cells. But when combined, more interesting behavior emerges...`,
+                        photo: "/games/static/cell-machine/img/icon.png",
+                        banner: "/games/static/cell-machine/img/te9nDu.png",
+                        link: "/games/static/cell-machine/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "26",
+                    },
+                    {
+                        title: "Champion Archer",
+                        description: "Champion Archer is a free stick game. Your life depends on your aim with arrows. Will you be able to slay enough stick soldiers to grab the illustrious quick shot?",
+                        photo: "/games/static/championarcher/championarcher.png",
+                        link: "/games/static/championarcher/index.html",
+                        date: new Date("2025-6-21"),
+                        id: "27",
+                    },
+                    {
+                        title: "CircloO",
+                        description: "CircloO is a puzzle game, where you control a ball within a large circle. You have to roll the ball around the circle to complete the level. In circloO, you must use momentum to fight the forces of gravity.",
+                        photo: "/games/static/circlo/img/download.png",
+                        link: "/games/static/circlo/index.html",
+                        download: "/games/static/circlo/circlo.zip",
+                        date: new Date("2025-6-21"),
+                        id: "28",
+                    },
+                    {
+                        title: "Connect 3",
+                        description: "Connect 3 is a simple and relaxing puzzle game. Your goal is to connect three or more tiles of the same color to clear them from the board.",
+                        photo: "/games/static/connect3/connect3.png",
+                        link: "/games/static/connect3/index.html",
+                        download: "/games/static/connect3/connect3.zip",
+                        date: new Date("2025-6-21"),
+                        id: "29",
+                    },
+                    {
+                        title: "Cookie Clicker",
+                        description: "Cookie Clicker is a free incremental game. Your goal is to bake as many cookies as possible by clicking on the cookie and buying upgrades.",
+                        photo: "/games/static/cookie-clicker/cookie1.png",
+                        link: "/games/static/cookie-clicker/index.html",
+                        download: "/games/static/cookie-clicker/cookie-clicker.zip",
+                        date: new Date("2025-6-21"),
+                        id: "30",
+                    },
+                    {
+                        title: "Creative Kill Chamber",
+                        description: "Creative Kill Chamber is a fun point-and-click stickman adventure game that involves escaping from a chamber full of armed enemies. Eliminate all of the soldiers and make your escape!",
+                        photo: "/games/static/creativekillchamber/creativekillchamber.jpg",
+                        link: "/games/static/creativekillchamber/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "31",
+                    },
+                    {
+                        title: "CS:GO Clicker",
+                        description: "Welcome to CSGO Clicker, the most realistic CS:GO case opening simulator that lets you experience the thrill of unboxing rare skins without spending real money. Test your luck and strategy in a risk-free environment!",
+                        photo: "/games/static/csgo-clicker/images/case1.png",
+                        banner: "/games/static/csgo-clicker/images/sunburst.png",
+                        link: "/games/static/csgo-clicker/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "32",
+                    },
+                    {
+                        title: "Cut The Rope",
+                        description: "Cut the Rope to feed large pieces of candy to a hungry creature called Om Nom. Collect all the stars for the highest rating and progress to more challenging levels with new puzzles.",
+                        photo: "/games/static/ctr/logo.png",
+                        link: "/games/static/ctr/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "33",
+                    },
+                    {
+                        title: "Cut The Rope: Holiday",
+                        description: "Cut the Rope: Holiday is a festive version of the original Cut the Rope game. Help Om Nom collect candy during the holiday season by cutting ropes and solving puzzles.",
+                        photo: "/games/static/ctr-holiday/Holiday_Gift.webp",
+                        link: "/games/static/ctr-holiday/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "34",
+                    },
+                    {
+                        title: "Cut The Rope: Time Travel",
+                        description: "Cut the Rope: Time Travel is a time-traveling adventure where you help Om Nom collect candy from different historical periods by cutting ropes and solving puzzles.",
+                        photo: "/games/static/ctr-tr/logo.png",
+                        link: "/games/static/ctr-tr/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "35",
+                    },
+                    {
+                        title: "Cubefield",
+                        description: "Cubefield is a free endless runner game. Your goal is to navigate through a field of cubes without crashing into them.",
+                        photo: "/games/static/cubefield/cubefield.jpg",
+                        link: "/games/static/cubefield/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "36",
+                    },
+                    {
+                        title: "Deal Or No Deal",
+                        description: "Deal Or No Deal is a game based on the popular TV show. Your goal is to open boxes and try to get the best deal possible.",
+                        photo: "/games/static/deal-or-no-deal/index.jpg",
+                        link: "/games/static/deal-or-no-deal/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "37",
+                    },
+                    {
+                        title: "Death Run 3D",
+                        description: "Death Run 3D is an endless 3D platformer game. Your goal is to run through the levels and avoid obstacles for as long as possible.",
+                        photo: "/games/static/death-run-3d/deathrun3d.png",
+                        link: "/games/static/death-run-3d/img/death.png",
+                        date: new Date("2025-6-22"),
+                        id: "38",
+                    },
+                    {
+                        title: "Defend The Tank",
+                        description: "Control a team of tough soldiers. Drag and drop soldiers to place them at strategic positions on the tank. Keep the tank alive at all costs. Rotate your soldiers to inflict maximum damage on the enemy. Heal your tanks with mechanic soldiers. Collect coins to upgrade your tank after each battle. Unlock special soldier classes.",
+                        photo: "/games/static/defend-the-tank/media/graphics/splash/portrait.png",
+                        link: "/games/static/defend-the-tank/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "39",
+                    },
+                    {
+                        title: "Draw The Hill",
+                        description: "Click and drag to draw a path for your car. Grab coins to upgrade your car and avoid the pipes along the way!",
+                        photo: "/games/static/draw-the-hill/icons/icon-512.png",
+                        link: "/games/static/draw-the-hill/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "40",
+                    },
+                    {
+                        title: "Duck Life 3",
+                        description: "Breed genetically modified ducks to race in competitions! First, you will choose an egg. Each duck begins with unique running, swimming, climbing, and flying skills. Compete in amateur, advanced, and professional leagues. Train before each race to ensure a swift victory!",
+                        photo: "/games/static/ducklife3/duck.png",
+                        link: "/games/static/ducklife3/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "41",
+                    },
+                    {
+                        title: "Edge Not Found",
+                        description: "Edge Not Found is a Sokoban-style puzzle game set on an infinitely repeating grid. There are 20+ puzzles and they can get pretty tricky.",
+                        photo: "/games/static/edgenotfound/edge.png",
+                        link: "/games/static/edgenotfound/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "42",
+                    },
+                    {
+                        title: "Endless War 3",
+                        description: "Endless War 3, a free online Action game brought to you by Armor Games. Protect your hero against waves of enemies in this tactical combat sim.",
+                        photo: "/games/static/endlesswar3/endlesswar3.png",
+                        link: "/games/static/endlesswar3/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "43",
+                    },
+                    {
+                        title: "Evil Glitch",
+                        description: "Evil Glitch is a 2D arcade shooting game with retro aesthetics inspired by 80’s media, featuring an universe and plot line based on Sacred Geometry. Survive from swarm of enemies. How long can you last?",
+                        photo: "/games/static/evil-glitch/icon.jpeg",
+                        link: "/games/static/evil-glitch/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "44",
+                    },
+                    {
+                        title: "Exo",
+                        description: "Exo is a space-based tower defense game created by Jack Oatley and ai Doge for the js13kGames competition in 20181. In this game, you build satellites and stations around planets orbiting a distant star to survive waves of enemies1. The unique challenge of the js13kGames competition is to create a game using only 13 kilobytes of JavaScript, making “Exo” an impressive feat of game development.",
+                        photo: "/games/static/exo/img/small.jpg",
+                        link: "/games/static/exo/index.html",
+                        download: "/games/static/exo/exo.zip",
+                        date: new Date("2025-6-22"),
+                        id: "45",
+                    },
+                    {
+                        title: "Factory Balls",
+                        description: "Factory Balls is a free puzzle game. Your goal is to create the specified ball by combining different colors and patterns.",
+                        photo: "/games/static/factoryballs/images/splash.png",
+                        link: "/games/static/factoryballs/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "46",
+                    },
+                    {
+                        title: "Flappy Bird",
+                        description: "Flappy Bird is a free endless runner game. Your goal is to navigate through pipes without hitting them.",
+                        photo: "/games/static/flappy-bird/assets/thumb.png",
+                        banner: "/games/static/flappy-bird/assets/sky.png",
+                        link: "/games/static/flappy-bird/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "47",
+                    },
+                    {
+                        title: "Flash Tetris",
+                        description: "The classic game of Tetris, now in Flash! Rotate and place falling blocks to create complete lines.",
+                        photo: "/games/static/flashtetris/flashtetris.png",
+                        link: "/games/static/flashtetris/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "48",
+                    },
+                    {
+                        title: "Game Inside a Game Inside a Game Inside a Game Inside a Game",
+                        description: "This is a puzzle platformer where players navigate through levels that involve a game within a game mechanic, starting with simple tasks and progressing to more complex challenges.",
+                        photo: "/games/static/game-inside/img/display.png",
+                        banner: "/games/static/game-inside/img/display.png",
+                        link: "/games/static/game-inside/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "49",
+                    },
+                    {
+                        title: "Geometry Dash (Scratch ver.)",
+                        description: "Geometry Dash is a rhythm-based platformer game with various modes, levels, and features. Learn how to play, what makes it challenging and addictive, and how to customize your character and music.",
+                        photo: "/games/static/geodash/geoscratchicon.png",
+                        link: "/games/static/geodash/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "50",
+                    },
+                    {
+                        title: "Getaway Shootout",
+                        description: "In Getaway Shootout you race three others to the extraction point. This is no ordinary race however, as you can only jump your way to the finish line. Try out-jumping the computer, or one of your friends in this two-player game.",
+                        photo: "/games/static/getaway-shootout/img/index.jpg",
+                        link: "/games/static/getaway-shootout/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "51",
+                    },
+                    {
+                        title: "Gimme The Airpod",
+                        description: "A game where you fight your brother with an axe to get your airpod back. Features 15 arenas, 8 colors, realistic axe physics and flavortext.",
+                        photo: "/games/static/gimme-the-airpod/img/logo.png",
+                        link: "/games/static/gimme-the-airpod/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "52",
+                    },
+                    {
+                        title: "Glass City",
+                        description: "It's open world game where you can explore, use different fire-arms, kill puppets, destroy environment, pick up items (puppets, grenades) and just have fun.",
+                        photo: "/games/static/glass-city/image.png",
+                        banner: "/games/static/glass-city/banner.png",
+                        link: "/games/static/glass-city/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "53",
+                    },
+                    {
+                        title: "Hacker Typer",
+                        description: `Hacker Typer lets you type like a hacker and simulate coding on your screen. You can also trigger "Access Granted" or "Access Denied" messages with keyboard shortcuts.`,
+                        photo: "/games/static/hacker-type/logo192.png",
+                        link: "/games/static/hacker-type/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "54",
+                    },
+                    {
+                        title: "Hover Bot Arena",
+                        description: "Complete all of the objectives, leaving only a pile of rubble behind.",
+                        photo: "/games/static/hba/hoverbotarena.jpg",
+                        link: "/games/static/hba/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "55",
+                    },
+                    {
+                        title: "Helicopter",
+                        description: "Helicopter is a flying game similar to Flappy Bird. Your goal is to navigate through obstacles as long as you can without crashing or hitting the ground.",
+                        photo: "/games/static/helicopter/helicopter.png",
+                        link: "/games/static/helicopter/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "56",
+                    },
+                    {
+                        title: "Hex Empire",
+                        description: "Hex Empire is the action packed turn-based strategy game in which you will try and conquer all by domination of territory. You will start with a single nation, then your goal is to strategize and dominate the map by overruling countries attacking city by city with your armies and more importantly your winning tactics.",
+                        photo: "/games/static/hexempire/hexempire.jpg",
+                        link: "/games/static/hexempire/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "57",
+                    },
+                    {
+                        title: "HexGL",
+                        description: "HexGL is a futuristic racing game built by Thibaut Despoulain (BKcore) using HTML5, Javascript and WebGL. Challenge your friends on this fast-paced 3D game!",
+                        photo: "/games/static/HexGL/icon.png",
+                        banner: "/games/static/HexGL/textures/skybox/dawnclouds/px.jpg",
+                        link: "/games/static/HexGL/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "58",
+                    },
+                    {
+                        title: "Idle Breakout",
+                        description: "Idle Breakout is a brick breaking idle game where you must unlock and upgrades different types of balls which will destroy the bricks on your behalf!",
+                        photo: "/games/static/idle-breakout/img/thumbnail.png",
+                        link: "/games/static/idle-breakout/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "59",
+                    },
+                    {
+                        title: "Idle Shark",
+                        description: "You are a shark in a strange blue sea. You feel a bit hungry.",
+                        photo: "/games/static/idle-shark/img/sharkgame.png",
+                        banner: "/games/static/idle-shark/img/bg/bg-gate.png",
+                        link: "/games/static/idle-shark/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "60",
+                    },
+                    {
+                        title: "Impossible Quiz",
+                        description: "The Impossible Quiz is an online quiz game that is… Almost impossible. The questions are all difficult to answer and require lateral thinking. There are 110 questions to get through and you only have three lives, so make sure you're ready to think creatively!",
+                        photo: "/games/static/impossiblequiz/impossiblequiz.png",
+                        link: "/games/static/impossiblequiz/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "61",
+                    },
+                    {
+                        title: "Interactive Buddy",
+                        description: "Interactive Buddy is an arcade game where you interact with your virtual buddy. For every interaction, you earn money to buy new weapons, skins, and more!",
+                        photo: "/games/static/interactivebuddy/interactivebuddy.jpg",
+                        link: "/games/static/interactivebuddy/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "62",
+                    },
+                    {
+                        title: "Just One Boss",
+                        description: "Just One Boss is a fun and challenging arcade game in which you have one aim - to defeat the boss! As the title suggests, you have only one boss to defeat, but this boss is difficult and cunning! You control a cute little blue slime ball and you must move around the playing field avoiding the boss's attacks. To damage the boss, you must move over the white tiles that appear.",
+                        photo: "/games/static/just-one-boss/pv1Gr5.png",
+                        link: "/games/static/just-one-boss/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "63",
+                    },
+                    {
+                        title: "Learn To Fly",
+                        description: "Launch the penguin as far as you can, can you get all the upgrades? At first, it will be very hard, but you need to collect your first coins to buy upgrades. Then, you can slowly fly a longer distance, make more money, and buy all the upgrades. Prove that penguin can fly!",
+                        photo: "/games/static/learntofly/learntofly.png",
+                        link: "/games/static/learntofly/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "64",
+                    },
+                    {
+                        title: "Mario (HTML ver.)",
+                        description: "The classic Super Mario game, recreated in HTML!",
+                        photo: "/games/static/mario/Theme/Mario.gif",
+                        link: "/games/static/mario/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "65",
+                    },
+                    {
+                        title: "Matrix Rampage",
+                        description: "The Matrix fans out there will have fun with this one. You play as Neo in this game, jumping to and from floors on buildings and killing agents along the way. Guns, swords, staffs, and pretty much everything else on the scenario can be used to get the job done.",
+                        photo: "/games/static/matrixrampage/matrixrampage.jpg",
+                        link: "/games/static/matrixrampage/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "66",
+                    },
+                    {
+                        title: "Minesweeper",
+                        description: `Minesweeper is a logic puzzle video game genre generally played on personal computers. The game features a grid of clickable tiles, with hidden "mines" (depicted as naval mines in the original game) dispersed throughout the board. The objective is to clear the board without detonating any mines, with help from clues about the number of neighboring mines in each field.`,
+                        photo: "/games/static/minesweeper/img/minesweeper.png",
+                        link: "/games/static/minesweeper/index.html",
+                        date: new Date("2025-6-22"),
+                        id: "67",
+                    },
+                    {
+                        title: "Mini-Putt",
+                        description: "Mini Putt is everyone's favorite crazy golf game from the Flash era. Tackle various mini-golf courses and check out your final score at the end. Compare the final results with your friends to decide who is the Mini Putt champion.",
+                        photo: "/games/static/miniputt/miniputt.png",
+                        link: "/games/static/miniputt/index.html",
+                        date: new Date("2025-6-23"),
+                        id: "68",
+                    },
+                    {
+                        title: "Missiles",
+                        description: "Just a simple game about missiles, what could go wrong?",
+                        photo: "/games/static/missiles/miss.png",
+                        link: "/games/static/missiles/index.html",
+                        date: new Date("2025-6-23"),
+                        id: "69",
+                    },
+                    {
+                        title: "Moto X3M",
+                        description: "Moto X3M brings awesome bike racing with beautifully crafted levels straight to your mobile. So grab your motorbike, strap on your helmet and grab some airtime over obstacles to beat the clock on amazing off road circuits.",
+                        photo: "/games/static/motox3m/splash.jpg",
+                        link: "/games/static/motox3m/index.html",
+                        date: new Date("2025-6-23"),
+                        id: "70",
+                    },
+                    {
+                        title: "Moto X3M: Pool Party",
+                        description: "It has a lot of the same elements as Moto X3M, just with a few twists and turns that make it a unique enough experience.",
+                        photo: "/games/static/motox3m-pool/splash.jpg",
+                        link: "/games/static/motox3m-pool/index.html",
+                        date: new Date("2025-6-23"),
+                        id: "71",
+                    },
+                    {
+                        title: "Moto X3M: Spooky Land",
+                        description: "Get on your bike and brave the dangers that await you, incredible jumps, looping, traps to avoid, deadly saws and whatnot will require your concentration at all times to not fall.",
+                        photo: "/games/static/motox3m-spooky/splash.jpeg",
+                        link: "/games/static/motox3m-spooky/index.html",
+                        date: new Date("2025-6-23"),
+                        id: "72",
+                    },
+                    {
+                        title: "Moto X3M: Winter",
+                        description: "Play Moto X3M Winter, a realistic and fun motocross game with icy roads and snowy ways. Use your skills to win over the tricky routes and enjoy the stunning graphics and sound effects.",
+                        photo: "/games/static/motox3m-winter/download.jpeg",
+                        link: "/games/static/motox3m-winter/index.html",
+                        date: new Date("2025-6-23"),
+                        id: "73",
+                    },
+                    {
+                        title: "n-gon",
+                        description: "n-gon is a game that uses the matter.js physics engine to create dynamic and interactive levels. You can customize the settings, controls, and maps to test your skills and have fun.",
+                        photo: "/games/static/n-gon/bot.png",
+                        banner: "/games/static/n-gon/img/n-gonbot.png",
+                        link: "/games/static/n-gon/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "74",
+                    },
+                    {
+                        title: "NS-SHAFT",
+                        description: "NS-Shaft is a simple Japanese game made by NAGI-P Soft. The object of the game is that the main character must go down (descend) as many floors (levels) as possible.",
+                        photo: "/games/static/ns-shaft/icon.png",
+                        banner: "/games/static/ns-shaft/bg.png",
+                        link: "/games/static/ns-shaft/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "75",
+                    },
+                    {
+                        title: "Pandemic 2",
+                        description: "In Pandemic 2, you need to manage a disease (including naming your own disease, like Coronavirus) with a goal to infect all the people in the world!",
+                        photo: "/games/static/pandemic2/pandemic2.png",
+                        link: "/games/static/pandemic2/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "76",
+                    },
+                    {
+                        title: "Papa's Pizzeria",
+                        description: "Papa Louie has left the pizzeria for a few days and needs your help. You are playing as Roy, Papa Louie's nephew. It is up to you, Roy, to take control of the pizzeria and keep things running smoothly. This means that you must take customers' orders, assemble the pizzas, and bake them to perfection.",
+                        photo: "/games/static/papaspizzaria/papaspizaria.jpg",
+                        link: "/games/static/papaspizzaria/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "77",
+                    },
+                    {
+                        title: "Paper.io 2",
+                        description: "Welcome to the next level of addictive and thrilling gameplay with Paper.io 2! Enter a colorful and dynamic world where strategy, skill, and cunning are your greatest allies. Prepare to embark on an epic journey of conquest as you strive to dominate the virtual realm and become the ultimate champion!",
+                        photo: "/games/static/paperio2/images/icon512.png",
+                        link: "/games/static/paperio2/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "78",
+                    },
+                    {
+                        title: "Papery Planes",
+                        description: "Papery Planes is a skill-based online game where you must fly your paper plane as far as possible while avoiding obstacles and navigating changing weather conditions.",
+                        photo: "/games/static/papery-planes/splash.jpg",
+                        banner: "/games/static/papery-planes/screenshots/1.jpg",
+                        link: "/games/static/papery-planes/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "79",
+                    },
+                    {
+                        title: "Particle Clicker",
+                        description: "An addictive incremental game that was made during the CERN Webfest 2014. It takes the player on a historic journey through modern particle physics.",
+                        photo: "/games/static/particle-clicker/assets/pc32@2x.png",
+                        banner: "/games/static/particle-clicker/assets/info/jpsi.png",
+                        link: "/games/static/particle-clicker/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "80",
+                    },
+                    {
+                        title: "PolyBranch",
+                        description: "PolyBranch is a minimalist 3D game. Avoid the branches protruding from the walls as you fly through the tunnel. Dodging branches may seem easy at first, but how long can you hold up as you approach terminal velocity? Dive in, stay focused, and enjoy the ride!",
+                        link: "/games/static/polybranch/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "81",
+                    },
+                    {
+                        title: "Portal (Flash ver.)",
+                        description: "Portal: The Flash Version brings the epic console game straight to your web browser and mobile devices! If you haven't heard of Portal then you are missing out! In this game, you use your special physics gun to create inter-dimensional portals in-between walls and objects. You must use these portals to navigate through a series of levels and challenges.",
+                        photo: "/games/static/portalflash/portaltheflashversuin.jpg",
+                        link: "/games/static/portalflash/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "82",
+                    },
+                    {
+                        title: "Push the Square",
+                        description: "A mysterious square has appeared in your house.  It seems to do nothing but rotate clockwise, so you are gonna spend all your money making sure it does.",
+                        link: "/games/static/push-the-square/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "83",
+                    },
+                    {
+                        title: "Push Your Luck",
+                        description: "Welcome to the Push Your Luck game show, a cool way to learn about probability! Spin the wheel to find the target number, then guess if the next spin will be HIGHER or LOWER.",
+                        photo: "/games/static/push-your-luck/assets/img/push.png",
+                        link: "/games/static/push-your-luck/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "84",
+                    },
+                    {
+                        title: "Retro Bowl",
+                        description: "Retro Bowl is an American football game in retro style where your purpose is to coach your team and win a prize at the end of each season.",
+                        photo: "/games/static/retro-bowl/img/icon.jpg",
+                        banner: "/games/static/retro-bowl/img/splash.png",
+                        link: "/games/static/retro-bowl/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "85",
+                    },
+                    {
+                        title: "Rolly Vortex",
+                        description: "Roll your ball through various levels and avoid obstacles in this offline game.",
+                        photo: "/games/static/rolly-vortex/icon-256.png",
+                        link: "/games/static/rolly-vortex/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "86",
+                    },
+                    {
+                        title: "Rooftop Snipers",
+                        description: "Rooftop Snipers is created by New Eich Games, the creators of the sequel to this game Rooftop Snipers 2, but also Getaway Shootout, Tube Jumpers, Ping Pong Chaos and House of Hazards.",
+                        photo: "/games/static/rooftop-snipers/img/thumb.png",
+                        link: "/games/static/rooftop-snipers/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "87",
+                    },
+                    {
+                        title: "Sand Game",
+                        photo: "/games/static/sand-game/sand.png",
+                        link: "/games/static/sand-game/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "88",
+                    },
+                    {
+                        title: "Slope",
+                        description: "Slope is the ultimate running game that will put your skills to the test. Speed down on a randomized slope. The farther you go, the faster your ball travels. This game might look simple but playing this will give you extreme adrenaline rush. Just remember to avoid obstacles and those red blocks. Always be on track to get a high score and you might have your name on the leaderboard!",
+                        photo: "/games/static/slope/slope4.jpeg",
+                        banner: "/games/static/slope/R.jpg",
+                        link: "/games/static/slope/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "89",
+                    },
+                    {
+                        title: "Super Mario 64",
+                        photo: "/games/static/sm64/logo.png",
+                        link: "/games/static/sm64/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "90",
+                    },
+                    {
+                        title: "Smoking Barrels",
+                        description: "Get yourself a gun and some ammo and face bandits in the Wild West. Be fast so you can win the duel. Rescue Wings!",
+                        photo: "/games/static/smokingbarrels/smokingbarrels.jpg",
+                        link: "/games/static/smokingbarrels/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "91",
+                    },
+                    {
+                        title: "Solitaire",
+                        photo: "/games/static/solitaire/img/hover.jpg",
+                        banner: "/games/static/solitaire/screen-shot-win.png",
+                        link: "/games/static/solitaire/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "92",
+                    },
+                    {
+                        title: "Sort The Court",
+                        description: "Sort the Court! is a game where you give yes or no answers to various scenarios and influence the fate of a kingdom.",
+                        photo: "/games/static/sort-the-court/img/splash.png",
+                        link: "/games/static/sort-the-court/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "93",
+                    },
+                    {
+                        title: "Stack",
+                        description: "Stack is a browser-based game that challenges you to stack falling blocks perfectly and grow your stack higher.",
+                        photo: "/games/static/stack/stack.png",
+                        banner: "/games/static/stack/featured-stack.jpg",
+                        link: "/games/static/stack/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "94",
+                    },
+                    {
+                        title: "Stack Bump 3D",
+                        description: "Stack Bump 3D is an awesome time-killing game that you'll definitely enjoy. Shoot up the tower to its last block and move on with the next tower. Keep on going until you finish!",
+                        photo: "/games/static/stack-bump-3d/thumbnail.jpg",
+                        link: "/games/static/stack-bump-3d/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "95",
+                    },
+                    {
+                        title: "Stickwar",
+                        description: "Control your army and fight against other nations in this strategy game. Learn different skills, unlock skins, and survive zombies in various modes.",
+                        photo: "/games/static/stickwar/stickwar.jpg",
+                        link: "/games/static/stickwar/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "96",
+                    },
+                    {
+                        title: "Storm The House 2",
+                        description: "Storm The House 2 is a sequel to Storm The House. Enjoy!",
+                        photo: "/games/static/stormthehouse2/stormthehouse2.jpg",
+                        link: "/games/static/stormthehouse2/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "97",
+                    },
+                    {
+                        title: "SuperHot",
+                        description: "Jump in and shatter the enemies! The SuperHot web game is a free-to-play prototype designed as a demo for the full game.",
+                        photo: "/games/static/superhot/hot.jpg",
+                        link: "/games/static/superhot/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "98",
+                    },
+                    {
+                        title: "Swerve",
+                        photo: "/games/static/swerve/img/favicon.jpg",
+                        link: "/games/static/swerve/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "99",
+                    },
+                    {
+                        title: "Tactical Assassin 2",
+                        description: "Tactical Assassin 2 is a game in which you play as a sniper in the shadows. You'll be given different targets to eliminate, and you'll all do them while hidden away from the enemy.",
+                        photo: "/games/static/tacticalassasin2/tacticalassasin2.png",
+                        link: "/games/static/tacticalassasin2/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "100",
+                    },
+                    {
+                        title: "Tank Trouble 2",
+                        description: "Tank Trouble 2 is an online war game where you blast bouncing missiles at enemy war vehicles. Tank Trouble 2 pits you against clever army generals in mazelike battlefields.",
+                        photo: "/games/static/tank-trouble-2/tank.jpeg",
+                        link: "/games/static/tank-trouble-2/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "101",
+                    },
+                    {
+                        title: "Tanuki Sunset",
+                        description: "Tanuki Sunset Classic is a third-person longboard-skating game where players play as a raccoon skating downhill on a procedurally generated synthwave-themed seaside road.",
+                        photo: "/games/static/tanuki-sunset/img/cover.png",
+                        link: "/games/static/tanuki-sunset/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "102",
+                    },
+                    {
+                        title: "Temple Run 2",
+                        description: "Temple Run 2, developed by Imangi, is an infinite runner where the player must escape from his enemy and avoid all the obstacles and traps that are found along the way. Traverse cliffs, forests and even mines, and help this fearless treasure hunter escape with the gold idol. But hurry up! The evil monkey monsters are chasing you! Do you dare to join this exciting adrenaline-charged adventure?",
+                        photo: "/games/static/temple-run-2/img/icons/icon-512x512.png",
+                        banner: "/games/static/temple-run-2/079dea52d8f43464bedd59bc35cc7999.jpg",
+                        link: "/games/static/temple-run-2/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "103",
+                    },
+                    {
+                        title: "The Final Earth",
+                        description: "Earth has been destroyed. It's a good thing you teleported to a new planet, also known as The Final Earth. Gather resources and build a colony.",
+                        photo: "/games/static/the-final-earth/images.png",
+                        link: "/games/static/the-final-earth/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "104",
+                    },
+                    {
+                        title: "The Battle",
+                        photo: "/games/static/thebattle/thebattle.png",
+                        link: "/games/static/thebattle/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "105",
+                    },
+                    {
+                        title: "The Heist",
+                        description: "The Heist: The Heist is a free racing game. You're a professional getaway driver who does freelance work for the mob, bank robbers, and anyone else looking to pull off a quick job.",
+                        photo: "/games/static/theheist/theheist.jpg",
+                        link: "/games/static/theheist/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "106",
+                    },
+                    {
+                        title: "There Is No Game",
+                        description: "This game… wait… is it a game? There is No Game! Or is there? Complete various challenges as the narrator attempts to convince you there is no game. This is the original game jam version created by Kamizoto.",
+                        photo: "/games/static/there-is-no-game/logo.png",
+                        link: "/games/static/there-is-no-game/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "107",
+                    },
+                    {
+                        title: "This Is The Only Level",
+                        description: "The elephant forgot the rest of the levels, but luckily he still has one left! Help him beat it in all his metagaming glory. Use your keen knowledge of gaming and dexterity to manhandle your way through a variety of challenges. Get your mind out of the box for once! Take it outside for a walk, or maybe grab a bite to eat with it.",
+                        photo: "/games/static/thisistheonlylevel/thisistheonlylevel.png",
+                        link: "/games/static/thisistheonlylevel/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "108",
+                    },
+                    {
+                        title: "Tube Jumpers",
+                        description: "Tube Jumpers is a local multiplayer that can be played with up to 4 people. In the game you have to make sure to stay on your floating tube. Rocks, balls, and even sharks will jump out of the water and hit you. It's your task to make sure you land back on the tube when you're catapulted into the air.",
+                        photo: "/games/static/tube-jumpers/img/icon.jpg",
+                        link: "/games/static/tube-jumpers/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "109",
+                    },
+                    {
+                        title: "Tunnel Rush",
+                        description: "Tunnel Rush is a vibrant and fast-paced endless runner game that challenges players to navigate a 3D tunnel filled with various obstacles. As one of the most popular running games today, Tunnel Rush starts off quite slowly but gradually picks up pace, with obstacles appearing quickly and frequently, requiring players to be highly focused if they don't want to fail. As the game progresses, the difficulty increases, making it more challenging for players than ever before. Although the concept behind Tunnel Run is simple, the game is extremely addictive and challenging. You may find yourself playing Tunnel Rush many times but still failing in your attempts to surpass your prior score.",
+                        photo: "/games/static/tunnel-rush/img/tunnel.jpg",
+                        link: "/games/static/tunnel-rush/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "110",
+                    },
+                    {
+                        title: "Vex 3",
+                        photo: "/games/static/vex3/vex3.png",
+                        link: "/games/static/vex3/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "111",
+                    },
+                    {
+                        title: "Vex 4",
+                        photo: "/games/static/vex4/vex4.png",
+                        link: "/games/static/vex4/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "112",
+                    },
+                    {
+                        title: "Vex 5",
+                        photo: "/games/static/vex5/vex.jpeg",
+                        link: "/games/static/vex5/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "113",
+                    },
+                    {
+                        title: "Vex 6",
+                        photo: "/games/static/vex6/assets/icon.jpeg",
+                        link: "/games/static/vex6/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "114",
+                    },
+                    {
+                        title: "Wordle",
+                        description: "Play unlimited Wordles. No need to wait a whole day just for one Wordle. Endless Wordles are waiting for you to solve. Start now!",
+                        photo: "/games/static/wordle/img/logo_512x512.png",
+                        link: "/games/static/wordle/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "115",
+                    },
+                    {
+                        title: "World's Hardest Game",
+                        description: "Each level poses a new challenge in World's Hardest Game. Some levels might require you to move quickly and react fast, and other levels require you to slow it down.",
+                        photo: "/games/static/worlds-hardest-game/images/splash.jpg",
+                        link: "/games/static/worlds-hardest-game/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "116",
+                    },
+                    {
+                        title: "World's Hardest Game 2",
+                        description: "Each level poses a new challenge in World's Hardest Game 2. Some levels might require you to move quickly and react fast, and other levels require you to slow it down.",
+                        photo: "/games/static/worlds-hardest-game-2/the-worlds-hardest-game-2.jpg",
+                        link: "/games/static/worlds-hardest-game-2/index.html",
+                        date: new Date("2025-6-24"),
+                        id: "117",
+                    },
+                ],
+                apps: [
+                    {
+                        name: "Skiovox",
+                        description: "Instructions for Skiovox exploit",
+                        link: "/apps/skiovox/skiovox.htm",
+                        download: "/apps/skiovox/skiovox.htm",
+                        id: "1",
+                    },
                 ],
                 minecraft: {
                     versions: [
@@ -3179,6 +4124,7 @@
                 return `${hours}h:${minutes < 10 ? '0' + minutes : minutes}m`;
             },
             truncate(str, length) {
+                if (!str) return "";
                 if (str.length <= length) return str;
                 return str.substring(0, length - 3) + "...";
             },
@@ -3389,7 +4335,7 @@
                         }
                     }
                 } else {
-                    clApp.dialog.alert(`Page "${name}" not found.`);
+                    clApp.dialog.alert(`Page "${name}" not found.`).then(() => this.open("Home"));
                 }
             },
             find(name, subpageName = null) {
@@ -3549,6 +4495,76 @@
                                 minimum: 0,
                                 maximum: 20
                             },
+                            useCloaking: {
+                                title: "Tab Cloaking",
+                                type: "boolean",
+                                format: "checkbox",
+                                default: true,
+                            },
+                            cloakingOptions: {
+                                title: "Cloaking Options",
+                                type: "object",
+                                format: "select",
+                                properties: {
+                                    tabName: {
+                                        title: "Tab Name",
+                                        type: "string",
+                                        enum: [
+                                            "Chillnet",
+                                            "Google Classroom",
+                                            "Google Drive",
+                                            "Google Docs",
+                                            "Google Sheets",
+                                            "Google Slides",
+                                            "IXL",
+                                            "Henry",
+                                            "Custom",
+                                        ],
+                                        default: "Chillnet",
+                                    },
+                                    customTabName: {
+                                        title: "Custom Tab Name",
+                                        type: "string",
+                                        default: "Chillnet",
+                                        options: {
+                                            dependencies: {
+                                                "root.appearance.cloakingOptions.tabName": "Custom",
+                                            },
+                                        }
+                                    },
+                                    tabIcon: {
+                                        title: "Tab Icon",
+                                        type: "string",
+                                        enum: [
+                                            "Chillnet",
+                                            "Google Classroom",
+                                            "Google Drive",
+                                            "Google Docs",
+                                            "Google Sheets",
+                                            "Google Slides",
+                                            "IXL",
+                                            "Henry",
+                                            "Custom",
+                                        ],
+                                        default: "Chillnet",
+                                    },
+                                    customTabIcon: {
+                                        title: "Custom Tab Icon URL",
+                                        type: "string",
+                                        default: "/assets/logo/chillnet_favicon.png",
+                                        options: {
+                                            dependencies: {
+                                                "root.appearance.cloakingOptions.tabIcon": "Custom",
+                                            },
+                                        }
+                                    },
+                                },
+                                options: {
+                                    dependencies: {
+                                        "root.appearance.useCloaking": true,
+                                    },
+                                }
+                            }
                         }
                     },
                     timeanddate: {
@@ -3576,6 +4592,13 @@
                     theme: "Default",
                     mode: "Light",
                     borderRadius: 10,
+                    useCloaking: true,
+                    cloakingOptions: {
+                        tabName: "Chillnet",
+                        customTabName: "Chillnet",
+                        tabIcon: "Chillnet",
+                        customTabIcon: "/assets/logo/chillnet_favicon.png"
+                    }
                 },
                 timeanddate: {
                     format: 12,
@@ -3583,10 +4606,11 @@
                 }
             },
             get() {
+                if (!localStorage) return this.default;
                 return JSON.parse(localStorage.getItem("clAppSettings")) || this.default;
             },
             set(settings) {
-                localStorage.setItem("clAppSettings", JSON.stringify(settings));
+                if (localStorage) localStorage.setItem("clAppSettings", JSON.stringify(settings));
                 this.update(settings);
             },
             createEditor() {
@@ -3605,7 +4629,7 @@
                 });
                 this.editor.on("change", () => {
                     const newSettings = this.editor.getValue();
-                    localStorage.setItem("clAppSettings", JSON.stringify(newSettings));
+                    if (localStorage) localStorage.setItem("clAppSettings", JSON.stringify(newSettings));
                     this.update(newSettings);
                 });
             },
@@ -3627,6 +4651,31 @@
                 `;
                 clApp.date.format = settings.timeanddate.format;
                 clApp.date.showSeconds = settings.timeanddate.showSeconds;
+                const settingsIcons = document.getElementById("app.settingsIcons");
+                if (settings.appearance.useCloaking) {
+                    document.title = settings.appearance.cloakingOptions.tabName == "Custom" ? settings.appearance.cloakingOptions.customTabName : settings.appearance.cloakingOptions.tabName;
+                    settingsIcons.innerHTML = `
+                        ${settings.appearance.cloakingOptions.tabIcon == "Chillnet" ? `
+                            <link rel="icon" href="/assets/logo/chillnet_favicon.png" media="(prefers-color-scheme: light)">
+                            <link rel="icon" href="/assets/logo/chillnet_favicon_white.png" media="(prefers-color-scheme: dark)">
+                        ` : `<link rel="icon" href="${{
+                            "Google Classroom": "/assets/logo/google_classroom_favicon.png",
+                            "Google Drive": "/assets/logo/google_drive_favicon.png",
+                            "Google Docs": "/assets/logo/google_docs_favicon.png",
+                            "Google Sheets": "/assets/logo/google_sheets_favicon.png",
+                            "Google Slides": "/assets/logo/google_slides_favicon.png",
+                            "IXL": "/assets/logo/ixl_favicon.png",
+                            "Henry": "/assets/logo/henry_favicon.png",
+                            "Custom": settings.appearance.cloakingOptions.customTabIcon,
+                        }[settings.appearance.cloakingOptions.tabIcon]}">`}
+                    `;
+                } else {
+                    document.title = "Chillnet";
+                    settingsIcons.innerHTML = `
+                        <link rel="icon" href="/assets/logo/chillnet_favicon.png" media="(prefers-color-scheme: light)">
+                        <link rel="icon" href="/assets/logo/chillnet_favicon_white.png" media="(prefers-color-scheme: dark)">
+                    `;
+                }
             }
         };
 
@@ -3915,6 +4964,10 @@
                     console.error("Supabase client is not initialized.");
                     return;
                 }
+                if (!("WebSocket" in window)) {
+                    clApp.toast("info", "The current browser does not support WebSockets. Subscription cancelled.");
+                    return;
+                }
                 this.client.channel("main")
                     .on("postgres_changes", { event: "INSERT", schema: "public", table: "main_chat" }, (payload) => {
                         if (payload.new.is_announcement) {
@@ -4135,7 +5188,7 @@
                     card.innerHTML = `
                         <div class="cl-game-info">
                             <h1>${game.title}</h1>
-                            <p>${clApp.stringUtility.truncate(game.description, 200)}</p>
+                            <p>${game.description ? clApp.stringUtility.truncate(game.description, 200) : ""}</p>
                         </div>
                     `;
                     card.onclick = () => this.open(game.id);
@@ -4214,9 +5267,10 @@
                 playBtn.onclick = () => this.play(gid);
                 if (this.currentGid) playBtn.disabled = true;
                 playBtn.classList.add("cl-button");
-                const downloadBtn = document.createElement("button");
+                const downloadBtn = document.createElement("a");
                 downloadBtn.innerHTML = '<i class="material-symbols-outlined">download</i>';
-                downloadBtn.onclick = () => window.open(game.download, "_blank");
+                downloadBtn.href = game.download || "#";
+                downloadBtn.download = (game.download || "#").split("/").pop();
                 downloadBtn.classList.add("cl-button");
                 const shareBtn = document.createElement("button");
                 shareBtn.innerHTML = '<i class="material-symbols-outlined">share</i>';
@@ -4305,9 +5359,7 @@
                 gameFrame.src = game.link;
                 gameFrame.focus();
                 clApp.elementUtility.enterFullscreen(document.body);
-                gameFrame.onload = () => {
-                    this.history.add(gid);
-                };
+                this.history.add(gid);
                 document.onfullscreenchange = () => {
                     if (document.fullscreenElement) {
                         clApp.pages.resetAll();
@@ -5590,6 +6642,57 @@
             },
         }
 
+        clApp.apps = {
+            appsContainer: "app.appsScreen.page.appsContainer",
+            appTitle: "app.appScreen.page.title",
+            appIcon: "app.appScreen.page.icon",
+            appActionBtnsContainer: "app.appScreen.page.actionBtnsContainer",
+            appDescription: "app.appScreen.page.description",
+            init() {
+                const appsContainer = document.getElementById(this.appsContainer);
+                const appTitle = document.getElementById(this.appTitle);
+                const appIcon = document.getElementById(this.appIcon);
+                const appActionBtnsContainer = document.getElementById(this.appActionBtnsContainer);
+                const appDescription = document.getElementById(this.appDescription);
+
+                appsContainer.innerHTML = clApp.config.content.apps.map(app => {
+                    return `
+                        <div class="cl-app" onclick="clApp.apps.open(${app.id})">
+                            <img src="${app.photo || "/assets/background/app_icon_placeholder.png"}" class="cl-app-icon" alt="App Icon">
+                            <h3>${app.name}</h3>
+                        </div>
+                    `;
+                }).join("");
+            },
+            open(appId) {
+                const app = clApp.config.content.apps.find(a => a.id == appId);
+                if (!app) {
+                    clApp.toast("error", "App not found.");
+                }
+                const appsContainer = document.getElementById(this.appsContainer);
+                const appTitle = document.getElementById(this.appTitle);
+                const appIcon = document.getElementById(this.appIcon);
+                const appActionBtnsContainer = document.getElementById(this.appActionBtnsContainer);
+                const appDescription = document.getElementById(this.appDescription);
+                clApp.pages.open("App");
+                appTitle.innerHTML = app.name;
+                appIcon.src = app.photo || "/assets/background/app_icon_placeholder.png";
+                appActionBtnsContainer.innerHTML = `
+                    <a class="cl-button" href="${app.link}">
+                        <span class="material-symbols-outlined">open_in_new</span>
+                        <span>Open</open>
+                    </a>
+                    ${app.download ? `
+                        <a class="cl-button" href="${app.link}" download="${app.download.split("/").pop()}">
+                            <span class="material-symbols-outlined">download</span>
+                            <span>Download</span>
+                        </a>
+                    ` : ""}
+                `;
+                appDescription.innerHTML = app.description || "No description.";
+            },
+        }
+
         clApp.toast = function(icon, message) {
             const toast = document.createElement("div");
             toast.classList.add("cl-button");
@@ -5609,7 +6712,7 @@
                 clApp.config.parameters[key] = val;
             });
             clApp.pages.open("Loader");
-            if (!localStorage.visited) {
+            if (localStorage && !localStorage.visited) {
                 localStorage.visited = true;
                 clApp.toast("info", "Welcome to Chillnet!");
                 if ("serviceWorker" in navigator) {
@@ -5663,6 +6766,7 @@
             clApp.account.init();
             clApp.content.init();
             clApp.admin.init();
+            clApp.apps.init();
             clApp.pages.open("Home");
             if (clApp.config.parameters.mode && clApp.config.parameters.id) {
                 if (clApp.config.parameters.mode == "game")
