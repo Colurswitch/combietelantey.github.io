@@ -5520,10 +5520,7 @@
                                 ${version.vers.map(ver => {
                                     return `
                                         <div class="cl-horizontal">
-                                            <h3>${ver.name}</h3>
-                                            <a class="cl-button" href="${ver.link}" target="_blank">
-                                                <span class="material-symbols-outlined">play_arrow</span>
-                                            </a>
+                                            <h3><a href="${ver.link}" target="_blank">${ver.name}</a></h3>
                                         </div>
                                     `;
                                 }).join("")}
