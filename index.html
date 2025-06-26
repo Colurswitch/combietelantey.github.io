@@ -5517,7 +5517,7 @@
                                     return `
                                         <div class="cl-horizontal">
                                             <h3>${ver.name}</h3>
-                                            <a class="cl-button" href="${ver.link}">
+                                            <a class="cl-button" href="${ver.link}" target="_blank">
                                                 <span class="material-symbols-outlined">play_arrow</span>
                                             </a>
                                         </div>
@@ -5534,7 +5534,7 @@
                             <td>${mod.description || ""}</td>
                             <td>
                                 <div class="cl-horizontal">
-                                    <a class="cl-button" href="${mod.link}">
+                                    <a class="cl-button" href="${mod.link}" target="_blank">
                                         <i class="material-symbols-outlined">download</i>
                                     </a>
                                 </div>
@@ -5549,7 +5549,7 @@
                             <td>${map.description || ""}</td>
                             <td>
                                 <div class="cl-horizontal">
-                                    <a class="cl-button" href="${map.link}">
+                                    <a class="cl-button" href="${map.link}" target="_blank">
                                         <i class="material-symbols-outlined">download</i>
                                     </a>
                                 </div>
@@ -5564,7 +5564,7 @@
                             <td>${resourcePack.size}</td>
                             <td>
                                 <div class="cl-horizontal">
-                                    <a class="cl-button" href="${resourcePack.link}">
+                                    <a class="cl-button" href="${resourcePack.link}" target="_blank">
                                         <i class="material-symbols-outlined">download</i>
                                     </a>
                                 </div>
@@ -6375,7 +6375,7 @@
                                 </td>
                             </tr>
                         `;
-                    })
+                    }).join("");
                 });
             },
             deleteVideo(videoId) {
